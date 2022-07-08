@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTransition, animated } from 'react-spring';
 
-import APP_ROUTES from './config/routes';
+import APP_ROUTES from '@/config/routes';
 
 const App = () => {
   const location = useLocation();

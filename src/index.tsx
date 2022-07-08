@@ -2,10 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DAppProvider } from '@usedapp/core';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { DAPP_CONFIG } from './config/dapp';
+
+import { DAPP_CONFIG } from '@/config/dapp';
+import store, { persistor } from '@/state/store';
 
 import './index.css';
 
@@ -15,9 +19,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <Router>
-    <DAppProvider config={DAPP_CONFIG}>
-      <App />
-    </DAppProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <DAppProvider config={DAPP_CONFIG}>
+          <App />
+        </DAppProvider>
+      </PersistGate>
+    </Provider>
   </Router>
 );
 
