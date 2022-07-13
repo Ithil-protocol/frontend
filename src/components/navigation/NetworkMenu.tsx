@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
+import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Mainnet, useEthers } from '@usedapp/core';
+import { Chain, Goerli, Rinkeby, Mainnet, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from '@/components/based/Button';
@@ -30,7 +30,9 @@ const MenuItem: FC<IMenuItem> = ({ Icon, label, network, onClick }) => {
       tw="flex justify-start items-center gap-3"
       onClick={handleChangeNetwork}
     >
-      <Icon tw="text-secondary-100" />
+      <Icon
+        css={[tw`text-secondary-100`, network.isTestChain && tw`opacity-70`]}
+      />
       <Txt.Body2Regular tw="text-secondary-100">{label}</Txt.Body2Regular>
     </div>
   );
@@ -62,6 +64,12 @@ const NetworkMenu = () => {
             Icon={CurrencyEth}
             label={Goerli.chainName}
             network={Goerli}
+            onClick={() => setVisibility(false)}
+          />
+          <MenuItem
+            Icon={CurrencyEth}
+            label={Rinkeby.chainName}
+            network={Rinkeby}
             onClick={() => setVisibility(false)}
           />
         </div>
