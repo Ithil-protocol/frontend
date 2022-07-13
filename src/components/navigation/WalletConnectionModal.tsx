@@ -4,11 +4,11 @@ import tw from 'twin.macro';
 import { useEthers } from '@usedapp/core';
 
 import Modal from '@/components/based/Modal';
+import Txt from '@/components/based/Txt';
+import { useUpdateWalletConnector } from '@/state/application/hooks';
+import { injected, walletconnect } from '@/config/connectors';
 import { ReactComponent as MetaMaskIcon } from '@/assets/images/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from '@/assets/images/walletconnect.svg';
-import Txt from '@/components/based/Txt';
-import { injected, walletconnect } from '@/config/connectors';
-import { useUpdateWalletConnector } from '@/state/application/hooks';
 
 interface IWalletModal {
   open: boolean;
@@ -21,7 +21,7 @@ const WalletConnectionModal: FC<IWalletModal> = ({ open, onClose }) => {
   const isMetamaskInstalled = (window as any)?.ethereum;
 
   return (
-    <Modal tw="bg-secondary" open={open} onChange={onClose}>
+    <Modal tw="bg-secondary" open={open} onClose={onClose}>
       <div tw="flex flex-col justify-center items-center">
         <Txt.Heading2 tw="self-end">Connect to a wallet</Txt.Heading2>
       </div>

@@ -6,6 +6,8 @@ import { toggleTheme, updateWalletConnector } from './index';
 import { ThemeType, WalletConnectorType } from './types';
 
 import { AppState } from '@/state/store';
+import { ReactComponent as MetaMaskIcon } from '@/assets/images/metamask.svg';
+import { ReactComponent as WalletConnectIcon } from '@/assets/images/walletconnect.svg';
 
 const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
@@ -45,4 +47,11 @@ export const useUpdateWalletConnector = () => {
   const dispatch = useDispatch();
   return (connector: WalletConnectorType) =>
     dispatch(updateWalletConnector(connector));
+};
+
+export const useWalletConnectorIcon = () => {
+  const connector = useWalletConnector();
+
+  if (connector === 'none') return null;
+  return connector === 'injected' ? MetaMaskIcon : WalletConnectIcon;
 };

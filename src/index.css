@@ -14,6 +14,8 @@ body * {
   transition: all .1s;
 }
 
+/** Variables */
+
 :root {
   --primary: 255, 255, 255;
   --primary-100: 242, 245, 246;
@@ -127,4 +129,21 @@ body * {
     --fontsize-heading1: 32px;
     --lineheight-heading1: 51.2px;
   }
+}
+
+/** ReactModal Override Styles */
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+  backdrop-filter: blur(5px);
+  background: rgba(var(--secondary), 0.3) !important;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
 }
