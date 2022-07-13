@@ -1,4 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
 import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
 
 export function infuraUrl(chainId: number) {
@@ -19,4 +21,14 @@ export function pollingIntervalProvider(
   rpcProvider.pollingInterval = pollingInterval;
 
   return rpcProvider;
+}
+
+export function formatAmount(
+  value: BigNumber,
+  decimals = 18,
+  fractionDigits = 2
+) {
+  return Number(formatUnits(value || '0', decimals)).toLocaleString('en-US', {
+    maximumFractionDigits: fractionDigits,
+  });
 }

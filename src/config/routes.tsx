@@ -1,20 +1,27 @@
 import React from 'react';
 
 import { RouteType } from '@/global/types';
-import PositionPage from '@/pages/Position';
-import StakePage from '@/pages/Stake';
+import StakePage from '@/pages/stake';
+import TradePage from '@/pages/trade';
+import DashboardPage from '@/pages/dashboard';
 
 const APP_ROUTES: RouteType[] = [
   {
-    path: '/position',
-    component: <PositionPage />,
-    title: 'Position',
+    path: '/trade',
+    component: <TradePage />,
+    title: 'Trade',
     isNavLinked: true,
   },
   {
     path: '/stake',
     component: <StakePage />,
     title: 'Stake',
+    isNavLinked: true,
+  },
+  {
+    path: '/dashboard',
+    component: <DashboardPage />,
+    title: 'Dashboard',
     isNavLinked: true,
   },
 ];

@@ -8,7 +8,7 @@ import application from './application';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [''],
+  whitelist: ['application'],
 };
 
 const isDevelopment = process.env.NODE_ENV !== 'production';

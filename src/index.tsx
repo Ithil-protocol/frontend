@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -16,6 +18,8 @@ import './index.css';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+window.Buffer = window.Buffer || Buffer;
 
 root.render(
   <Router>

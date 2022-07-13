@@ -1,18 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body * {
+  transition: all .1s;
 }
 
+:root {
+  --primary: 255, 255, 255;
+  --primary-100: 242, 245, 246;
+  --primary-200: 231, 234, 235;
+  --primary-300: 226, 229, 229;
+  --primary-400: 206, 209, 209;
+  --secondary: 7, 11, 15;
+  --secondary-100: 21, 26, 41;
+  --secondary-200: 164, 177, 190;
+  --secondary-300: 32, 41, 58;
+  --secondary-400: 78, 95, 113;
+  --font: 7, 11, 15;
+  --font-100: 78, 95, 113;
+  --font-200: 164, 177, 190;
+  --primary-action: 7, 124, 224;
+  --primary-success: 21, 172, 137;
+  --primary-error: 243, 89, 89;
+  --primary-warning: 233, 207, 74;
+  --primary-warning-light: 243, 231, 168;
+  --button-hover-action: 6, 107, 194;
+  --button-hover-light: 226, 229, 229;
+  --button-hover-dark: 21, 26, 41;
+  --button-disabled-light: 206, 209, 209;
+  --button-disabled-dark: 21, 26, 41;
+  --button-disabled-action: 164, 177, 190;
+
+
+  --fontsize-mobile-medium: 10px;
+  --lineheight-mobile-medium: 16px;
+  --fontsize-caption-medium: 12px;
+  --lineheight-caption-medium: 19.2px;
+  --fontsize-body2-regular: 16px;
+  --lineheight-body2-regular: 25.6px;
+  --fontsize-body2-bold: 12px;
+  --lineheight-body2-bold: 19.2px;
+  --fontsize-body1-regular: 14px;
+  --lineheight-body1-regular: 22.4px;
+  --fontsize-button-medium: 14px;
+  --lineheight-button-medium: 19.6px;
+  --fontsize-body1-bold: 14px;
+  --lineheight-body1-bold: 22.4px;
+  --fontsize-input-text: 16px;
+  --lineheight-input-text: 18.78px;
+  --fontsize-heading2: 20px;
+  --lineheight-heading2: 32px;
+  --fontsize-heading1: 32px;
+  --lineheight-heading1: 51.2px;
+}
+.dark {
+  --primary: 7, 11, 15;
+  --primary-100: 21, 26, 41;
+  --primary-200: 32, 41, 58;
+  --primary-300: 54, 65, 83;
+  --primary-400: 78, 95, 113;
+  --secondary: 255, 255, 255;
+  --secondary-100: 242, 245, 246;
+  --secondary-200: 231, 234, 235;
+  --secondary-300: 226, 229, 229;
+  --secondary-400: 206, 209, 209;
+  --font: 242, 245, 246;
+  --font-100: 164, 177, 190;
+  --font-200: 164, 177, 190;
+  --primary-action: 7, 124, 224;
+  --primary-success: 21, 172, 137;
+  --primary-error: 243, 89, 89;
+  --primary-warning: 233, 207, 74;
+  --primary-warning-light: 243, 231, 168;
+}
+
+@media screen and (min-width: 480px) {
+  :root {
+    --fontsize-caption-medium: 12px;
+    --lineheight-caption-medium: 19.2px;
+    --fontsize-body2-regular: 12px;
+    --lineheight-body2-regular: 19.2px;
+    --fontsize-body2-bold: 12px;
+    --lineheight-body2-bold: 19.2px;
+    --fontsize-body1-regular: 16px;
+    --lineheight-body1-regular: 25.6px;
+    --fontsize-button-medium: 16px;
+    --lineheight-button-medium: 22.4px;
+    --fontsize-body1-bold: 16px;
+    --lineheight-body1-bold: 25.6px;
+    --fontsize-input-text: 18px;
+    --lineheight-input-text: 21.13px;
+    --fontsize-heading2: 16px;
+    --lineheight-heading2: 25.6px;
+    --fontsize-heading1: 24px;
+    --lineheight-heading1: 38.4px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    --fontsize-caption-medium: 14px;
+    --lineheight-caption-medium: 22.4px;
+    --fontsize-body2-regular: 16px;
+    --lineheight-body2-regular: 25.6px;
+    --fontsize-body2-bold: 16px;
+    --lineheight-body2-bold: 25.6px;
+    --fontsize-body1-regular: 18px;
+    --lineheight-body1-regular: 28.8px;
+    --fontsize-button-medium: 18px;
+    --lineheight-button-medium: 25.2px;
+    --fontsize-body1-bold: 18px;
+    --lineheight-body1-bold: 28.8px;
+    --fontsize-input-text: 20px;
+    --lineheight-input-text: 23.48px;
+    --fontsize-heading2: 18px;
+    --lineheight-heading2: 28.8px;
+    --fontsize-heading1: 32px;
+    --lineheight-heading1: 51.2px;
+  }
+}

@@ -6,3 +6,7 @@ export interface RouteType {
   title: string;
   isNavLinked: boolean;
 }
+
+export interface IBaseProps {
+  className?: string | undefined;
+}

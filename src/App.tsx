@@ -1,7 +1,10 @@
+/** @jsxImportSource @emotion/react */
+import tw from 'twin.macro';
 import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTransition, animated } from 'react-spring';
 
+import Navbar from '@/components/navigation/Navbar';
 import APP_ROUTES from '@/config/routes';
 
 const App = () => {
@@ -15,9 +18,10 @@ const App = () => {
   });
 
   return (
-    <div className="App">
+    <div css={[tw`flex flex-col bg-primary min-h-screen desktop:flex-row`]}>
       {transitions.map(({ item, props, key }) => (
         <animated.div
+          tw="flex-grow flex flex-col"
           style={{
             ...props,
             position: 'absolute',
@@ -26,6 +30,7 @@ const App = () => {
           }}
           key={key}
         >
+          <Navbar />
           <Routes location={item}>
             {APP_ROUTES.map((route) => (
               <Route
