@@ -12,6 +12,7 @@ const generateFont = (variable) => {
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'class',
+  important: true,
   theme: {
     fontFamily: {
       sans: [

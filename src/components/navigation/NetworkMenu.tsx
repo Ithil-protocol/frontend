@@ -5,7 +5,7 @@ import { ArrowDown } from 'phosphor-react';
 import { Chain, Goerli, Mainnet, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
-import { Button } from '@/components/based/Button';
+import Button from '@/components/based/Button';
 import Txt from '@/components/based/Txt';
 import Dropdown from '@/components/based/Dropdown';
 import { ReactComponent as CurrencyEth } from '@/assets/images/currencyEthereum.svg';

@@ -21,7 +21,7 @@ interface IButtonProps extends IBaseProps {
   isLoading?: boolean;
 }
 
-export const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
+const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
   const primary = !props.action;
   const LeftIcon = props.leftIcon;
   const RightIcon = props.rightIcon;
@@ -91,3 +91,5 @@ export const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
     </button>
   );
 };
+
+export default Button;

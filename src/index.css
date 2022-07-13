@@ -12,6 +12,7 @@ body {
 
 body * {
   transition: all .1s;
+  outline: none !important;
 }
 
 /** Variables */

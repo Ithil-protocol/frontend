@@ -9,7 +9,7 @@ import NetworkMenu from './NetworkMenu';
 import AccountModal from './AccountModal';
 
 import { useTheme } from '@/state/application/hooks';
-import { Button } from '@/components/based/Button';
+import Button from '@/components/based/Button';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
 import ThemeSwitch from '@/components/navigation/ThemeSwitch';
 import KebabMenu from '@/components/navigation/KebabMenu';

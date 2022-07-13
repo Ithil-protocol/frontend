@@ -4,6 +4,7 @@ import { RouteType } from '@/global/types';
 import StakePage from '@/pages/stake';
 import TradePage from '@/pages/trade';
 import DashboardPage from '@/pages/dashboard';
+import { MarginTradingPage } from '@/pages/trade/margin-trading';
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -23,6 +24,12 @@ const APP_ROUTES: RouteType[] = [
     component: <DashboardPage />,
     title: 'Dashboard',
     isNavLinked: true,
+  },
+  {
+    path: '/trade/margin-trading',
+    component: <MarginTradingPage />,
+    title: 'Margin Trading',
+    isNavLinked: false,
   },
 ];
 
