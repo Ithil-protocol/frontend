@@ -13,7 +13,7 @@ interface ITokenModal {
   open: boolean;
   availableTokens?: TokenDetails[];
   onClose: () => void;
-  onSelect(token: any): void;
+  onSelect(token: TokenDetails): void;
 }
 
 const TokenModal: FC<ITokenModal> = ({

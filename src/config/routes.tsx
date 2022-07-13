@@ -4,7 +4,8 @@ import { RouteType } from '@/global/types';
 import StakePage from '@/pages/stake';
 import TradePage from '@/pages/trade';
 import DashboardPage from '@/pages/dashboard';
-import { MarginTradingPage } from '@/pages/trade/margin-trading';
+import MarginTradingPage from '@/pages/trade/margin-trading';
+import LeveragedStakingPage from '@/pages/trade/leveraged-staking';
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -29,6 +30,12 @@ const APP_ROUTES: RouteType[] = [
     path: '/trade/margin-trading',
     component: <MarginTradingPage />,
     title: 'Margin Trading',
+    isNavLinked: false,
+  },
+  {
+    path: '/trade/leveraged-staking',
+    component: <LeveragedStakingPage />,
+    title: 'Leveraged Staking',
     isNavLinked: false,
   },
 ];

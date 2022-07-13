@@ -22,7 +22,7 @@ import InfoItem from '@/components/composed/trade/InfoItem';
 import AdvancedSectionImg from '@/assets/images/advancedSectionImage.png';
 import { Priority, TokenDetails } from '@/global/types';
 
-export const MarginTradingPage = () => {
+export default function MarginTradingPage() {
   const { tokens } = TokenList;
 
   const [positionType, setPositionType] = useState<'short' | 'long'>('long');
@@ -234,4 +234,4 @@ export const MarginTradingPage = () => {
       </div>
     </Container>
   );
-};
+}

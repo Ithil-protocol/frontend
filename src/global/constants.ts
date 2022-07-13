@@ -20,6 +20,6 @@ export const TRADE_STRATEGIES = [
     apyMin: '0',
     apyMax: '10x',
     risk: 'Low',
-    url: '/trade/leveraged-trading',
+    url: '/trade/leveraged-staking',
   },
 ];
