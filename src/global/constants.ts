@@ -1,3 +1,7 @@
+import Addresses from '@ithil-protocol/deployed/goerli/deployments/addresses.json';
+
+export const { addresses: GOERLI_ADDRESSES } = Addresses;
+
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
@@ -23,3 +27,5 @@ export const TRADE_STRATEGIES = [
     url: '/trade/leveraged-staking',
   },
 ];
+
+export const MAX_LEVERAGE = 5;

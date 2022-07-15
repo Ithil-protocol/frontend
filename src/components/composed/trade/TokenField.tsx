@@ -11,9 +11,10 @@ import { TokenDetails } from '@/global/types';
 interface ITokenField {
   onTokenChange(token: TokenDetails): void;
   token: TokenDetails;
+  noAllow: TokenDetails;
 }
 
-const TokenField: FC<ITokenField> = ({ token, onTokenChange }) => {
+const TokenField: FC<ITokenField> = ({ token, noAllow, onTokenChange }) => {
   const [tokenModalOpened, setTokenModalOpened] = useState(false);
 
   return (
@@ -31,6 +32,7 @@ const TokenField: FC<ITokenField> = ({ token, onTokenChange }) => {
       />
       <TokenModal
         open={tokenModalOpened}
+        selectedToken={noAllow}
         onClose={() => {
           setTokenModalOpened(false);
         }}

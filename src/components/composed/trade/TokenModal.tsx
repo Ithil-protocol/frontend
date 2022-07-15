@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
+import tw from 'twin.macro';
 import React, { FC, useEffect, useState } from 'react';
-import TokenList from '@ithil-protocol/deployed/latest/tokenlist.json';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 import { MagnifyingGlass } from 'phosphor-react';
 
 import Modal from '@/components/based/Modal';
@@ -12,6 +12,7 @@ import { TokenDetails } from '@/global/types';
 interface ITokenModal {
   open: boolean;
   availableTokens?: TokenDetails[];
+  selectedToken?: TokenDetails;
   onClose: () => void;
   onSelect(token: TokenDetails): void;
 }
@@ -19,6 +20,7 @@ interface ITokenModal {
 const TokenModal: FC<ITokenModal> = ({
   open,
   availableTokens,
+  selectedToken,
   onClose,
   onSelect,
 }) => {
@@ -62,8 +64,11 @@ const TokenModal: FC<ITokenModal> = ({
           return (
             <div
               key={token.name}
-              tw="w-full flex flex-row justify-between cursor-pointer"
-              onClick={() => onSelect(token)}
+              css={[
+                tw`w-full flex flex-row justify-between cursor-pointer`,
+                token === selectedToken && tw`opacity-50 cursor-default`,
+              ]}
+              onClick={() => token !== selectedToken && onSelect(token)}
             >
               <div tw="flex flex-row justify-start items-center p-0 my-2">
                 <img tw="w-8 h-8 mr-4" src={token.logoURI} alt="token image" />

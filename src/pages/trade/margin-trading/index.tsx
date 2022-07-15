@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 
-import React, { useState } from 'react';
-import { FixedNumber } from 'ethers';
+import React, { useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
-import TokenList from '@ithil-protocol/deployed/latest/tokenlist.json';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 // import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
 import { useEthers } from '@usedapp/core';
+import BigNumber from 'bignumber.js';
+import { MaxUint256 } from '@ethersproject/constants';
 
 import Txt from '@/components/based/Txt';
 import Button from '@/components/based/Button';
@@ -20,35 +21,114 @@ import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import AdvancedSectionImg from '@/assets/images/advancedSectionImage.png';
-import { Priority, TokenDetails } from '@/global/types';
+import { OrderType, PriorityType, TokenDetails } from '@/global/types';
+import { GOERLI_ADDRESSES, MAX_LEVERAGE } from '@/global/constants';
+import { useOpenPosition, useQuote } from '@/hooks/useMarginTradingStrategy';
+import { formatAmount, parseAmount } from '@/global/utils';
+import { useAllowance, useApprove } from '@/hooks/useERC20';
 
 export default function MarginTradingPage() {
   const { tokens } = TokenList;
+  const { account } = useEthers();
 
-  const [positionType, setPositionType] = useState<'short' | 'long'>('long');
+  const [collateralIsSpentToken, setCollateralIsSpentToken] =
+    useState<boolean>(true);
   const [spentToken, setSpentToken] = useState<TokenDetails>(tokens[0]);
   const [obtainedToken, setObtainedToken] = useState<TokenDetails>(tokens[1]);
   const [leverage, setLeverage] = useState<number>(1);
-  const [margin, setMargin] = useState<string>('2');
-  const [slippage, setSlippage] = useState<any>(1);
-  const [deadline, setDeadline] = useState<any>(20);
+  const [marginAmount, setMarginAmount] = useState<string>('2');
+  const [slippagePercent, setSlippagePercent] = useState<string>('1');
+  const [deadline, setDeadline] = useState<string>('20');
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<any>(false);
-  const [priority, setPriority] = useState<Priority>('buy');
-  const [isLoading, setisLoading] = useState(false);
-  const [Status, setStatus] = useState('');
-  const [buttonText, setButtonText] = useState<string>('Approve');
+  const [priority, setPriority] = useState<PriorityType>('buy');
 
-  const [minObtained, setMinObtained] = useState<FixedNumber>(
-    FixedNumber.from('0')
+  const leveragedValue = useMemo(() => {
+    return parseAmount(marginAmount, spentToken.decimals).multipliedBy(
+      leverage
+    );
+  }, [leverage, marginAmount, spentToken]);
+
+  const quoteValue = useQuote(
+    spentToken.address,
+    obtainedToken.address,
+    leveragedValue
   );
-  const [maxLeverage, setMaxLeverage] = useState<FixedNumber>(
-    FixedNumber.from('5')
+  const allowance = useAllowance(
+    spentToken.address,
+    GOERLI_ADDRESSES.MarginTradingStrategy
   );
-  const [maxSpent, setMaxSpent] = useState<FixedNumber>(FixedNumber.from('0'));
+  const { isLoading: isLoadingApprove, approve } = useApprove(
+    spentToken.address
+  );
+  const {
+    isLoading: isLoadingOpenPos,
+    openPosition,
+    estimateGas,
+  } = useOpenPosition();
 
-  const { account } = useEthers();
+  const buttonText = useMemo(() => {
+    if (!allowance) return 'Open';
+    const marginedAmountValue = parseAmount(marginAmount, spentToken.decimals);
 
-  const [, setOpenPositionHash] = useState<string | undefined>(undefined);
+    if (new BigNumber(allowance.toString()).isLessThan(marginedAmountValue)) {
+      return 'Approve';
+    }
+    return 'Open';
+  }, [allowance, marginAmount, spentToken.decimals]);
+
+  const maxSpent = useMemo(() => {
+    return collateralIsSpentToken ? leveragedValue.toFixed() : quoteValue;
+  }, [collateralIsSpentToken, leveragedValue, quoteValue]);
+
+  const minObtained = useMemo(() => {
+    const slippageValue = (100 - Number(slippagePercent)) / 100;
+    return leveragedValue.multipliedBy(slippageValue).toFixed();
+  }, [leveragedValue, slippagePercent]);
+
+  const handleChangeToken = () => {
+    const tempToken: TokenDetails = spentToken;
+    setSpentToken(obtainedToken);
+    setObtainedToken(tempToken);
+  };
+
+  const handleApprove = () => {
+    if (!account || !Number(marginAmount)) return;
+    approve(GOERLI_ADDRESSES.MarginTradingStrategy, MaxUint256);
+  };
+
+  const handleOpenOrder = async () => {
+    if (!account) return;
+    const deadlineTimestamp =
+      Math.floor(Date.now() / 1000) + 60 * Number(deadline);
+    const newOrder = {
+      spentToken: spentToken.address,
+      obtainedToken: obtainedToken.address,
+      collateral: parseAmount(marginAmount, spentToken.decimals).toString(),
+      collateralIsSpentToken,
+      minObtained,
+      maxSpent: maxSpent.toString(),
+      deadline: deadlineTimestamp,
+    };
+
+    // const gas = await estimateGas(newOrder);
+    openPosition(newOrder);
+  };
+
+  const handleExecute = () => {
+    if (buttonText === 'Approve') {
+      handleApprove();
+    } else {
+      handleOpenOrder();
+    }
+  };
+
+  const sliderMarks = useMemo(() => {
+    const marks: { [key: number]: string } = {};
+    for (let i = 1; i <= MAX_LEVERAGE; i++) {
+      marks[i] = `${i}x`;
+    }
+    return marks;
+  }, []);
 
   return (
     <Container>
@@ -64,8 +144,10 @@ export default function MarginTradingPage() {
             <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
               <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
                 <TabsSwitch
-                  activeIndex={positionType}
-                  onChange={(value: any) => setPositionType(value)}
+                  activeIndex={collateralIsSpentToken ? 'long' : 'short'}
+                  onChange={(value: string) =>
+                    setCollateralIsSpentToken(value === 'long')
+                  }
                   items={[
                     {
                       title: 'Long',
@@ -80,11 +162,17 @@ export default function MarginTradingPage() {
                 <div tw="flex w-full justify-between items-center">
                   <TokenField
                     token={spentToken}
+                    noAllow={obtainedToken}
                     onTokenChange={(value) => setSpentToken(value)}
                   />
-                  <ArrowRight size={28} tw="text-font-200 mx-6" />
+                  <ArrowRight
+                    size={28}
+                    tw="text-font-200 mx-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s]"
+                    onClick={handleChangeToken}
+                  />
                   <TokenField
                     token={obtainedToken}
+                    noAllow={spentToken}
                     onTokenChange={(value) => setObtainedToken(value)}
                   />
                 </div>
@@ -97,24 +185,26 @@ export default function MarginTradingPage() {
                   <InfoItem
                     tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
                     label="Min. obtained"
-                    value={minObtained.round(4).toString()}
+                    value={formatAmount(minObtained, spentToken.decimals)}
                   />
                   <InfoItem
                     tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
                     label="Max. spent"
-                    value={maxSpent.round(4).toString()}
+                    value={
+                      maxSpent
+                        ? formatAmount(maxSpent, spentToken.decimals)
+                        : '-'
+                    }
                   />
                 </div>
                 <InputFieldMax
                   label="Margin"
                   placeholder="0"
-                  unit={spentToken.symbol}
-                  address={spentToken.address}
-                  value={margin.toString()}
-                  stateChanger={setMargin}
+                  value={marginAmount}
+                  token={spentToken}
+                  stateChanger={setMarginAmount}
                   onChange={(value) => {
-                    setMargin(value);
-                    setButtonText('');
+                    setMarginAmount(value);
                   }}
                   renderRight={
                     <Txt.InputText tw="text-font-100">
@@ -126,17 +216,11 @@ export default function MarginTradingPage() {
                   label="Leverage"
                   tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
                   min={1}
-                  max={Number(maxLeverage.toString())}
+                  max={MAX_LEVERAGE}
                   step={0.2}
                   value={leverage}
                   onChange={(value) => setLeverage(value as number)}
-                  marks={{
-                    1: '1x',
-                    2: '2x',
-                    3: '3x',
-                    4: '4x',
-                    5: '5x',
-                  }}
+                  marks={sliderMarks}
                 />
                 <div tw="w-full">
                   {showAdvancedOptions ? (
@@ -164,8 +248,8 @@ export default function MarginTradingPage() {
                           tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
                           label="Slippage"
                           placeholder="0"
-                          value={slippage}
-                          onChange={(value) => setSlippage(value)}
+                          value={slippagePercent}
+                          onChange={(value) => setSlippagePercent(value)}
                           renderRight={
                             <Txt.InputText tw="text-font-100">%</Txt.InputText>
                           }
@@ -184,12 +268,14 @@ export default function MarginTradingPage() {
                             },
                           ]}
                           activeRadio={priority}
-                          onChange={(value) => setPriority(value as Priority)}
+                          onChange={(value) =>
+                            setPriority(value as PriorityType)
+                          }
                         />
                         <InputField
                           tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
                           label="Deadline"
-                          placeholder="30 mins"
+                          placeholder="20 mins"
                           value={deadline}
                           onChange={(value) => setDeadline(value)}
                           renderRight={
@@ -219,9 +305,11 @@ export default function MarginTradingPage() {
                   full
                   action
                   bold
-                  isLoading={isLoading}
+                  disabled={!allowance}
+                  onClick={handleExecute}
+                  isLoading={isLoadingApprove || isLoadingOpenPos}
                 />
-                <Txt.CaptionMedium>{Status}</Txt.CaptionMedium>
+                {/* <Txt.CaptionMedium>{Status}</Txt.CaptionMedium> */}
               </div>
             </div>
             <ChartCard

@@ -3,8 +3,7 @@ import 'twin.macro';
 
 import React, { useEffect, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
-import TokenList from '@ithil-protocol/deployed/latest/tokenlist.json';
-// import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';

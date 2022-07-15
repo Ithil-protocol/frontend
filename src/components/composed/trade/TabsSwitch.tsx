@@ -2,7 +2,6 @@
 import tw from 'twin.macro';
 import React, { FC, MouseEventHandler } from 'react';
 
-import { PositionType } from '@/global/types';
 import Txt from '@/components/based/Txt';
 
 type TabType = {
@@ -63,7 +62,7 @@ const TabsSwitch: FC<ITabsSwitch> = ({ activeIndex, onChange, items }) => {
             Icon={tab.icon}
             text={tab.title}
             active={tab.value == activeIndex}
-            onClick={() => onChange(tab.value as PositionType)}
+            onClick={() => onChange(tab.value)}
           />
         ))}
       </div>

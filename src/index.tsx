@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { DAppProvider } from '@usedapp/core';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Toaster } from 'react-hot-toast';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -26,6 +27,7 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <DAppProvider config={DAPP_CONFIG}>
+          <Toaster />
           <App />
         </DAppProvider>
       </PersistGate>

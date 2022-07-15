@@ -10,14 +10,15 @@ import React, {
 import { useEthers, useTokenBalance } from '@usedapp/core';
 
 import Txt from '@/components/based/Txt';
+import { TokenDetails } from '@/global/types';
+import { formatAmount } from '@/global/utils';
 
 interface IInputFieldMax {
   label?: string;
   onChange: (value: string) => void;
   renderRight?: React.ReactNode;
   value: string;
-  unit: string;
-  address: string;
+  token: TokenDetails;
   placeholder?: string;
   className?: string | undefined;
   onMaxClick?: () => void;
@@ -28,12 +29,12 @@ const InputFieldMax: FC<IInputFieldMax> = ({
   label,
   onChange,
   value,
-  unit,
-  address,
+  token,
   placeholder,
   className,
   stateChanger,
 }) => {
+  const { address, decimals, symbol } = token;
   const { account } = useEthers();
   const [inputValue, setInputValue] = useState(value);
   const [inputIsFocused, setInputIsFocused] = useState(false);
@@ -41,8 +42,8 @@ const InputFieldMax: FC<IInputFieldMax> = ({
 
   const getMax = () => {
     if (!tokenBalance) return;
-    stateChanger(tokenBalance.toString());
-    setInputValue(tokenBalance.toString());
+    stateChanger(formatAmount(tokenBalance, decimals, false));
+    setInputValue(formatAmount(tokenBalance, decimals, false));
   };
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const InputFieldMax: FC<IInputFieldMax> = ({
         >
           <Txt.Body2Regular>Max</Txt.Body2Regular>
         </button>
-        <Txt.InputText tw="text-font-100">{unit}</Txt.InputText>
+        <Txt.InputText tw="text-font-100">{symbol}</Txt.InputText>
       </div>
     </div>
   );

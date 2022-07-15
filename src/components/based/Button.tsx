@@ -19,6 +19,7 @@ interface IButtonProps extends IBaseProps {
   className?: string | undefined;
   bold?: boolean | undefined;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
 const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
@@ -32,7 +33,7 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
     }
   };
 
-  const disabled = props.isLoading;
+  const disabled = props.isLoading || props.disabled;
   return (
     <button
       type={props.type ?? 'button'}

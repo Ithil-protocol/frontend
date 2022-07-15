@@ -1,7 +1,8 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { BigNumber } from '@ethersproject/bignumber';
-import { formatUnits } from '@ethersproject/units';
+import { BigNumber } from 'bignumber.js';
+import { BigNumber as EtherBigNumber } from '@ethersproject/bignumber';
 import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
+import { number } from 'yup';
 
 export function infuraUrl(chainId: number) {
   const chainName =
@@ -24,11 +25,23 @@ export function pollingIntervalProvider(
 }
 
 export function formatAmount(
-  value: BigNumber,
+  value: string | number | EtherBigNumber,
   decimals = 18,
+  localeFormat = true,
   fractionDigits = 2
 ) {
-  return Number(formatUnits(value || '0', decimals)).toLocaleString('en-US', {
-    maximumFractionDigits: fractionDigits,
-  });
+  const number = Number(
+    new BigNumber(value.toString())
+      .dividedBy(new BigNumber(10).pow(decimals))
+      .toString()
+  );
+  if (localeFormat)
+    return number.toLocaleString('en-US', {
+      maximumFractionDigits: fractionDigits,
+    });
+  return number.toString();
+}
+
+export function parseAmount(value: number | string, decimals = 18) {
+  return new BigNumber(value).multipliedBy(new BigNumber(10).pow(decimals));
 }
