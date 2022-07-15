@@ -103,7 +103,7 @@ export default function MarginTradingPage() {
     const newOrder = {
       spentToken: spentToken.address,
       obtainedToken: obtainedToken.address,
-      collateral: parseAmount(marginAmount, spentToken.decimals).toString(),
+      collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(),
       collateralIsSpentToken,
       minObtained,
       maxSpent: maxSpent.toString(),
