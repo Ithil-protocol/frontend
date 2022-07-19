@@ -1,11 +1,10 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import MarginTradingStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
-import { useCall, useContractFunction } from '@usedapp/core';
+import { useCall, useContractFunction } from '@devneser/usedapp-core';
 import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain, useHandleTxStatus } from './index';
-import useEstimateGas from './useEstimateGas';
 
 import { GOERLI_ADDRESSES } from '@/global/constants';
 
@@ -30,9 +29,9 @@ export function useQuote(
 
   if (error) {
     console.error(error.message);
-    return undefined;
+    return new BigNumber(0);
   }
-  return value?.[0];
+  return new BigNumber(value?.[0].toString() ?? '0');
 }
 
 export function useOpenPosition() {
@@ -41,12 +40,10 @@ export function useOpenPosition() {
       new Contract(GOERLI_ADDRESSES.MarginTradingStrategy, abi),
     'openPosition'
   );
-  const { estimateOpenPosition } = useEstimateGas();
   const isLoading = useHandleTxStatus(state, resetState);
 
   return {
     isLoading,
     openPosition: send,
-    estimateGas: estimateOpenPosition,
   };
 }

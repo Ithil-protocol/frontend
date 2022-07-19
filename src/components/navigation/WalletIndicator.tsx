@@ -1,7 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useEffect } from 'react';
-import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
+import {
+  shortenAddress,
+  useEtherBalance,
+  useEthers,
+} from '@devneser/usedapp-core';
 
 import Txt from '@/components/based/Txt';
 import { useWalletConnectorIcon } from '@/state/application/hooks';
@@ -27,7 +31,7 @@ export const WalletIndicator: FC<IWalletIndicator> = ({ onClick }) => {
     >
       {!!balance && (
         <Txt.ButtonMedium tw="mr-2">{`${formatAmount(
-          balance
+          balance.toString()
         )} ETH`}</Txt.ButtonMedium>
       )}
       <div tw="h-7 max-h-7 tablet:h-8   desktop:h-8 desktop:max-h-8 px-2 rounded-md bg-primary-400 flex flex-row justify-center items-center gap-1 dark:bg-primary-100">
