@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { RouteType } from '@/global/types';
-import StakePage from '@/pages/Stake';
-import TradePage from '@/pages/Trade';
-import DashboardPage from '@/pages/Dashboard';
-import MarginTradingPage from '@/pages/Trade/MarginTrading';
-import LeveragedStakingPage from '@/pages/Trade/LeveragedStaking';
+import StakePage from '@/pages/stake/Stake';
+import TradePage from '@/pages/trade/Trade';
+import DashboardPage from '@/pages/dashboard/Dashboard';
+import MarginTradingPage from '@/pages/trade/MarginTrading';
+import LeveragedStakingPage from '@/pages/trade/LeveragedStaking';
 
 const APP_ROUTES: RouteType[] = [
   {
