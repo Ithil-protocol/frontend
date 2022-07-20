@@ -7,6 +7,12 @@ import DashboardPage from '@/pages/dashboard/Dashboard';
 import MarginTradingPage from '@/pages/trade/MarginTrading';
 import LeveragedStakingPage from '@/pages/trade/LeveragedStaking';
 
+const StakePage = require('@/pages/stake');
+const TradePage = require('@/pages/trade');
+const DashboardPage = require('@/pages/dashboard');
+const MarginTradingPage = require('@/pages/trade/margin-trading');
+const LeveragedStakingPage = require('@/pages/trade/leveraged-staking');
+
 const APP_ROUTES: RouteType[] = [
   {
     path: '/trade',
