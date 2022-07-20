@@ -7,7 +7,7 @@ import React, {
   SetStateAction,
   FC,
 } from 'react';
-import { useEthers, useTokenBalance } from '@usedapp/core';
+import { useEthers, useTokenBalance } from '@devneser/usedapp-core';
 
 import Txt from '@/components/based/Txt';
 import { TokenDetails } from '@/global/types';
@@ -42,8 +42,8 @@ const InputFieldMax: FC<IInputFieldMax> = ({
 
   const getMax = () => {
     if (!tokenBalance) return;
-    stateChanger(formatAmount(tokenBalance, decimals, false));
-    setInputValue(formatAmount(tokenBalance, decimals, false));
+    stateChanger(formatAmount(tokenBalance.toString(), decimals, false));
+    setInputValue(formatAmount(tokenBalance.toString(), decimals, false));
   };
 
   useEffect(() => {

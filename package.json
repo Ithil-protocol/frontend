@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.5",
+    "@devneser/usedapp-core": "^2.0.0",
     "@emotion/core": "^11.0.0",
     "@ethersproject/experimental": "^5.6.3",
     "@ithil-protocol/deployed": "github:Ithil-protocol/deployed",
@@ -26,6 +28,7 @@
     "@web3-react/walletconnect-connector": "^6.2.13",
     "bignumber.js": "^9.0.2",
     "buffer": "^6.0.3",
+    "craco-alias": "^3.0.1",
     "phosphor-react": "^1.4.1",
     "rc-slider": "^10.0.1",
     "react": "^18.2.0",
@@ -74,7 +77,6 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^6.4.5",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@metamask/detect-provider": "1.2.0",

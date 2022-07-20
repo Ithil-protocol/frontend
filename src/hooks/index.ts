@@ -1,4 +1,4 @@
-import { Goerli, TransactionStatus, useEthers } from '@usedapp/core';
+import { Goerli, TransactionStatus, useEthers } from '@devneser/usedapp-core';
 import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Navbar from '@/components/navigation/Navbar';
 import APP_ROUTES from '@/config/routes';
@@ -19,6 +19,7 @@ const App = () => {
               element={route.component}
             />
           ))}
+          <Route path="*" element={<Navigate to="/trade" replace />} />
         </Routes>
       </div>
     </div>

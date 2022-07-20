@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
 import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 // import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
-import { useEthers } from '@usedapp/core';
+import { useEthers } from '@devneser/usedapp-core';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
 
@@ -21,7 +21,7 @@ import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import AdvancedSectionImg from '@/assets/images/advancedSectionImage.png';
-import { OrderType, PriorityType, TokenDetails } from '@/global/types';
+import { PriorityType, TokenDetails } from '@/global/types';
 import { GOERLI_ADDRESSES, MAX_LEVERAGE } from '@/global/constants';
 import { useOpenPosition, useQuote } from '@/hooks/useMarginTradingStrategy';
 import { formatAmount, parseAmount } from '@/global/utils';
@@ -60,11 +60,7 @@ export default function MarginTradingPage() {
   const { isLoading: isLoadingApprove, approve } = useApprove(
     spentToken.address
   );
-  const {
-    isLoading: isLoadingOpenPos,
-    openPosition,
-    estimateGas,
-  } = useOpenPosition();
+  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition();
 
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';
@@ -76,14 +72,44 @@ export default function MarginTradingPage() {
     return 'Open';
   }, [allowance, marginAmount, spentToken.decimals]);
 
+  const slippageValue = useMemo(
+    () => (100 - Number(slippagePercent)) / 100,
+    [slippagePercent]
+  );
+
   const maxSpent = useMemo(() => {
-    return collateralIsSpentToken ? leveragedValue.toFixed() : quoteValue;
-  }, [collateralIsSpentToken, leveragedValue, quoteValue]);
+    if (collateralIsSpentToken) {
+      return priority === 'sell'
+        ? leveragedValue
+        : leveragedValue.dividedBy(slippageValue);
+    }
+    return priority === 'sell'
+      ? quoteValue
+      : quoteValue.dividedBy(slippageValue);
+  }, [
+    collateralIsSpentToken,
+    leveragedValue,
+    priority,
+    quoteValue,
+    slippageValue,
+  ]);
 
   const minObtained = useMemo(() => {
-    const slippageValue = (100 - Number(slippagePercent)) / 100;
-    return leveragedValue.multipliedBy(slippageValue).toFixed();
-  }, [leveragedValue, slippagePercent]);
+    if (collateralIsSpentToken) {
+      return priority === 'sell'
+        ? quoteValue.multipliedBy(slippageValue)
+        : quoteValue;
+    }
+    return priority === 'sell'
+      ? leveragedValue.multipliedBy(slippageValue)
+      : leveragedValue;
+  }, [
+    collateralIsSpentToken,
+    leveragedValue,
+    priority,
+    quoteValue,
+    slippageValue,
+  ]);
 
   const handleChangeToken = () => {
     const tempToken: TokenDetails = spentToken;
@@ -103,15 +129,18 @@ export default function MarginTradingPage() {
     const newOrder = {
       spentToken: spentToken.address,
       obtainedToken: obtainedToken.address,
-      collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(),
+      collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(0),
       collateralIsSpentToken,
-      minObtained,
-      maxSpent: maxSpent.toString(),
+      minObtained: minObtained.toFixed(0),
+      maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
+    console.log(newOrder);
 
     // const gas = await estimateGas(newOrder);
-    openPosition(newOrder);
+    // if (gas > 0) {
+    openPosition(newOrder, { gasLimit: 700_000 });
+    // }
   };
 
   const handleExecute = () => {

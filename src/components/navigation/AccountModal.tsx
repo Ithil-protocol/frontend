@@ -7,7 +7,7 @@ import {
   getExplorerAddressLink,
   shortenAddress,
   useEthers,
-} from '@usedapp/core';
+} from '@devneser/usedapp-core';
 
 import Txt from '@/components/based/Txt';
 import Modal from '@/components/based/Modal';

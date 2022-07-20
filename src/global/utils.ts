@@ -1,7 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
-import { BigNumber as EtherBigNumber } from '@ethersproject/bignumber';
-import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
+import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@devneser/usedapp-core';
 import { number } from 'yup';
 
 export function infuraUrl(chainId: number) {
@@ -25,13 +24,16 @@ export function pollingIntervalProvider(
 }
 
 export function formatAmount(
-  value: string | number | EtherBigNumber,
+  value: string | number | BigNumber,
   decimals = 18,
   localeFormat = true,
   fractionDigits = 2
 ) {
   const number = Number(
-    new BigNumber(value.toString())
+    (typeof value === 'object'
+      ? value
+      : new BigNumber(typeof value === 'number' ? value.toString() : value)
+    )
       .dividedBy(new BigNumber(10).pow(decimals))
       .toString()
   );
