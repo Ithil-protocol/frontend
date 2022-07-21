@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { useState } from 'react';
-import { useEthers } from '@devneser/usedapp-core';
+import { useEthers } from '@usedapp/core';
 
 import WalletConnectionModal from './WalletConnectionModal';
 import { WalletIndicator } from './WalletIndicator';

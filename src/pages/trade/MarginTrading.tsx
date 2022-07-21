@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
 import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 // import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
-import { useEthers } from '@devneser/usedapp-core';
+import { useEthers } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
 

@@ -1,10 +1,4 @@
-import {
-  ChainId,
-  Config,
-  Goerli,
-  Mainnet,
-  Rinkeby,
-} from '@devneser/usedapp-core';
+import { ChainId, Config, Goerli, Mainnet, Rinkeby } from '@usedapp/core';
 
 import { infuraUrl, pollingIntervalProvider } from '@/global/utils';
 

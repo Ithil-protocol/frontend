@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { FC } from 'react';
 import tw from 'twin.macro';
-import { useEthers } from '@devneser/usedapp-core';
+import { useEthers } from '@usedapp/core';
 
 import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';

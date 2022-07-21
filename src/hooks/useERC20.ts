@@ -1,11 +1,7 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import ERC20ABI from '@ithil-protocol/deployed/goerli/abi/ERC20.json';
-import {
-  useCall,
-  useContractFunction,
-  useEthers,
-} from '@devneser/usedapp-core';
+import { useCall, useContractFunction, useEthers } from '@usedapp/core';
 import { useEffect } from 'react';
 
 import { useHandleTxStatus } from './index';

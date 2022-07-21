@@ -7,7 +7,7 @@ import React, {
   SetStateAction,
   FC,
 } from 'react';
-import { useEthers, useTokenBalance } from '@devneser/usedapp-core';
+import { useEthers, useTokenBalance } from '@usedapp/core';
 
 import Txt from '@/components/based/Txt';
 import { TokenDetails } from '@/global/types';
