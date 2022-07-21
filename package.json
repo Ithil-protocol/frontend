@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.5",
-    "@devneser/usedapp-core": "^2.0.0",
     "@emotion/core": "^11.0.0",
     "@ethersproject/experimental": "^5.6.3",
     "@ithil-protocol/deployed": "github:Ithil-protocol/deployed",
