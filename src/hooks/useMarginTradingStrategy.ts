@@ -1,7 +1,7 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import MarginTradingStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
-import { useCall, useContractFunction } from '@devneser/usedapp-core';
+import { useCall, useContractFunction } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain, useHandleTxStatus } from './index';

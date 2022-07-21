@@ -1,11 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useEffect } from 'react';
-import {
-  shortenAddress,
-  useEtherBalance,
-  useEthers,
-} from '@devneser/usedapp-core';
+import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
 
 import Txt from '@/components/based/Txt';
 import { useWalletConnectorIcon } from '@/state/application/hooks';

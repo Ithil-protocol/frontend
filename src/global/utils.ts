@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
-import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@devneser/usedapp-core';
+import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
 import { number } from 'yup';
 
 export function infuraUrl(chainId: number) {

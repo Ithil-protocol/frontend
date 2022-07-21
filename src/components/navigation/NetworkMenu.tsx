@@ -2,14 +2,8 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import {
-  Chain,
-  Goerli,
-  Rinkeby,
-  Mainnet,
-  useEthers,
-} from '@devneser/usedapp-core';
-import { getChainById } from '@devneser/usedapp-core/dist/esm/src/helpers';
+import { Chain, Goerli, Rinkeby, Mainnet, useEthers } from '@usedapp/core';
+import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from '@/components/based/Button';
 import Txt from '@/components/based/Txt';
