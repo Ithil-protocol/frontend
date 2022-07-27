@@ -29,3 +29,35 @@ export const TRADE_STRATEGIES = [
 ];
 
 export const MAX_LEVERAGE = 5;
+
+export const POSITION_CHART_OPTIONS = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+  },
+  elements: {
+    point: {
+      radius: 0,
+    },
+    line: {
+      tension: 0.3,
+      borderWidth: 1,
+    },
+  },
+  scales: {
+    xAxis: {
+      display: false,
+    },
+    yAxis: {
+      display: false,
+    },
+  },
+};

@@ -38,7 +38,7 @@ const TableRow: FC<ITableRow> = ({
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100`,
+          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms]`,
           hoverable && tw`hover:bg-primary-200`,
         ]}
         onClick={() => {
@@ -118,7 +118,7 @@ const DataTable: FC<IDataTable> = ({
               <tr>
                 <td colSpan={head.length}>
                   <div tw="w-full rounded-lg  flex-col h-64 bg-primary-100 flex justify-center items-center">
-                    <Txt.Body1Regular>No tokens found.</Txt.Body1Regular>
+                    <Txt.Body1Regular>No data found.</Txt.Body1Regular>
                   </div>
                 </td>
               </tr>

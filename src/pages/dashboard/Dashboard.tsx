@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
-import React, { useState } from 'react';
+import tw from 'twin.macro';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Line } from 'react-chartjs-2';
 
 import Txt from '@/components/based/Txt';
 import Container from '@/components/based/Container';
@@ -12,15 +13,44 @@ import {
   TokenPair,
   CloseButton,
 } from '@/components/composed/dashboard/TableCell';
+import {
+  useClosedPositions,
+  useOpenedPositions,
+} from '@/hooks/useMarginTradingStrategy';
+import { getTokenByAddress } from '@/global/utils';
+import { POSITION_CHART_OPTIONS } from '@/global/constants';
 
 type PositionOpenType = 'active' | 'closed';
+
+export const data = {
+  labels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  datasets: [
+    {
+      data: [0, 3, 21, -23, 235, -23, 1, 24, 64, -56],
+      borderColor: 'rgb(255, 99, 132)',
+    },
+  ],
+};
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<PositionOpenType>('active');
 
-  const handleRowClick = (id: number) => {
-    navigate(`/dashboard/position?id=${id}`);
+  const openedPositions = useOpenedPositions();
+  const closedPositions = useClosedPositions();
+
+  const displayedPositions = useMemo(() => {
+    if (!openedPositions || !closedPositions) return null;
+    return openedPositions.filter(
+      (position) =>
+        (activeTab === 'active' && !closedPositions.includes(position.id)) ||
+        (activeTab === 'closed' && closedPositions.includes(position.id))
+    );
+  }, [openedPositions, closedPositions, activeTab]);
+
+  const handleRowClick = (idx: number) => {
+    if (!displayedPositions || !displayedPositions.length) return;
+    navigate(`/dashboard/position?id=${displayedPositions[idx].id}`);
   };
 
   return (
@@ -51,23 +81,41 @@ export default function DashboardPage() {
               { id: 'trend', content: 'Trend' },
               { id: 'action', content: '' },
             ]}
-            data={[
-              {
-                token_pair: (
-                  <TokenPair
-                    spentTokenSymbol="WETH"
-                    obtainedTokenSymbol="DAI"
-                  />
-                ),
-                position: <Txt.Body2Regular>ETH 2x Long</Txt.Body2Regular>,
-                profit: (
-                  <PositionProfit percentageValue={15.6} currencyValue={1240} />
-                ),
-                trend: <Txt.Body2Regular>Graph</Txt.Body2Regular>,
-                action: <CloseButton onClick={() => console.log('hello')} />,
-              },
-            ]}
-            loading={false}
+            data={
+              displayedPositions?.map((position) => {
+                const spentTokenSymbol = getTokenByAddress(
+                  position.collateralToken
+                )?.symbol;
+                const obtainedTokenSymbol = getTokenByAddress(
+                  position.heldToken
+                )?.symbol;
+
+                return {
+                  token_pair: (
+                    <TokenPair
+                      spentTokenSymbol={spentTokenSymbol || 'WETH'}
+                      obtainedTokenSymbol={obtainedTokenSymbol || 'DAI'}
+                    />
+                  ),
+                  position: (
+                    <Txt.Body2Regular>{`${spentTokenSymbol} 2x Long`}</Txt.Body2Regular>
+                  ),
+                  profit: (
+                    <PositionProfit
+                      percentageValue={15.6}
+                      currencyValue={1240}
+                    />
+                  ),
+                  trend: (
+                    <div css={[tw`width[100px] height[35px] -mt-4`]}>
+                      <Line options={POSITION_CHART_OPTIONS} data={data} />
+                    </div>
+                  ),
+                  action: <CloseButton onClick={() => console.log('close')} />,
+                };
+              }) || []
+            }
+            loading={!displayedPositions}
             hoverable
             onRowClick={handleRowClick}
           />

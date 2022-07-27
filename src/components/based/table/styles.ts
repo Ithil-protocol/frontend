@@ -14,10 +14,6 @@ export const tableContainerStyle = css`
       ${tw` mr-6 `}
     }
 
-    tr:last-of-type {
-      ${tw`bg-primary-100`}
-    }
-
     tbody > tr:last-of-type {
       ${tw`rounded-b-xl`}
     }
