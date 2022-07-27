@@ -32,10 +32,6 @@ module.exports = {
       heading2: generateFont('heading2'),
       heading1: generateFont('heading1'),
     },
-    borderWidth: {
-      1: '1px',
-      2: '2px',
-    },
     colors: {
       primary: {
         DEFAULT: generateColorClass('primary'),
