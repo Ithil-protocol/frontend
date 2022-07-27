@@ -7,7 +7,10 @@ import DashboardPage from '@/pages/dashboard/Dashboard';
 import MarginTradingPage from '@/pages/trade/MarginTrading';
 import LeveragedStakingPage from '@/pages/trade/LeveragedStaking';
 import PositionDetails from '@/pages/dashboard/PositionDetails';
+<<<<<<< HEAD
 import FaucetsPage from '@/pages/faucets/Faucets';
+=======
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -45,12 +48,15 @@ const APP_ROUTES: RouteType[] = [
     component: <PositionDetails />,
     title: 'Position Details',
     isNavLinked: false,
+<<<<<<< HEAD
   },
   {
     path: '/faucets',
     component: <FaucetsPage />,
     title: 'Faucets',
     isNavLinked: true,
+=======
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
   },
 ];
 

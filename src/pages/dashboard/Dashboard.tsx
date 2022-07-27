@@ -1,8 +1,14 @@
 /** @jsxImportSource @emotion/react */
+<<<<<<< HEAD
 import tw from 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
+=======
+import 'twin.macro';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
 
 import Txt from '@/components/based/Txt';
 import Container from '@/components/based/Container';
@@ -13,6 +19,7 @@ import {
   TokenPair,
   CloseButton,
 } from '@/components/composed/dashboard/TableCell';
+<<<<<<< HEAD
 import {
   useClosedPositions,
   useOpenedPositions,
@@ -32,10 +39,15 @@ export const data = {
     },
   ],
 };
+=======
+
+type PositionOpenType = 'active' | 'closed';
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<PositionOpenType>('active');
+<<<<<<< HEAD
   const [closePositionModalOpened, setClosePositionModalOpened] =
     useState(false);
 
@@ -54,10 +66,16 @@ export default function DashboardPage() {
   const handleRowClick = (idx: number) => {
     if (!displayedPositions || !displayedPositions.length) return;
     navigate(`/dashboard/position?id=${displayedPositions[idx].id}`);
+=======
+
+  const handleRowClick = (id: number) => {
+    navigate(`/dashboard/position?id=${id}`);
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
   };
 
   return (
     <Container>
+<<<<<<< HEAD
       <ClosePositionModal
         open={closePositionModalOpened}
         onClose={() => setClosePositionModalOpened(false)}
@@ -66,6 +84,12 @@ export default function DashboardPage() {
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
           <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4">
+=======
+      <div tw="flex flex-col w-full items-center">
+        <div tw="w-full desktop:w-10/12 flex flex-col items-center">
+          <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
+          <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4 ml-4">
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
             <Txt.Body1Regular>View:</Txt.Body1Regular>
             <Button
               text="Active"
@@ -88,6 +112,7 @@ export default function DashboardPage() {
               { id: 'trend', content: 'Trend' },
               { id: 'action', content: '' },
             ]}
+<<<<<<< HEAD
             data={
               displayedPositions?.map((position) => {
                 const spentTokenSymbol = getTokenByAddress(
@@ -127,6 +152,25 @@ export default function DashboardPage() {
               }) || []
             }
             loading={!displayedPositions}
+=======
+            data={[
+              {
+                token_pair: (
+                  <TokenPair
+                    spentTokenSymbol="WETH"
+                    obtainedTokenSymbol="DAI"
+                  />
+                ),
+                position: <Txt.Body2Regular>ETH 2x Long</Txt.Body2Regular>,
+                profit: (
+                  <PositionProfit percentageValue={15.6} currencyValue={1240} />
+                ),
+                trend: <Txt.Body2Regular>Graph</Txt.Body2Regular>,
+                action: <CloseButton onClick={() => console.log('hello')} />,
+              },
+            ]}
+            loading={false}
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
             hoverable
             onRowClick={handleRowClick}
           />

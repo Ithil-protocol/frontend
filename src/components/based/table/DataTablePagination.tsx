@@ -21,7 +21,11 @@ const PaginationButton: FC<IPaginationButton> = ({
   return (
     <button
       css={[
+<<<<<<< HEAD
         tw`border-none rounded-md cursor-pointer flex-row px-2.5 py-2.5 bg-primary-200 width[36px] height[36px] flex justify-center items-center mx-1 font-sans hover:bg-hover-light dark:hover:bg-hover-dark`,
+=======
+        tw`border-0 rounded-md cursor-pointer flex-row px-2.5 py-2.5 bg-primary-200 width[36px] height[36px] flex justify-center items-center mx-1 font-sans hover:bg-hover-light dark:hover:bg-hover-dark`,
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
         active &&
           tw`bg-action text-primary-100 font-bold dark:text-secondary-100 hover:bg-hover-action dark:hover:bg-hover-action`,
       ]}
