@@ -14,13 +14,6 @@ export const tableContainerStyle = css`
       ${tw` mr-6 `}
     }
 
-<<<<<<< HEAD
-=======
-    tr:last-of-type {
-      ${tw`bg-primary-100`}
-    }
-
->>>>>>> c78b5e6 (feat: add dashboard and position details UI)
     tbody > tr:last-of-type {
       ${tw`rounded-b-xl`}
     }
