@@ -23,7 +23,7 @@ const Modal: FC<IModal> = ({ open, onClose, children }) => {
       {children}
       <button
         css={[
-          tw`border-0 rounded-md cursor-pointer px-2.5 py-2.5 bg-primary-100 width[36px] height[36px] mx-1 absolute right-2 top-4`,
+          tw`border-none rounded-md cursor-pointer px-2.5 py-2.5 bg-primary-100 width[36px] height[36px] mx-1 absolute right-2 top-4`,
         ]}
         onClick={onClose}
       >

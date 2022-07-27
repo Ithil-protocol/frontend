@@ -15,7 +15,7 @@ const TabButton: FC<ITabButton> = ({ text, onClick, active, className }) => {
   return (
     <button
       css={[
-        tw`bg-primary-300 border-0 rounded-md cursor-pointer flex flex-row items-center px-8 py-2.5`,
+        tw`bg-primary-300 border-none rounded-md cursor-pointer flex flex-row items-center px-8 py-2.5`,
         active && tw`bg-action`,
       ]}
       className={className}

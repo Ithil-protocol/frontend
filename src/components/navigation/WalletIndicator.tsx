@@ -22,7 +22,7 @@ export const WalletIndicator: FC<IWalletIndicator> = ({ onClick }) => {
 
   return (
     <div
-      tw="bg-primary-200 border-0 rounded-md cursor-pointer flex flex-row items-center h-9 max-h-9 tablet:h-10 desktop:h-11 desktop:max-h-11 px-2 hover:bg-hover-light dark:hover:bg-hover-dark"
+      tw="bg-primary-200 border-none rounded-md cursor-pointer flex flex-row items-center h-9 max-h-9 tablet:h-10 desktop:h-11 desktop:max-h-11 px-2 hover:bg-hover-light dark:hover:bg-hover-dark"
       onClick={onClick}
     >
       {!!balance && (
