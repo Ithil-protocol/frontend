@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
+<<<<<<< HEAD
 import React, { FC, useMemo } from 'react';
 import BigNumber from 'bignumber.js';
 
@@ -9,6 +10,11 @@ import {
   useComputePairRiskFactor,
   useQuote,
 } from '@/hooks/useMarginTradingStrategy';
+=======
+import React, { FC } from 'react';
+
+import Txt from '@/components/based/Txt';
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
 
 interface IDetailItem {
   label: string;
@@ -43,6 +49,7 @@ const DetailItem: FC<IDetailItem> = ({ label, value, details, valueColor }) => {
   );
 };
 
+<<<<<<< HEAD
 interface IPositionDetailsWidget {
   details: any;
 }
@@ -177,10 +184,14 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
     ).toLocaleDateString();
   }, [details]);
 
+=======
+const PositionDetailsWidget = () => {
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
   return (
     <div tw="flex flex-col w-full mb-3">
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
         <Txt.Heading2 tw="mb-4">Position details</Txt.Heading2>
+<<<<<<< HEAD
 
         <DetailItem
           label="Position"
@@ -220,6 +231,24 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
           valueColor={pnlValue.isLessThan(0) ? 'red' : 'green'}
         />
         <DetailItem label="Opened" value={createdAtValue} />
+=======
+        <DetailItem label="Position" value="2.00" details="ETH 2x Long" />
+        <DetailItem label="Open price" value="3,129" details="USDC" />
+        <DetailItem label="Current price" value="3,129" details="USDC" />
+        <DetailItem label="Liq. price" value="3,129" details="USDC" />
+        <DetailItem label="Collateral" value="1.00" details="ETH" />
+        <DetailItem
+          label="Distance from liquidation"
+          value="+0.02"
+          details="ETH"
+        />
+        <DetailItem
+          label="Profit"
+          value="$ +1.240,00 (+15.6%)"
+          valueColor="green"
+        />
+        <DetailItem label="Opened" value="10/01/2021" />
+>>>>>>> c78b5e6 (feat: add dashboard and position details UI)
       </div>
     </div>
   );
