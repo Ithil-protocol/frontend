@@ -338,7 +338,6 @@ export default function MarginTradingPage() {
                   onClick={handleExecute}
                   isLoading={isLoadingApprove || isLoadingOpenPos}
                 />
-                {/* <Txt.CaptionMedium>{Status}</Txt.CaptionMedium> */}
               </div>
             </div>
             <ChartCard
