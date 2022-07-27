@@ -72,4 +72,7 @@ export interface PositionType {
 export interface OpenedPositionType extends PositionType {
   id: string;
 }
+<<<<<<< HEAD
 export type KeyableType = { [key: string]: string };
+=======
+>>>>>>> d377035 (feat: update dashbaord page and relative components)

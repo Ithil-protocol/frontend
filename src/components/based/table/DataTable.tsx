@@ -38,17 +38,12 @@ const TableRow: FC<ITableRow> = ({
     <>
       <tr
         css={[
-<<<<<<< HEAD
           tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
           detailedContent &&
             tw`
             [&:nth-last-child(2)]:border-b-0
             `,
-=======
-          tw`cursor-pointer bg-primary-100`,
-          hoverable && tw`hover:bg-primary-200`,
->>>>>>> c78b5e6 (feat: add dashboard and position details UI)
         ]}
         onClick={() => {
           if (detailedContent) {
@@ -60,14 +55,10 @@ const TableRow: FC<ITableRow> = ({
       >
         {head.map((headCell) => {
           return (
-<<<<<<< HEAD
             <td
               key={headCell.id}
               css={tw`py-4 cursor-pointer first:pl-4 last:pr-4`}
             >
-=======
-            <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
->>>>>>> c78b5e6 (feat: add dashboard and position details UI)
               {row[headCell.id]}
             </td>
           );
@@ -134,11 +125,7 @@ const DataTable: FC<IDataTable> = ({
               <tr>
                 <td colSpan={head.length}>
                   <div tw="w-full rounded-lg  flex-col h-64 bg-primary-100 flex justify-center items-center">
-<<<<<<< HEAD
                     <Txt.Body1Regular>No data found.</Txt.Body1Regular>
-=======
-                    <Txt.Body1Regular>No tokens found.</Txt.Body1Regular>
->>>>>>> c78b5e6 (feat: add dashboard and position details UI)
                   </div>
                 </td>
               </tr>
