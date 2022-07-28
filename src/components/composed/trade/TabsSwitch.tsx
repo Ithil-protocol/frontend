@@ -21,7 +21,7 @@ const TabButton: FC<ITabButton> = ({ text, onClick, active, Icon }) => {
   return (
     <button
       css={[
-        tw`border-0 rounded-md cursor-pointer flex flex-row items-center justify-center px-3 py-2`,
+        tw`border-none rounded-md cursor-pointer flex flex-row items-center justify-center px-3 py-2`,
         tw`bg-none text-secondary w-1/2`,
         active && tw`bg-font-100 dark:bg-font`,
       ]}

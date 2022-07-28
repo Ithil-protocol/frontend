@@ -68,3 +68,7 @@ export interface PositionType {
   fees: BigNumberish;
   createdAt: BigNumberish;
 }
+
+export interface OpenedPositionType extends PositionType {
+  id: string;
+}

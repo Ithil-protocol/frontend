@@ -96,6 +96,9 @@ module.exports = {
       maxWidth: {
         1920: '1920px',
       },
+      borderWidth: {
+        1: '1px',
+      },
       animation: {
         'spin-slow': 'spin 3s linear infinite',
       },

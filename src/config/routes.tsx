@@ -6,6 +6,7 @@ import TradePage from '@/pages/trade/Trade';
 import DashboardPage from '@/pages/dashboard/Dashboard';
 import MarginTradingPage from '@/pages/trade/MarginTrading';
 import LeveragedStakingPage from '@/pages/trade/LeveragedStaking';
+import PositionDetails from '@/pages/dashboard/PositionDetails';
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -13,6 +14,18 @@ const APP_ROUTES: RouteType[] = [
     component: <TradePage />,
     title: 'Trade',
     isNavLinked: true,
+  },
+  {
+    path: '/trade/margin-trading',
+    component: <MarginTradingPage />,
+    title: 'Margin Trading',
+    isNavLinked: false,
+  },
+  {
+    path: '/trade/leveraged-staking',
+    component: <LeveragedStakingPage />,
+    title: 'Leveraged Staking',
+    isNavLinked: false,
   },
   {
     path: '/stake',
@@ -27,15 +40,9 @@ const APP_ROUTES: RouteType[] = [
     isNavLinked: true,
   },
   {
-    path: '/trade/margin-trading',
-    component: <MarginTradingPage />,
-    title: 'Margin Trading',
-    isNavLinked: false,
-  },
-  {
-    path: '/trade/leveraged-staking',
-    component: <LeveragedStakingPage />,
-    title: 'Leveraged Staking',
+    path: '/dashboard/position',
+    component: <PositionDetails />,
+    title: 'Position Details',
     isNavLinked: false,
   },
 ];

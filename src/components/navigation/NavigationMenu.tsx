@@ -2,6 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Circle } from 'phosphor-react';
 
 import APP_ROUTES from '@/config/routes';
 import Txt from '@/components/based/Txt';
@@ -36,7 +37,7 @@ const NavigationMenu: FC<INavigationMenu> = ({ onMenuClick }) => {
                 {route.title}
               </Txt.Body1Regular>
               {isSelected && (
-                <span tw="absolute top-4 desktop:top-6">&#8226;</span>
+                <Circle tw="absolute top-4 mt-2 desktop:top-6 w-2 h-2 bg-secondary rounded-full" />
               )}
             </Link>
           );

@@ -54,7 +54,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
           </Txt.Body2Regular>
           <div tw="flex flex-row justify-end">
             <button
-              tw="rounded-md py-1 px-2 border border-primary-400 text-font-100"
+              tw="rounded-md py-1 px-2 border-1 border-primary-400 text-font-100"
               onClick={handleDisconnect}
             >
               <Txt.CaptionMedium tw="text-secondary">

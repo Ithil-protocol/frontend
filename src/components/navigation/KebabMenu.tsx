@@ -44,14 +44,14 @@ const KebabMenu = () => {
         <div
           id="menu"
           css={[
-            tw`border-0 rounded-md cursor-pointer h-9 tablet:h-10 desktop:h-11 w-9 tablet:w-10 desktop:w-11 px-2 bg-primary-200 relative flex justify-center items-center hover:bg-hover-light dark:hover:bg-hover-dark`,
+            tw`border-none rounded-md cursor-pointer h-9 tablet:h-10 desktop:h-11 w-9 tablet:w-10 desktop:w-11 px-2 bg-primary-200 relative flex justify-center items-center hover:bg-hover-light dark:hover:bg-hover-dark`,
           ]}
         >
           <DotsThree tw="text-secondary" size={24} />
         </div>
       }
       menu={
-        <div tw="rounded-md cursor-pointer flex flex-col justify-start gap-3 py-4 pr-16 pl-4 bg-primary-100 border border-primary-400">
+        <div tw="rounded-md cursor-pointer flex flex-col justify-start gap-3 py-4 pr-16 pl-4 bg-primary-100 border-1 border-primary-400">
           <MenuItem Icon={Info} label="About" url={WEB_APP_URL} />
           <MenuItem Icon={BookOpen} label="Docs" url={DOC_URL} />
           <MenuItem Icon={GithubLogo} label="Source" url={GITHUB_URL} />

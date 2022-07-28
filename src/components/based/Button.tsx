@@ -10,6 +10,7 @@ import { IBaseProps } from '@/global/types';
 interface IButtonProps extends IBaseProps {
   type?: any;
   primary?: boolean | undefined;
+  secondary?: boolean;
   action?: boolean | undefined;
   full?: boolean | undefined;
   leftIcon?: any;
@@ -24,6 +25,7 @@ interface IButtonProps extends IBaseProps {
 
 const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
   const primary = !props.action;
+  const secondary = props.secondary;
   const LeftIcon = props.leftIcon;
   const RightIcon = props.rightIcon;
 
@@ -39,10 +41,12 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
       type={props.type ?? 'button'}
       className={props.className}
       css={[
-        tw`border-0 rounded-md cursor-pointer flex flex-row items-center justify-center h-9 tablet:h-10 desktop:h-11 px-2 desktop:px-4`,
+        tw`border-collapse rounded-md cursor-pointer flex flex-row items-center justify-center h-9 tablet:h-10 desktop:h-11 px-2 desktop:px-4`,
         primary &&
           tw`bg-primary-200 hover:bg-hover-light dark:hover:bg-hover-dark`,
         props.action && tw`bg-action hover:bg-hover-action`,
+        secondary &&
+          tw`bg-opacity-0 hover:bg-hover-light dark:hover:bg-primary-300 border-1 border-font-200 dark:border-primary-400`,
         props.full && tw`w-full`,
         tw`disabled:bg-disabled-action`,
       ]}
@@ -71,6 +75,7 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
               tw`flex-grow`,
               primary && tw`text-secondary`,
               props.action && tw`text-white`,
+              secondary && tw`text-secondary`,
               props.bold && tw`font-bold`,
             ]}
           >

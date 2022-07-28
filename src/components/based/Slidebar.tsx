@@ -47,9 +47,9 @@ const SliderBar: FC<ISliderBar> = ({
           step={step}
           railStyle={tw`bg-primary-400 height[3px]`}
           trackStyle={tw`bg-primary-400 height[3px]`}
-          handleStyle={tw`bg-secondary border-0 shadow-none`}
-          dotStyle={tw`bg-secondary border-0 height[3px] width[3px] marginBottom[3px]`}
-          // activeDotStyle={tw`bg-secondary border-0 height[7px] width[7px] marginBottom[1px]`}
+          handleStyle={tw`bg-secondary border-none shadow-none`}
+          dotStyle={tw`bg-secondary border-none height[3px] width[3px] marginBottom[3px]`}
+          // activeDotStyle={tw`bg-secondary border-none height[7px] width[7px] marginBottom[1px]`}
           marks={marks}
         />
       </span>

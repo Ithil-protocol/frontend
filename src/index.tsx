@@ -7,13 +7,22 @@ import { DAppProvider } from '@usedapp/core';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Toaster } from 'react-hot-toast';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { DAPP_CONFIG } from '@/config/dapp';
 import store, { persistor } from '@/state/store';
-
 import './index.css';
 
 const root = ReactDOM.createRoot(
@@ -21,6 +30,16 @@ const root = ReactDOM.createRoot(
 );
 
 window.Buffer = window.Buffer || Buffer;
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 root.render(
   <Router>
