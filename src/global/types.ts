@@ -72,3 +72,5 @@ export interface PositionType {
 export interface OpenedPositionType extends PositionType {
   id: string;
 }
+
+export type KeyableType = { [key: string]: string };

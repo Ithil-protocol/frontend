@@ -41,7 +41,6 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
   const handleDisconnect = () => {
     deactivate();
     onClose();
-    window.dispatchEvent(new Event('resize'));
   };
 
   return (
