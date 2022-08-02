@@ -40,6 +40,26 @@ export function useQuote(
   return new BigNumber(value?.[0].toString() ?? '0');
 }
 
+export function useComputePairRiskFactor(srcToken: string, destToken: string) {
+  const isValid = useCheckValidChain();
+
+  const { value, error } =
+    useCall(
+      isValid &&
+        GOERLI_ADDRESSES.MarginTradingStrategy && {
+          contract: new Contract(GOERLI_ADDRESSES.MarginTradingStrategy, abi),
+          method: 'computePairRiskFactor',
+          args: [srcToken, destToken],
+        }
+    ) ?? {};
+
+  if (error) {
+    console.error(error.message);
+    return new BigNumber(0);
+  }
+  return new BigNumber(value?.[0].toString() ?? '0');
+}
+
 export function useOpenPosition() {
   const { send, state, resetState } = useContractFunction(
     GOERLI_ADDRESSES.MarginTradingStrategy &&

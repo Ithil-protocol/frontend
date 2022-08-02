@@ -65,7 +65,9 @@ export default function PositionDetails() {
           </div>
           <div tw="w-full flex flex-col desktop:flex-row gap-6">
             <div tw="flex flex-col w-full desktop:w-4/12">
-              <PositionDetailsWidget />
+              {positionDetails && (
+                <PositionDetailsWidget details={positionDetails} />
+              )}
               <PositionControlPanel />
             </div>
             {spentToken && obtainedToken && (
