@@ -38,8 +38,12 @@ const TableRow: FC<ITableRow> = ({
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms]`,
+          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
+          detailedContent &&
+            tw`
+            [&:nth-last-child(2)]:border-b-0
+            `,
         ]}
         onClick={() => {
           if (detailedContent) {
@@ -51,7 +55,10 @@ const TableRow: FC<ITableRow> = ({
       >
         {head.map((headCell) => {
           return (
-            <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
+            <td
+              key={headCell.id}
+              css={tw`py-4 cursor-pointer first:pl-4 last:pr-4`}
+            >
               {row[headCell.id]}
             </td>
           );
