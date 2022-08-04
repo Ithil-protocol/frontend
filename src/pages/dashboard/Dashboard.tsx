@@ -19,6 +19,7 @@ import {
 } from '@/hooks/useMarginTradingStrategy';
 import { getTokenByAddress } from '@/global/utils';
 import { POSITION_CHART_OPTIONS } from '@/global/constants';
+import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 
 type PositionOpenType = 'active' | 'closed';
 
@@ -35,6 +36,8 @@ export const data = {
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<PositionOpenType>('active');
+  const [closePositionModalOpened, setClosePositionModalOpened] =
+    useState(false);
 
   const openedPositions = useOpenedPositions();
   const closedPositions = useClosedPositions();
@@ -55,6 +58,10 @@ export default function DashboardPage() {
 
   return (
     <Container>
+      <ClosePositionModal
+        open={closePositionModalOpened}
+        onClose={() => setClosePositionModalOpened(false)}
+      />
       <div tw="flex flex-col w-full items-center">
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
@@ -111,7 +118,11 @@ export default function DashboardPage() {
                       <Line options={POSITION_CHART_OPTIONS} data={data} />
                     </div>
                   ),
-                  action: <CloseButton onClick={() => console.log('close')} />,
+                  action: (
+                    <CloseButton
+                      onClick={() => setClosePositionModalOpened(true)}
+                    />
+                  ),
                 };
               }) || []
             }
