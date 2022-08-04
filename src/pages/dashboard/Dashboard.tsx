@@ -65,7 +65,7 @@ export default function DashboardPage() {
       <div tw="flex flex-col w-full items-center">
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
-          <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4 ml-4">
+          <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4">
             <Txt.Body1Regular>View:</Txt.Body1Regular>
             <Button
               text="Active"

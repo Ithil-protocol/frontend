@@ -85,9 +85,9 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
 
   const tokenPairValue = useMemo(() => {
     return longShortValue === 'Long'
-      ? `${heldToken?.symbol}/${owedToken?.symbol}`
-      : `${owedToken?.symbol}/${heldToken?.symbol}`;
-  }, [longShortValue, heldToken, owedToken]);
+      ? `${collateralToken?.symbol}/${heldToken?.symbol}`
+      : `${collateralToken?.symbol}/${owedToken?.symbol}`;
+  }, [longShortValue, collateralToken, heldToken, owedToken]);
 
   const openPriceValue = useMemo(() => {
     return longShortValue === 'Long'
@@ -163,10 +163,12 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
   ]);
 
   const pnlText = useMemo(() => {
-    return `${pnlValue.isLessThan(0) ? '' : '+'}${formatAmount(
-      pnlValue,
-      collateralToken?.decimals
-    )} (${pnlValue.multipliedBy(100).dividedBy(collateralValue).toFixed(2)}%)`;
+    return `${collateralToken?.symbol} ${
+      pnlValue.isLessThan(0) ? '' : '+'
+    }${formatAmount(pnlValue, collateralToken?.decimals)} (${pnlValue
+      .multipliedBy(100)
+      .dividedBy(collateralValue)
+      .toFixed(2)}%)`;
   }, [collateralToken, collateralValue, pnlValue]);
 
   const createdAtValue = useMemo(() => {
@@ -187,17 +189,17 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
         <DetailItem
           label="Open price"
           value={openPriceValue.toFixed(2)}
-          details={tokenPairValue.split('/')[1]}
+          details={tokenPairValue}
         />
         <DetailItem
           label="Current price"
           value={currentPrice.toFixed(2)}
-          details={tokenPairValue.split('/')[1]}
+          details={tokenPairValue}
         />
         <DetailItem
           label="Liq. price"
           value={liqPriceValue.toFixed(2)}
-          details={tokenPairValue.split('/')[1]}
+          details={tokenPairValue}
         />
         <DetailItem
           label="Collateral"
@@ -209,8 +211,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
         />
         <DetailItem
           label="Distance from liquidation"
-          value={distFromLiquidation.toFixed(2)}
-          details={tokenPairValue.split('/')[0]}
+          value={`${distFromLiquidation.toFixed(2)}%`}
         />
         <DetailItem
           label="Profit"
