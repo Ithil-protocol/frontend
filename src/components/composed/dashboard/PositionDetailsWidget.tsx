@@ -176,11 +176,12 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
       Number(details.createdAt.toString()) * 1000
     ).toLocaleDateString();
   }, [details]);
-
+  
   return (
     <div tw="flex flex-col w-full mb-3">
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
         <Txt.Heading2 tw="mb-4">Position details</Txt.Heading2>
+
         <DetailItem
           label="Position"
           value={leverageValue.toFixed(2)}
