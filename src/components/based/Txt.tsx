@@ -1,11 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC, ReactNode } from 'react';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import { IBaseProps } from '@/global/types';
 
+const { tokens } = TokenList;
+
 export interface ITxtProps extends IBaseProps {
   children: ReactNode;
+}
+
+export interface ITokenTxtProps extends ITxtProps {
+  symbol: string;
 }
 
 const InnerText: FC<ITxtProps> = ({ children, className }) => {
@@ -112,6 +119,23 @@ const Txt = {
         tw`desktop:`,
       ]}
     />
+  ),
+  TokenText: (props: ITokenTxtProps) => (
+    <div className="flex flex-row items-center">
+      <img
+        tw="w-6 h-6 z-index[3] mr-3"
+        src={tokens.find((token) => token.symbol === props.symbol)?.logoURI}
+        alt={props.symbol}
+      />
+      <InnerText
+        {...props}
+        css={[
+          tw`font-sans text-font font-normal text-body2-regular`,
+          tw`tablet:`,
+          tw`desktop:`,
+        ]}
+      />
+    </div>
   ),
 };
 

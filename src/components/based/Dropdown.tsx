@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 import { Portal } from 'react-portal';
 import { Placement } from '@popperjs/core';
@@ -26,6 +26,10 @@ const Dropdown: FC<IDropdown> = ({
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement,
   });
+
+  useEffect(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, [action, menu]);
 
   return (
     <>

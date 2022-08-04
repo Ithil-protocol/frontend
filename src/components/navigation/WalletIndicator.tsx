@@ -16,10 +16,6 @@ export const WalletIndicator: FC<IWalletIndicator> = ({ onClick }) => {
   const balance = useEtherBalance(account);
   const WalletConnectorIcon = useWalletConnectorIcon();
 
-  useEffect(() => {
-    window.dispatchEvent(new Event('resize'));
-  }, [balance, account]);
-
   return (
     <div
       tw="bg-primary-200 border-none rounded-md cursor-pointer flex flex-row items-center h-9 max-h-9 tablet:h-10 desktop:h-11 desktop:max-h-11 px-2 hover:bg-hover-light dark:hover:bg-hover-dark"

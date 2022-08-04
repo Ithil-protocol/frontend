@@ -39,7 +39,7 @@ export default function PositionDetails() {
           <div tw="flex flex-row items-baseline w-full">
             <ArrowLeft
               size={28}
-              tw="text-font-200 mx-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s] float-left"
+              tw="text-font-200 mr-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s] float-left"
               onClick={() => navigate('/dashboard')}
             />
             <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
@@ -65,7 +65,9 @@ export default function PositionDetails() {
           </div>
           <div tw="w-full flex flex-col desktop:flex-row gap-6">
             <div tw="flex flex-col w-full desktop:w-4/12">
-              <PositionDetailsWidget />
+              {positionDetails && (
+                <PositionDetailsWidget details={positionDetails} />
+              )}
               <PositionControlPanel />
             </div>
             {spentToken && obtainedToken && (
