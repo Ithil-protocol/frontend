@@ -21,7 +21,6 @@ import { getTokenByAddress } from '@/global/utils';
 import { POSITION_CHART_OPTIONS } from '@/global/constants';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 
-
 type PositionOpenType = 'active' | 'closed';
 
 export const data = {
@@ -67,7 +66,6 @@ export default function DashboardPage() {
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
           <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4">
-
             <Txt.Body1Regular>View:</Txt.Body1Regular>
             <Button
               text="Active"
@@ -125,7 +123,6 @@ export default function DashboardPage() {
                       onClick={() => setClosePositionModalOpened(true)}
                     />
                   ),
-
                 };
               }) || []
             }
