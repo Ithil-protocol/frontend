@@ -31,7 +31,11 @@ export default function FaucetsPage() {
             ]}
             data={[
               {
-                token: <Txt.Body2Regular tw="text-left">ETH</Txt.Body2Regular>,
+                token: (
+                  <Txt.TokenText symbol="WETH" tw="text-left">
+                    ETH
+                  </Txt.TokenText>
+                ),
                 action: (
                   <div
                     onClick={(e) => e.stopPropagation()}
@@ -49,7 +53,11 @@ export default function FaucetsPage() {
                 ),
               },
               {
-                token: <Txt.Body2Regular tw="text-left">ETH</Txt.Body2Regular>,
+                token: (
+                  <Txt.TokenText symbol="DAI" tw="text-left">
+                    DAI
+                  </Txt.TokenText>
+                ),
                 action: (
                   <div
                     onClick={(e) => e.stopPropagation()}

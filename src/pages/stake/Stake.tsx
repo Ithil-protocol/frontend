@@ -104,7 +104,7 @@ export default function StakePage() {
             ]}
             data={[
               {
-                vault_name: <Txt.Body2Regular>ETH</Txt.Body2Regular>,
+                vault_name: <Txt.TokenText symbol="WETH">ETH</Txt.TokenText>,
                 annual_percentage: <Txt.Body2Regular>17.1%</Txt.Body2Regular>,
                 total_value: <Txt.Body2Regular>$83,676.12</Txt.Body2Regular>,
                 owned: <Txt.Body2Regular>Value</Txt.Body2Regular>,
