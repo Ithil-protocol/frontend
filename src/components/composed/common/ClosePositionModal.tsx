@@ -52,7 +52,13 @@ const ClosePositionModal: FC<IClosePositionModal> = ({ open, onClose }) => {
               <Txt.CaptionMedium tw="mt-1">USDC/USDT</Txt.CaptionMedium>
             </div>
           </div>
-          <Button text="Confirm" action primary tw="w-full mt-4" />
+          <Button
+            text="Confirm"
+            action
+            primary
+            tw="w-full mt-4"
+            eventAction="confirm trade"
+          />
         </div>
       </div>
     </Modal>

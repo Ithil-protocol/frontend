@@ -11,7 +11,7 @@ body {
 }
 
 body * {
-  transition: all .1s;
+  transition: all 0.1s;
   outline: none !important;
 }
 
@@ -42,7 +42,6 @@ body * {
   --button-disabled-light: 206, 209, 209;
   --button-disabled-dark: 21, 26, 41;
   --button-disabled-action: 164, 177, 190;
-
 
   --fontsize-mobile-medium: 10px;
   --lineheight-mobile-medium: 16px;
@@ -136,16 +135,16 @@ body * {
 
 .ReactModal__Overlay {
   opacity: 0;
-  transition: opacity .2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
   backdrop-filter: blur(5px);
   background: rgba(var(--secondary), 0.3) !important;
   z-index: 999;
 }
 
-.ReactModal__Overlay--after-open{
+.ReactModal__Overlay--after-open {
   opacity: 1;
 }
 
-.ReactModal__Overlay--before-close{
+.ReactModal__Overlay--before-close {
   opacity: 0;
 }

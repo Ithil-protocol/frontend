@@ -2,6 +2,7 @@
 import tw from 'twin.macro';
 import React, { MouseEventHandler } from 'react';
 import { ClipLoader } from 'react-spinners';
+import ReactGA from 'react-ga';
 
 import Txt from './Txt';
 
@@ -21,6 +22,7 @@ interface IButtonProps extends IBaseProps {
   bold?: boolean | undefined;
   isLoading?: boolean;
   disabled?: boolean;
+  eventAction?: string | undefined;
 }
 
 const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
@@ -28,10 +30,18 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
   const secondary = props.secondary;
   const LeftIcon = props.leftIcon;
   const RightIcon = props.rightIcon;
+  const eventAction = props.eventAction;
 
   const onClickHandler = async (e: any) => {
     if (props.onClick && !props.isLoading) {
       await props.onClick(e);
+    }
+
+    if (eventAction !== undefined) {
+      ReactGA.event({
+        category: 'btn-click',
+        action: eventAction,
+      });
     }
   };
 
