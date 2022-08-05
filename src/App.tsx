@@ -7,7 +7,7 @@ import ReactGA from 'react-ga';
 import Navbar from '@/components/navigation/Navbar';
 import APP_ROUTES from '@/config/routes';
 
-ReactGA.initialize('');
+ReactGA.initialize("G-YG89SWDD9M");
 
 const App = () => {
   useEffect(() => {
