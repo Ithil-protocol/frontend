@@ -1,12 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React from 'react';
+import React, { useState } from 'react';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
+import { ClipLoader } from 'react-spinners';
+import { v4 as uuid } from 'uuid';
 
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
 import DataTable from '@/components/based/table/DataTable';
+import { useRedeem } from '@/hooks/useMockToken';
+import { RedeemTokenInfoType, TokenDetails } from '@/global/types';
 
 export default function FaucetsPage() {
+  const { tokens } = TokenList;
+  const [redeemTokenInfo, setRedeemTokenInfo] = useState<RedeemTokenInfoType>();
+  const { isLoading } = useRedeem(redeemTokenInfo);
+
+  const handleRedeem = (token: TokenDetails) => {
+    setRedeemTokenInfo({
+      address: token.address,
+      id: uuid(),
+    });
+  };
+
   return (
     <Container>
       <div tw="flex flex-col w-full items-center">
@@ -29,52 +45,35 @@ export default function FaucetsPage() {
                 content: '',
               },
             ]}
-            data={[
-              {
-                token: (
-                  <Txt.TokenText symbol="WETH" tw="text-left">
-                    ETH
-                  </Txt.TokenText>
-                ),
-                action: (
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    tw="flex flex-row justify-end"
-                  >
+            data={tokens.map((token) => ({
+              token: (
+                <Txt.TokenText symbol={token.symbol} tw="text-left">
+                  {token.symbol}
+                </Txt.TokenText>
+              ),
+              action: (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  tw="flex flex-row justify-end items-center"
+                >
+                  {redeemTokenInfo &&
+                  redeemTokenInfo.address === token.address &&
+                  isLoading ? (
+                    <ClipLoader color={'#ffffff'} loading size={24} tw="mr-8" />
+                  ) : (
                     <button
-                      onClick={() => console.log('Redeem')}
+                      onClick={() => !isLoading && handleRedeem(token)}
+                      disabled={isLoading}
                       css={[
-                        tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
+                        tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-300 transition-all transition-duration[200ms] disabled:opacity-50`,
                       ]}
                     >
                       Redeem
                     </button>
-                  </div>
-                ),
-              },
-              {
-                token: (
-                  <Txt.TokenText symbol="DAI" tw="text-left">
-                    DAI
-                  </Txt.TokenText>
-                ),
-                action: (
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    tw="flex flex-row justify-end"
-                  >
-                    <button
-                      onClick={() => console.log('Redeem')}
-                      css={[
-                        tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
-                      ]}
-                    >
-                      Redeem
-                    </button>
-                  </div>
-                ),
-              },
-            ]}
+                  )}
+                </div>
+              ),
+            }))}
             loading={false}
             hoverable
           />
