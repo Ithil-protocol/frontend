@@ -72,4 +72,7 @@ export interface PositionType {
 export interface OpenedPositionType extends PositionType {
   id: string;
 }
+
 export type KeyableType = { [key: string]: string };
+
+export type RedeemTokenInfoType = { address: string; id: string } | undefined;

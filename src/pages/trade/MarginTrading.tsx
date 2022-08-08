@@ -25,7 +25,7 @@ import { PriorityType, TokenDetails } from '@/global/types';
 import { GOERLI_ADDRESSES, MAX_LEVERAGE } from '@/global/constants';
 import { useOpenPosition, useQuote } from '@/hooks/useMarginTradingStrategy';
 import { formatAmount, parseAmount } from '@/global/utils';
-import { useAllowance, useApprove } from '@/hooks/useERC20';
+import { useAllowance, useApprove } from '@/hooks/useMockToken';
 
 export default function MarginTradingPage() {
   const { tokens } = TokenList;
