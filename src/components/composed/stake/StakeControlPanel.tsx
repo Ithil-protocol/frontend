@@ -130,9 +130,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
             ? `${formatAmount(maximumWithdrawal?.toFixed())} ${token.symbol}`
             : '-'
         }
-        maxValue={
-          maximumWithdrawal && formatAmount(maximumWithdrawal?.toFixed())
-        }
+        maxValue={formatAmount(maximumWithdrawal?.toFixed() || '0')}
         token={token}
         onSubmit={handleUnstake}
         secondaryButton
