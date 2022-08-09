@@ -17,7 +17,7 @@ type TableDataType = {
   [headCell: string]: ReactNode | string;
 };
 
-interface ITableRow {
+export interface ITableRow {
   head: TableHeadType[];
   row: TableDataType;
   hoverable?: boolean;
@@ -85,6 +85,7 @@ interface IDataTable {
   hoverable?: boolean;
   detailedRowContent?: ReactNode;
   onRowClick?: (rowIdx: number) => void;
+  RowComponent?: any;
 }
 
 const DataTable: FC<IDataTable> = ({
@@ -97,6 +98,7 @@ const DataTable: FC<IDataTable> = ({
   hoverable,
   detailedRowContent,
   onRowClick,
+  RowComponent = TableRow,
 }) => {
   return (
     <div tw="w-full">
@@ -151,7 +153,7 @@ const DataTable: FC<IDataTable> = ({
           ) : (
             <tbody>
               {data.map((row, idx) => (
-                <TableRow
+                <RowComponent
                   key={`${idx}${head[0].id}`}
                   head={head}
                   row={row}

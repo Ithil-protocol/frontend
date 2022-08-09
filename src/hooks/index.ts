@@ -1,6 +1,12 @@
-import { Goerli, TransactionStatus, useEthers } from '@usedapp/core';
+import { Goerli, TransactionStatus, useCall, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
+import ERC20ABI from '@ithil-protocol/deployed/goerli/abi/ERC20.json';
+import { Interface } from '@ethersproject/abi';
+import { Contract } from '@ethersproject/contracts';
+import BigNumber from 'bignumber.js';
+
+const erc20Abi = new Interface(ERC20ABI);
 
 export function useCheckValidChain() {
   const { chainId } = useEthers();
@@ -30,4 +36,21 @@ export function useHandleTxStatus(
   }, [state, resetState, successMessage]);
 
   return isLoading;
+}
+
+export function useTotalSupply(tokenAddress: string) {
+  const { value, error } =
+    useCall(
+      tokenAddress && {
+        contract: new Contract(tokenAddress, erc20Abi),
+        method: 'totalSupply',
+        args: [],
+      }
+    ) ?? {};
+
+  if (error) {
+    console.error(error.message);
+    return new BigNumber(0);
+  }
+  return new BigNumber(value?.[0].toString() ?? '0');
 }
