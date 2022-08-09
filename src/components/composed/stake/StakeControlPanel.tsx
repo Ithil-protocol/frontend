@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
-import { useEthers, useTokenBalance } from '@usedapp/core';
+import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
+import { MaxUint256 } from '@ethersproject/constants';
 
+import { GOERLI_ADDRESSES } from '@/global/constants';
 import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
@@ -16,7 +18,7 @@ import {
   useUnstake,
   useVaultData,
 } from '@/hooks/useVault';
-import { useTotalSupply } from '@/hooks';
+import { useApprove, useTotalSupply } from '@/hooks/useMockToken';
 
 interface IStakeControlWidget {
   title: string;
@@ -26,6 +28,7 @@ interface IStakeControlWidget {
   onSubmit: (inputValue: string) => void;
   secondaryButton?: boolean;
   isLoading: boolean;
+  isApproved?: boolean;
 }
 
 const StakeControlWidget: FC<IStakeControlWidget> = ({
@@ -36,6 +39,7 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
   onSubmit,
   secondaryButton = false,
   isLoading,
+  isApproved = true,
 }) => {
   const [inputAmount, setInputAmount] = useState('');
   return (
@@ -52,7 +56,7 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
         }}
       />
       <Button
-        text={title}
+        text={isApproved ? title : 'Approve'}
         full
         action
         bold
@@ -77,6 +81,17 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
+  const tokenAllowance = useTokenAllowance(
+    token.address,
+    account,
+    GOERLI_ADDRESSES.Vault
+  );
+  const { approve, isLoading: isApproveLoading } = useApprove(token.address);
+
+  const isApproved = useMemo(() => {
+    if (!tokenAllowance || !balance) return false;
+    return balance.sub(tokenAllowance).isNegative();
+  }, [balance, tokenAllowance]);
 
   const maximumWithdrawal = useMemo(() => {
     if (!wrappedTokenBalance || vaultBalance.isZero()) return undefined;
@@ -86,7 +101,11 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
   }, [vaultBalance, wrappedTokenBalance, wrappedTokenSupply]);
 
   const handleStake = (amount: string) => {
-    stake(token.address, parseUnits(amount, token.decimals));
+    if (isApproved) {
+      stake(token.address, parseUnits(amount, token.decimals));
+    } else {
+      approve(GOERLI_ADDRESSES.Vault, MaxUint256);
+    }
   };
   const handleUnstake = (amount: string) => {
     unstake(token.address, parseUnits(amount, token.decimals));
@@ -101,7 +120,8 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
         }
         token={token}
         onSubmit={handleStake}
-        isLoading={isStakeLoading}
+        isLoading={isApproved ? isStakeLoading : isApproveLoading}
+        isApproved={isApproved}
       />
       <StakeControlWidget
         title="Withdraw"

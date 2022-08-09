@@ -1,14 +1,17 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import MockTokenABI from '@ithil-protocol/deployed/goerli/abi/MockToken.json';
+import ERC20ABI from '@ithil-protocol/deployed/goerli/abi/ERC20.json';
 import { useCall, useContractFunction, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
+import BigNumber from 'bignumber.js';
 
 import { useHandleTxStatus } from './index';
 
 import { RedeemTokenInfoType } from '@/global/types';
 
 const abi = new Interface(MockTokenABI);
+const erc20Abi = new Interface(ERC20ABI);
 
 export function useAllowance(tokenAddress: string, spenderAddress: string) {
   const { account } = useEthers();
@@ -59,4 +62,21 @@ export function useRedeem(token: RedeemTokenInfoType) {
   return {
     isLoading,
   };
+}
+
+export function useTotalSupply(tokenAddress: string) {
+  const { value, error } =
+    useCall(
+      tokenAddress && {
+        contract: new Contract(tokenAddress, erc20Abi),
+        method: 'totalSupply',
+        args: [],
+      }
+    ) ?? {};
+
+  if (error) {
+    console.error(error.message);
+    return new BigNumber(0);
+  }
+  return new BigNumber(value?.[0].toString() ?? '0');
 }
