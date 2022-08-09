@@ -37,7 +37,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
       .toFixed(2);
   }, [shareValue, vaultData?.creationTime]);
 
-  return aprValue ? (
+  return (
     <>
       <tr
         css={[
@@ -53,7 +53,9 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
             case 'annual_percentage':
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
-                  <Txt.Body2Regular>{`${aprValue}%`}</Txt.Body2Regular>
+                  <Txt.Body2Regular>
+                    {aprValue ? `${aprValue}%` : 'N/A'}
+                  </Txt.Body2Regular>
                 </td>
               );
             case 'total_value':
@@ -87,7 +89,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
         </tr>
       )}
     </>
-  ) : null;
+  );
 };
 
 export default StakeTableRow;
