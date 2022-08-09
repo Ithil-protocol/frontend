@@ -8,6 +8,7 @@ import React, {
   FC,
 } from 'react';
 import { useEthers, useTokenBalance } from '@usedapp/core';
+import BigNumber from 'bignumber.js';
 
 import Txt from '@/components/based/Txt';
 import { TokenDetails } from '@/global/types';
@@ -22,6 +23,7 @@ interface IInputFieldMax {
   placeholder?: string;
   className?: string | undefined;
   onMaxClick?: () => void;
+  maxValue?: string;
   stateChanger: Dispatch<SetStateAction<string>>;
 }
 
@@ -32,6 +34,7 @@ const InputFieldMax: FC<IInputFieldMax> = ({
   token,
   placeholder,
   className,
+  maxValue,
   stateChanger,
 }) => {
   const { address, decimals, symbol } = token;
@@ -41,9 +44,11 @@ const InputFieldMax: FC<IInputFieldMax> = ({
   const tokenBalance = useTokenBalance(address, account);
 
   const getMax = () => {
-    if (!tokenBalance) return;
-    stateChanger(formatAmount(tokenBalance.toString(), decimals, false));
-    setInputValue(formatAmount(tokenBalance.toString(), decimals, false));
+    if (!tokenBalance && !maxValue) return;
+    const _tokenBalance =
+      maxValue || formatAmount(tokenBalance?.toString() || 0, decimals, false);
+    stateChanger(_tokenBalance);
+    setInputValue(_tokenBalance);
   };
 
   useEffect(() => {

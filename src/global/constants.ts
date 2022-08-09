@@ -1,6 +1,6 @@
-import Addresses from '@ithil-protocol/deployed/goerli/deployments/addresses.json';
+import AddressList from '@ithil-protocol/deployed/goerli/deployments/core.json';
 
-export const { addresses: GOERLI_ADDRESSES } = Addresses;
+export const GOERLI_ADDRESSES = AddressList;
 
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
