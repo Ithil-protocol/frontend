@@ -116,7 +116,11 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
       <StakeControlWidget
         title="Deposit"
         value={
-          balance ? `${formatAmount(balance?.toString())} ${token.symbol}` : '-'
+          balance
+            ? `${formatAmount(balance?.toString(), token.decimals)} ${
+                token.symbol
+              }`
+            : '-'
         }
         token={token}
         onSubmit={handleStake}
@@ -127,10 +131,15 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
         title="Withdraw"
         value={
           maximumWithdrawal
-            ? `${formatAmount(maximumWithdrawal?.toFixed())} ${token.symbol}`
+            ? `${formatAmount(maximumWithdrawal?.toFixed(), token.decimals)} ${
+                token.symbol
+              }`
             : '-'
         }
-        maxValue={formatAmount(maximumWithdrawal?.toFixed() || '0')}
+        maxValue={formatAmount(
+          maximumWithdrawal?.toFixed() || '0',
+          token.decimals
+        )}
         token={token}
         onSubmit={handleUnstake}
         secondaryButton
