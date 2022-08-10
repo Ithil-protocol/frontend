@@ -19,7 +19,7 @@ const PositionControlPanel = () => {
 
   return (
     <div tw="flex flex-col w-full mb-8">
-      <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
+      {/* <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
         <div tw="-mb-6 w-full">
           <InfoItem
             label="Collateral"
@@ -35,8 +35,8 @@ const PositionControlPanel = () => {
           onChange={(value) => console.log(value)}
           marks={{ 50: 'Withdraw', 150: 'Topup' }}
         />
-      </div>
-      <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
+      </div> */}
+      {/* <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
         <InfoItem label="Liquidation price" value="3000 ETH/USDC" />
         <TabsSwitch
           activeIndex={controlType ? 'topup' : 'withdraw'}
@@ -61,7 +61,7 @@ const PositionControlPanel = () => {
           onTokenChange={(value) => setToken(value)}
         />
         <Button text={buttonText} full action bold />
-      </div>
+      </div> */}
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
         <InfoItem label="Position Value" value="3000 USDC" />
         <Button text="Close position" full action bold secondary />

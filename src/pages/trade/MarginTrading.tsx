@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
 import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 // import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
@@ -62,6 +62,14 @@ export default function MarginTradingPage() {
   );
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition();
 
+  useEffect(() => {
+    if (collateralIsSpentToken) {
+      setPriority('sell');
+    } else {
+      setPriority('buy');
+    }
+  }, [collateralIsSpentToken]);
+
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';
     const marginedAmountValue = parseAmount(marginAmount, spentToken.decimals);
@@ -78,37 +86,51 @@ export default function MarginTradingPage() {
   );
 
   const maxSpent = useMemo(() => {
+    let _maxSpent;
     if (collateralIsSpentToken) {
-      return priority === 'sell'
-        ? leveragedValue
-        : leveragedValue.dividedBy(slippageValue);
+      _maxSpent =
+        priority === 'sell'
+          ? leveragedValue
+          : leveragedValue.dividedBy(slippageValue);
     }
-    return priority === 'sell'
-      ? quoteValue
-      : quoteValue.dividedBy(slippageValue);
+    _maxSpent =
+      priority === 'sell' ? quoteValue : quoteValue.dividedBy(slippageValue);
+    return _maxSpent.multipliedBy(
+      new BigNumber(10).pow(spentToken.decimals - obtainedToken.decimals)
+    );
   }, [
     collateralIsSpentToken,
-    leveragedValue,
     priority,
     quoteValue,
     slippageValue,
+    spentToken.decimals,
+    obtainedToken.decimals,
+    leveragedValue,
   ]);
 
   const minObtained = useMemo(() => {
+    let _minObtained;
     if (collateralIsSpentToken) {
-      return priority === 'sell'
-        ? quoteValue.multipliedBy(slippageValue)
-        : quoteValue;
+      _minObtained =
+        priority === 'sell'
+          ? quoteValue.multipliedBy(slippageValue)
+          : quoteValue;
     }
-    return priority === 'sell'
-      ? leveragedValue.multipliedBy(slippageValue)
-      : leveragedValue;
+    _minObtained =
+      priority === 'sell'
+        ? leveragedValue.multipliedBy(slippageValue)
+        : leveragedValue;
+    return _minObtained.multipliedBy(
+      new BigNumber(10).pow(spentToken.decimals - obtainedToken.decimals)
+    );
   }, [
     collateralIsSpentToken,
-    leveragedValue,
     priority,
-    quoteValue,
+    leveragedValue,
     slippageValue,
+    spentToken.decimals,
+    obtainedToken.decimals,
+    quoteValue,
   ]);
 
   const handleChangeToken = () => {
@@ -207,17 +229,17 @@ export default function MarginTradingPage() {
                 </div>
                 <div tw="w-full">
                   <InfoItem
-                    tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                    tooltipText="Leverage"
                     label="Leverage"
                     value={`${leverage}x`}
                   />
                   <InfoItem
-                    tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                    tooltipText="Min. obtained"
                     label="Min. obtained"
                     value={formatAmount(minObtained, spentToken.decimals)}
                   />
                   <InfoItem
-                    tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                    tooltipText="Max. spent"
                     label="Max. spent"
                     value={
                       maxSpent
@@ -243,7 +265,7 @@ export default function MarginTradingPage() {
                 />
                 <SliderBar
                   label="Leverage"
-                  tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                  tooltipText="Leverage"
                   min={1}
                   max={MAX_LEVERAGE}
                   step={0.2}
@@ -274,7 +296,7 @@ export default function MarginTradingPage() {
                       />
                       <div tw="flex flex-col w-full gap-7">
                         <InputField
-                          tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                          tooltipText="Slippage"
                           label="Slippage"
                           placeholder="0"
                           value={slippagePercent}
@@ -284,7 +306,7 @@ export default function MarginTradingPage() {
                           }
                         />
                         <RadioGroup
-                          tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                          tooltipText="Priority"
                           label="Priority"
                           items={[
                             {
@@ -302,7 +324,7 @@ export default function MarginTradingPage() {
                           }
                         />
                         <InputField
-                          tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                          tooltipText="Deadline"
                           label="Deadline"
                           placeholder="20 mins"
                           value={deadline}

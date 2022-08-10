@@ -90,10 +90,22 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
   }, [longShortValue, collateralToken, heldToken, owedToken]);
 
   const openPriceValue = useMemo(() => {
-    return longShortValue === 'Long'
-      ? principalValue.plus(collateralValue).dividedBy(allowanceValue)
-      : allowanceValue.minus(collateralValue).dividedBy(principalValue);
-  }, [allowanceValue, collateralValue, longShortValue, principalValue]);
+    if (!heldToken || !owedToken) return undefined;
+    const _priceValue =
+      longShortValue === 'Long'
+        ? principalValue.plus(collateralValue).dividedBy(allowanceValue)
+        : allowanceValue.minus(collateralValue).dividedBy(principalValue);
+    return _priceValue.multipliedBy(
+      new BigNumber(10).pow(heldToken.decimals - owedToken.decimals)
+    );
+  }, [
+    allowanceValue,
+    collateralValue,
+    heldToken,
+    longShortValue,
+    owedToken,
+    principalValue,
+  ]);
 
   const positionValue = useMemo(() => {
     return `${tokenPairValue} ${leverageValue.toFixed(2)}x ${longShortValue}`;
@@ -105,30 +117,47 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
     new BigNumber(1)
   );
 
+  const currentPriceValue = useMemo(() => {
+    if (!heldToken || !owedToken) return undefined;
+    return currentPrice.multipliedBy(
+      new BigNumber(10).pow(heldToken.decimals - owedToken.decimals)
+    );
+  }, [currentPrice, heldToken, owedToken]);
+
   const riskFactor = useComputePairRiskFactor(
     details.owedToken,
     details.heldToken
   );
-
+  /*
+(principal+- collateral* (riskFactor/10000)) * 10^heldTokenDecimals/(allowance * 10^owedTokenDecimals)
+  */
   const liqPriceValue = useMemo(() => {
+    if (!heldToken || !owedToken) return undefined;
     return collateralValue
       .multipliedBy(riskFactor)
+      .dividedBy(100000)
       .multipliedBy(longShortValue === 'Long' ? 1 : -1)
       .plus(principalValue)
-      .dividedBy(allowanceValue);
+      .multipliedBy(new BigNumber(10).pow(heldToken.decimals))
+      .dividedBy(
+        allowanceValue.multipliedBy(new BigNumber(10).pow(owedToken.decimals))
+      );
   }, [
     allowanceValue,
     collateralValue,
+    heldToken,
     longShortValue,
+    owedToken,
     principalValue,
     riskFactor,
   ]);
 
   const distFromLiquidation = useMemo(() => {
+    if (!liqPriceValue || !currentPriceValue) return undefined;
     return longShortValue === 'Long'
-      ? currentPrice.dividedBy(liqPriceValue).minus(1).multipliedBy(100)
-      : liqPriceValue.dividedBy(currentPrice).minus(1).multipliedBy(100);
-  }, [currentPrice, liqPriceValue, longShortValue]);
+      ? currentPriceValue.dividedBy(liqPriceValue).minus(1).multipliedBy(100)
+      : liqPriceValue.dividedBy(currentPriceValue).minus(1).multipliedBy(100);
+  }, [currentPriceValue, liqPriceValue, longShortValue]);
 
   const feesValue = useMemo(() => {
     const _feesValue = new BigNumber(details.fees.toString());
@@ -187,21 +216,27 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
           value={leverageValue.toFixed(2)}
           details={positionValue}
         />
-        <DetailItem
-          label="Open price"
-          value={openPriceValue.toFixed(2)}
-          details={tokenPairValue}
-        />
-        <DetailItem
-          label="Current price"
-          value={currentPrice.toFixed(2)}
-          details={tokenPairValue}
-        />
-        <DetailItem
-          label="Liq. price"
-          value={liqPriceValue.toFixed(2)}
-          details={tokenPairValue}
-        />
+        {openPriceValue && (
+          <DetailItem
+            label="Open price"
+            value={openPriceValue.toFixed(2)}
+            details={tokenPairValue}
+          />
+        )}
+        {currentPriceValue && (
+          <DetailItem
+            label="Current price"
+            value={currentPriceValue.toFixed(2)}
+            details={tokenPairValue}
+          />
+        )}
+        {liqPriceValue && (
+          <DetailItem
+            label="Liq. price"
+            value={liqPriceValue.toFixed(2)}
+            details={tokenPairValue}
+          />
+        )}
         <DetailItem
           label="Collateral"
           value={formatAmount(
@@ -210,10 +245,12 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
           )}
           details={tokenPairValue.split('/')[0]}
         />
-        <DetailItem
-          label="Distance from liquidation"
-          value={`${distFromLiquidation.toFixed(2)}%`}
-        />
+        {distFromLiquidation && (
+          <DetailItem
+            label="Distance from liquidation"
+            value={`${distFromLiquidation.toFixed(2)}%`}
+          />
+        )}
         <DetailItem
           label="Profit"
           value={pnlText}
