@@ -42,15 +42,23 @@ export default function MarginTradingPage() {
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<any>(false);
   const [priority, setPriority] = useState<PriorityType>('buy');
 
+  const collateralToken = collateralIsSpentToken ? spentToken : obtainedToken;
+
   const leveragedValue = useMemo(() => {
-    return parseAmount(marginAmount, spentToken.decimals).multipliedBy(
+    return parseAmount(marginAmount, collateralToken.decimals).multipliedBy(
       leverage
     );
-  }, [leverage, marginAmount, spentToken]);
+  }, [leverage, marginAmount, collateralToken]);
 
-  const quoteValue = useQuote(
+  const quoteValueDst = useQuote(
     spentToken.address,
     obtainedToken.address,
+    leveragedValue
+  );
+
+  const quoteValueSrc = useQuote(
+    obtainedToken.address,
+    spentToken.address,
     leveragedValue
   );
 
@@ -96,14 +104,14 @@ export default function MarginTradingPage() {
     } else {
       _maxSpent =
         priority === 'sell'
-          ? quoteValue
-          : quoteValue.multipliedBy(slippageValue);
+          ? quoteValueSrc
+          : quoteValueSrc.multipliedBy(slippageValue);
     }
     return _maxSpent;
   }, [
     collateralIsSpentToken,
     priority,
-    quoteValue,
+    quoteValueSrc,
     slippageValue,
     spentToken.decimals,
     obtainedToken.decimals,
@@ -115,8 +123,8 @@ export default function MarginTradingPage() {
     if (collateralIsSpentToken) {
       _minObtained =
         priority === 'sell'
-          ? quoteValue.multipliedBy(slippageValue)
-          : quoteValue;
+          ? quoteValueDst.multipliedBy(slippageValue)
+          : quoteValueDst;
     } else {
       _minObtained =
         priority === 'sell'
@@ -131,7 +139,7 @@ export default function MarginTradingPage() {
     slippageValue,
     spentToken.decimals,
     obtainedToken.decimals,
-    quoteValue,
+    quoteValueDst,
   ]);
 
   const handleChangeToken = () => {
@@ -197,9 +205,10 @@ export default function MarginTradingPage() {
               <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
                 <TabsSwitch
                   activeIndex={collateralIsSpentToken ? 'long' : 'short'}
-                  onChange={(value: string) =>
-                    setCollateralIsSpentToken(value === 'long')
-                  }
+                  onChange={(value: string) => {
+                    setCollateralIsSpentToken(value === 'long');
+                    handleChangeToken();
+                  }}
                   items={[
                     {
                       title: 'Long',
@@ -212,21 +221,37 @@ export default function MarginTradingPage() {
                   ]}
                 />
                 <div tw="flex w-full justify-between items-center">
-                  <TokenField
-                    token={spentToken}
-                    noAllow={obtainedToken}
-                    onTokenChange={(value) => setSpentToken(value)}
-                  />
+                  {collateralIsSpentToken ? (
+                    <TokenField
+                      token={spentToken}
+                      noAllow={obtainedToken}
+                      onTokenChange={(value) => setSpentToken(value)}
+                    />
+                  ) : (
+                    <TokenField
+                      token={obtainedToken}
+                      noAllow={spentToken}
+                      onTokenChange={(value) => setObtainedToken(value)}
+                    />
+                  )}
                   <ArrowRight
                     size={28}
                     tw="text-font-200 mx-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s]"
                     onClick={handleChangeToken}
                   />
-                  <TokenField
-                    token={obtainedToken}
-                    noAllow={spentToken}
-                    onTokenChange={(value) => setObtainedToken(value)}
-                  />
+                  {collateralIsSpentToken ? (
+                    <TokenField
+                      token={obtainedToken}
+                      noAllow={spentToken}
+                      onTokenChange={(value) => setObtainedToken(value)}
+                    />
+                  ) : (
+                    <TokenField
+                      token={spentToken}
+                      noAllow={obtainedToken}
+                      onTokenChange={(value) => setSpentToken(value)}
+                    />
+                  )}
                 </div>
                 <div tw="w-full">
                   <InfoItem
@@ -253,14 +278,14 @@ export default function MarginTradingPage() {
                   label="Margin"
                   placeholder="0"
                   value={marginAmount}
-                  token={spentToken}
+                  token={collateralToken}
                   stateChanger={setMarginAmount}
                   onChange={(value) => {
                     setMarginAmount(value);
                   }}
                   renderRight={
                     <Txt.InputText tw="text-font-100">
-                      {spentToken.symbol}
+                      {collateralToken.symbol}
                     </Txt.InputText>
                   }
                 />
