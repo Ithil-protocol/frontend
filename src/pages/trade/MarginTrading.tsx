@@ -389,8 +389,8 @@ export default function MarginTradingPage() {
               </div>
             </div>
             <ChartCard
-              firstToken={obtainedToken}
-              secondToken={spentToken}
+              firstToken={collateralIsSpentToken ? obtainedToken : spentToken}
+              secondToken={collateralToken}
               disableTrading={false}
             />
           </div>
