@@ -53,6 +53,7 @@ export default function MarginTradingPage() {
     obtainedToken.address,
     leveragedValue
   );
+
   const allowance = useAllowance(
     spentToken.address,
     GOERLI_ADDRESSES.MarginTradingStrategy
@@ -80,10 +81,10 @@ export default function MarginTradingPage() {
     return 'Open';
   }, [allowance, marginAmount, spentToken.decimals]);
 
-  const slippageValue = useMemo(
-    () => (100 - Number(slippagePercent)) / 100,
-    [slippagePercent]
-  );
+  const slippageValue = useMemo(() => {
+    if (collateralIsSpentToken) return (100 - Number(slippagePercent)) / 100;
+    else return (100 + Number(slippagePercent)) / 100;
+  }, [slippagePercent]);
 
   const maxSpent = useMemo(() => {
     let _maxSpent;
@@ -91,13 +92,14 @@ export default function MarginTradingPage() {
       _maxSpent =
         priority === 'sell'
           ? leveragedValue
-          : leveragedValue.dividedBy(slippageValue);
+          : leveragedValue.multipliedBy(slippageValue);
+    } else {
+      _maxSpent =
+        priority === 'sell'
+          ? quoteValue
+          : quoteValue.multipliedBy(slippageValue);
     }
-    _maxSpent =
-      priority === 'sell' ? quoteValue : quoteValue.dividedBy(slippageValue);
-    return _maxSpent.multipliedBy(
-      new BigNumber(10).pow(spentToken.decimals - obtainedToken.decimals)
-    );
+    return _maxSpent;
   }, [
     collateralIsSpentToken,
     priority,
@@ -115,14 +117,13 @@ export default function MarginTradingPage() {
         priority === 'sell'
           ? quoteValue.multipliedBy(slippageValue)
           : quoteValue;
+    } else {
+      _minObtained =
+        priority === 'sell'
+          ? leveragedValue.multipliedBy(slippageValue)
+          : leveragedValue;
     }
-    _minObtained =
-      priority === 'sell'
-        ? leveragedValue.multipliedBy(slippageValue)
-        : leveragedValue;
-    return _minObtained.multipliedBy(
-      new BigNumber(10).pow(spentToken.decimals - obtainedToken.decimals)
-    );
+    return _minObtained;
   }, [
     collateralIsSpentToken,
     priority,
@@ -236,7 +237,7 @@ export default function MarginTradingPage() {
                   <InfoItem
                     tooltipText="Min. obtained"
                     label="Min. obtained"
-                    value={formatAmount(minObtained, spentToken.decimals)}
+                    value={formatAmount(minObtained, obtainedToken.decimals)}
                   />
                   <InfoItem
                     tooltipText="Max. spent"
