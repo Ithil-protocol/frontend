@@ -92,7 +92,7 @@ export default function MarginTradingPage() {
       _maxSpent =
         priority === 'sell'
           ? leveragedValue
-          : leveragedValue.multipliedBy(slippageValue);
+          : leveragedValue.dividedBy(slippageValue);
     } else {
       _maxSpent =
         priority === 'sell'
@@ -120,7 +120,7 @@ export default function MarginTradingPage() {
     } else {
       _minObtained =
         priority === 'sell'
-          ? leveragedValue.multipliedBy(slippageValue)
+          ? leveragedValue.dividedBy(slippageValue)
           : leveragedValue;
     }
     return _minObtained;
