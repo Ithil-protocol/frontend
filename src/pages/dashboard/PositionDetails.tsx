@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'phosphor-react';
 
@@ -10,6 +10,7 @@ import ChartCard from '@/components/composed/trade/ChartCard';
 import PositionDetailsWidget from '@/components/composed/dashboard/PositionDetailsWidget';
 import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
 import { usePositons } from '@/hooks/useMarginTradingStrategy';
+import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import { getTokenByAddress } from '@/global/utils';
 
 export default function PositionDetails() {
@@ -18,6 +19,9 @@ export default function PositionDetails() {
 
   const positionId = useMemo(() => searchParams.get('id'), [searchParams]);
   const positionDetails = usePositons(Number(positionId));
+
+  const [closePositionModalOpened, setClosePositionModalOpened] =
+    useState(false);
 
   const spentToken = useMemo(() => {
     if (positionDetails?.collateralToken) {
@@ -34,6 +38,11 @@ export default function PositionDetails() {
 
   return (
     <Container>
+      <ClosePositionModal
+        open={closePositionModalOpened}
+        selectedId={Number(positionId)}
+        onClose={() => setClosePositionModalOpened(false)}
+      />
       <div tw="flex flex-col w-full items-center">
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <div tw="flex flex-row items-baseline w-full">
@@ -68,7 +77,11 @@ export default function PositionDetails() {
               {positionDetails && (
                 <PositionDetailsWidget details={positionDetails} />
               )}
-              <PositionControlPanel />
+              {positionId && (
+                <PositionControlPanel
+                  onClosePosition={() => setClosePositionModalOpened(true)}
+                />
+              )}
             </div>
             {spentToken && obtainedToken && (
               <ChartCard
