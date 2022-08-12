@@ -2,16 +2,16 @@
 import tw from 'twin.macro';
 import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import ReactGA from 'react-ga';
+import { initialize, pageview } from 'react-ga';
 
 import Navbar from '@/components/navigation/Navbar';
 import APP_ROUTES from '@/config/routes';
 
-ReactGA.initialize("G-YG89SWDD9M");
+initialize('G-YG89SWDD9M');
 
 const App = () => {
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    pageview(window.location.pathname + window.location.search);
   }, []);
 
   return (
