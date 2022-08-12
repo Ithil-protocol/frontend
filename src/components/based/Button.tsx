@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { MouseEventHandler } from 'react';
 import { ClipLoader } from 'react-spinners';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 
 import Txt from './Txt';
 
@@ -38,7 +38,7 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
     }
 
     if (eventAction !== undefined) {
-      ReactGA.event({
+      event({
         category: 'btn-click',
         action: eventAction,
       });
