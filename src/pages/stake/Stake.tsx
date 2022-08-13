@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { useMemo, useState } from 'react';
-// import Button from '@/components/based/Button';
 import { ChartLine, MagnifyingGlass, Info } from 'phosphor-react';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import Txt from '@/components/based/Txt';
 import Container from '@/components/based/Container';
@@ -12,7 +12,7 @@ import { KeyableType } from '@/global/types';
 import Button from '@/components/based/Button';
 import InputField from '@/components/based/InputField';
 import Tooltip from '@/components/based/Tooltip';
-import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
+import StakeTableRow from '@/components/composed/stake/StakeTableRow';
 
 const APY_MENU: KeyableType = {
   highest: 'Highest',
@@ -24,6 +24,7 @@ const TVL_MENU: KeyableType = {
 };
 
 export default function StakePage() {
+  const { tokens } = TokenList;
   const [apySortValue, setApySortValue] = useState<string>('');
   const [tvlSortValue, setTvlSortValue] = useState<string>('');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
@@ -102,26 +103,26 @@ export default function StakePage() {
               { id: 'owned', content: 'Owned' },
               { id: 'action', content: '' },
             ]}
-            data={[
-              {
-                vault_name: <Txt.TokenText symbol="WETH">ETH</Txt.TokenText>,
-                annual_percentage: <Txt.Body2Regular>17.1%</Txt.Body2Regular>,
-                total_value: <Txt.Body2Regular>$83,676.12</Txt.Body2Regular>,
-                owned: <Txt.Body2Regular>Value</Txt.Body2Regular>,
-                action: (
-                  <Txt.Body2Regular tw="flex flex-row">
-                    <ChartLine tw="mr-4" />
-                    <Info />
-                  </Txt.Body2Regular>
-                ),
-              },
-            ]}
+            data={tokens.map((token) => ({
+              vault_name: (
+                <Txt.TokenText symbol={token.symbol}>
+                  {token.symbol}
+                </Txt.TokenText>
+              ),
+              token_address: token.address,
+              annual_percentage: null,
+              total_value: null,
+              owned: <Txt.Body2Regular>Value</Txt.Body2Regular>,
+              action: (
+                <Txt.Body2Regular tw="flex flex-row">
+                  <ChartLine tw="mr-4" />
+                  <Info />
+                </Txt.Body2Regular>
+              ),
+            }))}
             loading={false}
             hoverable
-            maxPage={3}
-            currentPage={1}
-            setPage={(val) => console.log(val)}
-            detailedRowContent={<StakeControlPanel />}
+            RowComponent={StakeTableRow}
           />
         </div>
       </div>

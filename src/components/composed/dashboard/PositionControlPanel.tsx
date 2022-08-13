@@ -1,25 +1,31 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { useState } from 'react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
+import React, { FC } from 'react';
+// import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
-import { TokenDetails } from '@/global/types';
+// import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
-import SliderBar from '@/components/based/Slidebar';
-import TokenInputField from '@/components/composed/trade/TokenInputField';
-import TabsSwitch from '@/components/composed/trade/TabsSwitch';
+// import SliderBar from '@/components/based/Slidebar';
+// import TokenInputField from '@/components/composed/trade/TokenInputField';
+// import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 import InfoItem from '@/components/composed/trade/InfoItem';
 
-const PositionControlPanel = () => {
-  const { tokens } = TokenList;
-  const [controlType, setControlType] = useState<boolean>(false);
-  const [token, setToken] = useState<TokenDetails>(tokens[0]);
-  const [tokenInputValue, setTokenInputValue] = useState('');
-  const [buttonText, setButtonText] = useState('Top up');
+interface IPositionControlPanel {
+  onClosePosition: () => void;
+}
+
+const PositionControlPanel: FC<IPositionControlPanel> = ({
+  onClosePosition,
+}) => {
+  // const { tokens } = TokenList;
+  // const [controlType, setControlType] = useState<boolean>(false);
+  // const [token, setToken] = useState<TokenDetails>(tokens[0]);
+  // const [tokenInputValue, setTokenInputValue] = useState('');
+  // const [buttonText, setButtonText] = useState('Top up');
 
   return (
     <div tw="flex flex-col w-full mb-8">
-      <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
+      {/* <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
         <div tw="-mb-6 w-full">
           <InfoItem
             label="Collateral"
@@ -35,8 +41,8 @@ const PositionControlPanel = () => {
           onChange={(value) => console.log(value)}
           marks={{ 50: 'Withdraw', 150: 'Topup' }}
         />
-      </div>
-      <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
+      </div> */}
+      {/* <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
         <InfoItem label="Liquidation price" value="3000 ETH/USDC" />
         <TabsSwitch
           activeIndex={controlType ? 'topup' : 'withdraw'}
@@ -61,10 +67,17 @@ const PositionControlPanel = () => {
           onTokenChange={(value) => setToken(value)}
         />
         <Button text={buttonText} full action bold />
-      </div>
+      </div> */}
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
-        <InfoItem label="Position Value" value="3000 USDC" />
-        <Button text="Close position" full action bold secondary />
+        {/* <InfoItem label="Position Value" value="3000 USDC" /> */}
+        <Button
+          text="Close position"
+          full
+          action
+          bold
+          secondary
+          onClick={onClosePosition}
+        />
       </div>
     </div>
   );
