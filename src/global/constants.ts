@@ -1,6 +1,9 @@
+import { BigNumber as BN } from '@ethersproject/bignumber';
 import AddressList from '@ithil-protocol/deployed/goerli/deployments/core.json';
+import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 export const GOERLI_ADDRESSES = AddressList;
+export const TOKEN_LIST = TokenList;
 
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
@@ -60,4 +63,17 @@ export const POSITION_CHART_OPTIONS = {
       display: false,
     },
   },
+};
+
+export const INIT_POSITION_VALUE = {
+  id: '0',
+  owedToken: TOKEN_LIST.tokens[0].address,
+  heldToken: TOKEN_LIST.tokens[1].address,
+  collateralToken: TOKEN_LIST.tokens[0].address,
+  collateral: BN.from(0),
+  principal: BN.from(0),
+  allowance: BN.from(0),
+  interestRate: BN.from(0),
+  fees: BN.from(0),
+  createdAt: BN.from(0),
 };
