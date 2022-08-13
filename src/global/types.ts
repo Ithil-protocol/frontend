@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { BigNumberish } from '@ethersproject/bignumber';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export interface RouteType {
   path: string;
@@ -38,11 +38,11 @@ export type PriorityType = 'buy' | 'sell';
 export interface OrderType {
   spentToken: string;
   obtainedToken: string;
-  collateral: BigNumberish;
+  collateral: BigNumber;
   collateralIsSpentToken: boolean;
-  minObtained: BigNumberish;
-  maxSpent: BigNumberish;
-  deadline: BigNumberish;
+  minObtained: BigNumber;
+  maxSpent: BigNumber;
+  deadline: BigNumber;
 }
 
 /// @param owner the account who opened the position
@@ -61,12 +61,12 @@ export interface PositionType {
   owedToken: string;
   heldToken: string;
   collateralToken: string;
-  collateral: BigNumberish;
-  principal: BigNumberish;
-  allowance: BigNumberish;
-  interestRate: BigNumberish;
-  fees: BigNumberish;
-  createdAt: BigNumberish;
+  collateral: BigNumber;
+  principal: BigNumber;
+  allowance: BigNumber;
+  interestRate: BigNumber;
+  fees: BigNumber;
+  createdAt: BigNumber;
 }
 
 export interface OpenedPositionType extends PositionType {
@@ -76,3 +76,5 @@ export interface OpenedPositionType extends PositionType {
 export type KeyableType = { [key: string]: string };
 
 export type RedeemTokenInfoType = { address: string; id: string } | undefined;
+
+export type PositionOpenType = 'active' | 'closed' | 'liquidated';

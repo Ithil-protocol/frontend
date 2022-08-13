@@ -74,6 +74,20 @@ export function useOpenPosition() {
   };
 }
 
+export function useClosePosition() {
+  const { send, state, resetState } = useContractFunction(
+    GOERLI_ADDRESSES.MarginTradingStrategy &&
+      new Contract(GOERLI_ADDRESSES.MarginTradingStrategy, abi),
+    'closePosition'
+  );
+  const isLoading = useHandleTxStatus(state, resetState);
+
+  return {
+    isLoading,
+    closePosition: send,
+  };
+}
+
 export function usePositons(positionId: number) {
   const isValid = useCheckValidChain();
 
@@ -121,25 +135,27 @@ export function useOpenedPositions() {
     }
   );
 
-  if (!account) return null;
+  if (!account) return [];
 
-  return logs?.value
-    ?.filter((log) => log.data.owner === account)
-    .map(
-      (log) =>
-        ({
-          id: log.data.id.toString(),
-          owedToken: log.data.owedToken,
-          heldToken: log.data.heldToken,
-          collateralToken: log.data.collateralToken,
-          collateral: log.data.collateral,
-          principal: log.data.principal,
-          allowance: log.data.allowance,
-          interestRate: log.data.interestRate,
-          fees: log.data.fees,
-          createdAt: log.data.createdAt,
-        } as OpenedPositionType)
-    );
+  return (
+    logs?.value
+      ?.filter((log) => log.data.owner === account)
+      .map(
+        (log) =>
+          ({
+            id: log.data.id.toString(),
+            owedToken: log.data.owedToken,
+            heldToken: log.data.heldToken,
+            collateralToken: log.data.collateralToken,
+            collateral: log.data.collateral,
+            principal: log.data.principal,
+            allowance: log.data.allowance,
+            interestRate: log.data.interestRate,
+            fees: log.data.fees,
+            createdAt: log.data.createdAt,
+          } as OpenedPositionType)
+      ) || []
+  );
 }
 
 export function useClosedPositions() {
@@ -157,9 +173,27 @@ export function useClosedPositions() {
     }
   );
 
-  if (!account) return null;
+  if (!account) return [];
 
-  return logs?.value
-    ?.filter((log) => log.data.owner === account)
-    .map((log) => log.data.id.toString());
+  return logs?.value?.map((log) => log.data.id.toString()) || [];
+}
+
+export function useLiquidatedPositions() {
+  const { account } = useEthers();
+  const isValid = useCheckValidChain();
+  const logs = useLogs(
+    isValid && {
+      contract: new Contract(GOERLI_ADDRESSES.MarginTradingStrategy, abi),
+      event: 'PositionWasLiquidated',
+      args: [],
+    },
+    {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }
+  );
+
+  if (!account) return [];
+
+  return logs?.value?.map((log) => log.data.id.toString()) || [];
 }
