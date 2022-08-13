@@ -24,8 +24,8 @@ export default function PositionDetails() {
     useState(false);
 
   const spentToken = useMemo(() => {
-    if (positionDetails?.collateralToken) {
-      return getTokenByAddress(positionDetails.collateralToken);
+    if (positionDetails?.owedToken) {
+      return getTokenByAddress(positionDetails.owedToken);
     }
     return null;
   }, [positionDetails]);
@@ -35,6 +35,16 @@ export default function PositionDetails() {
     }
     return null;
   }, [positionDetails]);
+  const collateralToken = useMemo(() => {
+    if (positionDetails?.collateralToken) {
+      return getTokenByAddress(positionDetails.collateralToken);
+    }
+    return null;
+  }, [positionDetails]);
+  const investmentToken =
+    collateralToken?.address == obtainedToken?.address
+      ? spentToken
+      : obtainedToken;
 
   return (
     <Container>
@@ -52,22 +62,22 @@ export default function PositionDetails() {
               onClick={() => navigate('/dashboard')}
             />
             <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
-              {spentToken && obtainedToken && (
+              {collateralToken && investmentToken && (
                 <>
                   <div tw="relative">
                     <div tw="w-9 h-9 border-radius[100%] bg-primary-100 absolute bottom[0] left[16px] z-index[2]"></div>
                     <img
                       tw="w-9 h-9 z-index[3]"
-                      src={spentToken?.logoURI}
-                      alt={spentToken?.symbol}
+                      src={collateralToken?.logoURI}
+                      alt={collateralToken?.symbol}
                     />
                     <img
                       tw="w-9 h-9 left-5 bottom-0 absolute z-index[4]"
-                      src={obtainedToken?.logoURI}
-                      alt={obtainedToken?.symbol}
+                      src={investmentToken?.logoURI}
+                      alt={investmentToken?.symbol}
                     />
                   </div>{' '}
-                  {`${spentToken?.symbol}/${obtainedToken?.symbol}`}
+                  {`${investmentToken?.symbol}/${collateralToken?.symbol}`}
                 </>
               )}
             </Txt.Heading1>
@@ -83,10 +93,10 @@ export default function PositionDetails() {
                 />
               )}
             </div>
-            {spentToken && obtainedToken && (
+            {collateralToken && investmentToken && (
               <ChartCard
-                firstToken={spentToken}
-                secondToken={obtainedToken}
+                firstToken={investmentToken}
+                secondToken={collateralToken}
                 disableTrading={false}
               />
             )}

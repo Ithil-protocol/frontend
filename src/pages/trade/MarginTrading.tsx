@@ -63,11 +63,11 @@ export default function MarginTradingPage() {
   );
 
   const allowance = useAllowance(
-    spentToken.address,
+    collateralToken.address,
     GOERLI_ADDRESSES.MarginTradingStrategy
   );
   const { isLoading: isLoadingApprove, approve } = useApprove(
-    spentToken.address
+    collateralToken.address
   );
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition();
 
@@ -81,7 +81,10 @@ export default function MarginTradingPage() {
 
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';
-    const marginedAmountValue = parseAmount(marginAmount, spentToken.decimals);
+    const marginedAmountValue = parseAmount(
+      marginAmount,
+      collateralToken.decimals
+    );
 
     if (new BigNumber(allowance.toString()).isLessThan(marginedAmountValue)) {
       return 'Approve';

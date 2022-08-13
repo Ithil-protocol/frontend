@@ -14,13 +14,13 @@ export const Text: FC<IText> = ({ value }) => {
 };
 
 interface ITokenPair {
-  spentTokenSymbol: string;
-  obtainedTokenSymbol: string;
+  collateralTokenSymbol: string;
+  investmentTokenSymbol: string;
 }
 
 export const TokenPair: FC<ITokenPair> = ({
-  spentTokenSymbol,
-  obtainedTokenSymbol,
+  collateralTokenSymbol,
+  investmentTokenSymbol,
 }) => {
   const { tokens } = TokenList;
   return (
@@ -30,20 +30,21 @@ export const TokenPair: FC<ITokenPair> = ({
         <img
           tw="w-6 h-6 z-index[3]"
           src={
-            tokens.find((token) => token.symbol === spentTokenSymbol)?.logoURI
+            tokens.find((token) => token.symbol === collateralTokenSymbol)
+              ?.logoURI
           }
-          alt={spentTokenSymbol}
+          alt={collateralTokenSymbol}
         />
         <img
           tw="w-6 h-6 left-5 bottom-0 absolute z-index[4]"
           src={
-            tokens.find((token) => token.symbol === obtainedTokenSymbol)
+            tokens.find((token) => token.symbol === investmentTokenSymbol)
               ?.logoURI
           }
-          alt={obtainedTokenSymbol}
+          alt={investmentTokenSymbol}
         />
       </div>
-      <Text value={`${spentTokenSymbol}/${obtainedTokenSymbol}`} />
+      <Text value={`${investmentTokenSymbol}/${collateralTokenSymbol}`} />
     </div>
   );
 };
