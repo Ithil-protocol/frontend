@@ -31,17 +31,8 @@ export default function FaucetsPage() {
         </div>
         <div tw="flex flex-col justify-center items-center gap-3 self-center max-width[616px] text-center">
           <Txt.Body2Regular tw="text-secondary-200 mb-9">
-            Get our Goerli test tokens by using the below faucets. You will need
-            Goerli ETH to use our faucets (and all Ithil in testnet): you can
-            get some on{' '}
-            <a
-              href="https://goerlifaucet.com/"
-              target="_blank"
-              rel="noreferrer"
-              tw="hover:underline text-body2-bold"
-            >
-              https://goerlifaucet.com/
-            </a>
+            Get test ERC20 tokens here, you will need to have some gETH to pay for the transaction fees.
+            You can use the OwlBot on Ithil Discord or Goerli faucets.
           </Txt.Body2Regular>
           <DataTable
             head={[

@@ -94,9 +94,9 @@ export default function StakePage() {
                 content: (
                   <div tw="flex items-center gap-2">
                     <Txt.Body2Regular tw="text-font-100">
-                      Total value locked
+                      TVL
                     </Txt.Body2Regular>
-                    <Tooltip text="Total value locked" />
+                    <Tooltip text="Total value locked in the Vault" />
                   </div>
                 ),
               },
