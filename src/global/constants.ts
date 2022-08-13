@@ -4,7 +4,6 @@ import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.jso
 
 export const GOERLI_ADDRESSES = AddressList;
 export const TOKEN_LIST = TokenList;
-
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
