@@ -13,7 +13,7 @@ export const TRADE_STRATEGIES = [
   {
     id: 1,
     title: 'Margin trading',
-    description: 'Go long or short on any token pair',
+    description: 'Go long or short on any token pair via Kyber Network',
     apyMin: '0',
     apyMax: '∞x',
     risk: 'High',
@@ -21,12 +21,22 @@ export const TRADE_STRATEGIES = [
   },
   {
     id: 2,
-    title: 'Leveraged staking',
-    description: 'Stake your favorite token and earn wealth',
-    apyMin: '0',
-    apyMax: '10x',
+    title: 'Yearn on steroids',
+    description:
+      'Stake your favorite token on any Yearn and earn vault and multiply your APY',
+    apyMin: '5',
+    apyMax: '20x',
     risk: 'Low',
-    url: '/trade/leveraged-staking',
+    url: '',
+  },
+  {
+    id: 3,
+    title: 'Battle in the Curve wars',
+    description: 'Superfeed your harvests on Curve and Convex with leverage',
+    apyMin: '10',
+    apyMax: '100x',
+    risk: 'Medium',
+    url: '',
   },
 ];
 
