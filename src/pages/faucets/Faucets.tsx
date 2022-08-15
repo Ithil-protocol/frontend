@@ -31,9 +31,7 @@ export default function FaucetsPage() {
         </div>
         <div tw="flex flex-col justify-center items-center gap-3 self-center max-width[616px] text-center">
           <Txt.Body2Regular tw="text-secondary-200 mb-9">
-            Get our Goerli test tokens by using the below faucets. You will need
-            Goerli ETH to use our faucets (and all Ithil in testnet): you can
-            get some on{' '}
+            Get our test ERC20 tokens below
             <a
               href="https://goerlifaucet.com/"
               target="_blank"
