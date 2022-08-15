@@ -62,7 +62,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {formatAmount(vaultBalance)}
+                    {formatAmount(vaultBalance, vaultToken?.decimals)}
                   </Txt.Body2Regular>
                 </td>
               );
