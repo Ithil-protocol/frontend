@@ -22,7 +22,8 @@ export const TRADE_STRATEGIES = [
   {
     id: 2,
     title: 'Yearn on steroids',
-    description: 'Stake your favorite token on any Yearn and earn vault and multiply your APY',
+    description:
+      'Stake your favorite token on any Yearn and earn vault and multiply your APY',
     apyMin: '5',
     apyMax: '20x',
     risk: 'Low',
