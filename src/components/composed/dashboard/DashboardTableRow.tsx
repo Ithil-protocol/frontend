@@ -68,11 +68,19 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
                   <Txt.Body2Bold
                     css={[
                       tw`text-secondary ml-2`,
-                      !pnlValue.isLessThan(0) && tw`text-success`,
-                      pnlValue.isLessThan(0) && tw`text-error`,
+                      !pnlValue.isLessThan(0) &&
+                        status !== 'liquidated' &&
+                        tw`text-success`,
+                      (pnlValue.isLessThan(0) || status === 'liquidated') &&
+                        tw`text-error`,
                     ]}
                   >
-                    {pnlText}
+                    {status === 'liquidated'
+                      ? `${collateralToken?.symbol} -${formatAmount(
+                          collateralValue,
+                          collateralToken?.decimals
+                        )} (-100%)`
+                      : pnlText}
                   </Txt.Body2Bold>
                 </td>
               );

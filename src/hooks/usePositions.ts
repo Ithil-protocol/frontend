@@ -40,13 +40,13 @@ export default function usePositionDetails(details: OpenedPositionType) {
   const leverageValue = useMemo(() => {
     return longShortValue === 'Long'
       ? principalValue.plus(collateralValue).dividedBy(collateralValue)
-      : allowanceValue.dividedBy(collateralValue);
+      : allowanceValue.minus(collateralValue).dividedBy(collateralValue);
   }, [allowanceValue, collateralValue, longShortValue, principalValue]);
 
   const tokenPairValue = useMemo(() => {
     return longShortValue === 'Long'
-      ? `${collateralToken?.symbol}/${heldToken?.symbol}`
-      : `${collateralToken?.symbol}/${owedToken?.symbol}`;
+      ? `${heldToken?.symbol}/${collateralToken?.symbol}`
+      : `${owedToken?.symbol}/${collateralToken?.symbol}`;
   }, [longShortValue, collateralToken, heldToken, owedToken]);
 
   const openPriceValue = useMemo(() => {
@@ -93,15 +93,22 @@ export default function usePositionDetails(details: OpenedPositionType) {
   */
   const liqPriceValue = useMemo(() => {
     if (!heldToken || !owedToken) return undefined;
-    return collateralValue
-      .multipliedBy(riskFactor)
-      .dividedBy(100000)
-      .multipliedBy(longShortValue === 'Long' ? 1 : -1)
-      .plus(principalValue)
-      .multipliedBy(new BigNumber(10).pow(heldToken.decimals))
-      .dividedBy(
-        allowanceValue.multipliedBy(new BigNumber(10).pow(owedToken.decimals))
-      );
+    if (longShortValue === 'Long')
+      return collateralValue
+        .multipliedBy(riskFactor)
+        .dividedBy(10000)
+        .plus(principalValue)
+        .multipliedBy(new BigNumber(10).pow(heldToken.decimals))
+        .dividedBy(
+          allowanceValue.multipliedBy(new BigNumber(10).pow(owedToken.decimals))
+        );
+    else
+      return allowanceValue
+        .minus(collateralValue.multipliedBy(riskFactor).dividedBy(10000))
+        .multipliedBy(new BigNumber(10).pow(owedToken.decimals))
+        .dividedBy(
+          principalValue.multipliedBy(new BigNumber(10).pow(heldToken.decimals))
+        );
   }, [
     allowanceValue,
     collateralValue,

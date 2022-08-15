@@ -95,7 +95,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
             details.collateral.toString(),
             collateralToken?.decimals
           )}
-          details={tokenPairValue.split('/')[0]}
+          details={collateralToken?.symbol}
         />
         {distFromLiquidation && (
           <DetailItem

@@ -63,11 +63,11 @@ export default function MarginTradingPage() {
   );
 
   const allowance = useAllowance(
-    spentToken.address,
+    collateralToken.address,
     GOERLI_ADDRESSES.MarginTradingStrategy
   );
   const { isLoading: isLoadingApprove, approve } = useApprove(
-    spentToken.address
+    collateralToken.address
   );
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition();
 
@@ -81,7 +81,10 @@ export default function MarginTradingPage() {
 
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';
-    const marginedAmountValue = parseAmount(marginAmount, spentToken.decimals);
+    const marginedAmountValue = parseAmount(
+      marginAmount,
+      collateralToken.decimals
+    );
 
     if (new BigNumber(allowance.toString()).isLessThan(marginedAmountValue)) {
       return 'Approve';
@@ -255,23 +258,25 @@ export default function MarginTradingPage() {
                 </div>
                 <div tw="w-full">
                   <InfoItem
-                    tooltipText="Leverage"
+                    tooltipText="The ratio between the total invested amount and the collateral placed"
                     label="Leverage"
                     value={`${leverage}x`}
                   />
                   <InfoItem
-                    tooltipText="Min. obtained"
-                    label="Min. obtained"
+                    tooltipText="Minimum amount obtained as a result of the swap"
+                    label="Min. Obtained"
                     value={formatAmount(minObtained, obtainedToken.decimals)}
+                    details={obtainedToken.symbol}
                   />
                   <InfoItem
-                    tooltipText="Max. spent"
-                    label="Max. spent"
+                    tooltipText="Maximum amount to be spent in the position, including collateral"
+                    label="Max. Spent"
                     value={
                       maxSpent
                         ? formatAmount(maxSpent, spentToken.decimals)
                         : '-'
                     }
+                    details={spentToken.symbol}
                   />
                 </div>
                 <InputFieldMax
@@ -291,7 +296,7 @@ export default function MarginTradingPage() {
                 />
                 <SliderBar
                   label="Leverage"
-                  tooltipText="Leverage"
+                  tooltipText="Slide to modify the leverage"
                   min={1}
                   max={MAX_LEVERAGE}
                   step={0.2}
@@ -322,7 +327,7 @@ export default function MarginTradingPage() {
                       />
                       <div tw="flex flex-col w-full gap-7">
                         <InputField
-                          tooltipText="Slippage"
+                          tooltipText="Maximum tolerated price change"
                           label="Slippage"
                           placeholder="0"
                           value={slippagePercent}
@@ -332,7 +337,7 @@ export default function MarginTradingPage() {
                           }
                         />
                         <RadioGroup
-                          tooltipText="Priority"
+                          tooltipText="Either spend (Sell) or obtain (Buy) an exact amount. The other amount is calculated by quoting"
                           label="Priority"
                           items={[
                             {
@@ -350,7 +355,7 @@ export default function MarginTradingPage() {
                           }
                         />
                         <InputField
-                          tooltipText="Deadline"
+                          tooltipText="Maximum time the transaction can be pending"
                           label="Deadline"
                           placeholder="20 mins"
                           value={deadline}

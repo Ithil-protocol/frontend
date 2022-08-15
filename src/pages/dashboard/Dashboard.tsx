@@ -115,11 +115,13 @@ export default function DashboardPage() {
             )}
             data={
               displayedPositions?.map((position) => {
-                const spentTokenSymbol = getTokenByAddress(
+                const collateralTokenSymbol = getTokenByAddress(
                   position.collateralToken
                 )?.symbol;
-                const obtainedTokenSymbol = getTokenByAddress(
-                  position.heldToken
+                const investmentTokenSymbol = getTokenByAddress(
+                  position.collateralToken == position.heldToken
+                    ? position.owedToken
+                    : position.heldToken
                 )?.symbol;
                 const creationDate = new Date(
                   Number(position.createdAt.toString()) * 1000
@@ -128,8 +130,8 @@ export default function DashboardPage() {
                 return {
                   token_pair: (
                     <TokenPair
-                      spentTokenSymbol={spentTokenSymbol || 'WETH'}
-                      obtainedTokenSymbol={obtainedTokenSymbol || 'DAI'}
+                      investmentTokenSymbol={investmentTokenSymbol || 'WETH'}
+                      collateralTokenSymbol={collateralTokenSymbol || 'DAI'}
                     />
                   ),
                   position: null,
