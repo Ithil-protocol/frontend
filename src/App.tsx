@@ -3,7 +3,9 @@ import tw from 'twin.macro';
 import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { initialize, pageview } from 'react-ga';
+import { useEthers } from '@usedapp/core';
 
+import { injected } from '@/config/connectors';
 import Navbar from '@/components/navigation/Navbar';
 import APP_ROUTES from '@/config/routes';
 
@@ -12,6 +14,17 @@ initialize('G-YG89SWDD9M');
 const App = () => {
   useEffect(() => {
     pageview(window.location.pathname + window.location.search);
+  }, []);
+
+  const { activate } = useEthers();
+
+  useEffect(() => {
+    injected.isAuthorized().then((isAuthorized) => {
+      if (isAuthorized) {
+        activate(injected);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
