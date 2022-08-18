@@ -35,6 +35,7 @@ const InputFieldMax: FC<IInputFieldMax> = ({
   placeholder,
   className,
   maxValue,
+  renderRight,
   stateChanger,
 }) => {
   const { address, decimals, symbol } = token;
@@ -88,7 +89,9 @@ const InputFieldMax: FC<IInputFieldMax> = ({
         >
           <Txt.Body2Regular>Max</Txt.Body2Regular>
         </button>
-        <Txt.InputText tw="text-font-100">{symbol}</Txt.InputText>
+        {renderRight || (
+          <Txt.InputText tw="text-font-100">{symbol}</Txt.InputText>
+        )}
       </div>
     </div>
   );

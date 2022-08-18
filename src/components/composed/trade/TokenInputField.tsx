@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React, { FC, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
+
+import InputFieldMax from './InputFieldMax';
 
 import { TokenDetails } from '@/global/types';
 import InputField from '@/components/based/InputField';
@@ -16,6 +18,7 @@ interface ITokenInputField {
   onTokenChange: (token: TokenDetails) => void;
   token: TokenDetails;
   availableTokens?: TokenDetails[];
+  stateChanger: Dispatch<SetStateAction<string>>;
 }
 
 const TokenInputField: FC<ITokenInputField> = ({
@@ -26,15 +29,18 @@ const TokenInputField: FC<ITokenInputField> = ({
   onTokenChange,
   token,
   availableTokens,
+  stateChanger,
 }) => {
   const [tokenModalOpened, setTokenModalOpened] = useState(false);
 
   return (
     <>
-      <InputField
+      <InputFieldMax
         label={label}
         value={value}
         onChange={setValue}
+        token={token}
+        stateChanger={stateChanger}
         placeholder={placeholder ?? '0'}
         renderRight={
           <>

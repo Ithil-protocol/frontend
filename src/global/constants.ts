@@ -1,8 +1,9 @@
 import { BigNumber as BN } from '@ethersproject/bignumber';
-import AddressList from '@ithil-protocol/deployed/goerli/deployments/core.json';
+import CoreAddressList from '@ithil-protocol/deployed/goerli/deployments/core.json';
+import MockAddressList from '@ithil-protocol/deployed/goerli/deployments/mocks.json';
 import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
-export const GOERLI_ADDRESSES = AddressList;
+export const GOERLI_ADDRESSES = { ...CoreAddressList, ...MockAddressList };
 export const TOKEN_LIST = TokenList;
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
@@ -27,7 +28,7 @@ export const TRADE_STRATEGIES = [
     apyMin: '5',
     apyMax: '20x',
     risk: 'Low',
-    url: '',
+    url: '/trade/yearn-strategy',
   },
   {
     id: 3,
