@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
 import { MaxUint256 } from '@ethersproject/constants';
 
-import { GOERLI_ADDRESSES } from '@/global/constants';
+import { CORE } from '@/global/constants';
 import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
@@ -81,11 +81,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
-  const tokenAllowance = useTokenAllowance(
-    token.address,
-    account,
-    GOERLI_ADDRESSES.Vault
-  );
+  const tokenAllowance = useTokenAllowance(token.address, account, CORE.Vault);
   const { approve, isLoading: isApproveLoading } = useApprove(token.address);
 
   const isApproved = useMemo(() => {
@@ -104,7 +100,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
     if (isApproved) {
       stake(token.address, parseUnits(amount, token.decimals));
     } else {
-      approve(GOERLI_ADDRESSES.Vault, MaxUint256);
+      approve(CORE.Vault, MaxUint256);
     }
   };
   const handleUnstake = (amount: string) => {

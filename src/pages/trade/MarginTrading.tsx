@@ -22,7 +22,7 @@ import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import AdvancedSectionImg from '@/assets/images/advancedSectionImage.png';
 import { PriorityType, TokenDetails } from '@/global/types';
-import { GOERLI_ADDRESSES, MAX_LEVERAGE } from '@/global/constants';
+import { STRATEGIES, MAX_LEVERAGE } from '@/global/constants';
 import { useOpenPosition, useQuote } from '@/hooks/useMarginTradingStrategy';
 import { formatAmount, parseAmount } from '@/global/utils';
 import { useAllowance, useApprove } from '@/hooks/useMockToken';
@@ -64,7 +64,7 @@ export default function MarginTradingPage() {
 
   const allowance = useAllowance(
     collateralToken.address,
-    GOERLI_ADDRESSES.MarginTradingStrategy
+    STRATEGIES.MarginTradingStrategy
   );
   const { isLoading: isLoadingApprove, approve } = useApprove(
     collateralToken.address
@@ -153,7 +153,7 @@ export default function MarginTradingPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(GOERLI_ADDRESSES.MarginTradingStrategy, MaxUint256);
+    approve(STRATEGIES.MarginTradingStrategy, MaxUint256);
   };
 
   const handleOpenOrder = async () => {
