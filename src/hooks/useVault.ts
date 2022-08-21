@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain, useHandleTxStatus } from './index';
 
-import { GOERLI_ADDRESSES } from '@/global/constants';
+import { CORE } from '@/global/constants';
 
 const abi = new Interface(VaultABI);
 
@@ -16,8 +16,8 @@ export function useBalance(tokenAddress: string) {
   const { value, error } =
     useCall(
       isValid &&
-        GOERLI_ADDRESSES.Vault && {
-          contract: new Contract(GOERLI_ADDRESSES.Vault, abi),
+        CORE.Vault && {
+          contract: new Contract(CORE.Vault, abi),
           method: 'balance',
           args: [tokenAddress],
         }
@@ -36,8 +36,8 @@ export function useVaultData(tokenAddress: string) {
   const { value, error } =
     useCall(
       isValid &&
-        GOERLI_ADDRESSES.Vault && {
-          contract: new Contract(GOERLI_ADDRESSES.Vault, abi),
+        CORE.Vault && {
+          contract: new Contract(CORE.Vault, abi),
           method: 'vaults',
           args: [tokenAddress],
         }
@@ -52,7 +52,7 @@ export function useVaultData(tokenAddress: string) {
 
 export function useStake() {
   const { send, state, resetState } = useContractFunction(
-    GOERLI_ADDRESSES.Vault && new Contract(GOERLI_ADDRESSES.Vault, abi),
+    CORE.Vault && new Contract(CORE.Vault, abi),
     'stake'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -65,7 +65,7 @@ export function useStake() {
 
 export function useUnstake() {
   const { send, state, resetState } = useContractFunction(
-    GOERLI_ADDRESSES.Vault && new Contract(GOERLI_ADDRESSES.Vault, abi),
+    CORE.Vault && new Contract(CORE.Vault, abi),
     'unstake'
   );
   const isLoading = useHandleTxStatus(state, resetState);

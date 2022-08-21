@@ -1,9 +1,18 @@
 import { BigNumber as BN } from '@ethersproject/bignumber';
-import AddressList from '@ithil-protocol/deployed/goerli/deployments/core.json';
+import Mocks from '@ithil-protocol/deployed/goerli/deployments/mocks.json';
 import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
+import Vault from '@ithil-protocol/deployed/goerli/deployments/Vault.json';
+import Liquidator from '@ithil-protocol/deployed/goerli/deployments/Liquidator.json';
+import MTS from '@ithil-protocol/deployed/goerli/deployments/MarginTradingStrategy.json';
+import YS from '@ithil-protocol/deployed/goerli/deployments/YearnStrategy.json';
 
-export const GOERLI_ADDRESSES = AddressList;
+export const MOCKS = Mocks;
 export const TOKEN_LIST = TokenList;
+export const CORE = { Vault: Vault.address, Liquidator: Liquidator.address };
+export const STRATEGIES = {
+  MarginTradingStrategy: MTS.address,
+  YearnStrategy: YS.address,
+};
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
