@@ -1,5 +1,6 @@
 import { Contract } from '@ethersproject/contracts';
 import { useCall } from '@usedapp/core';
+
 import { useCheckValidChain } from './index';
 
 export function usePositions(positionId: number, strategy: any) {

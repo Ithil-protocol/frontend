@@ -1,5 +1,6 @@
 import { Contract } from '@ethersproject/contracts';
 import { useContractFunction } from '@usedapp/core';
+
 import { useCheckValidChain, useHandleTxStatus } from './index';
 
 export function useClosePosition(strategy: any) {

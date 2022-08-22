@@ -1,7 +1,9 @@
 import { Contract } from '@ethersproject/contracts';
 import { useEthers, useLogs } from '@usedapp/core';
-import { OpenedPositionType } from '@/global/types';
+
 import { useCheckValidChain } from './index';
+
+import { OpenedPositionType } from '@/global/types';
 
 export function useOpenedPositions(strategy: any) {
   /**

@@ -1,6 +1,7 @@
 import { useCall } from '@usedapp/core';
 import { Contract } from '@ethersproject/contracts';
 import BigNumber from 'bignumber.js';
+
 import { useCheckValidChain } from './index';
 
 export function useComputePairRiskFactor(

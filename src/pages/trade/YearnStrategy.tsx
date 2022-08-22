@@ -3,6 +3,7 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
+
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
 import SliderBar from '@/components/based/Slidebar';

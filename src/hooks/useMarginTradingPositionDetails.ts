@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import BigNumber from 'bignumber.js';
 import { BigNumber as BN } from '@ethersproject/bignumber';
-import { useComputePairRiskFactor } from './useComputePairRiskFactor';
+
 import { useQuoter } from './useQuoter';
+import { useComputePairRiskFactor } from './useComputePairRiskFactor';
+
 import { OpenedPositionType } from '@/global/types';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { STRATEGIES } from '@/global/constants';

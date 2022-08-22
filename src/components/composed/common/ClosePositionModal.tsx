@@ -11,10 +11,9 @@ import { usePositions } from '@/hooks/usePositions';
 import { useClosePosition } from '@/hooks/useClosePosition';
 import { useQuoter } from '@/hooks/useQuoter';
 import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
-import { INIT_POSITION_VALUE } from '@/global/constants';
+import { INIT_POSITION_VALUE, STRATEGIES } from '@/global/constants';
 import { formatAmount } from '@/global/utils';
 import { OpenedPositionType } from '@/global/types';
-import { STRATEGIES } from '@/global/constants';
 
 interface IClosePositionModal {
   open: boolean;

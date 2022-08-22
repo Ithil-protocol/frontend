@@ -1,5 +1,6 @@
 import { Contract } from '@ethersproject/contracts';
 import { useEthers, useLogs } from '@usedapp/core';
+
 import { useCheckValidChain } from './index';
 
 export function useClosedPositions(strategy: any) {
