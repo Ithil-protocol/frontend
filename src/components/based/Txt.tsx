@@ -1,11 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC, ReactNode } from 'react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import { IBaseProps } from '@/global/types';
-
-const { tokens } = TokenList;
+import { TOKEN_LIST } from '@/global/constants';
 
 export interface ITxtProps extends IBaseProps {
   children: ReactNode;
@@ -124,7 +122,7 @@ const Txt = {
     <div className="flex flex-row items-center">
       <img
         tw="w-6 h-6 z-index[3] mr-3"
-        src={tokens.find((token) => token.symbol === props.symbol)?.logoURI}
+        src={TOKEN_LIST.find((token) => token.symbol === props.symbol)?.logoURI}
         alt={props.symbol}
       />
       <InnerText

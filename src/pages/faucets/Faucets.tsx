@@ -1,18 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { useState } from 'react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 import { ClipLoader } from 'react-spinners';
 import { v4 as uuid } from 'uuid';
 
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
 import DataTable from '@/components/based/table/DataTable';
-import { useRedeem } from '@/hooks/useMockToken';
+import { useRedeem } from '@/hooks/useToken';
 import { RedeemTokenInfoType, TokenDetails } from '@/global/types';
+import { TOKEN_LIST } from '@/global/constants';
 
 export default function FaucetsPage() {
-  const { tokens } = TokenList;
   const [redeemTokenInfo, setRedeemTokenInfo] = useState<RedeemTokenInfoType>();
   const { isLoading } = useRedeem(redeemTokenInfo);
 
@@ -44,7 +43,7 @@ export default function FaucetsPage() {
                 content: '',
               },
             ]}
-            data={tokens.map((token) => ({
+            data={TOKEN_LIST.map((token) => ({
               token: (
                 <Txt.TokenText symbol={token.symbol} tw="text-left">
                   {token.symbol}

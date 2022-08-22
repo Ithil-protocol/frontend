@@ -1,9 +1,8 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
 import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
-const { tokens } = TokenList;
+import { TOKEN_LIST } from './constants';
 
 export function infuraUrl(chainId: number) {
   const chainName =
@@ -51,5 +50,5 @@ export function parseAmount(value: number | string, decimals = 18) {
 }
 
 export function getTokenByAddress(tokenAddress: string) {
-  return tokens.find((token) => token.address === tokenAddress);
+  return TOKEN_LIST.find((token) => token.address === tokenAddress);
 }

@@ -22,8 +22,6 @@ export interface TokenDetails {
 
 export type IntervalType = '1d' | '1m' | '12m' | '60m';
 
-// export type PositionType = 'long' | 'short';
-
 export type PriorityType = 'buy' | 'sell';
 
 /// @param spentToken the token we spend to enter the investment

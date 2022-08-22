@@ -1,7 +1,5 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
-import MockTokenABI from '@ithil-protocol/deployed/goerli/abi/MockToken.json';
-import ERC20ABI from '@ithil-protocol/deployed/goerli/abi/ERC20.json';
 import { useCall, useContractFunction, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
 import BigNumber from 'bignumber.js';
@@ -9,16 +7,14 @@ import BigNumber from 'bignumber.js';
 import { useHandleTxStatus } from './index';
 
 import { RedeemTokenInfoType } from '@/global/types';
-
-const abi = new Interface(MockTokenABI);
-const erc20Abi = new Interface(ERC20ABI);
+import { ERC20ABI } from '@/global/constants';
 
 export function useAllowance(tokenAddress: string, spenderAddress: string) {
   const { account } = useEthers();
   const { value, error } =
     useCall(
       tokenAddress && {
-        contract: new Contract(tokenAddress, abi),
+        contract: new Contract(tokenAddress, ERC20ABI),
         method: 'allowance',
         args: [account, spenderAddress],
       }
@@ -33,7 +29,7 @@ export function useAllowance(tokenAddress: string, spenderAddress: string) {
 
 export function useApprove(tokenAddress: string) {
   const { send, state, resetState } = useContractFunction(
-    tokenAddress && new Contract(tokenAddress, abi),
+    tokenAddress && new Contract(tokenAddress, ERC20ABI),
     'approve'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -47,7 +43,7 @@ export function useApprove(tokenAddress: string) {
 export function useRedeem(token: RedeemTokenInfoType) {
   const { account } = useEthers();
   const contract = useMemo(
-    () => token && token.address && new Contract(token.address, abi),
+    () => token && token.address && new Contract(token.address, ERC20ABI),
     [token]
   );
 
@@ -68,7 +64,7 @@ export function useTotalSupply(tokenAddress: string) {
   const { value, error } =
     useCall(
       tokenAddress && {
-        contract: new Contract(tokenAddress, erc20Abi),
+        contract: new Contract(tokenAddress, ERC20ABI),
         method: 'totalSupply',
         args: [],
       }

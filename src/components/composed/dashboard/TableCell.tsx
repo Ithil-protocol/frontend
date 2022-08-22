@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC } from 'react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import Txt from '@/components/based/Txt';
+import { TOKEN_LIST } from '@/global/constants';
 
 interface IText {
   value: string;
@@ -22,7 +22,6 @@ export const TokenPair: FC<ITokenPair> = ({
   collateralTokenSymbol,
   investmentTokenSymbol,
 }) => {
-  const { tokens } = TokenList;
   return (
     <div tw="flex flex-row justify-start items-center gap-6">
       <div tw="relative">
@@ -30,7 +29,7 @@ export const TokenPair: FC<ITokenPair> = ({
         <img
           tw="w-6 h-6 z-index[3]"
           src={
-            tokens.find((token) => token.symbol === collateralTokenSymbol)
+            TOKEN_LIST.find((token) => token.symbol === collateralTokenSymbol)
               ?.logoURI
           }
           alt={collateralTokenSymbol}
@@ -38,7 +37,7 @@ export const TokenPair: FC<ITokenPair> = ({
         <img
           tw="w-6 h-6 left-5 bottom-0 absolute z-index[4]"
           src={
-            tokens.find((token) => token.symbol === investmentTokenSymbol)
+            TOKEN_LIST.find((token) => token.symbol === investmentTokenSymbol)
               ?.logoURI
           }
           alt={investmentTokenSymbol}

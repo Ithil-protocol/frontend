@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 
 import Txt from '@/components/based/Txt';
 import { formatAmount } from '@/global/utils';
-import usePositionDetails from '@/hooks/usePositions';
+import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
 
 interface IDetailItem {
   label: string;
@@ -56,7 +56,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
     pnlText,
     pnlValue,
     createdAtValue,
-  } = usePositionDetails(details);
+  } = useMarginTradingPositionDetails(details);
 
   return (
     <div tw="flex flex-col w-full mb-3">

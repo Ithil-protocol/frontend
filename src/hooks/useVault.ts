@@ -1,14 +1,10 @@
-import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
-import VaultABI from '@ithil-protocol/deployed/goerli/abi/Vault.json';
 import { useCall, useContractFunction } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain, useHandleTxStatus } from './index';
 
 import { CORE } from '@/global/constants';
-
-const abi = new Interface(VaultABI);
 
 export function useBalance(tokenAddress: string) {
   const isValid = useCheckValidChain();
@@ -17,7 +13,7 @@ export function useBalance(tokenAddress: string) {
     useCall(
       isValid &&
         CORE.Vault && {
-          contract: new Contract(CORE.Vault, abi),
+          contract: new Contract(CORE.Vault.address, CORE.Vault.abi),
           method: 'balance',
           args: [tokenAddress],
         }
@@ -37,7 +33,7 @@ export function useVaultData(tokenAddress: string) {
     useCall(
       isValid &&
         CORE.Vault && {
-          contract: new Contract(CORE.Vault, abi),
+          contract: new Contract(CORE.Vault.address, CORE.Vault.abi),
           method: 'vaults',
           args: [tokenAddress],
         }
@@ -52,7 +48,7 @@ export function useVaultData(tokenAddress: string) {
 
 export function useStake() {
   const { send, state, resetState } = useContractFunction(
-    CORE.Vault && new Contract(CORE.Vault, abi),
+    CORE.Vault && new Contract(CORE.Vault.address, CORE.Vault.abi),
     'stake'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -65,7 +61,7 @@ export function useStake() {
 
 export function useUnstake() {
   const { send, state, resetState } = useContractFunction(
-    CORE.Vault && new Contract(CORE.Vault, abi),
+    CORE.Vault && new Contract(CORE.Vault.address, CORE.Vault.abi),
     'unstake'
   );
   const isLoading = useHandleTxStatus(state, resetState);

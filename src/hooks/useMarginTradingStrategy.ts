@@ -27,7 +27,10 @@ export function useQuote(
     useCall(
       isValid &&
         STRATEGIES.MarginTradingStrategy && {
-          contract: new Contract(STRATEGIES.MarginTradingStrategy, abi),
+          contract: new Contract(
+            STRATEGIES.MarginTradingStrategy.address,
+            STRATEGIES.MarginTradingStrategy.abi
+          ),
           method: 'quote',
           args: [srcToken, destToken, amount.toFixed()],
         }
@@ -47,7 +50,10 @@ export function useComputePairRiskFactor(srcToken: string, destToken: string) {
     useCall(
       isValid &&
         STRATEGIES.MarginTradingStrategy && {
-          contract: new Contract(STRATEGIES.MarginTradingStrategy, abi),
+          contract: new Contract(
+            STRATEGIES.MarginTradingStrategy.address,
+            STRATEGIES.MarginTradingStrategy.abi
+          ),
           method: 'computePairRiskFactor',
           args: [srcToken, destToken],
         }
@@ -63,7 +69,10 @@ export function useComputePairRiskFactor(srcToken: string, destToken: string) {
 export function useOpenPosition() {
   const { send, state, resetState } = useContractFunction(
     STRATEGIES.MarginTradingStrategy &&
-      new Contract(STRATEGIES.MarginTradingStrategy, abi),
+      new Contract(
+        STRATEGIES.MarginTradingStrategy.address,
+        STRATEGIES.MarginTradingStrategy.abi
+      ),
     'openPosition'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -77,7 +86,10 @@ export function useOpenPosition() {
 export function useClosePosition() {
   const { send, state, resetState } = useContractFunction(
     STRATEGIES.MarginTradingStrategy &&
-      new Contract(STRATEGIES.MarginTradingStrategy, abi),
+      new Contract(
+        STRATEGIES.MarginTradingStrategy.address,
+        STRATEGIES.MarginTradingStrategy.abi
+      ),
     'closePosition'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -95,7 +107,10 @@ export function usePositons(positionId: number) {
     useCall(
       isValid &&
         STRATEGIES.MarginTradingStrategy && {
-          contract: new Contract(STRATEGIES.MarginTradingStrategy, abi),
+          contract: new Contract(
+            STRATEGIES.MarginTradingStrategy.address,
+            STRATEGIES.MarginTradingStrategy.abi
+          ),
           method: 'positions',
           args: [positionId],
         }
@@ -125,7 +140,10 @@ export function useOpenedPositions() {
   const isValid = useCheckValidChain();
   const logs = useLogs(
     isValid && {
-      contract: new Contract(STRATEGIES.MarginTradingStrategy, abi),
+      contract: new Contract(
+        STRATEGIES.MarginTradingStrategy.address,
+        STRATEGIES.MarginTradingStrategy.abi
+      ),
       event: 'PositionWasOpened',
       args: [],
     },
@@ -163,7 +181,10 @@ export function useClosedPositions() {
   const isValid = useCheckValidChain();
   const logs = useLogs(
     isValid && {
-      contract: new Contract(STRATEGIES.MarginTradingStrategy, abi),
+      contract: new Contract(
+        STRATEGIES.MarginTradingStrategy.address,
+        STRATEGIES.MarginTradingStrategy.abi
+      ),
       event: 'PositionWasClosed',
       args: [],
     },
@@ -183,7 +204,10 @@ export function useLiquidatedPositions() {
   const isValid = useCheckValidChain();
   const logs = useLogs(
     isValid && {
-      contract: new Contract(STRATEGIES.MarginTradingStrategy, abi),
+      contract: new Contract(
+        STRATEGIES.MarginTradingStrategy.address,
+        STRATEGIES.MarginTradingStrategy.abi
+      ),
       event: 'PositionWasLiquidated',
       args: [],
     },

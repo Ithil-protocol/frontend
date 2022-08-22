@@ -18,7 +18,7 @@ import {
   useUnstake,
   useVaultData,
 } from '@/hooks/useVault';
-import { useApprove, useTotalSupply } from '@/hooks/useMockToken';
+import { useApprove, useTotalSupply } from '@/hooks/useToken';
 
 interface IStakeControlWidget {
   title: string;
@@ -81,7 +81,11 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
-  const tokenAllowance = useTokenAllowance(token.address, account, CORE.Vault);
+  const tokenAllowance = useTokenAllowance(
+    token.address,
+    account,
+    CORE.Vault.address
+  );
   const { approve, isLoading: isApproveLoading } = useApprove(token.address);
 
   const isApproved = useMemo(() => {
@@ -100,10 +104,11 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
     if (isApproved) {
       stake(token.address, parseUnits(amount, token.decimals));
     } else {
-      approve(CORE.Vault, MaxUint256);
+      approve(CORE.Vault.address, MaxUint256);
     }
   };
   const handleUnstake = (amount: string) => {
+    console.log('amount', amount);
     unstake(token.address, parseUnits(amount, token.decimals));
   };
 

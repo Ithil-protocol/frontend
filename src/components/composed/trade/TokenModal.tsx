@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC, useEffect, useState } from 'react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 import { MagnifyingGlass } from 'phosphor-react';
 
 import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
 import InputField from '@/components/based/InputField';
 import { TokenDetails } from '@/global/types';
+import { TOKEN_LIST } from '@/global/constants';
 
 interface ITokenModal {
   open: boolean;
@@ -24,10 +24,9 @@ const TokenModal: FC<ITokenModal> = ({
   onClose,
   onSelect,
 }) => {
-  const { tokens } = TokenList;
   const [search, setSearch] = useState('');
   const [filteredTokenList, setFilteredTokenList] = useState<TokenDetails[]>(
-    availableTokens ?? tokens
+    availableTokens ?? TOKEN_LIST
   );
 
   useEffect(() => {
@@ -42,9 +41,9 @@ const TokenModal: FC<ITokenModal> = ({
 
     const val = value.trim().toLowerCase();
     setFilteredTokenList(
-      tokens
-        .filter(({ name }) => name.trim().toLowerCase().startsWith(val))
-        .slice(0, 6)
+      TOKEN_LIST.filter(({ name }) =>
+        name.trim().toLowerCase().startsWith(val)
+      ).slice(0, 6)
     );
   };
 

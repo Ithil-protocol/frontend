@@ -5,7 +5,7 @@ import StakePage from '@/pages/stake/Stake';
 import TradePage from '@/pages/trade/Trade';
 import DashboardPage from '@/pages/dashboard/Dashboard';
 import MarginTradingPage from '@/pages/trade/MarginTrading';
-import LeveragedStakingPage from '@/pages/trade/LeveragedStaking';
+import YearnStrategyPage from '@/pages/trade/YearnStrategy';
 import PositionDetails from '@/pages/dashboard/PositionDetails';
 import FaucetsPage from '@/pages/faucets/Faucets';
 
@@ -23,9 +23,9 @@ const APP_ROUTES: RouteType[] = [
     isNavLinked: false,
   },
   {
-    path: '/trade/leveraged-staking',
-    component: <LeveragedStakingPage />,
-    title: 'Leveraged Staking',
+    path: '/trade/yearn-strategy',
+    component: <YearnStrategyPage />,
+    title: 'Yearn Strategy',
     isNavLinked: false,
   },
   {

@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC } from 'react';
-// import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 // import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';

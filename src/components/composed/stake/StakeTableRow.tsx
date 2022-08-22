@@ -7,7 +7,7 @@ import { ITableRow } from '@/components/based/table/DataTable';
 import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useBalance, useVaultData } from '@/hooks/useVault';
-import { useTotalSupply } from '@/hooks/useMockToken';
+import { useTotalSupply } from '@/hooks/useToken';
 
 type IStakeTableRow = ITableRow;
 
@@ -54,7 +54,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {aprValue ? `${aprValue}%` : 'N/A'}
+                    {aprValue ? `${aprValue}%` : '0%'}
                   </Txt.Body2Regular>
                 </td>
               );
