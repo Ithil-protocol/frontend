@@ -3,13 +3,14 @@ import { Contract } from '@ethersproject/contracts';
 import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.json';
 import {
   useCall,
+  useContractFunction,
   // useContractFunction,
   // useEthers,
   // useLogs,
 } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 
-import { useCheckValidChain } from './index';
+import { useCheckValidChain, useHandleTxStatus } from './index';
 
 import { GOERLI_ADDRESSES } from '@/global/constants';
 
@@ -37,4 +38,18 @@ export function useQuote(
     return new BigNumber(0);
   }
   return new BigNumber(value?.[0].toString() ?? '0');
+}
+
+export function useOpenPosition() {
+  const { send, state, resetState } = useContractFunction(
+    GOERLI_ADDRESSES.YearnStrategy &&
+      new Contract(GOERLI_ADDRESSES.YearnStrategy, abi),
+    'openPosition'
+  );
+  const isLoading = useHandleTxStatus(state, resetState);
+
+  return {
+    isLoading,
+    openPosition: send,
+  };
 }

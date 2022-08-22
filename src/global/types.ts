@@ -76,3 +76,5 @@ export type KeyableType = { [key: string]: string };
 export type RedeemTokenInfoType = { address: string; id: string } | undefined;
 
 export type PositionOpenType = 'active' | 'closed' | 'liquidated';
+
+export type APIRequestMethodType = 'POST' | 'GET';
