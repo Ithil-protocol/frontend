@@ -52,8 +52,8 @@ export default function StakePage() {
             <InputField
               tw="mr-9"
               value={searchInputValue}
-              placeholder="Search tokens…"
-              onChange={(val) => setSearchInputValue(val)}
+              placeholder="Filter by token..."
+              onChange={(val) => setSearchInputValue(val.toUpperCase())}
               renderRight={
                 <Txt.Body2Regular>
                   <MagnifyingGlass />
@@ -73,19 +73,28 @@ export default function StakePage() {
               menu={TVL_MENU}
               onChange={(val) => setTvlSortValue(val)}
             />
-            <Button text="Clear" secondary onClick={handleSortClear} />
+            {(apySortValue !== '' || tvlSortValue !== '') && (
+              <Button text="Clear" secondary onClick={handleSortClear} />
+            )}
           </div>
           <DataTable
             head={[
-              { id: 'vault_name', content: 'Vault name' },
+              {
+                id: 'vault_name',
+                content: (
+                  <div tw="flex items-center gap-2">
+                    <Txt.Body2Regular tw="text-font-100">
+                      Asset
+                    </Txt.Body2Regular>
+                  </div>
+                ),
+              },
               {
                 id: 'annual_percentage',
                 content: (
                   <div tw="flex items-center gap-2">
-                    <Txt.Body2Regular tw="text-font-100">
-                      Annual Percentage Yield
-                    </Txt.Body2Regular>
-                    <Tooltip text="Annual Percentage Yield" />
+                    <Txt.Body2Regular tw="text-font-100">APY</Txt.Body2Regular>
+                    <Tooltip text="Annual Percentage Yield, your ROI on the deposit" />
                   </div>
                 ),
               },
@@ -93,33 +102,50 @@ export default function StakePage() {
                 id: 'total_value',
                 content: (
                   <div tw="flex items-center gap-2">
-                    <Txt.Body2Regular tw="text-font-100">
-                      Total value locked
-                    </Txt.Body2Regular>
-                    <Tooltip text="Total value locked" />
+                    <Txt.Body2Regular tw="text-font-100">TVL</Txt.Body2Regular>
+                    <Tooltip text="Total value locked, how many tokens have been deposited" />
                   </div>
                 ),
               },
-              { id: 'owned', content: 'Owned' },
-              { id: 'action', content: '' },
+              {
+                id: 'total_borrowed',
+                content: (
+                  <div tw="flex items-center gap-2">
+                    <Txt.Body2Regular tw="text-font-100">
+                      Borrowed
+                    </Txt.Body2Regular>
+                    <Tooltip text="How many tokens are currently lent to risk-takers" />
+                  </div>
+                ),
+              },
+              {
+                id: 'owner',
+                content: (
+                  <div tw="flex items-center gap-2">
+                    <Txt.Body2Regular tw="text-font-100">
+                      Balance
+                    </Txt.Body2Regular>
+                  </div>
+                ),
+              },
             ]}
-            data={tokens.map((token) => ({
-              vault_name: (
-                <Txt.TokenText symbol={token.symbol}>
-                  {token.symbol}
-                </Txt.TokenText>
-              ),
-              token_address: token.address,
-              annual_percentage: null,
-              total_value: null,
-              owned: <Txt.Body2Regular>Value</Txt.Body2Regular>,
-              action: (
-                <Txt.Body2Regular tw="flex flex-row">
-                  <ChartLine tw="mr-4" />
-                  <Info />
-                </Txt.Body2Regular>
-              ),
-            }))}
+            data={tokens
+              .filter(
+                (t) =>
+                  t.symbol.includes(searchInputValue) || searchInputValue === ''
+              )
+              .map((token) => ({
+                vault_name: (
+                  <Txt.TokenText symbol={token.symbol}>
+                    {token.symbol}
+                  </Txt.TokenText>
+                ),
+                token_address: token.address,
+                annual_percentage: null,
+                total_value: null,
+                total_borrow: null,
+                owned: null,
+              }))}
             loading={false}
             hoverable
             RowComponent={StakeTableRow}

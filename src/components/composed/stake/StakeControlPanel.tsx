@@ -108,6 +108,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
     }
   };
   const handleUnstake = (amount: string) => {
+    console.log('amount', amount);
     unstake(token.address, parseUnits(amount, token.decimals));
   };
 

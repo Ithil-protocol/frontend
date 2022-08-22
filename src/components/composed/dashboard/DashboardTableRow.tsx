@@ -32,7 +32,7 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
     );
 
   const collateralText = useMemo(() => {
-    if (!collateralToken) return 'N/A';
+    if (!collateralToken) return '0';
     return (
       <Txt.TokenText symbol={collateralToken.symbol}>{`${formatAmount(
         collateralValue,
