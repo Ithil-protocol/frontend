@@ -49,7 +49,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
         <Txt.Heading2 tw="text-center mb-6">Account</Txt.Heading2>
         <div tw="flex flex-row items-center justify-between mb-4">
           <Txt.Body2Regular tw="flex-grow text-font-100 capitalize">
-            Connected with {walletConnector}
+            Connector: <i>{walletConnector}</i>
           </Txt.Body2Regular>
           <div tw="flex flex-row justify-end">
             <button
