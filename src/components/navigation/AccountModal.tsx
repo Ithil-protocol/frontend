@@ -92,7 +92,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
           >
             <ArrowSquareOut size={22} tw="text-font-200 mr-2" />
             <Txt.Body2Regular tw="flex-grow text-font-100">
-              View on explorer
+              View on the explorer
             </Txt.Body2Regular>
           </div>
         </div>
