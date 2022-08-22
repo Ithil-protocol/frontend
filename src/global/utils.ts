@@ -4,8 +4,6 @@ import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
 
 import { TOKEN_LIST } from './constants';
 
-const { tokens } = TOKEN_LIST;
-
 export function infuraUrl(chainId: number) {
   const chainName =
     DEFAULT_SUPPORTED_CHAINS.find((network) => network.chainId === chainId)
@@ -52,5 +50,5 @@ export function parseAmount(value: number | string, decimals = 18) {
 }
 
 export function getTokenByAddress(tokenAddress: string) {
-  return tokens.find((token) => token.address === tokenAddress);
+  return TOKEN_LIST.find((token) => token.address === tokenAddress);
 }

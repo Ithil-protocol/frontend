@@ -24,7 +24,6 @@ const TVL_MENU: KeyableType = {
 };
 
 export default function StakePage() {
-  const { tokens } = TOKEN_LIST;
   const [apySortValue, setApySortValue] = useState<string>('');
   const [tvlSortValue, setTvlSortValue] = useState<string>('');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
@@ -129,23 +128,21 @@ export default function StakePage() {
                 ),
               },
             ]}
-            data={tokens
-              .filter(
-                (t) =>
-                  t.symbol.includes(searchInputValue) || searchInputValue === ''
-              )
-              .map((token) => ({
-                vault_name: (
-                  <Txt.TokenText symbol={token.symbol}>
-                    {token.symbol}
-                  </Txt.TokenText>
-                ),
-                token_address: token.address,
-                annual_percentage: null,
-                total_value: null,
-                total_borrow: null,
-                owned: null,
-              }))}
+            data={TOKEN_LIST.filter(
+              (t) =>
+                t.symbol.includes(searchInputValue) || searchInputValue === ''
+            ).map((token) => ({
+              vault_name: (
+                <Txt.TokenText symbol={token.symbol}>
+                  {token.symbol}
+                </Txt.TokenText>
+              ),
+              token_address: token.address,
+              annual_percentage: null,
+              total_value: null,
+              total_borrow: null,
+              owned: null,
+            }))}
             loading={false}
             hoverable
             RowComponent={StakeTableRow}

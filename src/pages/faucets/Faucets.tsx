@@ -12,7 +12,6 @@ import { RedeemTokenInfoType, TokenDetails } from '@/global/types';
 import { TOKEN_LIST } from '@/global/constants';
 
 export default function FaucetsPage() {
-  const { tokens } = TOKEN_LIST;
   const [redeemTokenInfo, setRedeemTokenInfo] = useState<RedeemTokenInfoType>();
   const { isLoading } = useRedeem(redeemTokenInfo);
 
@@ -44,7 +43,7 @@ export default function FaucetsPage() {
                 content: '',
               },
             ]}
-            data={tokens.map((token) => ({
+            data={TOKEN_LIST.map((token) => ({
               token: (
                 <Txt.TokenText symbol={token.symbol} tw="text-left">
                   {token.symbol}

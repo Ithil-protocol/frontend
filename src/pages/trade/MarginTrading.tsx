@@ -33,13 +33,14 @@ import {
 } from '@/global/constants';
 
 export default function MarginTradingPage() {
-  const { tokens } = TOKEN_LIST;
   const { account } = useEthers();
 
   const [collateralIsSpentToken, setCollateralIsSpentToken] =
     useState<boolean>(true);
-  const [spentToken, setSpentToken] = useState<TokenDetails>(tokens[0]);
-  const [obtainedToken, setObtainedToken] = useState<TokenDetails>(tokens[1]);
+  const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
+  const [obtainedToken, setObtainedToken] = useState<TokenDetails>(
+    TOKEN_LIST[1]
+  );
   const [leverage, setLeverage] = useState<number>(1);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [slippagePercent, setSlippagePercent] = useState<string>(

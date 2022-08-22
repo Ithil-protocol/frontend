@@ -23,8 +23,7 @@ import {
 } from '@/global/constants';
 
 export default function YearnStrategyPage() {
-  const { tokens } = TOKEN_LIST;
-  const [spentToken, setSpentToken] = useState<TokenDetails>(tokens[0]);
+  const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [leverage, setLeverage] = useState<number>(1);
   const [slippagePercent, setSlippagePercent] = useState<string>(
@@ -70,7 +69,7 @@ export default function YearnStrategyPage() {
                 <div tw="flex w-full justify-between items-center">
                   <TokenInputField
                     label="Margin"
-                    availableTokens={tokens}
+                    availableTokens={TOKEN_LIST}
                     value={marginAmount}
                     setValue={setMarginAmount}
                     stateChanger={setMarginAmount}

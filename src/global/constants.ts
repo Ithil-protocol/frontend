@@ -21,7 +21,8 @@ export const MOCKS = {
   },
 };
 
-export const TOKEN_LIST = TokenList;
+export const { tokens: TOKEN_LIST } = TokenList;
+
 export const CORE = {
   Vault: {
     address: Vault.address,
@@ -123,9 +124,9 @@ export const POSITION_CHART_OPTIONS = {
 
 export const INIT_POSITION_VALUE = {
   id: '0',
-  owedToken: TOKEN_LIST.tokens[0].address,
-  heldToken: TOKEN_LIST.tokens[1].address,
-  collateralToken: TOKEN_LIST.tokens[0].address,
+  owedToken: TOKEN_LIST[0].address,
+  heldToken: TOKEN_LIST[1].address,
+  collateralToken: TOKEN_LIST[0].address,
   collateral: BN.from(0),
   principal: BN.from(0),
   allowance: BN.from(0),

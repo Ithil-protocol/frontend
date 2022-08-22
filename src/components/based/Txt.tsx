@@ -5,8 +5,6 @@ import React, { FC, ReactNode } from 'react';
 import { IBaseProps } from '@/global/types';
 import { TOKEN_LIST } from '@/global/constants';
 
-const { tokens } = TOKEN_LIST;
-
 export interface ITxtProps extends IBaseProps {
   children: ReactNode;
 }
@@ -124,7 +122,7 @@ const Txt = {
     <div className="flex flex-row items-center">
       <img
         tw="w-6 h-6 z-index[3] mr-3"
-        src={tokens.find((token) => token.symbol === props.symbol)?.logoURI}
+        src={TOKEN_LIST.find((token) => token.symbol === props.symbol)?.logoURI}
         alt={props.symbol}
       />
       <InnerText

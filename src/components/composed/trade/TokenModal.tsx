@@ -24,10 +24,9 @@ const TokenModal: FC<ITokenModal> = ({
   onClose,
   onSelect,
 }) => {
-  const { tokens } = TOKEN_LIST;
   const [search, setSearch] = useState('');
   const [filteredTokenList, setFilteredTokenList] = useState<TokenDetails[]>(
-    availableTokens ?? tokens
+    availableTokens ?? TOKEN_LIST
   );
 
   useEffect(() => {
@@ -42,9 +41,9 @@ const TokenModal: FC<ITokenModal> = ({
 
     const val = value.trim().toLowerCase();
     setFilteredTokenList(
-      tokens
-        .filter(({ name }) => name.trim().toLowerCase().startsWith(val))
-        .slice(0, 6)
+      TOKEN_LIST.filter(({ name }) =>
+        name.trim().toLowerCase().startsWith(val)
+      ).slice(0, 6)
     );
   };
 
