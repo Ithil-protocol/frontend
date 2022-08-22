@@ -14,6 +14,17 @@ import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingS
 import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
 import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
 
+const abi = [
+  'function balanceOf(address owner) external view returns (uint256)',
+  'function decimals() external view returns (uint8)',
+  'function symbol() external view returns (string)',
+  'function totalSupply() external view returns (uint256)',
+  'function approve(address spender, uint256 amount) external returns (bool)',
+  'function allowance(address owner, address spender) external returns (uint256)',
+  'function mint() external',
+];
+export const ERC20ABI = new Interface(abi);
+
 export const MOCKS = {
   MockYearnRegistry: {
     address: Mocks.mocks.MockYearnRegistry,

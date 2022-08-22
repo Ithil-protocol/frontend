@@ -94,9 +94,7 @@ export default function useMarginTradingPositionDetails(
     details.heldToken,
     STRATEGIES.MarginTradingStrategy
   );
-  /*
-(principal+- collateral* (riskFactor/10000)) * 10^heldTokenDecimals/(allowance * 10^owedTokenDecimals)
-  */
+
   const liqPriceValue = useMemo(() => {
     if (!heldToken || !owedToken) return undefined;
     if (longShortValue === 'Long')
