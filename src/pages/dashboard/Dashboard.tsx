@@ -13,16 +13,15 @@ import {
   TokenPair,
   CloseButton,
 } from '@/components/composed/dashboard/TableCell';
-import {
-  useClosedPositions,
-  useLiquidatedPositions,
-  useOpenedPositions,
-} from '@/hooks/useMarginTradingStrategy';
+import { useLiquidatedPositions } from '@/hooks/useLiquidatedPositions';
+import { useOpenedPositions } from '@/hooks/useOpenedPositions';
+import { useClosedPositions } from '@/hooks/useClosedPositions';
 import { getTokenByAddress } from '@/global/utils';
 // import { POSITION_CHART_OPTIONS } from '@/global/constants';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import { PositionOpenType } from '@/global/types';
+import { STRATEGIES } from '@/global/constants';
 
 // export const data = {
 //   labels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,9 +40,11 @@ export default function DashboardPage() {
   const [closePositionModalOpened, setClosePositionModalOpened] =
     useState(false);
 
-  const openedPositions = useOpenedPositions();
-  const closedPositions = useClosedPositions();
-  const liquidatedPositions = useLiquidatedPositions();
+  const openedPositions = useOpenedPositions(STRATEGIES.MarginTradingStrategy);
+  const closedPositions = useClosedPositions(STRATEGIES.MarginTradingStrategy);
+  const liquidatedPositions = useLiquidatedPositions(
+    STRATEGIES.MarginTradingStrategy
+  );
 
   const displayedPositions = useMemo(() => {
     if (!openedPositions || !closedPositions || !liquidatedPositions)

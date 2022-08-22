@@ -5,9 +5,10 @@ import React, { FC, useMemo } from 'react';
 import { ITableRow } from '@/components/based/table/DataTable';
 import Txt from '@/components/based/Txt';
 import { PositionOpenType } from '@/global/types';
-import usePositionDetails from '@/hooks/usePositions';
+import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
 import { formatAmount } from '@/global/utils';
-import { usePositons } from '@/hooks/useMarginTradingStrategy';
+import { usePositions } from '@/hooks/usePositions';
+import { STRATEGIES } from '@/global/constants';
 
 type IDashboardTableRow = ITableRow;
 
@@ -20,10 +21,13 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
   const position = JSON.parse(row['position_info'] as string);
   const status: PositionOpenType = row['position_status'] as PositionOpenType;
 
-  const activePosition = usePositons(Number(position.id));
+  const activePosition = usePositions(
+    Number(position.id),
+    STRATEGIES.MarginTradingStrategy
+  );
 
   const { collateralToken, collateralValue, pnlText, pnlValue, positionValue } =
-    usePositionDetails(
+    useMarginTradingPositionDetails(
       status === 'active' ? activePosition || position : position
     );
 

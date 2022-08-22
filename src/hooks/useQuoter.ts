@@ -1,32 +1,21 @@
-import { Interface } from '@ethersproject/abi';
+import { useCall } from '@usedapp/core';
 import { Contract } from '@ethersproject/contracts';
-import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.json';
-import {
-  useCall,
-  // useContractFunction,
-  // useEthers,
-  // useLogs,
-} from '@usedapp/core';
 import BigNumber from 'bignumber.js';
-
 import { useCheckValidChain } from './index';
 
-import { GOERLI_ADDRESSES } from '@/global/constants';
-
-const abi = new Interface(YearnStrategyABI);
-
-export function useQuote(
+export function useQuoter(
   srcToken: string,
   destToken: string,
-  amount: BigNumber
+  amount: BigNumber,
+  strategy: any
 ) {
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        GOERLI_ADDRESSES.YearnStrategy && {
-          contract: new Contract(GOERLI_ADDRESSES.YearnStrategy, abi),
+        strategy && {
+          contract: new Contract(strategy.address, strategy.abi),
           method: 'quote',
           args: [srcToken, destToken, amount.toFixed()],
         }

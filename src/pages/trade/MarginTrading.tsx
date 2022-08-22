@@ -3,7 +3,6 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 // import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
 import { useEthers } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
@@ -22,13 +21,19 @@ import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import AdvancedSectionImg from '@/assets/images/advancedSectionImage.png';
 import { PriorityType, TokenDetails } from '@/global/types';
-import { GOERLI_ADDRESSES, MAX_LEVERAGE } from '@/global/constants';
-import { useOpenPosition, useQuote } from '@/hooks/useMarginTradingStrategy';
+import { useOpenPosition } from '@/hooks/useOpenPosition';
+import { useQuoter } from '@/hooks/useQuoter';
 import { formatAmount, parseAmount } from '@/global/utils';
-import { useAllowance, useApprove } from '@/hooks/useMockToken';
+import { useAllowance, useApprove } from '@/hooks/useToken';
+import {
+  STRATEGIES,
+  MAX_LEVERAGE,
+  DEFAULT_DEADLINE,
+  TOKEN_LIST,
+} from '@/global/constants';
 
 export default function MarginTradingPage() {
-  const { tokens } = TokenList;
+  const { tokens } = TOKEN_LIST;
   const { account } = useEthers();
 
   const [collateralIsSpentToken, setCollateralIsSpentToken] =
@@ -36,9 +41,11 @@ export default function MarginTradingPage() {
   const [spentToken, setSpentToken] = useState<TokenDetails>(tokens[0]);
   const [obtainedToken, setObtainedToken] = useState<TokenDetails>(tokens[1]);
   const [leverage, setLeverage] = useState<number>(1);
-  const [marginAmount, setMarginAmount] = useState<string>('2');
-  const [slippagePercent, setSlippagePercent] = useState<string>('1');
-  const [deadline, setDeadline] = useState<string>('20');
+  const [marginAmount, setMarginAmount] = useState<string>('0');
+  const [slippagePercent, setSlippagePercent] = useState<string>(
+    STRATEGIES.MarginTradingStrategy.defaultSlippage
+  );
+  const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<any>(false);
   const [priority, setPriority] = useState<PriorityType>('buy');
 
@@ -50,26 +57,30 @@ export default function MarginTradingPage() {
     );
   }, [leverage, marginAmount, collateralToken]);
 
-  const quoteValueDst = useQuote(
+  const quoteValueDst = useQuoter(
     spentToken.address,
     obtainedToken.address,
-    leveragedValue
+    leveragedValue,
+    STRATEGIES.MarginTradingStrategy
   );
 
-  const quoteValueSrc = useQuote(
+  const quoteValueSrc = useQuoter(
     obtainedToken.address,
     spentToken.address,
-    leveragedValue
+    leveragedValue,
+    STRATEGIES.MarginTradingStrategy
   );
 
   const allowance = useAllowance(
     collateralToken.address,
-    GOERLI_ADDRESSES.MarginTradingStrategy
+    STRATEGIES.MarginTradingStrategy.address
   );
   const { isLoading: isLoadingApprove, approve } = useApprove(
     collateralToken.address
   );
-  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition();
+  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
+    STRATEGIES.MarginTradingStrategy
+  );
 
   useEffect(() => {
     if (collateralIsSpentToken) {
@@ -153,7 +164,7 @@ export default function MarginTradingPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(GOERLI_ADDRESSES.MarginTradingStrategy, MaxUint256);
+    approve(STRATEGIES.MarginTradingStrategy.address, MaxUint256);
   };
 
   const handleOpenOrder = async () => {

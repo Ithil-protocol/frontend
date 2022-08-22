@@ -7,7 +7,7 @@ import { ITableRow } from '@/components/based/table/DataTable';
 import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useBalance, useVaultData } from '@/hooks/useVault';
-import { useTotalSupply } from '@/hooks/useMockToken';
+import { useTotalSupply } from '@/hooks/useToken';
 
 type IStakeTableRow = ITableRow;
 

@@ -1,9 +1,10 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
 import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
-const { tokens } = TokenList;
+import { TOKEN_LIST } from './constants';
+
+const { tokens } = TOKEN_LIST;
 
 export function infuraUrl(chainId: number) {
   const chainName =

@@ -7,17 +7,14 @@ import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
-import {
-  useClosePosition,
-  usePositons,
-  useQuote,
-} from '@/hooks/useMarginTradingStrategy';
-import usePositionDetails from '@/hooks/usePositions';
+import { usePositions } from '@/hooks/usePositions';
+import { useClosePosition } from '@/hooks/useClosePosition';
+import { useQuoter } from '@/hooks/useQuoter';
+import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
 import { INIT_POSITION_VALUE } from '@/global/constants';
 import { formatAmount } from '@/global/utils';
 import { OpenedPositionType } from '@/global/types';
-
-const DEFAULT_SLIPPAGE = 0.01;
+import { STRATEGIES } from '@/global/constants';
 
 interface IClosePositionModal {
   open: boolean;
@@ -30,7 +27,7 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
   onClose,
   selectedId,
 }) => {
-  const _position = usePositons(selectedId);
+  const _position = usePositions(selectedId, STRATEGIES.MarginTradingStrategy);
   const activePosition: OpenedPositionType = _position || INIT_POSITION_VALUE;
   const {
     longShortValue,
@@ -42,22 +39,27 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
     pnlText,
     collateralToken,
     feesValue,
-  } = usePositionDetails(activePosition);
-  const { closePosition, isLoading } = useClosePosition();
+  } = useMarginTradingPositionDetails(activePosition);
+  const { closePosition, isLoading } = useClosePosition(
+    STRATEGIES.MarginTradingStrategy
+  );
 
-  const quoteValue = useQuote(
+  const quoteValue = useQuoter(
     longShortValue === 'Long'
       ? activePosition.heldToken
       : activePosition.owedToken,
     longShortValue === 'Long'
       ? activePosition.owedToken
       : activePosition.heldToken,
-    longShortValue === 'Long' ? allowanceValue : principalValue.plus(feesValue)
+    longShortValue === 'Long' ? allowanceValue : principalValue.plus(feesValue),
+    STRATEGIES.MarginTradingStrategy
   );
 
   const maxOrMin = useMemo(() => {
     return quoteValue.multipliedBy(
-      1 + (longShortValue === 'Long' ? -1 : 1) * DEFAULT_SLIPPAGE
+      1 +
+        (longShortValue === 'Long' ? -1 : 1) *
+          parseFloat(STRATEGIES.MarginTradingStrategy.defaultSlippage)
     );
   }, [longShortValue, quoteValue]);
 

@@ -1,10 +1,54 @@
 import { BigNumber as BN } from '@ethersproject/bignumber';
-import CoreAddressList from '@ithil-protocol/deployed/goerli/deployments/core.json';
-import MockAddressList from '@ithil-protocol/deployed/goerli/deployments/mocks.json';
+import { Interface } from '@ethersproject/abi';
+import Mocks from '@ithil-protocol/deployed/goerli/deployments/mocks.json';
 import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
+import Vault from '@ithil-protocol/deployed/goerli/deployments/Vault.json';
+import Liquidator from '@ithil-protocol/deployed/goerli/deployments/Liquidator.json';
+import MTS from '@ithil-protocol/deployed/goerli/deployments/MarginTradingStrategy.json';
+import YS from '@ithil-protocol/deployed/goerli/deployments/YearnStrategy.json';
+import ES from '@ithil-protocol/deployed/goerli/deployments/EulerStrategy.json';
+import VaultABI from '@ithil-protocol/deployed/goerli/abi/Vault.json';
+import LiqudidatorABI from '@ithil-protocol/deployed/goerli/abi/Liquidator.json';
+import MarginTradingStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
+import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
+import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
+import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
 
-export const GOERLI_ADDRESSES = { ...CoreAddressList, ...MockAddressList };
+export const MOCKS = {
+  MockYearnRegistry: {
+    address: Mocks.mocks.MockYearnRegistry,
+    abi: new Interface(MockYearnRegistryABI),
+  },
+};
+
 export const TOKEN_LIST = TokenList;
+export const CORE = {
+  Vault: {
+    address: Vault.address,
+    abi: new Interface(VaultABI),
+  },
+  Liquidator: {
+    address: Liquidator.address,
+    abi: new Interface(LiqudidatorABI),
+  },
+};
+export const STRATEGIES = {
+  MarginTradingStrategy: {
+    address: MTS.address,
+    abi: new Interface(MarginTradingStrategyABI),
+    defaultSlippage: '0.1',
+  },
+  YearnStrategy: {
+    address: YS.address,
+    abi: new Interface(YearnStrategyABI),
+    defaultSlippage: '0.01',
+  },
+  EulerStrategy: {
+    address: ES.address,
+    abi: new Interface(EulerStrategyABI),
+    defaultSlippage: '0.01',
+  },
+};
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
@@ -42,6 +86,8 @@ export const TRADE_STRATEGIES = [
 ];
 
 export const MAX_LEVERAGE = 5;
+
+export const DEFAULT_DEADLINE = '20';
 
 export const POSITION_CHART_OPTIONS = {
   responsive: true,

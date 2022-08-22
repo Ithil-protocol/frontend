@@ -3,8 +3,6 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
-
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
 import SliderBar from '@/components/based/Slidebar';
@@ -13,18 +11,25 @@ import Container from '@/components/based/Container';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { MAX_LEVERAGE } from '@/global/constants';
 import { formatAmount, parseAmount } from '@/global/utils';
-import { useLatestVault } from '@/hooks/useYearnRegistery';
-import { useQuote } from '@/hooks/useYearnStrategy';
+import { useLatestVault } from '@/hooks/useYearnRegistry';
+import { useQuoter } from '@/hooks/useQuoter';
+import {
+  MAX_LEVERAGE,
+  STRATEGIES,
+  DEFAULT_DEADLINE,
+  TOKEN_LIST,
+} from '@/global/constants';
 
 export default function YearnStrategyPage() {
-  const { tokens } = TokenList;
+  const { tokens } = TOKEN_LIST;
   const [spentToken, setSpentToken] = useState<TokenDetails>(tokens[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [leverage, setLeverage] = useState<number>(1);
-  const [slippagePercent, setSlippagePercent] = useState<string>('1');
-  const [deadline, setDeadline] = useState<string>('20');
+  const [slippagePercent, setSlippagePercent] = useState<string>(
+    STRATEGIES.YearnStrategy.defaultSlippage
+  );
+  const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] =
     useState<boolean>(false);
 
@@ -42,10 +47,11 @@ export default function YearnStrategyPage() {
     );
   }, [leverage, marginAmount, spentToken]);
 
-  const quoteValue = useQuote(
+  const quoteValue = useQuoter(
     spentToken.address,
     obtainedTokenAddress,
-    maxSpent
+    maxSpent,
+    STRATEGIES.YearnStrategy
   );
 
   const minObtained = useMemo(() => {

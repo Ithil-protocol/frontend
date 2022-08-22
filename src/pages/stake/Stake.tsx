@@ -2,7 +2,6 @@
 import 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { ChartLine, MagnifyingGlass, Info } from 'phosphor-react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import Txt from '@/components/based/Txt';
 import Container from '@/components/based/Container';
@@ -13,6 +12,7 @@ import Button from '@/components/based/Button';
 import InputField from '@/components/based/InputField';
 import Tooltip from '@/components/based/Tooltip';
 import StakeTableRow from '@/components/composed/stake/StakeTableRow';
+import { TOKEN_LIST } from '@/global/constants';
 
 const APY_MENU: KeyableType = {
   highest: 'Highest',
@@ -24,7 +24,7 @@ const TVL_MENU: KeyableType = {
 };
 
 export default function StakePage() {
-  const { tokens } = TokenList;
+  const { tokens } = TOKEN_LIST;
   const [apySortValue, setApySortValue] = useState<string>('');
   const [tvlSortValue, setTvlSortValue] = useState<string>('');
   const [searchInputValue, setSearchInputValue] = useState<string>('');

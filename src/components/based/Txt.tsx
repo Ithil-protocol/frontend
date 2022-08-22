@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC, ReactNode } from 'react';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
 
 import { IBaseProps } from '@/global/types';
+import { TOKEN_LIST } from '@/global/constants';
 
-const { tokens } = TokenList;
+const { tokens } = TOKEN_LIST;
 
 export interface ITxtProps extends IBaseProps {
   children: ReactNode;

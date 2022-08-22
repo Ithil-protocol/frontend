@@ -9,16 +9,20 @@ import Txt from '@/components/based/Txt';
 import ChartCard from '@/components/composed/trade/ChartCard';
 import PositionDetailsWidget from '@/components/composed/dashboard/PositionDetailsWidget';
 import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
-import { usePositons } from '@/hooks/useMarginTradingStrategy';
+import { usePositions } from '@/hooks/usePositions';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import { getTokenByAddress } from '@/global/utils';
+import { STRATEGIES } from '@/global/constants';
 
 export default function PositionDetails() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const positionId = useMemo(() => searchParams.get('id'), [searchParams]);
-  const positionDetails = usePositons(Number(positionId));
+  const positionDetails = usePositions(
+    Number(positionId),
+    STRATEGIES.MarginTradingStrategy
+  );
 
   const [closePositionModalOpened, setClosePositionModalOpened] =
     useState(false);
