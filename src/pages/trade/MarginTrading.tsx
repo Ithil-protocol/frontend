@@ -7,6 +7,7 @@ import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
 import { useEthers } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
+import toast from 'react-hot-toast';
 
 import Txt from '@/components/based/Txt';
 import Button from '@/components/based/Button';
@@ -31,6 +32,7 @@ import {
   DEFAULT_DEADLINE,
   TOKEN_LIST,
 } from '@/global/constants';
+import { useVaultData } from '@/hooks/useVault';
 
 export default function MarginTradingPage() {
   const { account } = useEthers();
@@ -57,6 +59,18 @@ export default function MarginTradingPage() {
       leverage
     );
   }, [leverage, marginAmount, collateralToken]);
+
+  const vaultData = useVaultData(spentToken.address);
+  const minimumMarginValue = useMemo(() => {
+    if (!vaultData) return 0;
+    return Number(
+      formatAmount(
+        vaultData['minimumMargin'].toString(),
+        spentToken.decimals,
+        false
+      )
+    );
+  }, [spentToken.decimals, vaultData]);
 
   const quoteValueDst = useQuoter(
     spentToken.address,
@@ -183,6 +197,14 @@ export default function MarginTradingPage() {
   };
 
   const handleExecute = () => {
+    if (
+      !marginAmount ||
+      Number(marginAmount) <= 0 ||
+      Number(marginAmount) < minimumMarginValue
+    ) {
+      toast.error('Input corect amount!');
+      return;
+    }
     if (buttonText === 'Approve') {
       handleApprove();
     } else {
