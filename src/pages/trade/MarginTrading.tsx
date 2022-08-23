@@ -41,7 +41,7 @@ export default function MarginTradingPage() {
     useState<boolean>(true);
   const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [obtainedToken, setObtainedToken] = useState<TokenDetails>(
-    TOKEN_LIST[1]
+    TOKEN_LIST[4]
   );
   const [leverage, setLeverage] = useState<number>(1);
   const [marginAmount, setMarginAmount] = useState<string>('0');
@@ -389,7 +389,7 @@ export default function MarginTradingPage() {
                           }
                         />
                         <InputField
-                          tooltipText="Maximum time the transaction can be pending"
+                          tooltipText="Deadline for the execution time, if the transaction is executed afterwards it will revert"
                           label="Deadline"
                           placeholder="20 mins"
                           value={deadline}

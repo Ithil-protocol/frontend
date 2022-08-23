@@ -16,7 +16,11 @@ const Tooltip: FC<ITooltip> = ({ text }) => {
 
   return (
     <>
-      <Question data-tip data-for={id} tw="text-font-200 dark:text-font-200" />
+      <Question
+        data-tip
+        data-for={id}
+        tw="text-font-200 dark:text-font-200 cursor-help"
+      />
       <ReactTooltip
         id={id}
         type="info"
