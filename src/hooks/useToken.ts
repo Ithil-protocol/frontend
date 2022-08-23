@@ -1,4 +1,3 @@
-import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { useCall, useContractFunction, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
