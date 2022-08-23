@@ -21,7 +21,9 @@ const MenuItem: FC<IMenuItem> = ({ Icon, label, network, onClick }) => {
   const { switchNetwork } = useEthers();
 
   const handleChangeNetwork = async () => {
-    switchNetwork(network.chainId);
+    switchNetwork(network.chainId).then(() => {
+      window.location.reload();
+    });
     onClick();
   };
 

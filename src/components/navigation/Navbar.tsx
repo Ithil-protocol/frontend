@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEthers } from '@usedapp/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 import WalletConnectionModal from './WalletConnectionModal';
 import { WalletIndicator } from './WalletIndicator';
 import NetworkMenu from './NetworkMenu';
 import AccountModal from './AccountModal';
+import NetworkAlertBar from './NetworkAlertBar';
 
 import { useTheme } from '@/state/application/hooks';
 import Button from '@/components/based/Button';
@@ -17,41 +19,46 @@ import { ReactComponent as LogoFullLight } from '@/assets/images/logoFullLight.s
 import { ReactComponent as LogoFullDark } from '@/assets/images/logoFullDark.svg';
 
 const Navbar = () => {
-  const { account } = useEthers();
+  const { account, chainId } = useEthers();
   const theme = useTheme();
   const [walletModalOpened, setWalletModalOpened] = useState(false);
   const [accountModalOpened, setAccountModalOpened] = useState(false);
 
   return (
-    <div tw="w-full px-5 desktop:w-[calc(100% - 9rem)] my-6 tablet:mx-auto flex flex-row items-center justify-between">
-      <span tw="flex flex-row items-center">
-        {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
-        <span tw="ml-24 flex flex-row items-center">
-          <NavigationMenu />
-          <ThemeSwitch />
+    <div tw="flex flex-col">
+      {!chainId && (
+        <NetworkAlertBar content="Wrong network - Support only Goerli testnet." />
+      )}
+      <div tw="w-full px-5 desktop:w-[calc(100% - 9rem)] my-6 tablet:mx-auto flex flex-row items-center justify-between">
+        <span tw="flex flex-row items-center">
+          {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
+          <span tw="ml-24 flex flex-row items-center">
+            <NavigationMenu />
+            <ThemeSwitch />
+          </span>
         </span>
-      </span>
-      <span tw="flex flex-row items-center gap-2">
-        <NetworkMenu />
-        {account ? (
-          <WalletIndicator onClick={() => setAccountModalOpened(true)} />
-        ) : (
-          <Button
-            text="Connect wallet"
-            action
-            onClick={() => setWalletModalOpened(true)}
-          />
-        )}
-        <KebabMenu />
-      </span>
-      <WalletConnectionModal
-        open={walletModalOpened}
-        onClose={() => setWalletModalOpened(false)}
-      />
-      <AccountModal
-        open={accountModalOpened}
-        onClose={() => setAccountModalOpened(false)}
-      />
+        <span tw="flex flex-row items-center gap-2">
+          <NetworkMenu />
+          {account ? (
+            <WalletIndicator onClick={() => setAccountModalOpened(true)} />
+          ) : (
+            <Button
+              text="Connect wallet"
+              action
+              onClick={() => setWalletModalOpened(true)}
+            />
+          )}
+          <KebabMenu />
+        </span>
+        <WalletConnectionModal
+          open={walletModalOpened}
+          onClose={() => setWalletModalOpened(false)}
+        />
+        <AccountModal
+          open={accountModalOpened}
+          onClose={() => setAccountModalOpened(false)}
+        />
+      </div>
     </div>
   );
 };
