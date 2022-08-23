@@ -25,7 +25,7 @@ interface IStakeControlWidget {
   token: TokenDetails;
   value: string;
   maxValue?: string;
-  onSubmit: (inputValue: string) => void;
+  onSubmit: (inputValue: string) => Promise<void>;
   secondaryButton?: boolean;
   isLoading: boolean;
   isApproved?: boolean;
@@ -61,7 +61,7 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
         action
         bold
         isLoading={isLoading}
-        onClick={() => onSubmit(inputAmount)}
+        onClick={() => onSubmit(inputAmount).then(() => setInputAmount('0'))}
         secondary={secondaryButton}
       />
     </div>
@@ -100,16 +100,16 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
       .dividedBy(vaultBalance);
   }, [vaultBalance, wrappedTokenBalance, wrappedTokenSupply]);
 
-  const handleStake = (amount: string) => {
+  const handleStake = async (amount: string) => {
     if (isApproved) {
-      stake(token.address, parseUnits(amount, token.decimals));
+      await stake(token.address, parseUnits(amount, token.decimals));
     } else {
-      approve(CORE.Vault.address, MaxUint256);
+      await approve(CORE.Vault.address, MaxUint256);
     }
   };
-  const handleUnstake = (amount: string) => {
+  const handleUnstake = async (amount: string) => {
     console.log('amount', amount);
-    unstake(token.address, parseUnits(amount, token.decimals));
+    await unstake(token.address, parseUnits(amount, token.decimals));
   };
 
   return (
