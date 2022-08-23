@@ -118,15 +118,16 @@ export default function StakePage() {
                 ),
               },
               {
-                id: 'owner',
+                id: 'owned',
                 content: (
                   <div tw="flex items-center gap-2">
                     <Txt.Body2Regular tw="text-font-100">
-                      Balance
+                      Deposited
                     </Txt.Body2Regular>
                   </div>
                 ),
               },
+              { id: 'action', content: '' },
             ]}
             data={TOKEN_LIST.filter(
               (t) =>
@@ -142,6 +143,11 @@ export default function StakePage() {
               total_value: null,
               total_borrow: null,
               owned: null,
+              action: (
+                <Txt.Body2Regular tw="flex flex-row">
+                  <Info />
+                </Txt.Body2Regular>
+              ),
             }))}
             loading={false}
             hoverable

@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
+import BigNumber from 'bignumber.js';
+import { useEthers, useTokenBalance } from '@usedapp/core';
 
 import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
 import { ITableRow } from '@/components/based/table/DataTable';
@@ -12,12 +14,20 @@ import { useTotalSupply } from '@/hooks/useToken';
 type IStakeTableRow = ITableRow;
 
 const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
+  const { account } = useEthers();
   const [expanded, setExpanded] = useState(false);
   const vaultTokenAddress = row['token_address'] as string;
   const vaultToken = getTokenByAddress(vaultTokenAddress);
   const vaultBalance = useBalance(vaultTokenAddress);
   const vaultData = useVaultData(vaultTokenAddress);
+  const balance = useTokenBalance(vaultTokenAddress, account);
+  const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
+
+  const totalBorrowed = useMemo(() => {
+    if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
+    return BigNumber(vaultData?.netLoans.toString());
+  }, [vaultData?.netLoans]);
 
   const shareValue = useMemo(() => {
     if (wrappedTokenSupply.isZero()) return null;
@@ -29,12 +39,14 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
     const passedTime =
       Math.floor(new Date().getTime() / 1000) -
       Number(vaultData?.creationTime.toString());
-    return shareValue
+    const value = shareValue
       .minus(1)
       .multipliedBy(31536000)
       .dividedBy(passedTime)
-      .multipliedBy(100)
-      .toFixed(2);
+      .multipliedBy(100);
+
+    if (value.gt(0)) return value.toFixed(2);
+    else return 0;
   }, [shareValue, vaultData?.creationTime]);
 
   return (
@@ -66,6 +78,27 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
                   </Txt.Body2Regular>
                 </td>
               );
+            case 'total_borrowed':
+              return (
+                <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
+                  <Txt.Body2Regular>
+                    {formatAmount(totalBorrowed, vaultToken?.decimals)}
+                  </Txt.Body2Regular>
+                </td>
+              );
+            case 'owned':
+              return (
+                <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
+                  <Txt.Body2Regular>
+                    {wrappedTokenBalance?.gt(0)
+                      ? formatAmount(
+                          wrappedTokenBalance.toString(),
+                          vaultToken?.decimals
+                        )
+                      : '0'}
+                  </Txt.Body2Regular>
+                </td>
+              );
             default:
               return (
                 <td
@@ -81,10 +114,18 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
           }
         })}
       </tr>
-      {vaultToken && (
+      {vaultToken && balance?.gt(0) && account && (
         <tr style={{ display: !expanded ? 'none' : undefined }}>
           <td tw="bg-primary-100" colSpan={head.length}>
-            <StakeControlPanel token={vaultToken} />
+            <StakeControlPanel
+              token={vaultToken}
+              balance={balance}
+              account={account}
+              vaultData={vaultData}
+              vaultBalance={vaultBalance}
+              wrappedTokenBalance={wrappedTokenBalance}
+              wrappedTokenSupply={wrappedTokenSupply}
+            />
           </td>
         </tr>
       )}

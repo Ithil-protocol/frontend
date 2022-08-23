@@ -70,15 +70,23 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
 
 interface IStakeControlPanel {
   token: TokenDetails;
+  balance: any;
+  account: string;
+  vaultData: any;
+  vaultBalance: any;
+  wrappedTokenBalance: any;
+  wrappedTokenSupply: any /** @todo replace "any" with proper typing */;
 }
 
-const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
-  const { account } = useEthers();
-  const balance = useTokenBalance(token.address, account);
-  const vaultData = useVaultData(token.address);
-  const vaultBalance = useBalance(token.address);
-  const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
-  const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
+const StakeControlPanel: FC<IStakeControlPanel> = ({
+  token,
+  balance,
+  account,
+  vaultData,
+  vaultBalance,
+  wrappedTokenBalance,
+  wrappedTokenSupply,
+}) => {
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
   const tokenAllowance = useTokenAllowance(
@@ -118,11 +126,16 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
         title="Deposit"
         value={
           balance
-            ? `${formatAmount(balance?.toString(), token.decimals)} ${
+            ? `Balance: ${formatAmount(balance?.toString(), token.decimals)} ${
                 token.symbol
               }`
             : '-'
         }
+        maxValue={formatAmount(
+          balance?.toString() || '0',
+          token.decimals,
+          false
+        )}
         token={token}
         onSubmit={handleStake}
         isLoading={isApproved ? isStakeLoading : isApproveLoading}
@@ -132,15 +145,13 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
         title="Withdraw"
         value={
           maximumWithdrawal
-            ? `${formatAmount(maximumWithdrawal?.toFixed(), token.decimals)} ${
-                token.symbol
-              }`
+            ? `Available: ${formatAmount(
+                maximumWithdrawal?.toFixed(),
+                token.decimals
+              )} ${token.symbol}`
             : '-'
         }
-        maxValue={formatAmount(
-          maximumWithdrawal?.toFixed() || '0',
-          token.decimals
-        )}
+        maxValue={formatAmount(maximumWithdrawal || '0', token.decimals, false)}
         token={token}
         onSubmit={handleUnstake}
         secondaryButton
