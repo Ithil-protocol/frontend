@@ -2,7 +2,7 @@ import { ChainId, Config, Goerli, Mainnet, Rinkeby } from '@usedapp/core';
 
 import { infuraUrl, pollingIntervalProvider } from '@/global/utils';
 
-export const POLLING_INTERVAL = 100_000;
+export const POLLING_INTERVAL = 10_000;
 
 export const DAPP_CONFIG: Config = {
   readOnlyChainId: ChainId.Mainnet,

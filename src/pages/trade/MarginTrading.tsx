@@ -7,6 +7,7 @@ import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
 import { useEthers } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
+import toast from 'react-hot-toast';
 
 import Txt from '@/components/based/Txt';
 import Button from '@/components/based/Button';
@@ -31,6 +32,7 @@ import {
   DEFAULT_DEADLINE,
   TOKEN_LIST,
 } from '@/global/constants';
+import { useVaultData } from '@/hooks/useVault';
 
 export default function MarginTradingPage() {
   const { account } = useEthers();
@@ -58,6 +60,18 @@ export default function MarginTradingPage() {
     );
   }, [leverage, marginAmount, collateralToken]);
 
+  const vaultData = useVaultData(spentToken.address);
+  const minimumMarginValue = useMemo(() => {
+    if (!vaultData) return 0;
+    return Number(
+      formatAmount(
+        vaultData['minimumMargin'].toString(),
+        spentToken.decimals,
+        false
+      )
+    );
+  }, [spentToken.decimals, vaultData]);
+
   const quoteValueDst = useQuoter(
     spentToken.address,
     obtainedToken.address,
@@ -79,9 +93,11 @@ export default function MarginTradingPage() {
   const { isLoading: isLoadingApprove, approve } = useApprove(
     collateralToken.address
   );
-  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
-    STRATEGIES.MarginTradingStrategy
-  );
+  const {
+    isLoading: isLoadingOpenPos,
+    openPosition,
+    state,
+  } = useOpenPosition(STRATEGIES.MarginTradingStrategy);
 
   useEffect(() => {
     if (collateralIsSpentToken) {
@@ -102,12 +118,12 @@ export default function MarginTradingPage() {
       return 'Approve';
     }
     return 'Open';
-  }, [allowance, marginAmount, spentToken.decimals]);
+  }, [allowance, collateralToken.decimals, marginAmount]);
 
   const slippageValue = useMemo(() => {
     if (collateralIsSpentToken) return (100 - Number(slippagePercent)) / 100;
     else return (100 + Number(slippagePercent)) / 100;
-  }, [slippagePercent]);
+  }, [collateralIsSpentToken, slippagePercent]);
 
   const maxSpent = useMemo(() => {
     let _maxSpent;
@@ -128,8 +144,6 @@ export default function MarginTradingPage() {
     priority,
     quoteValueSrc,
     slippageValue,
-    spentToken.decimals,
-    obtainedToken.decimals,
     leveragedValue,
   ]);
 
@@ -152,8 +166,6 @@ export default function MarginTradingPage() {
     priority,
     leveragedValue,
     slippageValue,
-    spentToken.decimals,
-    obtainedToken.decimals,
     quoteValueDst,
   ]);
 
@@ -181,15 +193,18 @@ export default function MarginTradingPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    console.log(newOrder);
-
-    // const gas = await estimateGas(newOrder);
-    // if (gas > 0) {
     openPosition(newOrder, { gasLimit: 700_000 });
-    // }
   };
 
   const handleExecute = () => {
+    if (
+      !marginAmount ||
+      Number(marginAmount) <= 0 ||
+      Number(marginAmount) < minimumMarginValue
+    ) {
+      toast.error('Your margin is below minimum!');
+      return;
+    }
     if (buttonText === 'Approve') {
       handleApprove();
     } else {
@@ -204,6 +219,13 @@ export default function MarginTradingPage() {
     }
     return marks;
   }, []);
+
+  useEffect(() => {
+    if (state.status === 'Success') {
+      setMarginAmount('0');
+      setLeverage(1);
+    }
+  }, [state]);
 
   return (
     <Container>

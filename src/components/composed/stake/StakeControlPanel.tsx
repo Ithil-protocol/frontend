@@ -5,6 +5,7 @@ import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
 import { MaxUint256 } from '@ethersproject/constants';
+import toast from 'react-hot-toast';
 
 import { CORE } from '@/global/constants';
 import { TokenDetails } from '@/global/types';
@@ -25,7 +26,7 @@ interface IStakeControlWidget {
   token: TokenDetails;
   value: string;
   maxValue?: string;
-  onSubmit: (inputValue: string) => void;
+  onSubmit: (inputValue: string) => Promise<void>;
   secondaryButton?: boolean;
   isLoading: boolean;
   isApproved?: boolean;
@@ -42,6 +43,14 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
   isApproved = true,
 }) => {
   const [inputAmount, setInputAmount] = useState('');
+
+  const handleSubmit = () => {
+    if (!inputAmount || Number(inputAmount) <= 0) {
+      toast.error('Input correct amount!');
+      return;
+    }
+    onSubmit(inputAmount).then(() => setInputAmount('0'));
+  };
   return (
     <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 my-3 border-1 border-font-200 dark:border-primary-400">
       <InfoItem label={title} value={value} />
@@ -61,7 +70,7 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
         action
         bold
         isLoading={isLoading}
-        onClick={() => onSubmit(inputAmount)}
+        onClick={handleSubmit}
         secondary={secondaryButton}
       />
     </div>
@@ -100,16 +109,16 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({ token }) => {
       .dividedBy(vaultBalance);
   }, [vaultBalance, wrappedTokenBalance, wrappedTokenSupply]);
 
-  const handleStake = (amount: string) => {
+  const handleStake = async (amount: string) => {
     if (isApproved) {
-      stake(token.address, parseUnits(amount, token.decimals));
+      await stake(token.address, parseUnits(amount, token.decimals));
     } else {
-      approve(CORE.Vault.address, MaxUint256);
+      await approve(CORE.Vault.address, MaxUint256);
     }
   };
-  const handleUnstake = (amount: string) => {
+  const handleUnstake = async (amount: string) => {
     console.log('amount', amount);
-    unstake(token.address, parseUnits(amount, token.decimals));
+    await unstake(token.address, parseUnits(amount, token.decimals));
   };
 
   return (

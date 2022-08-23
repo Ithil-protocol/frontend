@@ -10,7 +10,7 @@ import ES from '@ithil-protocol/deployed/goerli/deployments/EulerStrategy.json';
 import VaultABI from '@ithil-protocol/deployed/goerli/abi/Vault.json';
 import LiqudidatorABI from '@ithil-protocol/deployed/goerli/abi/Liquidator.json';
 import MarginTradingStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
-import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
+import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.json';
 import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
 import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
 

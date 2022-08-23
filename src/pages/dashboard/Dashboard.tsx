@@ -46,7 +46,7 @@ export default function DashboardPage() {
     STRATEGIES.MarginTradingStrategy
   );
 
-  const displayedPositions = useMemo(() => {
+  const filteredPositions = useMemo(() => {
     if (!openedPositions || !closedPositions || !liquidatedPositions)
       return null;
     switch (activeTab) {
@@ -66,6 +66,13 @@ export default function DashboardPage() {
         );
     }
   }, [openedPositions, closedPositions, activeTab, liquidatedPositions]);
+
+  const displayedPositions = useMemo(() => {
+    if (!filteredPositions) return null;
+    return filteredPositions.sort(
+      (a, b) => b.createdAt.toNumber() - a.createdAt.toNumber()
+    );
+  }, [filteredPositions]);
 
   const handleRowClick = (idx: number) => {
     if (!displayedPositions || !displayedPositions.length) return;
