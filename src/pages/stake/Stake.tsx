@@ -52,7 +52,7 @@ export default function StakePage() {
               tw="mr-9"
               value={searchInputValue}
               placeholder="Filter by token..."
-              onChange={(val) => setSearchInputValue(val.toUpperCase())}
+              onChange={(val) => setSearchInputValue(val)}
               renderRight={
                 <Txt.Body2Regular>
                   <MagnifyingGlass />
@@ -128,9 +128,8 @@ export default function StakePage() {
                 ),
               },
             ]}
-            data={TOKEN_LIST.filter(
-              (t) =>
-                t.symbol.includes(searchInputValue) || searchInputValue === ''
+            data={TOKEN_LIST.filter(({ symbol }) =>
+              symbol.trim().includes(searchInputValue.toUpperCase())
             ).map((token) => ({
               vault_name: (
                 <Txt.TokenText symbol={token.symbol}>

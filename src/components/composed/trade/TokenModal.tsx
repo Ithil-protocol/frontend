@@ -41,8 +41,8 @@ const TokenModal: FC<ITokenModal> = ({
 
     const val = value.trim().toLowerCase();
     setFilteredTokenList(
-      TOKEN_LIST.filter(({ name }) =>
-        name.trim().toLowerCase().startsWith(val)
+      TOKEN_LIST.filter(({ symbol }) =>
+        symbol.trim().includes(val.toUpperCase())
       ).slice(0, 6)
     );
   };
