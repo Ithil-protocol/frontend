@@ -202,7 +202,7 @@ export default function MarginTradingPage() {
       Number(marginAmount) <= 0 ||
       Number(marginAmount) < minimumMarginValue
     ) {
-      toast.error('Input corect amount!');
+      toast.error('Your margin is below minimum!');
       return;
     }
     if (buttonText === 'Approve') {
