@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
-import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
+import { DEFAULT_SUPPORTED_CHAINS, Mainnet, useEthers } from '@usedapp/core';
 
 import { TOKEN_LIST } from './constants';
 
@@ -51,4 +51,23 @@ export function parseAmount(value: number | string, decimals = 18) {
 
 export function getTokenByAddress(tokenAddress: string) {
   return TOKEN_LIST.find((token) => token.address === tokenAddress);
+}
+
+export async function importToken(
+  tokenAddress: string,
+  token: any,
+  tokenImage: string
+) {
+  await (window as any).ethereum.request({
+    method: 'wallet_watchAsset',
+    params: {
+      type: 'ERC20',
+      options: {
+        address: tokenAddress,
+        symbol: token.symbol,
+        decimals: token.decimals,
+        image: tokenImage,
+      },
+    },
+  });
 }
