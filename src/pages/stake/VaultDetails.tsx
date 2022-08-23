@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
@@ -64,6 +64,10 @@ export default function VaultDetails() {
     if (value.gt(0)) return value.toFixed(2);
     else return 0;
   }, [shareValue, vaultData?.creationTime]);
+
+  useEffect(() => {
+    if (!token) navigate('/stake');
+  }, []);
 
   return (
     <Container>
