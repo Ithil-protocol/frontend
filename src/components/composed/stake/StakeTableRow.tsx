@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
+import { Info } from 'phosphor-react';
 
 import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
 import { ITableRow } from '@/components/based/table/DataTable';
@@ -14,6 +16,7 @@ import { useTotalSupply } from '@/hooks/useToken';
 type IStakeTableRow = ITableRow;
 
 const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
+  const navigate = useNavigate();
   const { account } = useEthers();
   const [expanded, setExpanded] = useState(false);
   const vaultTokenAddress = row['token_address'] as string;
@@ -48,6 +51,10 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
     if (value.gt(0)) return value.toFixed(2);
     else return 0;
   }, [shareValue, vaultData?.creationTime]);
+
+  const handleInfoClick = async (e: any) => {
+    navigate(`/stake/details?token=${vaultTokenAddress}`);
+  };
 
   return (
     <>
@@ -96,6 +103,14 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
                           vaultToken?.decimals
                         )
                       : '0'}
+                  </Txt.Body2Regular>
+                </td>
+              );
+            case 'action':
+              return (
+                <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
+                  <Txt.Body2Regular>
+                    <Info onClick={handleInfoClick} />
                   </Txt.Body2Regular>
                 </td>
               );

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { useMemo, useState } from 'react';
-import { ChartLine, MagnifyingGlass, Info } from 'phosphor-react';
+import { MagnifyingGlass } from 'phosphor-react';
 
 import Txt from '@/components/based/Txt';
 import Container from '@/components/based/Container';
@@ -143,11 +143,7 @@ export default function StakePage() {
               total_value: null,
               total_borrow: null,
               owned: null,
-              action: (
-                <Txt.Body2Regular tw="flex flex-row">
-                  <Info />
-                </Txt.Body2Regular>
-              ),
+              action: null,
             }))}
             loading={false}
             hoverable

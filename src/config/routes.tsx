@@ -8,6 +8,7 @@ import MarginTradingPage from '@/pages/trade/MarginTrading';
 import YearnStrategyPage from '@/pages/trade/YearnStrategy';
 import PositionDetails from '@/pages/dashboard/PositionDetails';
 import FaucetsPage from '@/pages/faucets/Faucets';
+import VaultDetails from '@/pages/stake/VaultDetails';
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -33,6 +34,12 @@ const APP_ROUTES: RouteType[] = [
     component: <StakePage />,
     title: 'Stake',
     isNavLinked: true,
+  },
+  {
+    path: '/stake/details',
+    component: <VaultDetails />,
+    title: 'Vault Details',
+    isNavLinked: false,
   },
   {
     path: '/dashboard',

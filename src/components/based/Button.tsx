@@ -58,6 +58,7 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
         secondary &&
           tw`bg-opacity-0 hover:bg-hover-light dark:hover:bg-primary-300 border-1 border-font-200 dark:border-primary-400`,
         props.full && tw`w-full`,
+        disabled && tw`cursor-wait`,
         tw`disabled:bg-disabled-action`,
       ]}
       disabled={disabled}
