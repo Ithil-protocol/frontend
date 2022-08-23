@@ -15,5 +15,6 @@ export function useOpenPosition(strategy: any) {
   return {
     isLoading,
     openPosition: send,
+    state,
   };
 }
