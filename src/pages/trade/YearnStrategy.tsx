@@ -7,6 +7,7 @@ import { Line } from 'react-chartjs-2';
 import BigNumber from 'bignumber.js';
 import { useEthers } from '@usedapp/core';
 import { MaxUint256 } from '@ethersproject/constants';
+import { useTheme } from '@emotion/react';
 
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
@@ -24,12 +25,68 @@ import {
   STRATEGIES,
   DEFAULT_DEADLINE,
   TOKEN_LIST,
+  YEARN_API_URL,
 } from '@/global/constants';
+import { useAllowance, useApprove } from '@/hooks/useToken';
+import { useOpenPosition } from '@/hooks/useYearnStrategy';
+import fetchAPI from '@/global/api';
 
 export default function YearnStrategyPage() {
+  const theme = useTheme();
+  const { account } = useEthers();
+
+  const CHART_OPTIONS = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+    },
+    elements: {
+      point: {
+        radius: 0,
+      },
+      line: {
+        tension: 0.3,
+        borderWidth: 1,
+      },
+    },
+    scales: {
+      xAxis: {
+        display: true,
+        title: {
+          display: false,
+        },
+        grid: {
+          borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
+          color: theme === 'dark' ? '#ffffff13' : '#00000013',
+          borderDash: [5, 5, 5],
+        },
+        ticks: {
+          display: false,
+        },
+      },
+      yAxis: {
+        display: true,
+        grid: {
+          borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
+          color: theme === 'dark' ? '#ffffff13' : '#00000013',
+          borderDash: [5, 5, 5],
+        },
+      },
+    },
+  };
+
   const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [leverage, setLeverage] = useState<number>(1);
+  const [yearnData, setYearnData] = useState<any[]>();
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.YearnStrategy.defaultSlippage
   );
