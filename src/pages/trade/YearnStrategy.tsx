@@ -53,7 +53,7 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
-    STRATEGIES.YearnStrategy
+    STRATEGIES.YearnStrategy.address
   );
 
   const minObtained = useMemo(() => {
@@ -62,7 +62,7 @@ export default function YearnStrategyPage() {
 
   const allowance = useAllowance(
     spentToken.address,
-    GOERLI_ADDRESSES.YearnStrategy
+    STRATEGIES.YearnStrategy.address
   );
 
   const { isLoading: isLoadingApprove, approve } = useApprove(
@@ -108,7 +108,7 @@ export default function YearnStrategyPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(GOERLI_ADDRESSES.YearnStrategy, MaxUint256);
+    approve(STRATEGIES.YearnStrategy.address, MaxUint256);
   };
 
   const handleOpenOrder = async () => {
