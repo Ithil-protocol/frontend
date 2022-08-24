@@ -2,8 +2,6 @@
 import tw from 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Line } from 'react-chartjs-2';
-import { number } from 'yup';
 
 import Txt from '@/components/based/Txt';
 import Container from '@/components/based/Container';
@@ -17,21 +15,10 @@ import { useLiquidatedPositions } from '@/hooks/useLiquidatedPositions';
 import { useOpenedPositions } from '@/hooks/useOpenedPositions';
 import { useClosedPositions } from '@/hooks/useClosedPositions';
 import { getTokenByAddress } from '@/global/utils';
-// import { POSITION_CHART_OPTIONS } from '@/global/constants';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import { PositionOpenType } from '@/global/types';
 import { STRATEGIES } from '@/global/constants';
-
-// export const data = {
-//   labels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   datasets: [
-//     {
-//       data: [0, 3, 21, -23, 235, -23, 1, 24, 64, -56],
-//       borderColor: 'rgb(255, 99, 132)',
-//     },
-//   ],
-// };
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -116,8 +103,6 @@ export default function DashboardPage() {
               { id: 'position', content: 'Position' },
               { id: 'collateral', content: 'Collateral' },
               { id: 'profit', content: 'Profit' },
-              { id: 'creation_time', content: 'Creation Time' },
-              // { id: 'trend', content: 'Trend' },
             ].concat(
               activeTab === 'active' ? [{ id: 'action', content: '' }] : []
             )}
@@ -131,9 +116,6 @@ export default function DashboardPage() {
                     ? position.owedToken
                     : position.heldToken
                 )?.symbol;
-                const creationDate = new Date(
-                  Number(position.createdAt.toString()) * 1000
-                );
 
                 return {
                   token_pair: (
@@ -147,16 +129,6 @@ export default function DashboardPage() {
                   position_status: activeTab,
                   collateral: null,
                   profit: null,
-                  creation_time: (
-                    <Txt.Body2Regular>
-                      {creationDate.toLocaleString()}
-                    </Txt.Body2Regular>
-                  ),
-                  // trend: (
-                  //   <div css={[tw`width[100px] height[35px] -mt-4`]}>
-                  //     <Line options={POSITION_CHART_OPTIONS} data={data} />
-                  //   </div>
-                  // ),
                   action: (
                     <CloseButton
                       onClick={() => {

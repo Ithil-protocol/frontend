@@ -72,7 +72,7 @@ export default function useMarginTradingPositionDetails(
   ]);
 
   const positionValue = useMemo(() => {
-    return `${tokenPairValue} ${leverageValue.toFixed(2)}x ${longShortValue}`;
+    return `Margin Trading ${longShortValue} ${tokenPairValue}`;
   }, [tokenPairValue, leverageValue, longShortValue]);
 
   const currentPrice = useQuoter(
@@ -135,10 +135,11 @@ export default function useMarginTradingPositionDetails(
     const interestRateValue = new BigNumber(
       BN.from(details.interestRate).toString()
     );
-    const timestamp = new BigNumber(Math.floor(new Date().getTime() / 1000));
     const createdAtValue = new BigNumber(BN.from(details.createdAt).toString());
+
+    const now = new BigNumber(Math.floor(new Date().getTime() / 1000));
     return interestRateValue
-      .multipliedBy(timestamp.minus(createdAtValue))
+      .multipliedBy(now.minus(createdAtValue))
       .multipliedBy(principalValue)
       .dividedBy(864000000)
       .plus(_feesValue);
@@ -177,7 +178,7 @@ export default function useMarginTradingPositionDetails(
   const createdAtValue = useMemo(() => {
     return new Date(
       Number(BN.from(details.createdAt).toString()) * 1000
-    ).toLocaleDateString();
+    ).toLocaleString();
   }, [details]);
 
   return {
