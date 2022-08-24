@@ -5,12 +5,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
 
-import { useBalance, useVaultData } from '@/hooks/useVault';
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
 import ChartCard from '@/components/composed/trade/ChartCard';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useTotalSupply } from '@/hooks/useToken';
+import { useBalance, useVaultData } from '@/hooks/useVault';
 
 export interface IBanner {
   heading: string | number;

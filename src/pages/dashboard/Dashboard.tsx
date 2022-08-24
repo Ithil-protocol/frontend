@@ -6,7 +6,7 @@ import { Line } from 'react-chartjs-2';
 import { number } from 'yup';
 
 import Txt from '@/components/based/Txt';
-import Container from '@/components/based/Container';
+import Page from '@/components/based/Page';
 import Button from '@/components/based/Button';
 import DataTable from '@/components/based/table/DataTable';
 import {
@@ -80,101 +80,94 @@ export default function DashboardPage() {
   };
 
   return (
-    <Container>
+    <Page heading="Dashboard">
       <ClosePositionModal
         open={closePositionModalOpened}
         selectedId={selectedId}
         onClose={() => setClosePositionModalOpened(false)}
       />
-      <div tw="flex flex-col w-full items-center">
-        <div tw="w-full desktop:w-10/12 flex flex-col items-center">
-          <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
-          <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4">
-            <Txt.Body1Regular>View:</Txt.Body1Regular>
-            <Button
-              text="Active"
-              action={activeTab === 'active'}
-              bold={activeTab === 'active'}
-              onClick={() => setActiveTab('active')}
-            />
-            <Button
-              text="Closed"
-              action={activeTab === 'closed'}
-              bold={activeTab === 'closed'}
-              onClick={() => setActiveTab('closed')}
-            />
-            <Button
-              text="Liquidated"
-              action={activeTab === 'liquidated'}
-              bold={activeTab === 'liquidated'}
-              onClick={() => setActiveTab('liquidated')}
-            />
-          </div>
-          <DataTable
-            head={[
-              { id: 'token_pair', content: 'Token pair' },
-              { id: 'position', content: 'Position' },
-              { id: 'collateral', content: 'Collateral' },
-              { id: 'profit', content: 'Profit' },
-              { id: 'creation_time', content: 'Creation Time' },
-              // { id: 'trend', content: 'Trend' },
-            ].concat(
-              activeTab === 'active' ? [{ id: 'action', content: '' }] : []
-            )}
-            data={
-              displayedPositions?.map((position) => {
-                const collateralTokenSymbol = getTokenByAddress(
-                  position.collateralToken
-                )?.symbol;
-                const investmentTokenSymbol = getTokenByAddress(
-                  position.collateralToken == position.heldToken
-                    ? position.owedToken
-                    : position.heldToken
-                )?.symbol;
-                const creationDate = new Date(
-                  Number(position.createdAt.toString()) * 1000
-                );
-
-                return {
-                  token_pair: (
-                    <TokenPair
-                      investmentTokenSymbol={investmentTokenSymbol || 'WETH'}
-                      collateralTokenSymbol={collateralTokenSymbol || 'DAI'}
-                    />
-                  ),
-                  position: null,
-                  position_info: JSON.stringify(position),
-                  position_status: activeTab,
-                  collateral: null,
-                  profit: null,
-                  creation_time: (
-                    <Txt.Body2Regular>
-                      {creationDate.toLocaleString()}
-                    </Txt.Body2Regular>
-                  ),
-                  // trend: (
-                  //   <div css={[tw`width[100px] height[35px] -mt-4`]}>
-                  //     <Line options={POSITION_CHART_OPTIONS} data={data} />
-                  //   </div>
-                  // ),
-                  action: (
-                    <CloseButton
-                      onClick={() => {
-                        setSelectedId(Number(position.id));
-                        setClosePositionModalOpened(true);
-                      }}
-                    />
-                  ),
-                };
-              }) || []
-            }
-            loading={!displayedPositions}
-            hoverable
-            RowComponent={DashboardTableRow}
-            onRowClick={handleRowClick}
-          />
-        </div>
+      <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4">
+        <Txt.Body1Regular>View:</Txt.Body1Regular>
+        <Button
+          text="Active"
+          action={activeTab === 'active'}
+          bold={activeTab === 'active'}
+          onClick={() => setActiveTab('active')}
+        />
+        <Button
+          text="Closed"
+          action={activeTab === 'closed'}
+          bold={activeTab === 'closed'}
+          onClick={() => setActiveTab('closed')}
+        />
+        <Button
+          text="Liquidated"
+          action={activeTab === 'liquidated'}
+          bold={activeTab === 'liquidated'}
+          onClick={() => setActiveTab('liquidated')}
+        />
       </div>
-    </Container>
+      <DataTable
+        head={[
+          { id: 'token_pair', content: 'Token pair' },
+          { id: 'position', content: 'Position' },
+          { id: 'collateral', content: 'Collateral' },
+          { id: 'profit', content: 'Profit' },
+          { id: 'creation_time', content: 'Creation Time' },
+          // { id: 'trend', content: 'Trend' },
+        ].concat(activeTab === 'active' ? [{ id: 'action', content: '' }] : [])}
+        data={
+          displayedPositions?.map((position) => {
+            const collateralTokenSymbol = getTokenByAddress(
+              position.collateralToken
+            )?.symbol;
+            const investmentTokenSymbol = getTokenByAddress(
+              position.collateralToken == position.heldToken
+                ? position.owedToken
+                : position.heldToken
+            )?.symbol;
+            const creationDate = new Date(
+              Number(position.createdAt.toString()) * 1000
+            );
+
+            return {
+              token_pair: (
+                <TokenPair
+                  investmentTokenSymbol={investmentTokenSymbol || 'WETH'}
+                  collateralTokenSymbol={collateralTokenSymbol || 'DAI'}
+                />
+              ),
+              position: null,
+              position_info: JSON.stringify(position),
+              position_status: activeTab,
+              collateral: null,
+              profit: null,
+              creation_time: (
+                <Txt.Body2Regular>
+                  {creationDate.toLocaleString()}
+                </Txt.Body2Regular>
+              ),
+              // trend: (
+              //   <div css={[tw`width[100px] height[35px] -mt-4`]}>
+              //     <Line options={POSITION_CHART_OPTIONS} data={data} />
+              //   </div>
+              // ),
+              action: (
+                <CloseButton
+                  onClick={() => {
+                    setSelectedId(Number(position.id));
+                    setClosePositionModalOpened(true);
+                  }}
+                />
+              ),
+            };
+          }) || []
+        }
+        loading={!displayedPositions}
+        hoverable
+        RowComponent={DashboardTableRow}
+        onRowClick={handleRowClick}
+      />
+    </Page>
   );
 }
