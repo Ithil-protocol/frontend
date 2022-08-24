@@ -68,8 +68,11 @@ export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
 export const DISCORD_URL = 'https://discord.gg/tEaGBcGdQC';
 
-export const YEARN_API_URL =
-  'https://cors-anywhere.herokuapp.com/https://api.yearn.finance/v1/';
+export const YEARN_API_URL = `${
+  process.env.NODE_ENV === 'development'
+    ? 'https://cors-anywhere.herokuapp.com/'
+    : ''
+}https://api.yearn.finance/v1/`;
 
 export const TRADE_STRATEGIES = [
   {
