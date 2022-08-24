@@ -1,13 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useContext } from 'react';
 import {
   BookOpen,
   DiscordLogo,
   DotsThree,
   GithubLogo,
   Info,
+  MagicWand,
 } from 'phosphor-react';
+import { ShepherdTourContext } from 'react-shepherd';
 
 import Txt from '@/components/based/Txt';
 import Dropdown from '@/components/based/Dropdown';
@@ -21,12 +23,13 @@ import {
 interface IMenuItem {
   Icon: any;
   label: string;
-  url: string;
+  url?: string;
+  onClick?: () => void;
 }
 
-const MenuItem: FC<IMenuItem> = ({ Icon, label, url }) => {
+const MenuItem: FC<IMenuItem> = ({ Icon, label, url, onClick }) => {
   return (
-    <div tw="flex justify-start items-center gap-3">
+    <div tw="flex justify-start items-center gap-3" onClick={onClick}>
       <Icon tw="text-secondary-100" />
       <a href={url} target="_blank" rel="noreferrer">
         <Txt.Body2Regular tw="text-secondary-100">{label}</Txt.Body2Regular>
@@ -37,6 +40,7 @@ const MenuItem: FC<IMenuItem> = ({ Icon, label, url }) => {
 
 const KebabMenu = () => {
   const [visible, setVisibility] = useState(false);
+  const tour = useContext(ShepherdTourContext);
 
   return (
     <Dropdown
@@ -56,6 +60,9 @@ const KebabMenu = () => {
           <MenuItem Icon={BookOpen} label="Docs" url={DOC_URL} />
           <MenuItem Icon={GithubLogo} label="Source" url={GITHUB_URL} />
           <MenuItem Icon={DiscordLogo} label="Discord" url={DISCORD_URL} />
+          {tour && (
+            <MenuItem Icon={MagicWand} label="Tutorial" onClick={tour.start} />
+          )}
         </div>
       }
       visible={visible}

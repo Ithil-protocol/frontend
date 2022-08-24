@@ -131,7 +131,7 @@ export default function StakePage() {
             ]}
             data={TOKEN_LIST.filter(({ symbol }) =>
               symbol.trim().includes(searchInputValue.toUpperCase())
-            ).map((token) => ({
+            ).map((token, index) => ({
               vault_name: (
                 <Txt.TokenText symbol={token.symbol}>
                   {token.symbol}

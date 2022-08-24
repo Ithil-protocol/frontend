@@ -26,7 +26,7 @@ export default function FaucetsPage() {
     <Container>
       <div tw="flex flex-col w-full items-center">
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
-          <Txt.Heading1 tw="mb-12"> Faucets </Txt.Heading1>
+          <Txt.Heading1 tw="mb-12">Faucets</Txt.Heading1>
         </div>
         <div tw="flex flex-col justify-center items-center gap-3 self-center max-width[616px] text-center">
           <Txt.Body2Regular tw="text-secondary-200 mb-9">
@@ -65,6 +65,7 @@ export default function FaucetsPage() {
                       css={[
                         tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-300 transition-all transition-duration[200ms] disabled:opacity-50`,
                       ]}
+                      id="redeem"
                     >
                       Redeem
                     </button>

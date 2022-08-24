@@ -7,6 +7,7 @@ import { TOKEN_LIST } from '@/global/constants';
 
 export interface ITxtProps extends IBaseProps {
   children: ReactNode;
+  id?: string | undefined;
 }
 
 export interface ITokenTxtProps extends ITxtProps {

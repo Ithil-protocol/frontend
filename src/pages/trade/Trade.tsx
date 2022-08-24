@@ -17,7 +17,10 @@ const TradePage = () => {
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <Txt.Heading1 tw="mb-12">Trading strategies</Txt.Heading1>
 
-          <div tw="flex flex-row gap-x-4 flex-wrap gap-y-4 justify-center">
+          <div
+            tw="flex flex-row gap-x-4 flex-wrap gap-y-4 justify-center"
+            id="strategies"
+          >
             {TRADE_STRATEGIES.map((strategy) => (
               <StrategyWidget
                 key={strategy.id}
