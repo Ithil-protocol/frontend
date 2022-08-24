@@ -14,6 +14,8 @@ import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.
 import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
 import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
 
+import { ContractType, StrategyContractType } from './types';
+
 const abi = [
   'function balanceOf(address owner) external view returns (uint256)',
   'function decimals() external view returns (uint8)',
@@ -25,7 +27,7 @@ const abi = [
 ];
 export const ERC20ABI = new Interface(abi);
 
-export const MOCKS = {
+export const MOCKS: { [key: string]: ContractType } = {
   MockYearnRegistry: {
     address: Mocks.mocks.MockYearnRegistry,
     abi: new Interface(MockYearnRegistryABI),
@@ -34,7 +36,7 @@ export const MOCKS = {
 
 export const { tokens: TOKEN_LIST } = TokenList;
 
-export const CORE = {
+export const CORE: { [key: string]: ContractType } = {
   Vault: {
     address: Vault.address,
     abi: new Interface(VaultABI),
@@ -44,7 +46,7 @@ export const CORE = {
     abi: new Interface(LiqudidatorABI),
   },
 };
-export const STRATEGIES = {
+export const STRATEGIES: { [key: string]: StrategyContractType } = {
   MarginTradingStrategy: {
     address: MTS.address,
     abi: new Interface(MarginTradingStrategyABI),

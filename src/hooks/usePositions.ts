@@ -3,7 +3,12 @@ import { useCall } from '@usedapp/core';
 
 import { useCheckValidChain } from './index';
 
-export function usePositions(positionId: number, strategy: any) {
+import { StrategyContractType } from '@/global/types';
+
+export function usePositions(
+  positionId: number,
+  strategy: StrategyContractType
+) {
   const isValid = useCheckValidChain();
 
   const { value, error } =

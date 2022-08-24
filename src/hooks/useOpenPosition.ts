@@ -3,7 +3,9 @@ import { useContractFunction } from '@usedapp/core';
 
 import { useCheckValidChain, useHandleTxStatus } from './index';
 
-export function useOpenPosition(strategy: any) {
+import { StrategyContractType } from '@/global/types';
+
+export function useOpenPosition(strategy: StrategyContractType) {
   const isValid = useCheckValidChain();
 
   const { send, state, resetState } = useContractFunction(

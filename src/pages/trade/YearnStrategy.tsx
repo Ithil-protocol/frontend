@@ -7,7 +7,6 @@ import { Line } from 'react-chartjs-2';
 import BigNumber from 'bignumber.js';
 import { useEthers } from '@usedapp/core';
 import { MaxUint256 } from '@ethersproject/constants';
-import { useTheme } from '@emotion/react';
 
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
@@ -28,8 +27,9 @@ import {
   YEARN_API_URL,
 } from '@/global/constants';
 import { useAllowance, useApprove } from '@/hooks/useToken';
-import { useOpenPosition } from '@/hooks/useYearnStrategy';
 import fetchAPI from '@/global/api';
+import { useOpenPosition } from '@/hooks/useOpenPosition';
+import { useTheme } from '@/state/application/hooks';
 
 export default function YearnStrategyPage() {
   const theme = useTheme();
@@ -110,7 +110,7 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
-    STRATEGIES.YearnStrategy.address
+    STRATEGIES.YearnStrategy
   );
 
   const minObtained = useMemo(() => {
@@ -126,7 +126,9 @@ export default function YearnStrategyPage() {
     spentToken.address
   );
 
-  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition();
+  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
+    STRATEGIES.YearnStrategy
+  );
 
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';

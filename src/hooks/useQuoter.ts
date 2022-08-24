@@ -4,11 +4,13 @@ import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain } from './index';
 
+import { StrategyContractType } from '@/global/types';
+
 export function useQuoter(
   srcToken: string,
   destToken: string,
   amount: BigNumber,
-  strategy: any
+  strategy: StrategyContractType
 ) {
   const isValid = useCheckValidChain();
 
