@@ -18,6 +18,7 @@ const Modal: FC<IModal> = ({ open, onClose, children }) => {
       tw="z-50 overflow-hidden w-screen h-screen bg-primary-100 top-1/2 left-1/2 marginRight[-50%] transform[translate(-50%, -50%)] flex flex-col justify-center items-center fixed desktop:rounded-xl p-4 desktop:min-width[400px] desktop:min-height[64px] desktop:max-width[50%]  desktop:w-auto desktop:h-auto pt-5"
       isOpen={open}
       closeTimeoutMS={200}
+      onRequestClose={onClose}
       contentLabel=""
     >
       {children}
