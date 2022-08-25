@@ -165,19 +165,11 @@ export default function YearnStrategyPage() {
     }
   }, [yearnData, spentToken]);
 
-  const chartData = useMemo(() => {
-    if (!yearnData?.length) return 0;
-    const filtered = yearnData.filter(
-      (token: any) => token.symbol === `y${spentToken.symbol}`
-    );
-    return filtered[0]?.apy?.net_apy || 0;
-  }, [spentToken.symbol, yearnData]);
-
   const data = {
     labels: ['-oo', '+oo'],
     datasets: [
       {
-        data: [chartData, chartData],
+        data: [baseApy, baseApy],
         borderColor: theme === 'dark' ? '#fff' : '#000',
         borderWidth: 2,
       },
