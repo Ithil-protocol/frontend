@@ -44,11 +44,11 @@ const ChartCard: FC<IChartCard> = ({
       <div tw="w-full h-full  flex flex-col">
         {activeChart === 'basic' ? (
           <TradingViewBasicChart
-            tokenSymbol={`${obtainedToken.symbol}${spentToken.symbol}`}
+            tokenSymbol={`UNISWAP3${obtainedToken.symbol}${spentToken.symbol}`}
           />
         ) : (
           <TradingViewAdvancedChart
-            tokenSymbol={`${obtainedToken.symbol}${spentToken.symbol}`}
+            tokenSymbol={`UNISWAP3${obtainedToken.symbol}${spentToken.symbol}`}
           />
         )}
       </div>
