@@ -3,9 +3,9 @@ import { useEthers, useLogs } from '@usedapp/core';
 
 import { useCheckValidChain } from './index';
 
-import { OpenedPositionType } from '@/global/types';
+import { OpenedPositionType, StrategyContractType } from '@/global/types';
 
-export function useOpenedPositions(strategy: any) {
+export function useOpenedPositions(strategy: StrategyContractType) {
   /**
    * @brief Position Data
    * @param id,

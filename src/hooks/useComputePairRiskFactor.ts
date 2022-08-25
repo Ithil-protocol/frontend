@@ -4,10 +4,12 @@ import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain } from './index';
 
+import { StrategyContractType } from '@/global/types';
+
 export function useComputePairRiskFactor(
   srcToken: string,
   destToken: string,
-  strategy: any
+  strategy: StrategyContractType
 ) {
   const isValid = useCheckValidChain();
 

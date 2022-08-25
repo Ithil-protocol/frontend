@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
+import { Interface } from '@ethersproject/abi';
 
 export interface RouteType {
   path: string;
@@ -76,3 +77,14 @@ export type KeyableType = { [key: string]: string };
 export type RedeemTokenInfoType = { address: string; id: string } | undefined;
 
 export type PositionOpenType = 'active' | 'closed' | 'liquidated';
+
+export type APIRequestMethodType = 'POST' | 'GET';
+
+export type ContractType = {
+  address: string;
+  abi: Interface;
+};
+
+export interface StrategyContractType extends ContractType {
+  defaultSlippage: string;
+}
