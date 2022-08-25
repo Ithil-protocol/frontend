@@ -71,8 +71,8 @@ export const DISCORD_URL = 'https://discord.gg/tEaGBcGdQC';
 export const YEARN_API_URL = `${
   process.env.NODE_ENV === 'development'
     ? 'https://cors-anywhere.herokuapp.com/'
-    : ''
-}https://api.yearn.finance/v1/`;
+    : 'https://'
+}api.yearn.finance/v1/`;
 
 export const TRADE_STRATEGIES = [
   {

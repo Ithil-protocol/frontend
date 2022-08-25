@@ -86,6 +86,10 @@ export default function YearnStrategyPage() {
   const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [leverage, setLeverage] = useState<number>(1);
+
+  const [baseApy, setBaseApy] = useState<number>(0);
+  const [interestRate, setInterestRate] = useState<number>(0);
+
   const [yearnData, setYearnData] = useState<any[]>();
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.YearnStrategy.defaultSlippage
@@ -146,19 +150,26 @@ export default function YearnStrategyPage() {
     });
   }, []);
 
-  const chartData = useMemo(() => {
-    if (!yearnData?.length) return 0;
-    const filtered = yearnData.filter(
-      (token: any) => token.symbol === `y${spentToken.symbol}`
-    );
-    return filtered[0]?.apy?.net_apy || 0;
-  }, [spentToken.symbol, yearnData]);
+  useEffect(() => {
+    if (yearnData && spentToken) {
+      if (spentToken.symbol === 'DAI')
+        setBaseApy(yearnData[90].apy.net_apy * 100);
+      else if (spentToken.symbol === 'USDC')
+        setBaseApy(yearnData[38].apy.net_apy * 100);
+      else if (spentToken.symbol === 'LINK')
+        setBaseApy(yearnData[82].apy.net_apy * 100);
+      else if (spentToken.symbol === 'WETH')
+        setBaseApy(yearnData[42].apy.net_apy * 100);
+      else if (spentToken.symbol === 'WBTC')
+        setBaseApy(yearnData[57].apy.net_apy * 100);
+    }
+  }, [yearnData, spentToken]);
 
   const data = {
     labels: ['-oo', '+oo'],
     datasets: [
       {
-        data: [chartData, chartData],
+        data: [baseApy, baseApy],
         borderColor: theme === 'dark' ? '#fff' : '#000',
         borderWidth: 2,
       },
@@ -213,37 +224,9 @@ export default function YearnStrategyPage() {
                     onTokenChange={(value) => setSpentToken(value)}
                   />
                 </div>
-                <div tw="w-full">
-                  <InfoItem
-                    tooltipText="Minimum amount obtained as a result of the swap"
-                    label="Min. Obtained"
-                    value={
-                      minObtained
-                        ? formatAmount(
-                            minObtained
-                              .dividedBy(
-                                new BigNumber(10).pow(spentToken.decimals)
-                              )
-                              .toFixed(0),
-                            spentToken.decimals
-                          )
-                        : '-'
-                    }
-                  />
-                  <InfoItem
-                    tooltipText="Maximum amount to be spent in the position, including collateral"
-                    label="Max. Spent"
-                    value={
-                      maxSpent
-                        ? formatAmount(maxSpent, spentToken.decimals)
-                        : '-'
-                    }
-                  />
-                </div>
-
                 <SliderBar
-                  label="Leverage"
-                  tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                  label=""
+                  tooltipText=""
                   min={1}
                   max={MAX_LEVERAGE}
                   step={0.2}
@@ -257,6 +240,28 @@ export default function YearnStrategyPage() {
                     5: '5x',
                   }}
                 />
+                <div tw="w-full">
+                  <InfoItem
+                    tooltipText="Base annualised profit offered by the strategy"
+                    label="Base APY"
+                    value={`${baseApy.toFixed(2)}x`}
+                  />
+                  <InfoItem
+                    tooltipText="The capital boost on the margin invested"
+                    label="Multiplier"
+                    value={`${leverage}x`}
+                  />
+                  <InfoItem
+                    tooltipText="Percentage to be paid as borrowing fees"
+                    label="Borrow Interest"
+                    value={`${interestRate.toFixed(2)}%`}
+                  />
+                  <InfoItem
+                    tooltipText="Maximum amount to be spent in the position, including collateral"
+                    label="Estimated APY"
+                    value={`${(leverage * baseApy - interestRate).toFixed(2)}%`}
+                  />
+                </div>
                 <div tw="w-full">
                   {showAdvancedOptions ? (
                     <>
@@ -325,7 +330,7 @@ export default function YearnStrategyPage() {
               </div>
             </div>
             <div tw="w-full height[:auto] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
-              <Txt.Body1Bold>Yearn Chart</Txt.Body1Bold>
+              <Txt.Body1Bold>APY Chart</Txt.Body1Bold>
               <Line options={CHART_OPTIONS} data={data} />
             </div>
           </div>
