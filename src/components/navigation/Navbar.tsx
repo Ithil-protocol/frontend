@@ -32,7 +32,7 @@ const Navbar = () => {
       <div tw="w-full px-5 desktop:w-[calc(100% - 9rem)] my-6 tablet:mx-auto flex flex-row items-center justify-between">
         <span tw="flex flex-row items-center">
           {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
-          <span tw="ml-24 flex flex-row items-center">
+          <span tw="ml-24 flex flex-row items-center" id="navigation">
             <NavigationMenu />
             <ThemeSwitch />
           </span>

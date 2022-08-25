@@ -124,7 +124,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
   };
 
   return (
-    <div tw="w-full flex flex-row gap-6 justify-center">
+    <div tw="w-full flex flex-row gap-6 justify-center" id="stake-ctrl-panel">
       <StakeControlWidget
         title="Deposit"
         value={

@@ -122,6 +122,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
                     tw`py-4 cursor-pointer last:pr-4`,
                     headCell.id === 'vault_name' && tw`pl-4`,
                   ]}
+                  id="stake"
                 >
                   {row[headCell.id]}
                 </td>
