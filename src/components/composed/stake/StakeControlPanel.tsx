@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
-import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
+import { useTokenAllowance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
 import { MaxUint256 } from '@ethersproject/constants';
@@ -13,13 +13,8 @@ import Button from '@/components/based/Button';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import { formatAmount } from '@/global/utils';
-import {
-  useBalance,
-  useStake,
-  useUnstake,
-  useVaultData,
-} from '@/hooks/useVault';
-import { useApprove, useTotalSupply } from '@/hooks/useToken';
+import { useStake, useUnstake } from '@/hooks/useVault';
+import { useApprove } from '@/hooks/useToken';
 
 interface IStakeControlWidget {
   title: string;
@@ -91,7 +86,6 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
   token,
   balance,
   account,
-  vaultData,
   vaultBalance,
   wrappedTokenBalance,
   wrappedTokenSupply,

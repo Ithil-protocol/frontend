@@ -3,6 +3,10 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
+import { Line } from 'react-chartjs-2';
+import BigNumber from 'bignumber.js';
+import { useEthers } from '@usedapp/core';
+import { MaxUint256 } from '@ethersproject/constants';
 
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
@@ -20,12 +24,69 @@ import {
   STRATEGIES,
   DEFAULT_DEADLINE,
   TOKEN_LIST,
+  YEARN_API_URL,
 } from '@/global/constants';
+import { useAllowance, useApprove } from '@/hooks/useToken';
+import fetchAPI from '@/global/api';
+import { useOpenPosition } from '@/hooks/useOpenPosition';
+import { useTheme } from '@/state/application/hooks';
 
 export default function YearnStrategyPage() {
+  const theme = useTheme();
+  const { account } = useEthers();
+
+  const CHART_OPTIONS = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+    },
+    elements: {
+      point: {
+        radius: 0,
+      },
+      line: {
+        tension: 0.3,
+        borderWidth: 1,
+      },
+    },
+    scales: {
+      xAxis: {
+        display: true,
+        title: {
+          display: false,
+        },
+        grid: {
+          borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
+          color: theme === 'dark' ? '#ffffff13' : '#00000013',
+          borderDash: [5, 5, 5],
+        },
+        ticks: {
+          display: false,
+        },
+      },
+      yAxis: {
+        display: true,
+        grid: {
+          borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
+          color: theme === 'dark' ? '#ffffff13' : '#00000013',
+          borderDash: [5, 5, 5],
+        },
+      },
+    },
+  };
+
   const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [leverage, setLeverage] = useState<number>(1);
+  const [yearnData, setYearnData] = useState<any[]>();
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.YearnStrategy.defaultSlippage
   );
@@ -34,8 +95,6 @@ export default function YearnStrategyPage() {
     useState<boolean>(false);
 
   const obtainedTokenAddress = useLatestVault(spentToken.address);
-
-  console.log(obtainedTokenAddress);
 
   const slippageValue = useMemo(() => {
     return (100 - Number(slippagePercent)) / 100;
@@ -57,6 +116,83 @@ export default function YearnStrategyPage() {
   const minObtained = useMemo(() => {
     return quoteValue.multipliedBy(slippageValue);
   }, [quoteValue, slippageValue]);
+
+  const allowance = useAllowance(
+    spentToken.address,
+    STRATEGIES.YearnStrategy.address
+  );
+
+  const { isLoading: isLoadingApprove, approve } = useApprove(
+    spentToken.address
+  );
+
+  const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
+    STRATEGIES.YearnStrategy
+  );
+
+  const buttonText = useMemo(() => {
+    if (!allowance) return 'Open';
+    const marginedAmountValue = parseAmount(marginAmount, spentToken.decimals);
+
+    if (new BigNumber(allowance.toString()).isLessThan(marginedAmountValue)) {
+      return 'Approve';
+    }
+    return 'Open';
+  }, [allowance, marginAmount, spentToken.decimals]);
+
+  useEffect(() => {
+    fetchAPI(`${YEARN_API_URL}chains/1/vaults/all`).then((res) => {
+      setYearnData(res);
+    });
+  }, []);
+
+  const chartData = useMemo(() => {
+    if (!yearnData?.length) return 0;
+    const filtered = yearnData.filter(
+      (token: any) => token.symbol === `y${spentToken.symbol}`
+    );
+    return filtered[0]?.apy?.net_apy || 0;
+  }, [spentToken.symbol, yearnData]);
+
+  const data = {
+    labels: ['-oo', '+oo'],
+    datasets: [
+      {
+        data: [chartData, chartData],
+        borderColor: theme === 'dark' ? '#fff' : '#000',
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const handleApprove = () => {
+    if (!account || !Number(marginAmount)) return;
+    approve(STRATEGIES.YearnStrategy.address, MaxUint256);
+  };
+
+  const handleOpenOrder = async () => {
+    if (!account) return;
+    const deadlineTimestamp =
+      Math.floor(Date.now() / 1000) + 60 * Number(deadline);
+    const newOrder = {
+      spentToken: spentToken.address,
+      obtainedToken: obtainedTokenAddress,
+      collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(0),
+      collateralIsSpentToken: true,
+      minObtained: minObtained.toFixed(0),
+      maxSpent: maxSpent.toFixed(0),
+      deadline: deadlineTimestamp,
+    };
+    openPosition(newOrder, { gasLimit: 700_000 });
+  };
+
+  const handleExecute = () => {
+    if (buttonText === 'Approve') {
+      handleApprove();
+    } else {
+      handleOpenOrder();
+    }
+  };
 
   return (
     <Container>
@@ -83,7 +219,14 @@ export default function YearnStrategyPage() {
                     label="Min. Obtained"
                     value={
                       minObtained
-                        ? formatAmount(minObtained, spentToken.decimals)
+                        ? formatAmount(
+                            minObtained
+                              .dividedBy(
+                                new BigNumber(10).pow(spentToken.decimals)
+                              )
+                              .toFixed(0),
+                            spentToken.decimals
+                          )
                         : '-'
                     }
                   />
@@ -170,11 +313,20 @@ export default function YearnStrategyPage() {
                     </button>
                   )}
                 </div>
-                <Button text="Approve" full action bold />
+                <Button
+                  text={buttonText}
+                  full
+                  action
+                  bold
+                  disabled={!allowance}
+                  onClick={handleExecute}
+                  isLoading={isLoadingApprove || isLoadingOpenPos}
+                />
               </div>
             </div>
-            <div tw="w-full height[500px] tablet:height[500px] desktop:height[700px] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
-              Yearn Chart
+            <div tw="w-full height[:auto] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
+              <Txt.Body1Bold>Yearn Chart</Txt.Body1Bold>
+              <Line options={CHART_OPTIONS} data={data} />
             </div>
           </div>
         </div>

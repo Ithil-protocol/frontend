@@ -3,7 +3,9 @@ import { useEthers, useLogs } from '@usedapp/core';
 
 import { useCheckValidChain } from './index';
 
-export function useLiquidatedPositions(strategy: any) {
+import { StrategyContractType } from '@/global/types';
+
+export function useLiquidatedPositions(strategy: StrategyContractType) {
   const { account } = useEthers();
   const isValid = useCheckValidChain();
   const logs = useLogs(

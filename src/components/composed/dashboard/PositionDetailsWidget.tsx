@@ -63,10 +63,20 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
         <Txt.Heading2 tw="mb-4">Position details</Txt.Heading2>
 
+        <DetailItem label="Type" value={positionValue} />
         <DetailItem
-          label="Position"
-          value={leverageValue.toFixed(2)}
-          details={positionValue}
+          label="Profit"
+          value={pnlText}
+          valueColor={pnlValue.isLessThan(0) ? 'red' : 'green'}
+        />
+        <DetailItem label="Opened" value={createdAtValue} />
+        <DetailItem
+          label="Collateral"
+          value={formatAmount(
+            details.collateral.toString(),
+            collateralToken?.decimals
+          )}
+          details={collateralToken?.symbol}
         />
         {openPriceValue && (
           <DetailItem
@@ -89,26 +99,12 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
             details={tokenPairValue}
           />
         )}
-        <DetailItem
-          label="Collateral"
-          value={formatAmount(
-            details.collateral.toString(),
-            collateralToken?.decimals
-          )}
-          details={collateralToken?.symbol}
-        />
         {distFromLiquidation && (
           <DetailItem
             label="Distance from liquidation"
             value={`${distFromLiquidation.toFixed(2)}%`}
           />
         )}
-        <DetailItem
-          label="Profit"
-          value={pnlText}
-          valueColor={pnlValue.isLessThan(0) ? 'red' : 'green'}
-        />
-        <DetailItem label="Opened" value={createdAtValue} />
       </div>
     </div>
   );
