@@ -3,7 +3,6 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
-// import { addresses } from '@ithil-protocol/deployed/latest/addresses.json';
 import { useEthers } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
@@ -292,19 +291,19 @@ export default function MarginTradingPage() {
                 </div>
                 <div tw="w-full">
                   <InfoItem
-                    tooltipText="The ratio between the total invested amount and the collateral placed"
-                    label="Leverage"
+                    tooltipText="The capital boost on the margin invested"
+                    label="Multiplier"
                     value={`${leverage}x`}
                   />
                   <InfoItem
-                    tooltipText="Minimum amount obtained as a result of the swap"
-                    label="Min. Obtained"
+                    tooltipText="The lowest you get as a result of the swap"
+                    label="Min Obtained"
                     value={formatAmount(minObtained, obtainedToken.decimals)}
                     details={obtainedToken.symbol}
                   />
                   <InfoItem
-                    tooltipText="Maximum amount to be spent in the position, including collateral"
-                    label="Max. Spent"
+                    tooltipText="The max amount you swap including collateral to get the desired number of tokens"
+                    label="Max Spent"
                     value={
                       maxSpent
                         ? formatAmount(maxSpent, spentToken.decimals)
@@ -329,7 +328,7 @@ export default function MarginTradingPage() {
                   }
                 />
                 <SliderBar
-                  label="Leverage"
+                  label="Boost"
                   tooltipText="Slide to modify the leverage"
                   min={1}
                   max={MAX_LEVERAGE}
@@ -354,11 +353,6 @@ export default function MarginTradingPage() {
                           </button>{' '}
                         </div>
                       </div>
-                      <img
-                        tw="w-full my-5"
-                        src={AdvancedSectionImg}
-                        alt="advancedSectionPlaceholder"
-                      />
                       <div tw="flex flex-col w-full gap-7">
                         <InputField
                           tooltipText="Maximum tolerated price change"

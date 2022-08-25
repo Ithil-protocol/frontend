@@ -99,10 +99,10 @@ export default function DashboardPage() {
           </div>
           <DataTable
             head={[
-              { id: 'token_pair', content: 'Token pair' },
-              { id: 'position', content: 'Position' },
+              { id: 'token_pair', content: 'Assets' },
+              { id: 'position', content: 'Strategy' },
               { id: 'collateral', content: 'Collateral' },
-              { id: 'profit', content: 'Profit' },
+              { id: 'profit', content: 'Performance' },
             ].concat(
               activeTab === 'active' ? [{ id: 'action', content: '' }] : []
             )}
@@ -120,8 +120,8 @@ export default function DashboardPage() {
                 return {
                   token_pair: (
                     <TokenPair
-                      investmentTokenSymbol={investmentTokenSymbol || 'WETH'}
-                      collateralTokenSymbol={collateralTokenSymbol || 'DAI'}
+                      investmentTokenSymbol={investmentTokenSymbol || ''}
+                      collateralTokenSymbol={collateralTokenSymbol || ''}
                     />
                   ),
                   position: null,

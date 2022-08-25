@@ -33,7 +33,7 @@ const SliderBar: FC<ISliderBar> = ({
       <div tw="flex flex-row gap-2 items-center text-font-200">
         {label && (
           <Txt.Body2Regular tw="self-start">
-            {label + ':  ' + value}
+            {label + ':'} <b>{value}</b>
           </Txt.Body2Regular>
         )}
         {tooltipText && <Tooltip text={tooltipText} />}
