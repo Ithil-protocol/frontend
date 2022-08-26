@@ -280,6 +280,16 @@ export default function YearnStrategyPage() {
                 />
                 <div tw="w-full">
                   <InfoItem
+                    tooltipText="The max amount you invest including collateral"
+                    label="Max Spent"
+                    value={
+                      maxSpent
+                        ? formatAmount(maxSpent, spentToken.decimals)
+                        : '-'
+                    }
+                    details={spentToken.symbol}
+                  />
+                  <InfoItem
                     tooltipText="Base annualised profit offered by the strategy"
                     label="Base APY"
                     value={`${baseApy.toFixed(2)}x`}
