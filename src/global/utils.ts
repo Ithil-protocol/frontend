@@ -3,6 +3,7 @@ import { BigNumber } from 'bignumber.js';
 import { DEFAULT_SUPPORTED_CHAINS, Mainnet, useEthers } from '@usedapp/core';
 
 import { TOKEN_LIST } from './constants';
+import { TokenDetails } from './types';
 
 export function infuraUrl(chainId: number) {
   const chainName =
@@ -53,20 +54,16 @@ export function getTokenByAddress(tokenAddress: string) {
   return TOKEN_LIST.find((token) => token.address === tokenAddress);
 }
 
-export async function importToken(
-  tokenAddress: string,
-  token: any,
-  tokenImage: string
-) {
+export async function importToken(token: TokenDetails) {
   await (window as any).ethereum.request({
     method: 'wallet_watchAsset',
     params: {
       type: 'ERC20',
       options: {
-        address: tokenAddress,
+        address: token.address,
         symbol: token.symbol,
         decimals: token.decimals,
-        image: tokenImage,
+        image: token.logoURI,
       },
     },
   });

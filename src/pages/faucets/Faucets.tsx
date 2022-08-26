@@ -3,6 +3,7 @@ import tw from 'twin.macro';
 import React, { useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { v4 as uuid } from 'uuid';
+import { Plus } from 'phosphor-react';
 
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
@@ -10,6 +11,7 @@ import DataTable from '@/components/based/table/DataTable';
 import { useRedeem } from '@/hooks/useToken';
 import { RedeemTokenInfoType, TokenDetails } from '@/global/types';
 import { TOKEN_LIST } from '@/global/constants';
+import { importToken } from '@/global/utils';
 
 export default function FaucetsPage() {
   const [redeemTokenInfo, setRedeemTokenInfo] = useState<RedeemTokenInfoType>();
@@ -20,6 +22,10 @@ export default function FaucetsPage() {
       address: token.address,
       id: uuid(),
     });
+  };
+
+  const handleRowClick = (token: TokenDetails) => {
+    importToken(token);
   };
 
   return (
@@ -54,22 +60,31 @@ export default function FaucetsPage() {
                   onClick={(e) => e.stopPropagation()}
                   tw="flex flex-row justify-end items-center"
                 >
-                  {redeemTokenInfo &&
-                  redeemTokenInfo.address === token.address &&
-                  isLoading ? (
-                    <ClipLoader color={'#ffffff'} loading size={24} tw="mr-8" />
-                  ) : (
-                    <button
-                      onClick={() => !isLoading && handleRedeem(token)}
-                      disabled={isLoading}
-                      css={[
-                        tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-300 transition-all transition-duration[200ms] disabled:opacity-50`,
-                      ]}
-                      id="redeem"
-                    >
-                      Redeem
-                    </button>
-                  )}
+                  <button
+                    css={[
+                      tw`rounded-full py-1 px-1 mr-2 border-1 border-primary-400 text-font-100 hover:bg-primary-300 transition-all transition-duration[200ms] disabled:opacity-50`,
+                    ]}
+                    onClick={() => handleRowClick(token)}
+                  >
+                    <Plus />
+                  </button>
+
+                  <button
+                    onClick={() => !isLoading && handleRedeem(token)}
+                    disabled={isLoading}
+                    css={[
+                      tw`rounded-lg py-1 px-2 border-1 width[80px] height[35px] flex items-center justify-center border-primary-400 text-font-100 hover:bg-primary-300 transition-all transition-duration[200ms] disabled:opacity-50`,
+                    ]}
+                    id="redeem"
+                  >
+                    {redeemTokenInfo &&
+                    redeemTokenInfo.address === token.address &&
+                    isLoading ? (
+                      <ClipLoader color={'#ffffff'} loading size={24} />
+                    ) : (
+                      'Redeem'
+                    )}
+                  </button>
                 </div>
               ),
             }))}
