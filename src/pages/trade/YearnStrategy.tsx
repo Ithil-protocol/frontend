@@ -31,10 +31,13 @@ import fetchAPI from '@/global/api';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useTheme } from '@/state/application/hooks';
 
+const SCALING_FACTOR = 100;
+
 export default function YearnStrategyPage() {
   const theme = useTheme();
   const { account } = useEthers();
 
+  const [chartData, setChartData] = useState<any>([]);
   const CHART_OPTIONS = {
     responsive: true,
     plugins: {
@@ -69,11 +72,15 @@ export default function YearnStrategyPage() {
           borderDash: [5, 5, 5],
         },
         ticks: {
-          display: false,
+          display: true,
         },
       },
       yAxis: {
         display: true,
+        title: {
+          display: true,
+          text: 'APY',
+        },
         grid: {
           borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
           color: theme === 'dark' ? '#ffffff13' : '#00000013',
@@ -151,25 +158,55 @@ export default function YearnStrategyPage() {
   }, []);
 
   useEffect(() => {
+    setInterestRate((leverage - 1) * 0.1);
+  }, [leverage]);
+
+  useEffect(() => {
     if (yearnData && spentToken) {
-      if (spentToken.symbol === 'DAI')
-        setBaseApy(yearnData[90].apy.net_apy * 100);
-      else if (spentToken.symbol === 'USDC')
-        setBaseApy(yearnData[38].apy.net_apy * 100);
-      else if (spentToken.symbol === 'LINK')
-        setBaseApy(yearnData[82].apy.net_apy * 100);
-      else if (spentToken.symbol === 'WETH')
-        setBaseApy(yearnData[42].apy.net_apy * 100);
-      else if (spentToken.symbol === 'WBTC')
-        setBaseApy(yearnData[57].apy.net_apy * 100);
+      if (spentToken.symbol === 'DAI') {
+        setBaseApy(yearnData[90].apy.net_apy * SCALING_FACTOR);
+        setChartData([
+          yearnData[90].apy.points.inception * SCALING_FACTOR,
+          yearnData[90].apy.points.month_ago * SCALING_FACTOR,
+          yearnData[90].apy.points.week_ago * SCALING_FACTOR,
+        ]);
+      } else if (spentToken.symbol === 'USDC') {
+        setBaseApy(yearnData[38].apy.net_apy * SCALING_FACTOR);
+        setChartData([
+          yearnData[38].apy.points.inception * SCALING_FACTOR,
+          yearnData[38].apy.points.month_ago * SCALING_FACTOR,
+          yearnData[38].apy.points.week_ago * SCALING_FACTOR,
+        ]);
+      } else if (spentToken.symbol === 'LINK') {
+        setBaseApy(yearnData[82].apy.net_apy * SCALING_FACTOR);
+        setChartData([
+          yearnData[82].apy.points.inception * SCALING_FACTOR,
+          yearnData[82].apy.points.month_ago * SCALING_FACTOR,
+          yearnData[82].apy.points.week_ago * SCALING_FACTOR,
+        ]);
+      } else if (spentToken.symbol === 'WETH') {
+        setBaseApy(yearnData[42].apy.net_apy * SCALING_FACTOR);
+        setChartData([
+          yearnData[42].apy.points.inception * SCALING_FACTOR,
+          yearnData[42].apy.points.month_ago * SCALING_FACTOR,
+          yearnData[42].apy.points.week_ago * SCALING_FACTOR,
+        ]);
+      } else if (spentToken.symbol === 'WBTC') {
+        setBaseApy(yearnData[57].apy.net_apy * SCALING_FACTOR);
+        setChartData([
+          yearnData[57].apy.points.inception * SCALING_FACTOR,
+          yearnData[57].apy.points.month_ago * SCALING_FACTOR,
+          yearnData[57].apy.points.week_ago * SCALING_FACTOR,
+        ]);
+      }
     }
   }, [yearnData, spentToken]);
 
   const data = {
-    labels: ['-oo', '+oo'],
+    labels: ['inception', 'month ago', 'week ago'],
     datasets: [
       {
-        data: [baseApy, baseApy],
+        data: chartData,
         borderColor: theme === 'dark' ? '#fff' : '#000',
         borderWidth: 2,
       },
@@ -213,7 +250,7 @@ export default function YearnStrategyPage() {
           <div tw="w-full flex flex-col desktop:flex-row gap-6">
             <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
               <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
-                <div tw="flex w-full justify-between items-center">
+                <div tw="flex w-full justify-between items-center" id="margin">
                   <TokenInputField
                     label="Margin"
                     availableTokens={TOKEN_LIST}
@@ -225,6 +262,7 @@ export default function YearnStrategyPage() {
                   />
                 </div>
                 <SliderBar
+                  id="leverage"
                   label=""
                   tooltipText=""
                   min={1}
@@ -319,6 +357,7 @@ export default function YearnStrategyPage() {
                   )}
                 </div>
                 <Button
+                  id="trade"
                   text={buttonText}
                   full
                   action

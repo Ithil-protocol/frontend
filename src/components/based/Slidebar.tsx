@@ -8,6 +8,7 @@ import Tooltip from './Tooltip';
 import 'rc-slider/assets/index.css';
 
 interface ISliderBar {
+  id?: string;
   label?: string;
   min: number;
   max: number;
@@ -19,6 +20,7 @@ interface ISliderBar {
 }
 
 const SliderBar: FC<ISliderBar> = ({
+  id,
   label,
   min,
   max,
@@ -29,7 +31,7 @@ const SliderBar: FC<ISliderBar> = ({
   tooltipText,
 }) => {
   return (
-    <div tw="my-2 flex w-full flex-col gap-4">
+    <div tw="my-2 flex w-full flex-col gap-4" id={id}>
       <div tw="flex flex-row gap-2 items-center text-font-200">
         {label && (
           <Txt.Body2Regular tw="self-start">

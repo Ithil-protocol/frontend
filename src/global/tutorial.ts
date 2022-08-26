@@ -185,7 +185,7 @@ export const steps: ShepherdOptionsWithType[] = [
     text: ['Go to the trade page.'],
   },
   {
-    id: 'step-stake',
+    id: 'step-trade',
     attachTo: { element: '#strategies', on: 'top' },
     buttons: [
       {
@@ -205,7 +205,79 @@ export const steps: ShepherdOptionsWithType[] = [
     },
     title: 'Choose a Strategy',
     text: [
-      'Here you can see all available strategies, their expected APY range and the risk profile.',
+      'Here you can see all available strategies, their expected APY range and the risk profile. Click Yearn and continue.',
+    ],
+  },
+  {
+    id: 'step-margin',
+    attachTo: { element: '#margin', on: 'top' },
+    buttons: [
+      {
+        classes: 'shepherd-button-secondary',
+        text: 'Back',
+        type: 'back',
+      },
+      {
+        classes: 'shepherd-button-primary',
+        text: 'Next',
+        type: 'next',
+      },
+    ],
+    highlightClass: 'highlight',
+    cancelIcon: {
+      enabled: true,
+    },
+    title: 'Token and Margin inputs',
+    text: [
+      'Here you can choose one of the available tokens to use and the input margin you want to put',
+    ],
+  },
+  {
+    id: 'step-leverage',
+    attachTo: { element: '#leverage', on: 'right' },
+    buttons: [
+      {
+        classes: 'shepherd-button-secondary',
+        text: 'Back',
+        type: 'back',
+      },
+      {
+        classes: 'shepherd-button-primary',
+        text: 'Next',
+        type: 'next',
+      },
+    ],
+    highlightClass: 'highlight',
+    cancelIcon: {
+      enabled: true,
+    },
+    title: 'Select your Magic Boost',
+    text: [
+      'See APY numbers change but make sure the fees you pay are lower than the boosted apy!',
+    ],
+  },
+  {
+    id: 'step-execute',
+    attachTo: { element: '#trade', on: 'right' },
+    buttons: [
+      {
+        classes: 'shepherd-button-secondary',
+        text: 'Back',
+        type: 'back',
+      },
+      {
+        classes: 'shepherd-button-primary',
+        text: 'End Tutorial',
+        type: 'cancel',
+      },
+    ],
+    highlightClass: 'highlight',
+    cancelIcon: {
+      enabled: true,
+    },
+    title: 'Trade',
+    text: [
+      'Approve the strategy contract to take your margin tokens and then confirm the trade. Good luck!',
     ],
   },
 ];
