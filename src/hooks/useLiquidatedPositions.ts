@@ -23,5 +23,8 @@ export function useLiquidatedPositions(strategy: StrategyContractType) {
 
   if (!account) return [];
 
-  return logs?.value?.map((log) => log.data.id.toString()) || [];
+  return (
+    logs?.value?.map((log) => `${log.data.id.toString()}_${strategy.type}`) ||
+    []
+  );
 }

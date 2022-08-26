@@ -3,10 +3,11 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
-import { Line } from 'react-chartjs-2';
 import BigNumber from 'bignumber.js';
-import { useEthers } from '@usedapp/core';
+import { useEthers, useTokenBalance } from '@usedapp/core';
 import { MaxUint256 } from '@ethersproject/constants';
+import { formatUnits } from '@ethersproject/units';
+import { toast } from 'react-toastify';
 
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
@@ -16,7 +17,7 @@ import Container from '@/components/based/Container';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { formatAmount, parseAmount } from '@/global/utils';
+import { parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import {
@@ -24,71 +25,13 @@ import {
   STRATEGIES,
   DEFAULT_DEADLINE,
   TOKEN_LIST,
-  YEARN_API_URL,
 } from '@/global/constants';
 import { useAllowance, useApprove } from '@/hooks/useToken';
-import fetchAPI from '@/global/api';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
-import { useTheme } from '@/state/application/hooks';
-
-const SCALING_FACTOR = 100;
+import YearnChart from '@/components/composed/trade/YearnChart';
 
 export default function YearnStrategyPage() {
-  const theme = useTheme();
   const { account } = useEthers();
-
-  const [chartData, setChartData] = useState<any>([]);
-  const CHART_OPTIONS = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-      },
-      tooltip: {
-        enabled: false,
-      },
-    },
-    elements: {
-      point: {
-        radius: 0,
-      },
-      line: {
-        tension: 0.3,
-        borderWidth: 1,
-      },
-    },
-    scales: {
-      xAxis: {
-        display: true,
-        title: {
-          display: false,
-        },
-        grid: {
-          borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
-          color: theme === 'dark' ? '#ffffff13' : '#00000013',
-          borderDash: [5, 5, 5],
-        },
-        ticks: {
-          display: true,
-        },
-      },
-      yAxis: {
-        display: true,
-        title: {
-          display: true,
-          text: 'APY',
-        },
-        grid: {
-          borderColor: theme === 'dark' ? '#ffffff82' : '#00000082',
-          color: theme === 'dark' ? '#ffffff13' : '#00000013',
-          borderDash: [5, 5, 5],
-        },
-      },
-    },
-  };
 
   const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
@@ -97,7 +40,6 @@ export default function YearnStrategyPage() {
   const [baseApy, setBaseApy] = useState<number>(0);
   const [interestRate, setInterestRate] = useState<number>(0);
 
-  const [yearnData, setYearnData] = useState<any[]>();
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.YearnStrategy.defaultSlippage
   );
@@ -105,6 +47,7 @@ export default function YearnStrategyPage() {
   const [showAdvancedOptions, setShowAdvancedOptions] =
     useState<boolean>(false);
 
+  const tokenBalance = useTokenBalance(spentToken.address, account);
   const obtainedTokenAddress = useLatestVault(spentToken.address);
 
   const slippageValue = useMemo(() => {
@@ -124,6 +67,7 @@ export default function YearnStrategyPage() {
     STRATEGIES.YearnStrategy
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const minObtained = useMemo(() => {
     return quoteValue.multipliedBy(slippageValue);
   }, [quoteValue, slippageValue]);
@@ -152,66 +96,8 @@ export default function YearnStrategyPage() {
   }, [allowance, marginAmount, spentToken.decimals]);
 
   useEffect(() => {
-    fetchAPI(`${YEARN_API_URL}chains/1/vaults/all`).then((res) => {
-      setYearnData(res);
-    });
-  }, []);
-
-  useEffect(() => {
     setInterestRate((leverage - 1) * 0.1);
   }, [leverage]);
-
-  useEffect(() => {
-    if (yearnData && spentToken) {
-      if (spentToken.symbol === 'DAI') {
-        setBaseApy(yearnData[90].apy.net_apy * SCALING_FACTOR);
-        setChartData([
-          yearnData[90].apy.points.inception * SCALING_FACTOR,
-          yearnData[90].apy.points.month_ago * SCALING_FACTOR,
-          yearnData[90].apy.points.week_ago * SCALING_FACTOR,
-        ]);
-      } else if (spentToken.symbol === 'USDC') {
-        setBaseApy(yearnData[38].apy.net_apy * SCALING_FACTOR);
-        setChartData([
-          yearnData[38].apy.points.inception * SCALING_FACTOR,
-          yearnData[38].apy.points.month_ago * SCALING_FACTOR,
-          yearnData[38].apy.points.week_ago * SCALING_FACTOR,
-        ]);
-      } else if (spentToken.symbol === 'LINK') {
-        setBaseApy(yearnData[82].apy.net_apy * SCALING_FACTOR);
-        setChartData([
-          yearnData[82].apy.points.inception * SCALING_FACTOR,
-          yearnData[82].apy.points.month_ago * SCALING_FACTOR,
-          yearnData[82].apy.points.week_ago * SCALING_FACTOR,
-        ]);
-      } else if (spentToken.symbol === 'WETH') {
-        setBaseApy(yearnData[42].apy.net_apy * SCALING_FACTOR);
-        setChartData([
-          yearnData[42].apy.points.inception * SCALING_FACTOR,
-          yearnData[42].apy.points.month_ago * SCALING_FACTOR,
-          yearnData[42].apy.points.week_ago * SCALING_FACTOR,
-        ]);
-      } else if (spentToken.symbol === 'WBTC') {
-        setBaseApy(yearnData[57].apy.net_apy * SCALING_FACTOR);
-        setChartData([
-          yearnData[57].apy.points.inception * SCALING_FACTOR,
-          yearnData[57].apy.points.month_ago * SCALING_FACTOR,
-          yearnData[57].apy.points.week_ago * SCALING_FACTOR,
-        ]);
-      }
-    }
-  }, [yearnData, spentToken]);
-
-  const data = {
-    labels: ['inception', 'month ago', 'week ago'],
-    datasets: [
-      {
-        data: chartData,
-        borderColor: theme === 'dark' ? '#fff' : '#000',
-        borderWidth: 2,
-      },
-    ],
-  };
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
@@ -219,7 +105,21 @@ export default function YearnStrategyPage() {
   };
 
   const handleOpenOrder = async () => {
-    if (!account) return;
+    if (!account) {
+      toast.error('Connect to a wallet!');
+      return;
+    }
+    if (!tokenBalance || tokenBalance.isZero()) {
+      toast.error('Purchase the spent tokens!');
+      return;
+    }
+    if (
+      Number(marginAmount) >
+      Number(formatUnits(tokenBalance, spentToken.decimals))
+    ) {
+      toast.error('Invalid margin amount!');
+      return;
+    }
     const deadlineTimestamp =
       Math.floor(Date.now() / 1000) + 60 * Number(deadline);
     const newOrder = {
@@ -227,14 +127,19 @@ export default function YearnStrategyPage() {
       obtainedToken: obtainedTokenAddress,
       collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(0),
       collateralIsSpentToken: true,
-      minObtained: minObtained.toFixed(0),
+      minObtained: 0,
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
+    console.log(newOrder);
     openPosition(newOrder, { gasLimit: 700_000 });
   };
 
   const handleExecute = () => {
+    if (!marginAmount || Number(marginAmount) <= 0) {
+      toast.error('Your margin is below minimum!');
+      return;
+    }
     if (buttonText === 'Approve') {
       handleApprove();
     } else {
@@ -368,10 +273,7 @@ export default function YearnStrategyPage() {
                 />
               </div>
             </div>
-            <div tw="w-full height[:auto] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
-              <Txt.Body1Bold>APY Chart</Txt.Body1Bold>
-              <Line options={CHART_OPTIONS} data={data} />
-            </div>
+            <YearnChart spentToken={spentToken} setBaseApy={setBaseApy} />
           </div>
         </div>
       </div>

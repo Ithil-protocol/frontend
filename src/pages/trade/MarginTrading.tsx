@@ -3,7 +3,8 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
-import { useEthers } from '@usedapp/core';
+import { useEthers, useTokenBalance } from '@usedapp/core';
+import { formatUnits } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
 import toast from 'react-hot-toast';
@@ -60,6 +61,7 @@ export default function MarginTradingPage() {
   }, [leverage, marginAmount, collateralToken]);
 
   const vaultData = useVaultData(spentToken.address);
+  const tokenBalance = useTokenBalance(spentToken.address, account);
   const minimumMarginValue = useMemo(() => {
     if (!vaultData) return 0;
     return Number(
@@ -180,7 +182,21 @@ export default function MarginTradingPage() {
   };
 
   const handleOpenOrder = async () => {
-    if (!account) return;
+    if (!account) {
+      toast.error('Connect to a wallet!');
+      return;
+    }
+    if (!tokenBalance || tokenBalance.isZero()) {
+      toast.error('Purchase the spent tokens!');
+      return;
+    }
+    if (
+      Number(marginAmount) >
+      Number(formatUnits(tokenBalance, spentToken.decimals))
+    ) {
+      toast.error('Invalid margin amount!');
+      return;
+    }
     const deadlineTimestamp =
       Math.floor(Date.now() / 1000) + 60 * Number(deadline);
     const newOrder = {
@@ -192,7 +208,7 @@ export default function MarginTradingPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder, { gasLimit: 700_000 });
+    openPosition(newOrder);
   };
 
   const handleExecute = () => {

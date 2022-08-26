@@ -4,7 +4,8 @@ import React, { FC } from 'react';
 
 import Txt from '@/components/based/Txt';
 import { formatAmount } from '@/global/utils';
-import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
+import { StrategyContractType } from '@/global/types';
+import usePositionDetails from '@/hooks/usePositionDetails';
 
 interface IDetailItem {
   label: string;
@@ -41,9 +42,13 @@ const DetailItem: FC<IDetailItem> = ({ label, value, details, valueColor }) => {
 
 interface IPositionDetailsWidget {
   details: any;
+  strategy: StrategyContractType;
 }
 
-const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
+const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
+  details,
+  strategy,
+}) => {
   const {
     leverageValue,
     positionValue,
@@ -56,7 +61,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
     pnlText,
     pnlValue,
     createdAtValue,
-  } = useMarginTradingPositionDetails(details);
+  } = usePositionDetails(details, strategy);
 
   return (
     <div tw="flex flex-col w-full mb-3">

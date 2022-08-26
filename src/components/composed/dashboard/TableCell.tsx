@@ -22,26 +22,40 @@ export const TokenPair: FC<ITokenPair> = ({
   collateralTokenSymbol,
   investmentTokenSymbol,
 }) => {
+  const collateralTokenLogoURI = TOKEN_LIST.find(
+    (token) => token.symbol === collateralTokenSymbol
+  )?.logoURI;
+
+  const investmentTokenLogoURI = TOKEN_LIST.find(
+    (token) => token.symbol === investmentTokenSymbol
+  )?.logoURI;
+
   return (
     <div tw="flex flex-row justify-start items-center gap-6">
       <div tw="relative">
         <div tw="w-7 h-7 border-radius[100%] bg-primary-100 absolute bottom[-2px] left[18px] z-index[2]"></div>
-        <img
-          tw="w-6 h-6 z-index[3]"
-          src={
-            TOKEN_LIST.find((token) => token.symbol === collateralTokenSymbol)
-              ?.logoURI
-          }
-          alt={collateralTokenSymbol}
-        />
-        <img
-          tw="w-6 h-6 left-5 bottom-0 absolute z-index[4]"
-          src={
-            TOKEN_LIST.find((token) => token.symbol === investmentTokenSymbol)
-              ?.logoURI
-          }
-          alt={investmentTokenSymbol}
-        />
+        {investmentTokenLogoURI ? (
+          <img
+            tw="w-6 h-6 z-index[3]"
+            src={investmentTokenLogoURI}
+            alt={investmentTokenSymbol}
+          />
+        ) : (
+          <div tw="w-6 h-6 bg-primary-400 rounded-full z-index[3] flex items-center justify-center">
+            <Txt.Body2Bold>?</Txt.Body2Bold>
+          </div>
+        )}
+        {collateralTokenLogoURI ? (
+          <img
+            tw="w-6 h-6 left-5 bottom-0 absolute z-index[4]"
+            src={collateralTokenLogoURI}
+            alt={collateralTokenSymbol}
+          />
+        ) : (
+          <div tw="w-6 h-6 bg-primary-400 rounded-full left-5 bottom-0 absolute z-index[4] flex items-center justify-center">
+            <Txt.Body2Bold>?</Txt.Body2Bold>
+          </div>
+        )}
       </div>
       <Text value={`${investmentTokenSymbol}/${collateralTokenSymbol}`} />
     </div>
