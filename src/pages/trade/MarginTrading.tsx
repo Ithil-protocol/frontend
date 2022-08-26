@@ -19,7 +19,6 @@ import TokenField from '@/components/composed/trade/TokenField';
 import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
-import AdvancedSectionImg from '@/assets/images/advancedSectionImage.png';
 import { PriorityType, TokenDetails } from '@/global/types';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useQuoter } from '@/hooks/useQuoter';

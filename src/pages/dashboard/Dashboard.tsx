@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import tw from 'twin.macro';
+import 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

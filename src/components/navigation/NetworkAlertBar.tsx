@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React, { FC, ReactNode, useEffect, useState } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Goerli, useEthers } from '@usedapp/core';
 
 interface INetworkAlertBar {
