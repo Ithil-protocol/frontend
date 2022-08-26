@@ -9,6 +9,7 @@ import Txt from './Txt';
 import { IBaseProps } from '@/global/types';
 
 interface IButtonProps extends IBaseProps {
+  id?: string;
   type?: any;
   primary?: boolean | undefined;
   secondary?: boolean;
@@ -48,6 +49,7 @@ const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
   const disabled = props.isLoading || props.disabled;
   return (
     <button
+      id={props.id}
       type={props.type ?? 'button'}
       className={props.className}
       css={[
