@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
 
 import Txt from '@/components/based/Txt';

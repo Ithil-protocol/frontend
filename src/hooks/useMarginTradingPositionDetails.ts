@@ -73,7 +73,7 @@ export default function useMarginTradingPositionDetails(
 
   const positionValue = useMemo(() => {
     return `Margin Trading ${longShortValue} ${tokenPairValue}`;
-  }, [tokenPairValue, leverageValue, longShortValue]);
+  }, [tokenPairValue, longShortValue]);
 
   const currentPrice = useQuoter(
     longShortValue === 'Long' ? details.heldToken : details.owedToken,

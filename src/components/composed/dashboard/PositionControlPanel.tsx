@@ -7,7 +7,6 @@ import Button from '@/components/based/Button';
 // import SliderBar from '@/components/based/Slidebar';
 // import TokenInputField from '@/components/composed/trade/TokenInputField';
 // import TabsSwitch from '@/components/composed/trade/TabsSwitch';
-import InfoItem from '@/components/composed/trade/InfoItem';
 
 interface IPositionControlPanel {
   onClosePosition: () => void;

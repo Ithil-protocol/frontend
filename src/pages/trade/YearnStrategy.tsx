@@ -16,7 +16,7 @@ import Container from '@/components/based/Container';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { formatAmount, parseAmount } from '@/global/utils';
+import { parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import {

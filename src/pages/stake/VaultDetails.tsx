@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
@@ -8,7 +8,6 @@ import BigNumber from 'bignumber.js';
 import { useBalance, useVaultData } from '@/hooks/useVault';
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
-import ChartCard from '@/components/composed/trade/ChartCard';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useTotalSupply } from '@/hooks/useToken';
 
@@ -43,13 +42,14 @@ export default function VaultDetails() {
   const utilisationRate = useMemo(() => {
     if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
     return BigNumber(vaultData?.netLoans.toString()).div(vaultBalance);
-  }, [vaultData?.netLoans]);
+  }, [vaultBalance, vaultData?.netLoans]);
 
   const shareValue = useMemo(() => {
     if (wrappedTokenSupply.isZero()) return null;
     return vaultBalance.dividedBy(wrappedTokenSupply);
   }, [vaultBalance, wrappedTokenSupply]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const aprValue = useMemo(() => {
     if (!shareValue || !vaultData?.creationTime) return null;
     const passedTime =
@@ -67,6 +67,7 @@ export default function VaultDetails() {
 
   useEffect(() => {
     if (!token) navigate('/stake');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -45,7 +45,6 @@ interface IPositionDetailsWidget {
 
 const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({ details }) => {
   const {
-    leverageValue,
     positionValue,
     openPriceValue,
     tokenPairValue,

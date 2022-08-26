@@ -30,7 +30,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const totalBorrowed = useMemo(() => {
     if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
     return BigNumber(vaultData?.netLoans.toString());
-  }, [vaultData?.netLoans]);
+  }, [vaultBalance, vaultData?.netLoans]);
 
   const shareValue = useMemo(() => {
     if (wrappedTokenSupply.isZero()) return null;
@@ -52,7 +52,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
     else return 0;
   }, [shareValue, vaultData?.creationTime]);
 
-  const handleInfoClick = async (e: any) => {
+  const handleInfoClick = async () => {
     navigate(`/stake/details?token=${vaultTokenAddress}`);
   };
 
