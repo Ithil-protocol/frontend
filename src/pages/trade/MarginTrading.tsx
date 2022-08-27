@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 
 import Txt from '@/components/based/Txt';
 import Button from '@/components/based/Button';
-import Container from '@/components/based/Container';
+import Page from '@/components/based/Page';
 import SliderBar from '@/components/based/Slidebar';
 import RadioGroup from '@/components/based/RadioGroup';
 import InputField from '@/components/based/InputField';
@@ -242,208 +242,190 @@ export default function MarginTradingPage() {
   }, [state]);
 
   return (
-    <Container>
-      <div tw="flex flex-col w-full items-center">
-        <div tw="w-full tablet:w-9/12 desktop:w-10/12 flex flex-col items-center">
-          <Txt.Heading1 tw="mb-12">Margin Trading Strategy </Txt.Heading1>
-          <div tw="w-full flex flex-col desktop:flex-row gap-6">
-            <link
-              href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
-              rel="stylesheet"
+    <Page heading="Margin Trading Strategy">
+      <div tw="w-full flex flex-col desktop:flex-row gap-6">
+        <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
+          <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
+            <TabsSwitch
+              activeIndex={collateralIsSpentToken ? 'long' : 'short'}
+              onChange={(value: string) => {
+                setCollateralIsSpentToken(value === 'long');
+                handleChangeToken();
+              }}
+              items={[
+                {
+                  title: 'Long',
+                  value: 'long',
+                },
+                {
+                  title: 'Short',
+                  value: 'short',
+                },
+              ]}
             />
-
-            <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
-              <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
-                <TabsSwitch
-                  activeIndex={collateralIsSpentToken ? 'long' : 'short'}
-                  onChange={(value: string) => {
-                    setCollateralIsSpentToken(value === 'long');
-                    handleChangeToken();
-                  }}
-                  items={[
-                    {
-                      title: 'Long',
-                      value: 'long',
-                    },
-                    {
-                      title: 'Short',
-                      value: 'short',
-                    },
-                  ]}
+            <div tw="flex w-full justify-between items-center">
+              {collateralIsSpentToken ? (
+                <TokenField
+                  token={spentToken}
+                  noAllow={obtainedToken}
+                  onTokenChange={(value) => setSpentToken(value)}
                 />
-                <div tw="flex w-full justify-between items-center">
-                  {collateralIsSpentToken ? (
-                    <TokenField
-                      token={spentToken}
-                      noAllow={obtainedToken}
-                      onTokenChange={(value) => setSpentToken(value)}
-                    />
-                  ) : (
-                    <TokenField
-                      token={obtainedToken}
-                      noAllow={spentToken}
-                      onTokenChange={(value) => setObtainedToken(value)}
-                    />
-                  )}
-                  <ArrowRight
-                    size={28}
-                    tw="text-font-200 mx-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s]"
-                    onClick={handleChangeToken}
-                  />
-                  {collateralIsSpentToken ? (
-                    <TokenField
-                      token={obtainedToken}
-                      noAllow={spentToken}
-                      onTokenChange={(value) => setObtainedToken(value)}
-                    />
-                  ) : (
-                    <TokenField
-                      token={spentToken}
-                      noAllow={obtainedToken}
-                      onTokenChange={(value) => setSpentToken(value)}
-                    />
-                  )}
-                </div>
-                <div tw="w-full">
-                  <InfoItem
-                    tooltipText="The capital boost on the margin invested"
-                    label="Multiplier"
-                    value={`${leverage}x`}
-                  />
-                  <InfoItem
-                    tooltipText="The lowest you get as a result of the swap"
-                    label="Min Obtained"
-                    value={formatAmount(minObtained, obtainedToken.decimals)}
-                    details={obtainedToken.symbol}
-                  />
-                  <InfoItem
-                    tooltipText="The max amount you swap including collateral to get the desired number of tokens"
-                    label="Max Spent"
-                    value={
-                      maxSpent
-                        ? formatAmount(maxSpent, spentToken.decimals)
-                        : '-'
-                    }
-                    details={spentToken.symbol}
-                  />
-                </div>
-                <InputFieldMax
-                  label="Margin"
-                  placeholder="0"
-                  value={marginAmount}
-                  token={collateralToken}
-                  stateChanger={setMarginAmount}
-                  onChange={(value) => {
-                    setMarginAmount(value);
-                  }}
-                  renderRight={
-                    <Txt.InputText tw="text-font-100">
-                      {collateralToken.symbol}
-                    </Txt.InputText>
-                  }
+              ) : (
+                <TokenField
+                  token={obtainedToken}
+                  noAllow={spentToken}
+                  onTokenChange={(value) => setObtainedToken(value)}
                 />
-                <SliderBar
-                  label="Boost"
-                  tooltipText="Slide to modify the leverage"
-                  min={1}
-                  max={MAX_LEVERAGE}
-                  step={0.2}
-                  value={leverage}
-                  onChange={(value) => setLeverage(value as number)}
-                  marks={sliderMarks}
+              )}
+              <ArrowRight
+                size={28}
+                tw="text-font-200 mx-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s]"
+                onClick={handleChangeToken}
+              />
+              {collateralIsSpentToken ? (
+                <TokenField
+                  token={obtainedToken}
+                  noAllow={spentToken}
+                  onTokenChange={(value) => setObtainedToken(value)}
                 />
-                <div tw="w-full">
-                  {showAdvancedOptions ? (
-                    <>
-                      <div tw="my-4 w-full flex flex-row justify-between items-center">
-                        <Txt.Heading2>Advanced options</Txt.Heading2>
-                        <div>
-                          <button
-                            tw="my-4 w-full flex justify-center items-center gap-2"
-                            onClick={() =>
-                              setShowAdvancedOptions(!showAdvancedOptions)
-                            }
-                          >
-                            <XCircle size={20} tw="text-font-100" />
-                          </button>{' '}
-                        </div>
-                      </div>
-                      <div tw="flex flex-col w-full gap-7">
-                        <InputField
-                          tooltipText="Maximum tolerated price change"
-                          label="Slippage"
-                          placeholder="0"
-                          value={slippagePercent}
-                          onChange={(value) => setSlippagePercent(value)}
-                          renderRight={
-                            <Txt.InputText tw="text-font-100">%</Txt.InputText>
-                          }
-                        />
-                        <RadioGroup
-                          tooltipText="Either spend (Sell) or obtain (Buy) an exact amount. The other amount is calculated by quoting"
-                          label="Priority"
-                          items={[
-                            {
-                              label: 'Buy',
-                              value: 'buy',
-                            },
-                            {
-                              label: 'Sell',
-                              value: 'sell',
-                            },
-                          ]}
-                          activeRadio={priority}
-                          onChange={(value) =>
-                            setPriority(value as PriorityType)
-                          }
-                        />
-                        <InputField
-                          tooltipText="Deadline for the execution time, if the transaction is executed afterwards it will revert"
-                          label="Deadline"
-                          placeholder="20 mins"
-                          value={deadline}
-                          onChange={(value) => setDeadline(value)}
-                          renderRight={
-                            <Txt.InputText tw="text-font-100">
-                              min
-                            </Txt.InputText>
-                          }
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <button
-                      tw="my-4 w-full flex justify-center items-center gap-2"
-                      onClick={() =>
-                        setShowAdvancedOptions(!showAdvancedOptions)
-                      }
-                    >
-                      <FadersHorizontal size={20} tw="text-font-100" />
-                      <Txt.Body2Regular tw="text-font-100">
-                        Advanced options
-                      </Txt.Body2Regular>
-                    </button>
-                  )}
-                </div>
-                <Button
-                  text={buttonText}
-                  full
-                  action
-                  bold
-                  disabled={!allowance}
-                  onClick={handleExecute}
-                  isLoading={isLoadingApprove || isLoadingOpenPos}
+              ) : (
+                <TokenField
+                  token={spentToken}
+                  noAllow={obtainedToken}
+                  onTokenChange={(value) => setSpentToken(value)}
                 />
-              </div>
+              )}
             </div>
-            <ChartCard
-              firstToken={collateralIsSpentToken ? obtainedToken : spentToken}
-              secondToken={collateralToken}
-              disableTrading={false}
+            <div tw="w-full">
+              <InfoItem
+                tooltipText="The capital boost on the margin invested"
+                label="Multiplier"
+                value={`${leverage}x`}
+              />
+              <InfoItem
+                tooltipText="The lowest you get as a result of the swap"
+                label="Min Obtained"
+                value={formatAmount(minObtained, obtainedToken.decimals)}
+                details={obtainedToken.symbol}
+              />
+              <InfoItem
+                tooltipText="The max amount you swap including collateral to get the desired number of tokens"
+                label="Max Spent"
+                value={
+                  maxSpent ? formatAmount(maxSpent, spentToken.decimals) : '-'
+                }
+                details={spentToken.symbol}
+              />
+            </div>
+            <InputFieldMax
+              label="Margin"
+              placeholder="0"
+              value={marginAmount}
+              token={collateralToken}
+              stateChanger={setMarginAmount}
+              onChange={(value) => {
+                setMarginAmount(value);
+              }}
+              renderRight={
+                <Txt.InputText tw="text-font-100">
+                  {collateralToken.symbol}
+                </Txt.InputText>
+              }
+            />
+            <SliderBar
+              label="Boost"
+              tooltipText="Slide to modify the leverage"
+              min={1}
+              max={MAX_LEVERAGE}
+              step={0.2}
+              value={leverage}
+              onChange={(value) => setLeverage(value as number)}
+              marks={sliderMarks}
+            />
+            <div tw="w-full">
+              {showAdvancedOptions ? (
+                <>
+                  <div tw="my-4 w-full flex flex-row justify-between items-center">
+                    <Txt.Heading2>Advanced options</Txt.Heading2>
+                    <div>
+                      <button
+                        tw="my-4 w-full flex justify-center items-center gap-2"
+                        onClick={() =>
+                          setShowAdvancedOptions(!showAdvancedOptions)
+                        }
+                      >
+                        <XCircle size={20} tw="text-font-100" />
+                      </button>{' '}
+                    </div>
+                  </div>
+                  <div tw="flex flex-col w-full gap-7">
+                    <InputField
+                      tooltipText="Maximum tolerated price change"
+                      label="Slippage"
+                      placeholder="0"
+                      value={slippagePercent}
+                      onChange={(value) => setSlippagePercent(value)}
+                      renderRight={
+                        <Txt.InputText tw="text-font-100">%</Txt.InputText>
+                      }
+                    />
+                    <RadioGroup
+                      tooltipText="Either spend (Sell) or obtain (Buy) an exact amount. The other amount is calculated by quoting"
+                      label="Priority"
+                      items={[
+                        {
+                          label: 'Buy',
+                          value: 'buy',
+                        },
+                        {
+                          label: 'Sell',
+                          value: 'sell',
+                        },
+                      ]}
+                      activeRadio={priority}
+                      onChange={(value) => setPriority(value as PriorityType)}
+                    />
+                    <InputField
+                      tooltipText="Deadline for the execution time, if the transaction is executed afterwards it will revert"
+                      label="Deadline"
+                      placeholder="20 mins"
+                      value={deadline}
+                      onChange={(value) => setDeadline(value)}
+                      renderRight={
+                        <Txt.InputText tw="text-font-100">min</Txt.InputText>
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <button
+                  tw="my-4 w-full flex justify-center items-center gap-2"
+                  onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                >
+                  <FadersHorizontal size={20} tw="text-font-100" />
+                  <Txt.Body2Regular tw="text-font-100">
+                    Advanced options
+                  </Txt.Body2Regular>
+                </button>
+              )}
+            </div>
+            <Button
+              text={buttonText}
+              full
+              action
+              bold
+              disabled={!allowance}
+              onClick={handleExecute}
+              isLoading={isLoadingApprove || isLoadingOpenPos}
             />
           </div>
         </div>
+        <ChartCard
+          firstToken={collateralIsSpentToken ? obtainedToken : spentToken}
+          secondToken={collateralToken}
+          disableTrading={false}
+        />
       </div>
-    </Container>
+    </Page>
   );
 }

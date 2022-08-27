@@ -81,8 +81,8 @@ export default function usePositionDetails(
 
   const positionValue = useMemo(() => {
     return `${strategy.label} ${
-      strategy.type === 'margin' ? `${longShortValue} ` : ''
-    }${tokenPairValue}`;
+      strategy.type === 'margin' ? `${longShortValue}` : ''
+    }`;
   }, [strategy, longShortValue, tokenPairValue]);
 
   const currentPrice = useQuoter(
