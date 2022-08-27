@@ -51,16 +51,22 @@ export const STRATEGIES: { [key: string]: StrategyContractType } = {
     address: MTS.address,
     abi: new Interface(MarginTradingStrategyABI),
     defaultSlippage: '0.1',
+    type: 'margin',
+    label: 'Margin Trading',
   },
   YearnStrategy: {
     address: YS.address,
     abi: new Interface(YearnStrategyABI),
     defaultSlippage: '0.01',
+    type: 'yearn',
+    label: 'Yearn Strategy',
   },
   EulerStrategy: {
     address: ES.address,
     abi: new Interface(EulerStrategyABI),
     defaultSlippage: '0.01',
+    type: 'euler',
+    label: 'Euler Strategy',
   },
 };
 export const WEB_APP_URL = 'https://ithil.fi';

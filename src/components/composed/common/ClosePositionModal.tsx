@@ -10,23 +10,25 @@ import InfoItem from '@/components/composed/trade/InfoItem';
 import { usePositions } from '@/hooks/usePositions';
 import { useClosePosition } from '@/hooks/useClosePosition';
 import { useQuoter } from '@/hooks/useQuoter';
-import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
-import { INIT_POSITION_VALUE, STRATEGIES } from '@/global/constants';
+import { INIT_POSITION_VALUE } from '@/global/constants';
 import { formatAmount } from '@/global/utils';
-import { OpenedPositionType } from '@/global/types';
+import { OpenedPositionType, StrategyContractType } from '@/global/types';
+import usePositionDetails from '@/hooks/usePositionDetails';
 
 interface IClosePositionModal {
   open: boolean;
   onClose(): void;
   selectedId: number;
+  strategy: StrategyContractType;
 }
 
 const ClosePositionModal: FC<IClosePositionModal> = ({
   open,
   onClose,
   selectedId,
+  strategy,
 }) => {
-  const _position = usePositions(selectedId, STRATEGIES.MarginTradingStrategy);
+  const _position = usePositions(selectedId, strategy);
   const activePosition: OpenedPositionType = _position || INIT_POSITION_VALUE;
   const {
     longShortValue,
@@ -38,29 +40,27 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
     pnlText,
     collateralToken,
     feesValue,
-  } = useMarginTradingPositionDetails(activePosition);
-  const { closePosition, isLoading } = useClosePosition(
-    STRATEGIES.MarginTradingStrategy
-  );
+  } = usePositionDetails(activePosition, strategy);
+  const { closePosition, isLoading } = useClosePosition(strategy);
 
   const quoteValue = useQuoter(
-    longShortValue === 'Long'
+    longShortValue === 'Long' && strategy.type === 'margin'
       ? activePosition.heldToken
       : activePosition.owedToken,
-    longShortValue === 'Long'
+    longShortValue === 'Long' && strategy.type === 'margin'
       ? activePosition.owedToken
       : activePosition.heldToken,
     longShortValue === 'Long' ? allowanceValue : principalValue.plus(feesValue),
-    STRATEGIES.MarginTradingStrategy
+    strategy
   );
 
   const maxOrMin = useMemo(() => {
     return quoteValue.multipliedBy(
       1 +
         (longShortValue === 'Long' ? -1 : 1) *
-          parseFloat(STRATEGIES.MarginTradingStrategy.defaultSlippage)
+          parseFloat(strategy.defaultSlippage)
     );
-  }, [longShortValue, quoteValue]);
+  }, [longShortValue, quoteValue, strategy.defaultSlippage]);
 
   const handleClose = () => {
     closePosition(selectedId, maxOrMin.toFixed(0));

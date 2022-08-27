@@ -14,23 +14,47 @@ import {
 import { useLiquidatedPositions } from '@/hooks/useLiquidatedPositions';
 import { useOpenedPositions } from '@/hooks/useOpenedPositions';
 import { useClosedPositions } from '@/hooks/useClosedPositions';
-import { getTokenByAddress } from '@/global/utils';
+import { getStrategyByType, getTokenByAddress } from '@/global/utils';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
-import { PositionOpenType } from '@/global/types';
+import { PositionOpenType, StrategyContractType } from '@/global/types';
 import { STRATEGIES } from '@/global/constants';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [selectedId, setSelectedId] = useState<number>(-1);
+  const [selectedStrategy, setSelectedStrategy] =
+    useState<StrategyContractType>();
   const [activeTab, setActiveTab] = useState<PositionOpenType>('active');
   const [closePositionModalOpened, setClosePositionModalOpened] =
     useState(false);
 
-  const openedPositions = useOpenedPositions(STRATEGIES.MarginTradingStrategy);
-  const closedPositions = useClosedPositions(STRATEGIES.MarginTradingStrategy);
-  const liquidatedPositions = useLiquidatedPositions(
+  const openedMarginPositions = useOpenedPositions(
     STRATEGIES.MarginTradingStrategy
+  );
+  const openedYearnPositions = useOpenedPositions(STRATEGIES.YearnStrategy);
+  const closedMarginPositions = useClosedPositions(
+    STRATEGIES.MarginTradingStrategy
+  );
+  const closedYearnPositions = useClosedPositions(STRATEGIES.YearnStrategy);
+  const liquidatedMarginPositions = useLiquidatedPositions(
+    STRATEGIES.MarginTradingStrategy
+  );
+  const liquidatedYearnPositions = useLiquidatedPositions(
+    STRATEGIES.YearnStrategy
+  );
+
+  const openedPositions = useMemo(
+    () => [...openedMarginPositions, ...openedYearnPositions],
+    [openedMarginPositions, openedYearnPositions]
+  );
+  const closedPositions = useMemo(
+    () => [...closedMarginPositions, ...closedYearnPositions],
+    [closedMarginPositions, closedYearnPositions]
+  );
+  const liquidatedPositions = useMemo(
+    () => [...liquidatedMarginPositions, ...liquidatedYearnPositions],
+    [liquidatedMarginPositions, liquidatedYearnPositions]
   );
 
   const filteredPositions = useMemo(() => {
@@ -68,11 +92,14 @@ export default function DashboardPage() {
 
   return (
     <Container>
-      <ClosePositionModal
-        open={closePositionModalOpened}
-        selectedId={selectedId}
-        onClose={() => setClosePositionModalOpened(false)}
-      />
+      {selectedStrategy && (
+        <ClosePositionModal
+          open={closePositionModalOpened}
+          selectedId={selectedId}
+          onClose={() => setClosePositionModalOpened(false)}
+          strategy={selectedStrategy}
+        />
+      )}
       <div tw="flex flex-col w-full items-center">
         <div tw="w-full desktop:w-10/12 flex flex-col items-center">
           <Txt.Heading1 tw="mb-12"> Dashboard </Txt.Heading1>
@@ -111,11 +138,16 @@ export default function DashboardPage() {
                 const collateralTokenSymbol = getTokenByAddress(
                   position.collateralToken
                 )?.symbol;
-                const investmentTokenSymbol = getTokenByAddress(
-                  position.collateralToken == position.heldToken
-                    ? position.owedToken
-                    : position.heldToken
-                )?.symbol;
+                const investmentTokenSymbol =
+                  position.type === 'margin'
+                    ? getTokenByAddress(
+                        position.collateralToken == position.heldToken
+                          ? position.owedToken
+                          : position.heldToken
+                      )?.symbol
+                    : `y${collateralTokenSymbol}`;
+                const positionId = position.id.split('_')[0];
+                const strategy = getStrategyByType(position.type);
 
                 return {
                   token_pair: (
@@ -132,7 +164,8 @@ export default function DashboardPage() {
                   action: (
                     <CloseButton
                       onClick={() => {
-                        setSelectedId(Number(position.id));
+                        setSelectedId(Number(positionId));
+                        setSelectedStrategy(strategy);
                         setClosePositionModalOpened(true);
                       }}
                     />
