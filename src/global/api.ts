@@ -65,10 +65,13 @@ export function fetchAPI(
     // convert into snake case first
     options.body = JSON.stringify(payload);
   }
-  return fetch(url, {
-    ...options,
-    headers,
-  })
+  return fetch(
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    {
+      ...options,
+      headers,
+    }
+  )
     .then(checkStatus)
     .then(parseJSON)
     .then((resp) => {
