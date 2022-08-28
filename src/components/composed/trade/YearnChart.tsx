@@ -76,7 +76,7 @@ const YearnChart: FC<IYearnChart> = ({ spentToken, setBaseApy }) => {
   };
 
   useEffect(() => {
-    fetchAPI(YEARN_API_URL, 'GET', null, false).then((res) => {
+    fetchAPI(YEARN_API_URL, 'GET', null, true).then((res) => {
       setYearnData(res);
     });
   }, []);
