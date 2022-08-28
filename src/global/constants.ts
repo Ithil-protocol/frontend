@@ -74,7 +74,8 @@ export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
 export const DISCORD_URL = 'https://discord.gg/tEaGBcGdQC';
 
-export const YEARN_API_URL = `https://api.yearn.finance/v1/`;
+//export const YEARN_API_URL = `https://api.yearn.finance/v1/`;
+export const YEARN_API_URL = 'https://ithil-frontend.netlify.app/yearnApi';
 
 export const TRADE_STRATEGIES = [
   {

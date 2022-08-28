@@ -54,7 +54,8 @@ function checkStatus(response: any) {
 export function fetchAPI(
   url: string,
   method: APIRequestMethodType = 'GET',
-  payload: any = null
+  payload: any = null,
+  bypassCors: any = false
 ) {
   const options: { method: APIRequestMethodType; body?: any } = { method };
 
@@ -65,13 +66,13 @@ export function fetchAPI(
     // convert into snake case first
     options.body = JSON.stringify(payload);
   }
-  return fetch(
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    {
-      ...options,
-      headers,
-    }
-  )
+  if (bypassCors)
+    url = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+
+  return fetch(url, {
+    ...options,
+    headers,
+  })
     .then(checkStatus)
     .then(parseJSON)
     .then((resp) => {
