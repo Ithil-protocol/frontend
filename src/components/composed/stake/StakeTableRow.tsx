@@ -23,7 +23,6 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const vaultToken = getTokenByAddress(vaultTokenAddress);
   const vaultBalance = useBalance(vaultTokenAddress);
   const vaultData = useVaultData(vaultTokenAddress);
-  const balance = useTokenBalance(vaultTokenAddress, account);
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
 
@@ -130,13 +129,11 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
           }
         })}
       </tr>
-      {vaultToken && balance?.gt(0) && account && (
+      {vaultToken && (
         <tr style={{ display: !expanded ? 'none' : undefined }}>
           <td tw="bg-primary-100" colSpan={head.length}>
             <StakeControlPanel
               token={vaultToken}
-              balance={balance}
-              account={account}
               vaultData={vaultData}
               vaultBalance={vaultBalance}
               wrappedTokenBalance={wrappedTokenBalance}

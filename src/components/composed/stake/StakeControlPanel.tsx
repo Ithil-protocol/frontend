@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
-import { useTokenAllowance } from '@usedapp/core';
+import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
 import { MaxUint256 } from '@ethersproject/constants';
@@ -74,8 +74,6 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
 
 interface IStakeControlPanel {
   token: TokenDetails;
-  balance: any;
-  account: string;
   vaultData: any;
   vaultBalance: any;
   wrappedTokenBalance: any;
@@ -84,12 +82,12 @@ interface IStakeControlPanel {
 
 const StakeControlPanel: FC<IStakeControlPanel> = ({
   token,
-  balance,
-  account,
   vaultBalance,
   wrappedTokenBalance,
   wrappedTokenSupply,
 }) => {
+  const { account } = useEthers();
+  const balance = useTokenBalance(token.address, account);
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
   const tokenAllowance = useTokenAllowance(
