@@ -85,17 +85,11 @@ const VaultChart: FC<IVaultChart> = ({
         borderColor: theme === 'dark' ? '#fff' : '#000',
         borderWidth: 2,
       },
-      {
-        data: utilisationRate,
-        borderColor: theme === 'dark' ? '#fff' : '#000',
-        borderWidth: 2,
-      },
     ],
   };
 
   useEffect(() => {
     if (vaultData && utilisationRate !== 0 && balance !== 0) {
-      console.log('utilrate', utilisationRate.toString());
       if (vaultData.insuranceReserveBalance > vaultData.netLoans) {
         setChartData(vaultData.baseFee.toNumber() + utilisationRate.toNumber());
       } else {
@@ -108,8 +102,6 @@ const VaultChart: FC<IVaultChart> = ({
         );
       }
     }
-
-    console.log(chartData);
   }, [utilisationRate, vaultData]);
 
   return (

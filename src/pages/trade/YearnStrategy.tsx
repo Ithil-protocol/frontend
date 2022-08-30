@@ -131,7 +131,6 @@ export default function YearnStrategyPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    console.log(newOrder);
     openPosition(newOrder, { gasLimit: 700_000 });
   };
 

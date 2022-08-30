@@ -10,7 +10,7 @@ import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useTotalSupply } from '@/hooks/useToken';
-import VaultChart from '@/components/composed/trade/VaultChart';
+import VaultChart from '@/components/composed/stake/VaultChart';
 
 export interface IBanner {
   heading: string | number;
@@ -41,15 +41,30 @@ export default function VaultDetails() {
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
 
   const utilisationRate = useMemo(() => {
-    if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
-    return BigNumber(vaultData?.netLoans.toString()).div(
-      vaultData?.netLoans + vaultBalance
-    );
-  }, [vaultBalance, vaultData?.netLoans]);
+    if (!vaultData || vaultBalance.isZero()) return 0;
+    return BigNumber(vaultData.netLoans.toString())
+      .div(
+        BigNumber(vaultData.netLoans.toString())
+          .plus(vaultBalance)
+          .minus(BigNumber(vaultData.insuranceReserveBalance.toString() || 0))
+      )
+      .multipliedBy(100);
+  }, [vaultBalance, vaultData]);
+
+  const borrowable = useMemo(() => {
+    if (!vaultData || vaultBalance.isZero()) return 0;
+    return vaultBalance
+      .minus(BigNumber(vaultData.netLoans.toString()))
+      .minus(BigNumber(vaultData.insuranceReserveBalance.toString()));
+  }, [vaultBalance, vaultData]);
 
   const shareValue = useMemo(() => {
     if (wrappedTokenSupply.isZero()) return null;
     return vaultBalance.dividedBy(wrappedTokenSupply);
+  }, [vaultBalance, wrappedTokenSupply]);
+
+  const revenues = useMemo(() => {
+    return vaultBalance.minus(wrappedTokenSupply);
   }, [vaultBalance, wrappedTokenSupply]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -96,8 +111,8 @@ export default function VaultDetails() {
             <div tw="flex flex-col w-full desktop:w-4/12">
               <div tw="flex flex-col w-full mb-3">
                 <Banner
-                  heading="TVL"
-                  body={`${formatAmount(vaultBalance, vaultToken?.decimals)} ${
+                  heading="Borrowable Balance"
+                  body={`${formatAmount(borrowable, vaultToken?.decimals)} ${
                     vaultToken?.symbol
                   }`}
                 />
@@ -111,10 +126,9 @@ export default function VaultDetails() {
               <div tw="flex flex-col w-full mb-3">
                 <Banner
                   heading="Revenues"
-                  body={`${formatAmount(
-                    vaultData?.currentProfits.toString(),
-                    vaultToken?.decimals
-                  )} ${vaultToken?.symbol}`}
+                  body={`${formatAmount(revenues, vaultToken?.decimals)} ${
+                    vaultToken?.symbol
+                  }`}
                 />
               </div>
               <div tw="flex flex-col w-full mb-3">
@@ -124,8 +138,8 @@ export default function VaultDetails() {
                     vaultData?.insuranceReserveBalance.toString(),
                     vaultToken?.decimals
                   )} ${vaultToken?.symbol} (optimal ratio: ${
-                    vaultData?.optimalRatio
-                  })`}
+                    vaultData?.optimalRatio / 100
+                  }%)`}
                 />
               </div>
             </div>
