@@ -71,3 +71,24 @@ export function useUnstake() {
     unstake: send,
   };
 }
+
+export function useClaimable(tokenAddress: string) {
+  const isValid = useCheckValidChain();
+
+  const { value, error } =
+    useCall(
+      isValid &&
+        CORE.Vault && {
+          contract: new Contract(CORE.Vault.address, CORE.Vault.abi),
+          method: 'claimable',
+          args: [tokenAddress],
+        }
+    ) ?? {};
+
+  if (error) {
+    console.error(error.message);
+    return null;
+  }
+  console.log('value', value?.toString());
+  return value;
+}

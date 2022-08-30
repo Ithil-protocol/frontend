@@ -28,7 +28,7 @@ import {
 } from '@/global/constants';
 import { useAllowance, useApprove } from '@/hooks/useToken';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
-import YearnChart from '@/components/composed/trade/YearnChart';
+import APYChart from '@/components/composed/trade/APYChart';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
@@ -131,7 +131,6 @@ export default function YearnStrategyPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    console.log(newOrder);
     openPosition(newOrder, { gasLimit: 700_000 });
   };
 
@@ -274,7 +273,7 @@ export default function YearnStrategyPage() {
             />
           </div>
         </div>
-        <YearnChart spentToken={spentToken} setBaseApy={setBaseApy} />
+        <APYChart spentToken={spentToken} setBaseApy={setBaseApy} />
       </div>
     </Page>
   );

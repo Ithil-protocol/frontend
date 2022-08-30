@@ -15,7 +15,7 @@ import Page from '@/components/based/Page';
 import SliderBar from '@/components/based/Slidebar';
 import RadioGroup from '@/components/based/RadioGroup';
 import InputField from '@/components/based/InputField';
-import ChartCard from '@/components/composed/trade/ChartCard';
+import TradingChart from '@/components/composed/trade/TradingChart';
 import TokenField from '@/components/composed/trade/TokenField';
 import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
@@ -420,7 +420,7 @@ export default function MarginTradingPage() {
             />
           </div>
         </div>
-        <ChartCard
+        <TradingChart
           firstToken={collateralIsSpentToken ? obtainedToken : spentToken}
           secondToken={collateralToken}
           disableTrading={false}

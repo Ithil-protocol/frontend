@@ -25,10 +25,14 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
 
+  const tvl = useMemo(() => {
+    return vaultBalance.plus(BigNumber(vaultData?.netLoans.toString()));
+  }, [vaultBalance, vaultData]);
+
   const totalBorrowed = useMemo(() => {
     if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
     return BigNumber(vaultData?.netLoans.toString());
-  }, [vaultBalance, vaultData?.netLoans]);
+  }, [vaultBalance, vaultData]);
 
   const shareValue = useMemo(() => {
     if (wrappedTokenSupply.isZero()) return null;
@@ -79,7 +83,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {formatAmount(vaultBalance, vaultToken?.decimals)}
+                    {formatAmount(tvl, vaultToken?.decimals)}
                   </Txt.Body2Regular>
                 </td>
               );
