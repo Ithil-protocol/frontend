@@ -98,6 +98,13 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
   const { approve, isLoading: isApproveLoading } = useApprove(token.address);
   //const maximumWithdrawal = useClaimable(token.address);
 
+  const maximumWithdrawal = useMemo(() => {
+    if (!wrappedTokenBalance || vaultBalance.isZero()) return undefined;
+    return new BigNumber(wrappedTokenBalance.toString())
+      .multipliedBy(vaultBalance)
+      .dividedBy(wrappedTokenSupply);
+  }, [vaultBalance, wrappedTokenBalance, wrappedTokenSupply]);
+
   const isApproved = useMemo(() => {
     if (!tokenAllowance || !balance) return false;
     return balance.sub(tokenAllowance).isNegative();
