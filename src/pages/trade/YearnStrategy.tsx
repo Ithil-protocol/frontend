@@ -229,7 +229,7 @@ export default function YearnStrategyPage() {
 
                   <div tw="flex flex-col w-full gap-7">
                     <InputField
-                      tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                      tooltipText="Maximum tolerated price change"
                       label="Slippage"
                       placeholder="0"
                       value={slippagePercent}
@@ -239,7 +239,7 @@ export default function YearnStrategyPage() {
                       }
                     />
                     <InputField
-                      tooltipText="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                      tooltipText="Deadline for the execution time, if the transaction is executed afterwards it will revert"
                       label="Deadline"
                       placeholder="30 mins"
                       value={deadline}

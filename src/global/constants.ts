@@ -99,10 +99,19 @@ export const TRADE_STRATEGIES = [
   {
     id: 3,
     title: 'Battle in the Curve wars',
-    description: 'Superfeed your harvests on Curve and Convex with leverage',
+    description: 'Coming soon...',
     apyMin: '10',
     apyMax: '100x',
     risk: 'Medium',
+    url: '',
+  },
+  {
+    id: 4,
+    title: 'Join the veBAL revolution on Balancer',
+    description: 'Coming soon...',
+    apyMin: '10',
+    apyMax: '100x',
+    risk: 'Low',
     url: '',
   },
 ];

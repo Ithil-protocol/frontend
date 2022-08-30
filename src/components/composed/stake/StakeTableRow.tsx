@@ -4,7 +4,6 @@ import React, { FC, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
-import { Info } from 'phosphor-react';
 
 import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
 import { ITableRow } from '@/components/based/table/DataTable';
@@ -108,9 +107,14 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
             case 'action':
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
-                  <Txt.Body2Regular>
-                    <Info onClick={handleInfoClick} />
-                  </Txt.Body2Regular>
+                  <button
+                    onClick={handleInfoClick}
+                    css={[
+                      tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
+                    ]}
+                  >
+                    Info
+                  </button>
                 </td>
               );
             default:
