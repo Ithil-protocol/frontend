@@ -6,14 +6,14 @@ import { ArrowLeft } from 'phosphor-react';
 
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
-import ChartCard from '@/components/composed/trade/ChartCard';
+import TradingChart from '@/components/composed/trade/TradingChart';
+import APYChart from '@/components/composed/trade/APYChart';
 import PositionDetailsWidget from '@/components/composed/dashboard/PositionDetailsWidget';
 import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
 import { usePositions } from '@/hooks/usePositions';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import { getStrategyByType, getTokenByAddress } from '@/global/utils';
 import { STRATEGIES } from '@/global/constants';
-import YearnChart from '@/components/composed/trade/YearnChart';
 
 export default function PositionDetails() {
   const navigate = useNavigate();
@@ -133,13 +133,13 @@ export default function PositionDetails() {
             {collateralToken &&
               investmentToken &&
               (strategyType === 'margin' ? (
-                <ChartCard
+                <TradingChart
                   firstToken={investmentToken}
                   secondToken={collateralToken}
                   disableTrading={false}
                 />
               ) : (
-                <YearnChart spentToken={collateralToken} />
+                <APYChart spentToken={collateralToken} />
               ))}
           </div>
         </div>

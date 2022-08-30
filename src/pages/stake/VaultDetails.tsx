@@ -10,6 +10,7 @@ import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useTotalSupply } from '@/hooks/useToken';
+import VaultChart from '@/components/composed/trade/VaultChart';
 
 export interface IBanner {
   heading: string | number;
@@ -41,7 +42,9 @@ export default function VaultDetails() {
 
   const utilisationRate = useMemo(() => {
     if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
-    return BigNumber(vaultData?.netLoans.toString()).div(vaultBalance);
+    return BigNumber(vaultData?.netLoans.toString()).div(
+      vaultData?.netLoans + vaultBalance
+    );
   }, [vaultBalance, vaultData?.netLoans]);
 
   const shareValue = useMemo(() => {
@@ -126,6 +129,11 @@ export default function VaultDetails() {
                 />
               </div>
             </div>
+            <VaultChart
+              balance={vaultBalance}
+              utilisationRate={utilisationRate}
+              vaultData={vaultData}
+            />
           </div>
         </div>
       </div>

@@ -8,13 +8,13 @@ import TabButton from '@/components/based/TabButton';
 import TradingViewAdvancedChart from '@/components/based/charts/TradingViewAdvancedChart';
 import TradingViewBasicChart from '@/components/based/charts/TradingViewBasicChart';
 
-interface IChartCard {
+interface ITradingChart {
   firstToken: TokenDetails;
   secondToken: TokenDetails;
   disableTrading?: boolean;
 }
 
-const ChartCard: FC<IChartCard> = ({
+const TradingChart: FC<ITradingChart> = ({
   firstToken: obtainedToken,
   secondToken: spentToken,
   disableTrading,
@@ -56,4 +56,4 @@ const ChartCard: FC<IChartCard> = ({
   );
 };
 
-export default ChartCard;
+export default TradingChart;

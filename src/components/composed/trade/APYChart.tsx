@@ -11,7 +11,7 @@ import { useTheme } from '@/state/application/hooks';
 
 const SCALING_FACTOR = 100;
 
-interface IYearnChart {
+interface IAPYChart {
   spentToken: TokenDetails;
   setBaseApy?: {
     (value: SetStateAction<number>): void;
@@ -19,7 +19,7 @@ interface IYearnChart {
   };
 }
 
-const YearnChart: FC<IYearnChart> = ({ spentToken, setBaseApy }) => {
+const APYChart: FC<IAPYChart> = ({ spentToken, setBaseApy }) => {
   const theme = useTheme();
   const [yearnData, setYearnData] = useState<any[]>();
   const [chartData, setChartData] = useState<any>([]);
@@ -141,4 +141,4 @@ const YearnChart: FC<IYearnChart> = ({ spentToken, setBaseApy }) => {
   );
 };
 
-export default YearnChart;
+export default APYChart;

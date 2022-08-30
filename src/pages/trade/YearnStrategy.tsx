@@ -28,7 +28,7 @@ import {
 } from '@/global/constants';
 import { useAllowance, useApprove } from '@/hooks/useToken';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
-import YearnChart from '@/components/composed/trade/YearnChart';
+import APYChart from '@/components/composed/trade/APYChart';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
@@ -274,7 +274,7 @@ export default function YearnStrategyPage() {
             />
           </div>
         </div>
-        <YearnChart spentToken={spentToken} setBaseApy={setBaseApy} />
+        <APYChart spentToken={spentToken} setBaseApy={setBaseApy} />
       </div>
     </Page>
   );
