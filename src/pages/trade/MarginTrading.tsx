@@ -305,14 +305,21 @@ export default function MarginTradingPage() {
               <InfoItem
                 tooltipText="The lowest you get as a result of the swap"
                 label="Min Obtained"
-                value={formatAmount(minObtained, obtainedToken.decimals)}
+                value={formatAmount(
+                  minObtained,
+                  obtainedToken.decimals,
+                  true,
+                  5
+                )}
                 details={obtainedToken.symbol}
               />
               <InfoItem
                 tooltipText="The max amount you swap including collateral to get the desired number of tokens"
                 label="Max Spent"
                 value={
-                  maxSpent ? formatAmount(maxSpent, spentToken.decimals) : '-'
+                  maxSpent
+                    ? formatAmount(maxSpent, spentToken.decimals, true, 5)
+                    : '-'
                 }
                 details={spentToken.symbol}
               />
