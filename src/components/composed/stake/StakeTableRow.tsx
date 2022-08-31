@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
@@ -11,6 +11,7 @@ import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useBalance, useVaultData } from '@/hooks/useVault';
 import { useTotalSupply } from '@/hooks/useToken';
+import { useUpdateVaultStatus, useVaultsState } from '@/state/vaults/hooks';
 
 type IStakeTableRow = ITableRow;
 
@@ -24,6 +25,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const vaultData = useVaultData(vaultTokenAddress);
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
+  const updateVaultStatus = useUpdateVaultStatus();
 
   const tvl = useMemo(() => {
     return vaultBalance.plus(BigNumber(vaultData?.netLoans.toString()));
@@ -51,12 +53,19 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
       .multipliedBy(100);
 
     if (value.gt(0)) return value.toFixed(2);
-    else return 0;
+    return 0;
   }, [shareValue, vaultData?.creationTime]);
 
   const handleInfoClick = async () => {
     navigate(`/stake/details?token=${vaultTokenAddress}`);
   };
+
+  useEffect(() => {
+    if (aprValue !== null && tvl) {
+      updateVaultStatus(vaultTokenAddress, { apr: Number(aprValue) || 0, tvl });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aprValue, tvl]);
 
   return (
     <>

@@ -13,6 +13,8 @@ import InputField from '@/components/based/InputField';
 import Tooltip from '@/components/based/Tooltip';
 import StakeTableRow from '@/components/composed/stake/StakeTableRow';
 import { TOKEN_LIST } from '@/global/constants';
+import { useVaultsState } from '@/state/vaults/hooks';
+import { formatAmountToNumber } from '@/global/utils';
 
 const APY_MENU: KeyableType = {
   highest: 'Highest',
@@ -27,6 +29,7 @@ export default function StakePage() {
   const [apySortValue, setApySortValue] = useState<string>('');
   const [tvlSortValue, setTvlSortValue] = useState<string>('');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
+  const vaults = useVaultsState();
 
   const apySortLabel = useMemo(
     () => `APY${apySortValue ? ` - ${APY_MENU[apySortValue]}` : ''}`,
@@ -36,6 +39,25 @@ export default function StakePage() {
     () => `TVL${tvlSortValue ? ` - ${TVL_MENU[tvlSortValue]}` : ''}`,
     [tvlSortValue]
   );
+
+  const sortedTokens = useMemo(() => {
+    if (apySortValue === '' && tvlSortValue === '') return [...TOKEN_LIST];
+    return [...TOKEN_LIST].sort((a, b) => {
+      let result = 0;
+      if (apySortValue) {
+        const diffValue = (vaults[b.address].apr - vaults[a.address].apr) * 100;
+        result = apySortValue === 'highest' ? diffValue : -diffValue;
+      }
+      if (tvlSortValue) {
+        const comparedVaule = formatAmountToNumber(
+          vaults[b.address].tvl,
+          b.decimals
+        ).comparedTo(formatAmountToNumber(vaults[a.address].tvl, a.decimals));
+        result += tvlSortValue === 'highest' ? comparedVaule : -comparedVaule;
+      }
+      return result;
+    });
+  }, [apySortValue, tvlSortValue, vaults]);
 
   const handleSortClear = () => {
     setApySortValue('');
@@ -122,19 +144,23 @@ export default function StakePage() {
           },
           { id: 'action', content: '' },
         ]}
-        data={TOKEN_LIST.filter(({ symbol }) =>
-          symbol.trim().includes(searchInputValue.toUpperCase())
-        ).map((token) => ({
-          vault_name: (
-            <Txt.TokenText symbol={token.symbol}>{token.symbol}</Txt.TokenText>
-          ),
-          token_address: token.address,
-          annual_percentage: null,
-          total_value: null,
-          total_borrow: null,
-          owned: null,
-          action: null,
-        }))}
+        data={sortedTokens
+          .filter(({ symbol }) =>
+            symbol.trim().includes(searchInputValue.toUpperCase())
+          )
+          .map((token) => ({
+            vault_name: (
+              <Txt.TokenText symbol={token.symbol}>
+                {token.symbol}
+              </Txt.TokenText>
+            ),
+            token_address: token.address,
+            annual_percentage: null,
+            total_value: null,
+            total_borrow: null,
+            owned: null,
+            action: null,
+          }))}
         loading={false}
         hoverable
         RowComponent={StakeTableRow}
