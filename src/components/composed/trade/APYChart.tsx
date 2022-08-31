@@ -25,6 +25,7 @@ const APYChart: FC<IAPYChart> = ({ spentToken, setBaseApy }) => {
   const [chartData, setChartData] = useState<any>([]);
   const CHART_OPTIONS = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -134,7 +135,7 @@ const APYChart: FC<IAPYChart> = ({ spentToken, setBaseApy }) => {
   };
 
   return (
-    <div tw="w-full height[:auto] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
+    <div tw="w-full height[:auto] max-height[500px] box-content desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16">
       <Txt.Body1Bold>APY Chart</Txt.Body1Bold>
       <Line options={CHART_OPTIONS} data={data} />
     </div>
