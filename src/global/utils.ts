@@ -29,7 +29,7 @@ export function formatAmount(
   value: string | number | BigNumber,
   decimals = 18,
   localeFormat = true,
-  fractionDigits = 2
+  fractionDigits = 4
 ) {
   const number = Number(
     (typeof value === 'object'
@@ -41,6 +41,7 @@ export function formatAmount(
   );
   if (localeFormat)
     return number.toLocaleString('en-US', {
+      minimumFractionDigits: 0,
       maximumFractionDigits: fractionDigits,
     });
   return number.toString();
