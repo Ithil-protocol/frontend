@@ -28,6 +28,7 @@ const VaultChart: FC<IVaultChart> = ({
   const [chartData, setChartData] = useState<any>([]);
   const CHART_OPTIONS = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -105,7 +106,7 @@ const VaultChart: FC<IVaultChart> = ({
   }, [utilisationRate, vaultData]);
 
   return (
-    <div tw="w-full height[:auto] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
+    <div tw="w-full height[:auto] max-height[500px] box-content desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16">
       <Txt.Body1Bold>Vault Chart</Txt.Body1Bold>
       <Line options={CHART_OPTIONS} data={data} />
     </div>
