@@ -312,8 +312,8 @@ export default function MarginTradingPage() {
               }
             />
             <SliderBar
-              label=""
-              tooltipText=""
+              label="Leverage"
+              tooltipText="The capital boost on the margin invested"
               min={1}
               max={MAX_LEVERAGE}
               step={0.2}
@@ -322,11 +322,6 @@ export default function MarginTradingPage() {
               marks={sliderMarks}
             />
             <div tw="w-full">
-              <InfoItem
-                tooltipText="The capital boost on the margin invested"
-                label="Leverage"
-                value={`${leverage}x`}
-              />
               <InfoItem
                 tooltipText="The max amount you swap including collateral to get the desired number of tokens"
                 label="Max Spent"
