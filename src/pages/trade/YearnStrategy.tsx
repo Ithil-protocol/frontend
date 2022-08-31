@@ -181,6 +181,11 @@ export default function YearnStrategyPage() {
             />
             <div tw="w-full">
               <InfoItem
+                tooltipText="The capital boost on the margin invested"
+                label="Leverage"
+                value={`${leverage}x`}
+              />
+              <InfoItem
                 tooltipText="The max amount you invest including collateral"
                 label="Max Spent"
                 value={
@@ -194,14 +199,9 @@ export default function YearnStrategyPage() {
                 value={`${baseApy.toFixed(2)}x`}
               />
               <InfoItem
-                tooltipText="The capital boost on the margin invested"
-                label="Multiplier"
-                value={`${leverage}x`}
-              />
-              <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`${interestRate.toFixed(2)}%`}
+                value={`-${interestRate.toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
