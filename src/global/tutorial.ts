@@ -45,8 +45,30 @@ export const steps: ShepherdOptionsWithType[] = [
     },
     title: 'Connect with your web3 wallet',
     text: [
-      'First of all you need to connect with your installed wallet (MetaMask or WalletConnect) and set the network to Goerli.',
+      'First of all you need to connect with your installed wallet (MetaMask or WalletConnect). Click Connect and then Next.',
     ],
+  },
+  {
+    id: 'step-connect',
+    attachTo: { element: '#connect-modal', on: 'left' },
+    buttons: [
+      {
+        classes: 'shepherd-button-secondary',
+        text: 'Back',
+        type: 'back',
+      },
+      {
+        classes: 'shepherd-button-primary',
+        text: 'Next',
+        type: 'next',
+      },
+    ],
+    highlightClass: 'highlight',
+    cancelIcon: {
+      enabled: true,
+    },
+    title: 'Connect with your web3 wallet',
+    text: ['Select the desired web3 wallet and switch to Goerli testnet.'],
   },
   {
     id: 'step-navigate-faucet',
@@ -279,6 +301,7 @@ export const steps: ShepherdOptionsWithType[] = [
     text: [
       'Approve the strategy contract to take your margin tokens and then confirm the trade. Good luck!',
     ],
+    scrollTo: true,
   },
 ];
 

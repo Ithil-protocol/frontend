@@ -11,22 +11,23 @@ import { ReactComponent as MetaMaskIcon } from '@/assets/images/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from '@/assets/images/walletconnect.svg';
 
 interface IWalletModal {
+  id?: string;
   open: boolean;
   onClose(): void;
 }
 
-const WalletConnectionModal: FC<IWalletModal> = ({ open, onClose }) => {
+const WalletConnectionModal: FC<IWalletModal> = ({ id, open, onClose }) => {
   const { activate } = useEthers();
   const updateWalletConnector = useUpdateWalletConnector();
   const isMetamaskInstalled = (window as any)?.ethereum;
 
   return (
-    <Modal tw="bg-secondary" open={open} onClose={onClose}>
+    <Modal tw="bg-secondary" open={open} onClose={onClose} id={id}>
       <div tw="flex flex-col justify-center items-center">
         <Txt.Heading2 tw="self-end">Connect to a wallet</Txt.Heading2>
       </div>
       <Txt.Body2Regular tw="w-96 self-start my-3">
-        By connecting a wallet, I agree to Ithil’s{' '}
+        By connecting a wallet, I agree to Ithil{' '}
         <a tw="cursor-pointer">Terms of Use</a>,{' '}
         <a tw="cursor-pointer">Cookies Policy</a>
         and <a tw="cursor-pointer">Privacy Policy</a>.

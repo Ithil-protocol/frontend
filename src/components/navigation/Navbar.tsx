@@ -36,7 +36,7 @@ const Navbar = () => {
             <ThemeSwitch />
           </span>
         </span>
-        <span tw="flex flex-row items-center gap-2">
+        <span tw="flex flex-row items-center gap-2" id="connector">
           <NetworkMenu />
           {account ? (
             <WalletIndicator onClick={() => setAccountModalOpened(true)} />
@@ -50,6 +50,7 @@ const Navbar = () => {
           <KebabMenu />
         </span>
         <WalletConnectionModal
+          id="connect-modal"
           open={walletModalOpened}
           onClose={() => setWalletModalOpened(false)}
         />
