@@ -51,16 +51,22 @@ export const STRATEGIES: { [key: string]: StrategyContractType } = {
     address: MTS.address,
     abi: new Interface(MarginTradingStrategyABI),
     defaultSlippage: '0.1',
+    type: 'margin',
+    label: 'Margin Trading',
   },
   YearnStrategy: {
     address: YS.address,
     abi: new Interface(YearnStrategyABI),
     defaultSlippage: '0.01',
+    type: 'yearn',
+    label: 'Yearn Strategy',
   },
   EulerStrategy: {
     address: ES.address,
     abi: new Interface(EulerStrategyABI),
     defaultSlippage: '0.01',
+    type: 'euler',
+    label: 'Euler Strategy',
   },
 };
 export const WEB_APP_URL = 'https://ithil.fi';
@@ -68,11 +74,7 @@ export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
 export const DISCORD_URL = 'https://discord.gg/tEaGBcGdQC';
 
-export const YEARN_API_URL = `${
-  process.env.NODE_ENV === 'development'
-    ? 'https://cors-anywhere.herokuapp.com/'
-    : 'https://cors-anywhere.herokuapp.com/'
-}api.yearn.finance/v1/`;
+export const YEARN_API_URL = 'https://api.yearn.finance/v1/chains/1/vaults/all';
 
 export const TRADE_STRATEGIES = [
   {
@@ -97,10 +99,19 @@ export const TRADE_STRATEGIES = [
   {
     id: 3,
     title: 'Battle in the Curve wars',
-    description: 'Superfeed your harvests on Curve and Convex with leverage',
+    description: 'Coming soon...',
     apyMin: '10',
     apyMax: '100x',
     risk: 'Medium',
+    url: '',
+  },
+  {
+    id: 4,
+    title: 'Join the veBAL revolution on Balancer',
+    description: 'Coming soon...',
+    apyMin: '10',
+    apyMax: '100x',
+    risk: 'Low',
     url: '',
   },
 ];

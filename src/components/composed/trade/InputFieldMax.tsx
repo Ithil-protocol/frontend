@@ -8,7 +8,6 @@ import React, {
   FC,
 } from 'react';
 import { useEthers, useTokenBalance } from '@usedapp/core';
-import BigNumber from 'bignumber.js';
 
 import Txt from '@/components/based/Txt';
 import { TokenDetails } from '@/global/types';

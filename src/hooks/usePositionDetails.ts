@@ -5,12 +5,12 @@ import { BigNumber as BN } from '@ethersproject/bignumber';
 import { useQuoter } from './useQuoter';
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 
-import { OpenedPositionType } from '@/global/types';
-import { formatAmount, getTokenByAddress } from '@/global/utils';
-import { STRATEGIES } from '@/global/constants';
+import { OpenedPositionType, StrategyContractType } from '@/global/types';
+import { formatAmount, getTokenByAddress, parseAmount } from '@/global/utils';
 
-export default function useMarginTradingPositionDetails(
-  details: OpenedPositionType
+export default function usePositionDetails(
+  details: OpenedPositionType,
+  strategy: StrategyContractType
 ) {
   const principalValue = useMemo(
     () => new BigNumber(BN.from(details.principal).toString()),
@@ -29,8 +29,16 @@ export default function useMarginTradingPositionDetails(
     [details]
   );
   const heldToken = useMemo(
-    () => getTokenByAddress(details.heldToken),
-    [details]
+    () =>
+      getTokenByAddress(details.heldToken) ||
+      (owedToken && {
+        name: `Yearn ${owedToken.name}`,
+        address: details.heldToken,
+        symbol: `y${owedToken.symbol}`,
+        decimals: owedToken.decimals,
+        logoURI: owedToken.logoURI,
+      }),
+    [details.heldToken, owedToken]
   );
   const collateralToken = useMemo(
     () => getTokenByAddress(details.collateralToken),
@@ -72,14 +80,22 @@ export default function useMarginTradingPositionDetails(
   ]);
 
   const positionValue = useMemo(() => {
-    return `Margin Trading ${longShortValue} ${tokenPairValue}`;
-  }, [tokenPairValue, longShortValue]);
+    return `${strategy.label} ${
+      strategy.type === 'margin' ? `${longShortValue}` : ''
+    }`;
+  }, [strategy, longShortValue, tokenPairValue]);
 
   const currentPrice = useQuoter(
-    longShortValue === 'Long' ? details.heldToken : details.owedToken,
-    longShortValue === 'Long' ? details.owedToken : details.heldToken,
-    new BigNumber(1),
-    STRATEGIES.MarginTradingStrategy
+    longShortValue === 'Long' && strategy.type === 'margin'
+      ? details.heldToken
+      : details.owedToken,
+    longShortValue === 'Long' && strategy.type === 'margin'
+      ? details.owedToken
+      : details.heldToken,
+    strategy.type === 'margin'
+      ? new BigNumber(1)
+      : parseAmount('1', owedToken?.decimals),
+    strategy
   );
 
   const currentPriceValue = useMemo(() => {
@@ -92,7 +108,7 @@ export default function useMarginTradingPositionDetails(
   const riskFactor = useComputePairRiskFactor(
     details.owedToken,
     details.heldToken,
-    STRATEGIES.MarginTradingStrategy
+    strategy
   );
 
   const liqPriceValue = useMemo(() => {
@@ -150,7 +166,7 @@ export default function useMarginTradingPositionDetails(
     longShortValue === 'Long' ? details.heldToken : details.owedToken,
     longShortValue === 'Long' ? details.owedToken : details.heldToken,
     longShortValue === 'Long' ? allowanceValue : principalValue.plus(feesValue),
-    STRATEGIES.MarginTradingStrategy
+    strategy
   );
 
   const pnlValue = useMemo(() => {

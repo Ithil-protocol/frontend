@@ -1,8 +1,8 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
-import { DEFAULT_SUPPORTED_CHAINS, Mainnet, useEthers } from '@usedapp/core';
+import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
 
-import { TOKEN_LIST } from './constants';
+import { STRATEGIES, TOKEN_LIST } from './constants';
 import { TokenDetails } from './types';
 
 export function infuraUrl(chainId: number) {
@@ -52,6 +52,14 @@ export function parseAmount(value: number | string, decimals = 18) {
 
 export function getTokenByAddress(tokenAddress: string) {
   return TOKEN_LIST.find((token) => token.address === tokenAddress);
+}
+
+export function getStrategyByType(type: string) {
+  const filtered = Object.keys(STRATEGIES).filter(
+    (id) => STRATEGIES[id].type === type
+  );
+  if (!filtered.length) return undefined;
+  return STRATEGIES[filtered[0]];
 }
 
 export async function importToken(token: TokenDetails) {

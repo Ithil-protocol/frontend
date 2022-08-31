@@ -70,6 +70,8 @@ export interface PositionType {
 
 export interface OpenedPositionType extends PositionType {
   id: string;
+  type: string;
+  label: string;
 }
 
 export type KeyableType = { [key: string]: string };
@@ -87,4 +89,6 @@ export type ContractType = {
 
 export interface StrategyContractType extends ContractType {
   defaultSlippage: string;
+  type: string;
+  label: string;
 }

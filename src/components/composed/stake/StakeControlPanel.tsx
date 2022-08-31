@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
-import { useTokenAllowance } from '@usedapp/core';
+import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
 import { MaxUint256 } from '@ethersproject/constants';
@@ -13,7 +13,7 @@ import Button from '@/components/based/Button';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import { formatAmount } from '@/global/utils';
-import { useStake, useUnstake } from '@/hooks/useVault';
+import { useClaimable, useStake, useUnstake } from '@/hooks/useVault';
 import { useApprove } from '@/hooks/useToken';
 
 interface IStakeControlWidget {
@@ -74,8 +74,6 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
 
 interface IStakeControlPanel {
   token: TokenDetails;
-  balance: any;
-  account: string;
   vaultData: any;
   vaultBalance: any;
   wrappedTokenBalance: any;
@@ -84,12 +82,12 @@ interface IStakeControlPanel {
 
 const StakeControlPanel: FC<IStakeControlPanel> = ({
   token,
-  balance,
-  account,
   vaultBalance,
   wrappedTokenBalance,
   wrappedTokenSupply,
 }) => {
+  const { account } = useEthers();
+  const balance = useTokenBalance(token.address, account);
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
   const tokenAllowance = useTokenAllowance(
@@ -98,18 +96,19 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
     CORE.Vault.address
   );
   const { approve, isLoading: isApproveLoading } = useApprove(token.address);
+  //const maximumWithdrawal = useClaimable(token.address);
+
+  const maximumWithdrawal = useMemo(() => {
+    if (!wrappedTokenBalance || vaultBalance.isZero()) return undefined;
+    return new BigNumber(wrappedTokenBalance.toString())
+      .multipliedBy(vaultBalance)
+      .dividedBy(wrappedTokenSupply);
+  }, [vaultBalance, wrappedTokenBalance, wrappedTokenSupply]);
 
   const isApproved = useMemo(() => {
     if (!tokenAllowance || !balance) return false;
     return balance.sub(tokenAllowance).isNegative();
   }, [balance, tokenAllowance]);
-
-  const maximumWithdrawal = useMemo(() => {
-    if (!wrappedTokenBalance || vaultBalance.isZero()) return undefined;
-    return new BigNumber(wrappedTokenBalance.toString())
-      .multipliedBy(wrappedTokenSupply)
-      .dividedBy(vaultBalance);
-  }, [vaultBalance, wrappedTokenBalance, wrappedTokenSupply]);
 
   const handleStake = async (amount: string) => {
     if (isApproved) {
@@ -119,7 +118,6 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
     }
   };
   const handleUnstake = async (amount: string) => {
-    console.log('amount', amount);
     await unstake(token.address, parseUnits(amount, token.decimals));
   };
 
@@ -149,12 +147,16 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
         value={
           maximumWithdrawal
             ? `Available: ${formatAmount(
-                maximumWithdrawal?.toFixed(),
+                maximumWithdrawal?.toString() || '0',
                 token.decimals
               )} ${token.symbol}`
             : '-'
         }
-        maxValue={formatAmount(maximumWithdrawal || '0', token.decimals, false)}
+        maxValue={formatAmount(
+          maximumWithdrawal?.toString() || '0',
+          token.decimals,
+          false
+        )}
         token={token}
         onSubmit={handleUnstake}
         secondaryButton

@@ -4,11 +4,15 @@ import React, { FC, useMemo } from 'react';
 
 import { ITableRow } from '@/components/based/table/DataTable';
 import Txt from '@/components/based/Txt';
-import { PositionOpenType } from '@/global/types';
-import useMarginTradingPositionDetails from '@/hooks/useMarginTradingPositionDetails';
+import {
+  OpenedPositionType,
+  PositionOpenType,
+  StrategyContractType,
+} from '@/global/types';
 import { formatAmount } from '@/global/utils';
 import { usePositions } from '@/hooks/usePositions';
 import { STRATEGIES } from '@/global/constants';
+import usePositionDetails from '@/hooks/usePositionDetails';
 
 type IDashboardTableRow = ITableRow;
 
@@ -18,17 +22,21 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
   hoverable,
   onClick,
 }) => {
-  const position = JSON.parse(row['position_info'] as string);
+  const position = JSON.parse(
+    row['position_info'] as string
+  ) as OpenedPositionType;
   const status: PositionOpenType = row['position_status'] as PositionOpenType;
+  const strategy: StrategyContractType =
+    position.type === 'margin'
+      ? STRATEGIES.MarginTradingStrategy
+      : STRATEGIES.YearnStrategy;
 
-  const activePosition = usePositions(
-    Number(position.id),
-    STRATEGIES.MarginTradingStrategy
-  );
+  const activePosition = usePositions(Number(position.id), strategy);
 
   const { collateralToken, collateralValue, pnlText, pnlValue, positionValue } =
-    useMarginTradingPositionDetails(
-      status === 'active' ? activePosition || position : position
+    usePositionDetails(
+      status === 'active' ? activePosition || position : position,
+      strategy
     );
 
   const collateralText = useMemo(() => {

@@ -42,7 +42,7 @@ export function useOpenedPositions(strategy: StrategyContractType) {
       .map(
         (log) =>
           ({
-            id: log.data.id.toString(),
+            id: `${log.data.id.toString()}_${strategy.type}`,
             owedToken: log.data.owedToken,
             heldToken: log.data.heldToken,
             collateralToken: log.data.collateralToken,
@@ -52,6 +52,8 @@ export function useOpenedPositions(strategy: StrategyContractType) {
             interestRate: log.data.interestRate,
             fees: log.data.fees,
             createdAt: log.data.createdAt,
+            type: strategy.type,
+            label: strategy.label,
           } as OpenedPositionType)
       ) || []
   );

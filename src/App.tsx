@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { initialize, pageview } from 'react-ga';
 import { useEthers } from '@usedapp/core';
-import { ShepherdTour, ShepherdTourContext } from 'react-shepherd';
+import { ShepherdTour } from 'react-shepherd';
 
 import Navbar from '@/components/navigation/Navbar';
 import { injected } from '@/config/connectors';

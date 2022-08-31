@@ -23,7 +23,11 @@ export function useHandleTxStatus(
       resetState();
     } else if (state.status === 'Exception' || state.status === 'Fail') {
       if (state.errorMessage) {
-        toast.error(state.errorMessage);
+        toast.error(
+          state.errorMessage === 'execution reverted'
+            ? "The position can't be created because of either the position setup or status of on-chain valuts!"
+            : state.errorMessage
+        );
       }
       resetState();
     }

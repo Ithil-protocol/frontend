@@ -6,7 +6,6 @@ import { ArrowDown } from 'phosphor-react';
 import InputFieldMax from './InputFieldMax';
 
 import { TokenDetails } from '@/global/types';
-import InputField from '@/components/based/InputField';
 import Button from '@/components/based/Button';
 import TokenModal from '@/components/composed/trade/TokenModal';
 

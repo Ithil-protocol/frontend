@@ -4,7 +4,6 @@ import React, { FC, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
-import { Info } from 'phosphor-react';
 
 import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
 import { ITableRow } from '@/components/based/table/DataTable';
@@ -23,14 +22,17 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const vaultToken = getTokenByAddress(vaultTokenAddress);
   const vaultBalance = useBalance(vaultTokenAddress);
   const vaultData = useVaultData(vaultTokenAddress);
-  const balance = useTokenBalance(vaultTokenAddress, account);
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);
+
+  const tvl = useMemo(() => {
+    return vaultBalance.plus(BigNumber(vaultData?.netLoans.toString()));
+  }, [vaultBalance, vaultData]);
 
   const totalBorrowed = useMemo(() => {
     if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
     return BigNumber(vaultData?.netLoans.toString());
-  }, [vaultData?.netLoans]);
+  }, [vaultBalance, vaultData]);
 
   const shareValue = useMemo(() => {
     if (wrappedTokenSupply.isZero()) return null;
@@ -52,7 +54,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
     else return 0;
   }, [shareValue, vaultData?.creationTime]);
 
-  const handleInfoClick = async (e: any) => {
+  const handleInfoClick = async () => {
     navigate(`/stake/details?token=${vaultTokenAddress}`);
   };
 
@@ -81,7 +83,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {formatAmount(vaultBalance, vaultToken?.decimals)}
+                    {formatAmount(tvl, vaultToken?.decimals)}
                   </Txt.Body2Regular>
                 </td>
               );
@@ -109,9 +111,14 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
             case 'action':
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
-                  <Txt.Body2Regular>
-                    <Info onClick={handleInfoClick} />
-                  </Txt.Body2Regular>
+                  <button
+                    onClick={handleInfoClick}
+                    css={[
+                      tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
+                    ]}
+                  >
+                    Info
+                  </button>
                 </td>
               );
             default:
@@ -130,13 +137,11 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
           }
         })}
       </tr>
-      {vaultToken && balance?.gt(0) && account && (
+      {vaultToken && (
         <tr style={{ display: !expanded ? 'none' : undefined }}>
           <td tw="bg-primary-100" colSpan={head.length}>
             <StakeControlPanel
               token={vaultToken}
-              balance={balance}
-              account={account}
               vaultData={vaultData}
               vaultBalance={vaultBalance}
               wrappedTokenBalance={wrappedTokenBalance}
