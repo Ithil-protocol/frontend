@@ -50,6 +50,10 @@ export function parseAmount(value: number | string, decimals = 18) {
   return new BigNumber(value).multipliedBy(new BigNumber(10).pow(decimals));
 }
 
+export function formatAmountToNumber(value: BigNumber | string, decimals = 18) {
+  return new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals));
+}
+
 export function getTokenByAddress(tokenAddress: string) {
   return TOKEN_LIST.find((token) => token.address === tokenAddress);
 }

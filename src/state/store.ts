@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
 
 import application from './application';
+import vaults from './vaults';
 
 const persistConfig = {
   key: 'root',
@@ -14,7 +15,10 @@ const persistConfig = {
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const store: Store = configureStore({
-  reducer: persistReducer(persistConfig, combineReducers({ application })),
+  reducer: persistReducer(
+    persistConfig,
+    combineReducers({ application, vaults })
+  ),
   middleware: (getDefaultMiddleware) => {
     const middleware = getDefaultMiddleware({
       thunk: false,
