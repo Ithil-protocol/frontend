@@ -1732,7 +1732,7 @@
 
 "@ithil-protocol/deployed@github:Ithil-protocol/deployed":
   version "1.0.0"
-  resolved "https://codeload.github.com/Ithil-protocol/deployed/tar.gz/18d79a839a4ae0f1f0ff9233597079a41430fd1b"
+  resolved "https://codeload.github.com/Ithil-protocol/deployed/tar.gz/4482152a80e90f99ed060c48ec757a603186bd42"
 
 "@jest/console@^27.5.1":
   version "27.5.1"
@@ -2160,9 +2160,9 @@
   integrity sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA==
 
 "@sinclair/typebox@^0.24.1":
-  version "0.24.32"
-  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.32.tgz#214a03e430122d239a6414a5d5412c23964cafbd"
-  integrity sha512-NWNTW284AOFhxgYofPef5IqDq6Y7ghZkZAkWJcUBp1r9ljfrFOKBDsiQJnLNp9tLcaSXFK9OgsS72W4RXe0jvw==
+  version "0.24.33"
+  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.33.tgz#e7852f8cdd2fd93a9ea4de17a2dccd788a8bf50a"
+  integrity sha512-c5p4Ib38ILOGfeYZWIu2Ms6EDdc2PGehzEYLevsvZ1njIt4Jt66E++4pjpBpgh+yJFj4ahnbKfYahOyLxvTBCw==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -3790,9 +3790,9 @@ body-parser@1.20.0:
     unpipe "1.0.0"
 
 bonjour-service@^1.0.11:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/bonjour-service/-/bonjour-service-1.0.13.tgz#4ac003dc1626023252d58adf2946f57e5da450c1"
-  integrity sha512-LWKRU/7EqDUC9CTAQtuZl5HzBALoCYwtLhffW3et7vZMwv3bWLpJf8bRYlMD5OCcDpTfnPgNCV4yo9ZIaJGMiA==
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/bonjour-service/-/bonjour-service-1.0.14.tgz#c346f5bc84e87802d08f8d5a60b93f758e514ee7"
+  integrity sha512-HIMbgLnk1Vqvs6B4Wq5ep7mxvj9sGz5d1JJyDNSGNIdA/w2MCz6GTjWTdjqOJV1bEPj+6IkxDvWNFKEBxNt4kQ==
   dependencies:
     array-flatten "^2.1.2"
     dns-equal "^1.0.0"
@@ -8596,9 +8596,9 @@ process-nextick-args@~2.0.0:
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
 promise@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-8.1.0.tgz#697c25c3dfe7435dd79fcd58c38a135888eaf05e"
-  integrity sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q==
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/promise/-/promise-8.2.0.tgz#a1f6280ab67457fbfc8aad2b198c9497e9e5c806"
+  integrity sha512-+CMAlLHqwRYwBMXKCP+o8ns7DN+xHDUiI+0nArsiJ9y+kJVPLFxEaSw6Ha9s9H0tftxg2Yzl25wqj9G7m5wLZg==
   dependencies:
     asap "~2.0.6"
 
