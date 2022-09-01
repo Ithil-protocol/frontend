@@ -67,11 +67,11 @@ export default function MarginTradingPage() {
     return Number(
       formatAmount(
         vaultData['minimumMargin'].toString(),
-        spentToken.decimals,
+        collateralToken.decimals,
         false
       )
     );
-  }, [spentToken.decimals, vaultData]);
+  }, [collateralToken, vaultData]);
 
   const quoteValueDst = useQuoter(
     spentToken.address,
@@ -188,7 +188,7 @@ export default function MarginTradingPage() {
     }
     if (
       Number(marginAmount) >
-      Number(formatUnits(tokenBalance, spentToken.decimals))
+      Number(formatUnits(tokenBalance, collateralToken.decimals))
     ) {
       toast.error('Invalid margin amount!');
       return;
@@ -199,7 +199,9 @@ export default function MarginTradingPage() {
     const newOrder = {
       spentToken: spentToken.address,
       obtainedToken: obtainedToken.address,
-      collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(0),
+      collateral: parseAmount(marginAmount, collateralToken.decimals).toFixed(
+        0
+      ),
       collateralIsSpentToken,
       minObtained: minObtained.toFixed(0),
       maxSpent: maxSpent.toFixed(0),
