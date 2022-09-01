@@ -6,11 +6,13 @@ import { useVaultData } from './useVault';
 
 import { StrategyContractType } from '@/global/types';
 import { CORE } from '@/global/constants';
+import { baseInterestRate } from '@/global/utils';
 
 export function useMaxLeverage(
   spentToken: string,
   obtainedToken: string,
   margin: BigNumber,
+  maxSpent: BigNumber,
   strategy: StrategyContractType
 ) {
   const vaultData = useVaultData(spentToken);
@@ -22,25 +24,27 @@ export function useMaxLeverage(
     vaultData?.insuranceReserveBalance.toString()
   );
 
-  const baseIR = baseFee.plus(
-    netLoans
-      .plus(BigNumber.max(netLoans.minus(insuranceReserveBalance), 0))
-      .multipliedBy(riskFactor)
-      .dividedBy(
-        BigNumber(balance?.toString() || 0)
-          .plus(netLoans)
-          .minus(insuranceReserveBalance)
-      )
+  const baseIR = baseInterestRate(
+    baseFee,
+    netLoans,
+    insuranceReserveBalance,
+    BigNumber(balance?.toString() || 0),
+    BigNumber('0'),
+    BigNumber('0'),
+    riskFactor
   );
-  const maxLeverage = BigNumber('500').dividedBy(baseIR);
+  const val = BigNumber('500').dividedBy(baseIR);
 
-  return BigNumber.max(
+  const maxLeverage = BigNumber.max(
     BigNumber.min(
-      maxLeverage,
+      val,
       BigNumber(balance?.toString() || 0)
         .minus(insuranceReserveBalance)
         .dividedBy(margin)
+        .plus(1)
     ),
     1
   ).toNumber();
+
+  return { baseIR, maxLeverage };
 }

@@ -17,7 +17,7 @@ import Page from '@/components/based/Page';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { formatAmount, parseAmount } from '@/global/utils';
+import { baseInterestRate, formatAmount, parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import { useAllowance, useApprove } from '@/hooks/useToken';
@@ -25,6 +25,7 @@ import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
 import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
+import { useVaultData } from '@/hooks/useVault';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
@@ -34,7 +35,6 @@ export default function YearnStrategyPage() {
   const [leverage, setLeverage] = useState<number>(1);
 
   const [baseApy, setBaseApy] = useState<number>(0);
-  const [interestRate, setInterestRate] = useState<number>(0);
 
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.YearnStrategy.defaultSlippage
@@ -67,10 +67,11 @@ export default function YearnStrategyPage() {
     STRATEGIES.YearnStrategy
   );
 
-  const maxLeverage = useMaxLeverage(
+  const { baseIR, maxLeverage } = useMaxLeverage(
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
+    maxSpent,
     STRATEGIES.YearnStrategy
   );
 
@@ -101,10 +102,6 @@ export default function YearnStrategyPage() {
     }
     return 'Open';
   }, [allowance, marginAmount, spentToken.decimals]);
-
-  useEffect(() => {
-    setInterestRate((leverage - 1) * 0.1);
-  }, [leverage]);
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
@@ -203,12 +200,14 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${interestRate.toFixed(2)}%`}
+                value={`-${baseIR.toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
                 label="Estimated APY"
-                value={`${(leverage * baseApy - interestRate).toFixed(2)}%`}
+                value={`${(leverage * baseApy - baseIR.toNumber()).toFixed(
+                  2
+                )}%`}
               />
             </div>
             <div tw="w-full">

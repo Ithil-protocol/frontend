@@ -81,3 +81,38 @@ export async function importToken(token: TokenDetails) {
     },
   });
 }
+
+export function baseInterestRate(
+  baseFee: BigNumber,
+  netLoans: BigNumber,
+  insuranceReserveBalance: BigNumber,
+  balance: BigNumber,
+  collateral: BigNumber,
+  maxSpent: BigNumber,
+  riskFactor: BigNumber
+) {
+  console.log('baseFee', baseFee.toString());
+  console.log('netLoans', netLoans.toString());
+  console.log('insuranceReserveBalance', insuranceReserveBalance.toString());
+  console.log('balance', balance.toString());
+  console.log('collateral', collateral.toString());
+  console.log('maxSpent', maxSpent.toString());
+  console.log('riskFactor', riskFactor.toString());
+
+  return baseFee.plus(
+    netLoans
+      .plus(
+        BigNumber.max(netLoans.minus(insuranceReserveBalance), 0)
+          .plus(maxSpent)
+          .minus(collateral)
+      )
+      .multipliedBy(riskFactor)
+      .dividedBy(
+        balance
+          .plus(netLoans)
+          .plus(maxSpent)
+          .minus(insuranceReserveBalance)
+          .minus(collateral)
+      )
+  );
+}

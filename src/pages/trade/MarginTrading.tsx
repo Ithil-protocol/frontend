@@ -62,13 +62,6 @@ export default function MarginTradingPage() {
     return parseAmount(marginAmount, collateralToken.decimals);
   }, [marginAmount, collateralToken]);
 
-  const maxLeverage = useMaxLeverage(
-    spentToken.address,
-    obtainedToken.address,
-    marginAmountValue,
-    STRATEGIES.MarginTradingStrategy
-  );
-
   const minimumMarginValue = useMemo(() => {
     if (!vaultData) return 0;
     return Number(
@@ -202,6 +195,7 @@ export default function MarginTradingPage() {
     }
     const deadlineTimestamp =
       Math.floor(Date.now() / 1000) + 60 * Number(deadline);
+
     const newOrder = {
       spentToken: spentToken.address,
       obtainedToken: obtainedToken.address,
@@ -213,6 +207,14 @@ export default function MarginTradingPage() {
     };
     openPosition(newOrder);
   };
+
+  const { baseIR, maxLeverage } = useMaxLeverage(
+    spentToken.address,
+    obtainedToken.address,
+    marginAmountValue,
+    maxSpent,
+    STRATEGIES.MarginTradingStrategy
+  );
 
   const handleExecute = () => {
     if (
@@ -350,6 +352,11 @@ export default function MarginTradingPage() {
                   5
                 )}
                 details={obtainedToken.symbol}
+              />
+              <InfoItem
+                tooltipText="Percentage to be paid as borrowing fees"
+                label="Borrow Interest"
+                value={`-${baseIR.toFixed(2)}%`}
               />
             </div>
             <div tw="w-full">
