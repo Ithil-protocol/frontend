@@ -25,13 +25,9 @@ import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useQuoter } from '@/hooks/useQuoter';
 import { formatAmount, parseAmount } from '@/global/utils';
 import { useAllowance, useApprove } from '@/hooks/useToken';
-import {
-  STRATEGIES,
-  MAX_LEVERAGE,
-  DEFAULT_DEADLINE,
-  TOKEN_LIST,
-} from '@/global/constants';
+import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
 import { useVaultData } from '@/hooks/useVault';
+import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 
 export default function MarginTradingPage() {
   const { account } = useEthers();
@@ -61,6 +57,18 @@ export default function MarginTradingPage() {
 
   const vaultData = useVaultData(spentToken.address);
   const tokenBalance = useTokenBalance(spentToken.address, account);
+
+  const marginAmountValue = useMemo(() => {
+    return parseAmount(marginAmount, collateralToken.decimals);
+  }, [marginAmount, collateralToken]);
+
+  const maxLeverage = useMaxLeverage(
+    spentToken.address,
+    obtainedToken.address,
+    marginAmountValue,
+    STRATEGIES.MarginTradingStrategy
+  );
+
   const minimumMarginValue = useMemo(() => {
     if (!vaultData) return 0;
     return Number(
@@ -109,12 +117,8 @@ export default function MarginTradingPage() {
 
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';
-    const marginedAmountValue = parseAmount(
-      marginAmount,
-      collateralToken.decimals
-    );
 
-    if (new BigNumber(allowance.toString()).isLessThan(marginedAmountValue)) {
+    if (new BigNumber(allowance.toString()).isLessThan(marginAmountValue)) {
       return 'Approve';
     }
     return 'Open';
@@ -228,7 +232,7 @@ export default function MarginTradingPage() {
 
   const sliderMarks = useMemo(() => {
     const marks: { [key: number]: string } = {};
-    for (let i = 1; i <= MAX_LEVERAGE; i++) {
+    for (let i = 1; i <= maxLeverage; i++) {
       marks[i] = `${i}x`;
     }
     return marks;
@@ -240,6 +244,10 @@ export default function MarginTradingPage() {
       setLeverage(1);
     }
   }, [state]);
+
+  useEffect(() => {
+    setLeverage(1);
+  }, [maxLeverage]);
 
   return (
     <Page heading="Margin Trading Strategy">
@@ -315,7 +323,7 @@ export default function MarginTradingPage() {
               label="Leverage"
               tooltipText="The capital boost on the margin invested"
               min={1}
-              max={MAX_LEVERAGE}
+              max={maxLeverage}
               step={0.2}
               value={leverage}
               onChange={(value) => setLeverage(value as number)}
