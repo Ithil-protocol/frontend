@@ -355,7 +355,10 @@ export default function MarginTradingPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${baseIR.dividedBy(100).toFixed(2)}%`}
+                value={`-${baseIR
+                  .multipliedBy(leverage - 1)
+                  .dividedBy(100)
+                  .toFixed(2)}%`}
               />
             </div>
             <div tw="w-full">

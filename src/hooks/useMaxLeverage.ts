@@ -33,8 +33,6 @@ export function useMaxLeverage(
     riskFactor
   );
 
-  console.log('baseIR', baseIR.toString());
-
   const maxLeverage = BigNumber.max(
     BigNumber.min(
       BigNumber('500').dividedBy(baseIR),

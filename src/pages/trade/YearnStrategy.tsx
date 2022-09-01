@@ -199,7 +199,10 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${baseIR.dividedBy(100).toFixed(2)}%`}
+                value={`-${baseIR
+                  .multipliedBy(leverage - 1)
+                  .dividedBy(100)
+                  .toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
