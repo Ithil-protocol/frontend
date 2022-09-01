@@ -90,6 +90,7 @@ const VaultChart: FC<IVaultChart> = ({
   };
 
   useEffect(() => {
+    /*
     if (vaultData && utilisationRate !== 0 && balance !== 0) {
       if (vaultData.insuranceReserveBalance > vaultData.netLoans) {
         setChartData(vaultData.baseFee.toNumber() + utilisationRate.toNumber());
@@ -103,6 +104,7 @@ const VaultChart: FC<IVaultChart> = ({
         );
       }
     }
+    */
   }, [utilisationRate, vaultData]);
 
   return (
