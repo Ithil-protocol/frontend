@@ -12,7 +12,6 @@ export function useMaxLeverage(
   spentToken: string,
   obtainedToken: string,
   margin: BigNumber,
-  maxSpent: BigNumber,
   strategy: StrategyContractType
 ) {
   const vaultData = useVaultData(spentToken);
@@ -29,15 +28,16 @@ export function useMaxLeverage(
     netLoans,
     insuranceReserveBalance,
     BigNumber(balance?.toString() || 0),
-    BigNumber('0'),
+    margin,
     BigNumber('0'),
     riskFactor
   );
-  const val = BigNumber('500').dividedBy(baseIR);
+
+  console.log('baseIR', baseIR.toString());
 
   const maxLeverage = BigNumber.max(
     BigNumber.min(
-      val,
+      BigNumber('500').dividedBy(baseIR),
       BigNumber(balance?.toString() || 0)
         .minus(insuranceReserveBalance)
         .dividedBy(margin)

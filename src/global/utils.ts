@@ -91,14 +91,6 @@ export function baseInterestRate(
   maxSpent: BigNumber,
   riskFactor: BigNumber
 ) {
-  console.log('baseFee', baseFee.toString());
-  console.log('netLoans', netLoans.toString());
-  console.log('insuranceReserveBalance', insuranceReserveBalance.toString());
-  console.log('balance', balance.toString());
-  console.log('collateral', collateral.toString());
-  console.log('maxSpent', maxSpent.toString());
-  console.log('riskFactor', riskFactor.toString());
-
   return baseFee.plus(
     netLoans
       .plus(

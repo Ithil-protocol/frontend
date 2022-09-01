@@ -71,7 +71,6 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    maxSpent,
     STRATEGIES.YearnStrategy
   );
 
@@ -177,7 +176,7 @@ export default function YearnStrategyPage() {
               min={1}
               max={maxLeverage}
               step={0.2}
-              value={leverage}
+              value={Number(leverage.toFixed(1))}
               onChange={(value) => setLeverage(value as number)}
               marks={{
                 1: '1x',
@@ -200,14 +199,15 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${baseIR.toFixed(2)}%`}
+                value={`-${baseIR.dividedBy(100).toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
                 label="Estimated APY"
-                value={`${(leverage * baseApy - baseIR.toNumber()).toFixed(
-                  2
-                )}%`}
+                value={`${(
+                  leverage *
+                  (baseApy - baseIR.dividedBy(100).toNumber())
+                ).toFixed(2)}%`}
               />
             </div>
             <div tw="w-full">

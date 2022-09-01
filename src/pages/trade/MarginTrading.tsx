@@ -212,7 +212,6 @@ export default function MarginTradingPage() {
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
-    maxSpent,
     STRATEGIES.MarginTradingStrategy
   );
 
@@ -327,7 +326,7 @@ export default function MarginTradingPage() {
               min={1}
               max={maxLeverage}
               step={0.2}
-              value={leverage}
+              value={Number(leverage.toFixed(1))}
               onChange={(value) => setLeverage(value as number)}
               marks={sliderMarks}
             />
@@ -356,7 +355,7 @@ export default function MarginTradingPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${baseIR.toFixed(2)}%`}
+                value={`-${baseIR.dividedBy(100).toFixed(2)}%`}
               />
             </div>
             <div tw="w-full">
