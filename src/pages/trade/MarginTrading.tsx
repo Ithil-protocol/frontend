@@ -66,7 +66,7 @@ export default function MarginTradingPage() {
     if (!vaultData) return 0;
     return Number(
       formatAmount(
-        vaultData['minimumMargin'].toString(),
+        vaultData?.minimumMargin.toString(),
         collateralToken.decimals,
         false
       )

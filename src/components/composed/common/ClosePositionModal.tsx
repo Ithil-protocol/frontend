@@ -98,12 +98,12 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
           </div> */}
           <InfoItem label="Position" value={positionValue} />
           {openPriceValue && (
-            <InfoItem label="Open price" value={openPriceValue.toFixed(2)} />
+            <InfoItem label="Open price" value={openPriceValue.toFixed(4)} />
           )}
           {currentPriceValue && (
             <InfoItem
               label="Current price"
-              value={currentPriceValue.toFixed(2)}
+              value={currentPriceValue.toFixed(4)}
             />
           )}
           <InfoItem
