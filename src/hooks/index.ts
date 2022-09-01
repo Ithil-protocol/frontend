@@ -11,7 +11,7 @@ export function useCheckValidChain() {
 export function useHandleTxStatus(
   state: TransactionStatus,
   resetState: () => void,
-  successMessage = 'Successfully run!'
+  successMessage = 'Trade executed and confirmed!'
 ) {
   const isLoading = useMemo(() => {
     return state.status === 'Mining';

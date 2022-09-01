@@ -164,8 +164,8 @@ export default function YearnStrategyPage() {
             </div>
             <SliderBar
               id="leverage"
-              label=""
-              tooltipText=""
+              label="Leverage"
+              tooltipText="The capital boost on the margin invested"
               min={1}
               max={MAX_LEVERAGE}
               step={0.2}
@@ -194,14 +194,9 @@ export default function YearnStrategyPage() {
                 value={`${baseApy.toFixed(2)}x`}
               />
               <InfoItem
-                tooltipText="The capital boost on the margin invested"
-                label="Multiplier"
-                value={`${leverage}x`}
-              />
-              <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`${interestRate.toFixed(2)}%`}
+                value={`-${interestRate.toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
