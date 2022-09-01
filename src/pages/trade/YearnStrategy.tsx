@@ -17,18 +17,15 @@ import Page from '@/components/based/Page';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { formatAmount, parseAmount } from '@/global/utils';
+import { baseInterestRate, formatAmount, parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
-import {
-  MAX_LEVERAGE,
-  STRATEGIES,
-  DEFAULT_DEADLINE,
-  TOKEN_LIST,
-} from '@/global/constants';
 import { useAllowance, useApprove } from '@/hooks/useToken';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
+import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
+import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
+import { useVaultData } from '@/hooks/useVault';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
@@ -38,7 +35,6 @@ export default function YearnStrategyPage() {
   const [leverage, setLeverage] = useState<number>(1);
 
   const [baseApy, setBaseApy] = useState<number>(0);
-  const [interestRate, setInterestRate] = useState<number>(0);
 
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.YearnStrategy.defaultSlippage
@@ -60,10 +56,21 @@ export default function YearnStrategyPage() {
     );
   }, [leverage, marginAmount, spentToken]);
 
+  const marginAmountValue = useMemo(() => {
+    return parseAmount(marginAmount, spentToken.decimals);
+  }, [marginAmount, spentToken]);
+
   const quoteValue = useQuoter(
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
+    STRATEGIES.YearnStrategy
+  );
+
+  const { baseIR, maxLeverage } = useMaxLeverage(
+    spentToken.address,
+    obtainedTokenAddress,
+    marginAmountValue,
     STRATEGIES.YearnStrategy
   );
 
@@ -94,10 +101,6 @@ export default function YearnStrategyPage() {
     }
     return 'Open';
   }, [allowance, marginAmount, spentToken.decimals]);
-
-  useEffect(() => {
-    setInterestRate((leverage - 1) * 0.1);
-  }, [leverage]);
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
@@ -146,6 +149,10 @@ export default function YearnStrategyPage() {
     }
   };
 
+  useEffect(() => {
+    setLeverage(1);
+  }, [maxLeverage]);
+
   return (
     <Page heading="Yearn Strategy">
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
@@ -167,16 +174,12 @@ export default function YearnStrategyPage() {
               label="Leverage"
               tooltipText="The capital boost on the margin invested"
               min={1}
-              max={MAX_LEVERAGE}
+              max={maxLeverage}
               step={0.2}
-              value={leverage}
+              value={Number(leverage.toFixed(1))}
               onChange={(value) => setLeverage(value as number)}
               marks={{
                 1: '1x',
-                2: '2x',
-                3: '3x',
-                4: '4x',
-                5: '5x',
               }}
             />
             <div tw="w-full">
@@ -196,12 +199,18 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${interestRate.toFixed(2)}%`}
+                value={`-${baseIR
+                  .multipliedBy(leverage - 1)
+                  .dividedBy(100)
+                  .toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
                 label="Estimated APY"
-                value={`${(leverage * baseApy - interestRate).toFixed(2)}%`}
+                value={`${(
+                  leverage *
+                  (baseApy - baseIR.dividedBy(100).toNumber())
+                ).toFixed(2)}%`}
               />
             </div>
             <div tw="w-full">

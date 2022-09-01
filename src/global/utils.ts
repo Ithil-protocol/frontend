@@ -81,3 +81,30 @@ export async function importToken(token: TokenDetails) {
     },
   });
 }
+
+export function baseInterestRate(
+  baseFee: BigNumber,
+  netLoans: BigNumber,
+  insuranceReserveBalance: BigNumber,
+  balance: BigNumber,
+  collateral: BigNumber,
+  maxSpent: BigNumber,
+  riskFactor: BigNumber
+) {
+  return baseFee.plus(
+    netLoans
+      .plus(
+        BigNumber.max(netLoans.minus(insuranceReserveBalance), 0)
+          .plus(maxSpent)
+          .minus(collateral)
+      )
+      .multipliedBy(riskFactor)
+      .dividedBy(
+        balance
+          .plus(netLoans)
+          .plus(maxSpent)
+          .minus(insuranceReserveBalance)
+          .minus(collateral)
+      )
+  );
+}

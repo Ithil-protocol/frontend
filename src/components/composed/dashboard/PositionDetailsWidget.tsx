@@ -85,21 +85,21 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
         {openPriceValue && (
           <DetailItem
             label="Open price"
-            value={openPriceValue.toFixed(2)}
+            value={openPriceValue.toFixed(4)}
             details={tokenPairValue}
           />
         )}
         {currentPriceValue && (
           <DetailItem
             label="Current price"
-            value={currentPriceValue.toFixed(2)}
+            value={currentPriceValue.toFixed(4)}
             details={tokenPairValue}
           />
         )}
         {liqPriceValue && (
           <DetailItem
             label="Liq. price"
-            value={liqPriceValue.toFixed(2)}
+            value={liqPriceValue.toFixed(4)}
             details={tokenPairValue}
           />
         )}

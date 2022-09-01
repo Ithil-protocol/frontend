@@ -137,9 +137,7 @@ export default function VaultDetails() {
                   body={`${formatAmount(
                     vaultData?.insuranceReserveBalance.toString(),
                     vaultToken?.decimals
-                  )} ${vaultToken?.symbol} (optimal ratio: ${
-                    vaultData?.optimalRatio / 100
-                  }%)`}
+                  )} ${vaultToken?.symbol}`}
                 />
               </div>
             </div>
