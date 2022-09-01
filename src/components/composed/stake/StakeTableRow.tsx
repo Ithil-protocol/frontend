@@ -28,7 +28,9 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const updateVaultStatus = useUpdateVaultStatus();
 
   const tvl = useMemo(() => {
-    return vaultBalance.plus(BigNumber(vaultData?.netLoans.toString()));
+    return vaultBalance
+      .plus(BigNumber(vaultData?.boostedAmount.toString()))
+      .plus(BigNumber(vaultData?.insuranceReserveBalance.toString()));
   }, [vaultBalance, vaultData]);
 
   const totalBorrowed = useMemo(() => {
