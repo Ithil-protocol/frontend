@@ -86,23 +86,19 @@ export default function usePositionDetails(
   }, [strategy, longShortValue, tokenPairValue]);
 
   const currentPrice = useQuoter(
-    longShortValue === 'Long' && strategy.type === 'margin'
-      ? details.heldToken
-      : details.owedToken,
-    longShortValue === 'Long' && strategy.type === 'margin'
-      ? details.owedToken
-      : details.heldToken,
-    strategy.type === 'margin'
-      ? new BigNumber(1)
-      : parseAmount('1', owedToken?.decimals),
+    longShortValue === 'Long' ? details.heldToken : details.owedToken,
+    longShortValue === 'Long' ? details.owedToken : details.heldToken,
+    longShortValue === 'Long' ? allowanceValue : principalValue,
     strategy
   );
 
   const currentPriceValue = useMemo(() => {
     if (!heldToken || !owedToken) return undefined;
-    return currentPrice.multipliedBy(
-      new BigNumber(10).pow(heldToken.decimals - owedToken.decimals)
-    );
+    return currentPrice
+      .dividedBy(longShortValue === 'Long' ? allowanceValue : principalValue)
+      .multipliedBy(
+        new BigNumber(10).pow(heldToken.decimals - owedToken.decimals)
+      );
   }, [currentPrice, heldToken, owedToken]);
 
   const riskFactor = useComputePairRiskFactor(
