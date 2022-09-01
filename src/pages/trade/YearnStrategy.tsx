@@ -25,7 +25,7 @@ import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
 import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
-import { useVaultData } from '@/hooks/useVault';
+import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
@@ -67,7 +67,7 @@ export default function YearnStrategyPage() {
     STRATEGIES.YearnStrategy
   );
 
-  const { baseIR, maxLeverage } = useMaxLeverage(
+  const maxLeverage = useMaxLeverage(
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
@@ -89,6 +89,15 @@ export default function YearnStrategyPage() {
   );
 
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
+    STRATEGIES.YearnStrategy
+  );
+
+  const borrowIR = useBorrowInterestRate(
+    spentToken.address,
+    obtainedTokenAddress,
+    marginAmountValue,
+    maxSpent,
+    minObtained,
     STRATEGIES.YearnStrategy
   );
 
@@ -149,6 +158,15 @@ export default function YearnStrategyPage() {
     }
   };
 
+  const sliderMarks = useMemo(() => {
+    const marks: { [key: number]: string } = {};
+    const increment = Math.max(Math.floor(maxLeverage / 10), 1);
+    for (let i = 1; i <= maxLeverage; i += increment) {
+      marks[i] = `${i}x`;
+    }
+    return marks;
+  }, [maxLeverage]);
+
   useEffect(() => {
     setLeverage(1);
   }, [maxLeverage]);
@@ -178,9 +196,7 @@ export default function YearnStrategyPage() {
               step={0.2}
               value={Number(leverage.toFixed(1))}
               onChange={(value) => setLeverage(value as number)}
-              marks={{
-                1: '1x',
-              }}
+              marks={sliderMarks}
             />
             <div tw="w-full">
               <InfoItem
@@ -199,7 +215,7 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${baseIR
+                value={`-${borrowIR
                   .multipliedBy(leverage - 1)
                   .dividedBy(100)
                   .toFixed(2)}%`}
@@ -209,7 +225,7 @@ export default function YearnStrategyPage() {
                 label="Estimated APY"
                 value={`${(
                   leverage *
-                  (baseApy - baseIR.dividedBy(100).toNumber())
+                  (baseApy - borrowIR.dividedBy(100).toNumber())
                 ).toFixed(2)}%`}
               />
             </div>
