@@ -265,7 +265,6 @@ export default function MarginTradingPage() {
   const sliderMarks = useMemo(() => {
     const marks: { [key: number]: string } = {};
     const increment = Math.max(Math.floor(maxLeverage / 10), 1);
-    console.log('increment', increment);
     for (let i = 1; i <= maxLeverage; i += increment) {
       marks[i] = `${i}x`;
     }
