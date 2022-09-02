@@ -80,15 +80,10 @@ export default function YearnStrategyPage() {
   }, [quoteValue, slippageValue]);
 
   const borrowed = useMemo(() => {
-    let _borrowed = 
-      maxSpent > marginAmountValue
+    return maxSpent > marginAmountValue
       ? maxSpent.minus(marginAmountValue)
-      : BigNumber(0)
-    return _borrowed
-  }, [
-    maxSpent,
-    marginAmountValue
-  ]);
+      : BigNumber(0);
+  }, [maxSpent, marginAmountValue]);
 
   const allowance = useAllowance(
     spentToken.address,
