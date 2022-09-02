@@ -14,7 +14,6 @@ export const walletconnect = new WalletConnectConnector({
   rpc: {
     [Mainnet.chainId]: infuraUrl(Mainnet.chainId),
     [Goerli.chainId]: infuraUrl(Goerli.chainId),
-    [Localhost.chainId]: 'http://localhost:8545',
   },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
