@@ -111,6 +111,10 @@ export default function YearnStrategyPage() {
     return borrowIR.multipliedBy(leverage - 1).dividedBy(100);
   }, [borrowIR, leverage]);
 
+  const estimatedAPY = useMemo(() => {
+    return leverage * (baseApy - borrowIR.dividedBy(100).toNumber());
+  }, [baseApy, borrowIR, leverage]);
+
   const disabledButton = useMemo(() => {
     return borrowInterestPercent.comparedTo(5) === 1;
   }, [borrowInterestPercent]);
@@ -227,7 +231,9 @@ export default function YearnStrategyPage() {
                 tooltipText="The max amount you invest including collateral"
                 label="Max Spent"
                 value={
-                  maxSpent ? formatAmount(maxSpent, spentToken.decimals) : '-'
+                  !maxSpent.isNaN()
+                    ? formatAmount(maxSpent, spentToken.decimals)
+                    : '0'
                 }
                 details={spentToken.symbol}
               />
@@ -239,15 +245,16 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${borrowInterestPercent.toFixed(2)}%`}
+                value={
+                  borrowInterestPercent.isNaN()
+                    ? '0%'
+                    : `-${borrowInterestPercent.toFixed(2)}%`
+                }
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
                 label="Estimated APY"
-                value={`${(
-                  leverage *
-                  (baseApy - borrowIR.dividedBy(100).toNumber())
-                ).toFixed(2)}%`}
+                value={estimatedAPY ? `${estimatedAPY.toFixed(2)}%` : '0%'}
               />
             </div>
             <div tw="w-full">

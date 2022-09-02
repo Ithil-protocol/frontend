@@ -377,9 +377,9 @@ export default function MarginTradingPage() {
                 tooltipText="The max amount you swap including collateral to get the desired number of tokens"
                 label="Max Spent"
                 value={
-                  maxSpent
+                  !maxSpent.isNaN()
                     ? formatAmount(maxSpent, spentToken.decimals, true, 5)
-                    : '-'
+                    : '0'
                 }
                 details={spentToken.symbol}
               />
@@ -397,7 +397,11 @@ export default function MarginTradingPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${borrowInterestPercent.toFixed(2)}%`}
+                value={
+                  !borrowInterestPercent.isNaN()
+                    ? `-${borrowInterestPercent.toFixed(2)}%`
+                    : '0%'
+                }
               />
             </div>
             <div tw="w-full">
