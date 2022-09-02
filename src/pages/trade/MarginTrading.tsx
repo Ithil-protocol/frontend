@@ -284,7 +284,10 @@ export default function MarginTradingPage() {
   }, [maxLeverage]);
 
   return (
-    <Page heading="Margin Trading Strategy">
+    <Page
+      heading="Margin Trading Strategy"
+      description="Go long or short on any token pair"
+    >
       {disabledButton && (
         <div tw="fixed bottom-4 left-0 right-0 h-auto flex justify-center items-center">
           <div tw="bg-error p-4 w-auto rounded-lg text-white-100 font-bold">

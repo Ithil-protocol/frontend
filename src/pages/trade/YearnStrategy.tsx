@@ -186,7 +186,10 @@ export default function YearnStrategyPage() {
   }, [maxLeverage]);
 
   return (
-    <Page heading="Yearn Strategy">
+    <Page
+      heading="Yearn Strategy"
+      description="Leveraged staking on the most common yVaults"
+    >
       {disabledButton && (
         <div tw="fixed bottom-4 left-0 right-0 h-auto flex justify-center items-center">
           <div tw="bg-error p-4 w-auto rounded-lg text-white-100 font-bold">
