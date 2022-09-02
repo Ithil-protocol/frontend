@@ -16,6 +16,10 @@ export const DAPP_CONFIG: Config = {
       infuraUrl(Goerli.chainId),
       POLLING_INTERVAL
     ),
+    [Localhost.chainId]: pollingIntervalProvider(
+      'http://localhost:8545',
+      POLLING_INTERVAL
+    ),
   },
   pollingInterval: POLLING_INTERVAL,
   multicallVersion: 2,
