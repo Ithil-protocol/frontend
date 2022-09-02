@@ -28,6 +28,7 @@ import { useAllowance, useApprove } from '@/hooks/useToken';
 import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
 import { useVaultData } from '@/hooks/useVault';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
+import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
 
 export default function MarginTradingPage() {
   const { account } = useEthers();
@@ -210,11 +211,20 @@ export default function MarginTradingPage() {
     openPosition(newOrder);
   };
 
-  const { baseIR, maxLeverage } = useMaxLeverage(
+  const maxLeverage = useMaxLeverage(
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
     STRATEGIES.MarginTradingStrategy
+  );
+
+  const borrowIR = useBorrowInterestRate(
+    spentToken.address,
+    obtainedToken.address,
+    marginAmountValue,
+    maxSpent,
+    minObtained,
+    STRATEGIES.YearnStrategy
   );
 
   const handleExecute = () => {
@@ -235,11 +245,13 @@ export default function MarginTradingPage() {
 
   const sliderMarks = useMemo(() => {
     const marks: { [key: number]: string } = {};
-    for (let i = 1; i <= maxLeverage; i++) {
+    const increment = Math.max(Math.floor(maxLeverage / 10), 1);
+    console.log('increment', increment);
+    for (let i = 1; i <= maxLeverage; i += increment) {
       marks[i] = `${i}x`;
     }
     return marks;
-  }, []);
+  }, [maxLeverage]);
 
   useEffect(() => {
     if (state.status === 'Success') {
@@ -360,7 +372,7 @@ export default function MarginTradingPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${baseIR
+                value={`-${borrowIR
                   .multipliedBy(leverage - 1)
                   .dividedBy(100)
                   .toFixed(2)}%`}
