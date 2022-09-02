@@ -1,4 +1,4 @@
-import { ChainId, Config, Goerli, Mainnet, Localhost } from '@usedapp/core';
+import { ChainId, Config, Goerli, Mainnet } from '@usedapp/core';
 
 import { infuraUrl, pollingIntervalProvider } from '@/global/utils';
 
@@ -6,7 +6,7 @@ export const POLLING_INTERVAL = 10_000;
 
 export const DAPP_CONFIG: Config = {
   readOnlyChainId: ChainId.Mainnet,
-  networks: [Mainnet, Goerli, Localhost],
+  networks: [Mainnet, Goerli],
   readOnlyUrls: {
     [Mainnet.chainId]: pollingIntervalProvider(
       infuraUrl(Mainnet.chainId),
@@ -14,10 +14,6 @@ export const DAPP_CONFIG: Config = {
     ),
     [Goerli.chainId]: pollingIntervalProvider(
       infuraUrl(Goerli.chainId),
-      POLLING_INTERVAL
-    ),
-    [Localhost.chainId]: pollingIntervalProvider(
-      'http://localhost:8545',
       POLLING_INTERVAL
     ),
   },

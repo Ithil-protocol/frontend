@@ -1,10 +1,10 @@
-import { Goerli, Mainnet, Localhost } from '@usedapp/core';
+import { Goerli, Mainnet } from '@usedapp/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 import { infuraUrl } from '@/global/utils';
 
-const supportedChains = [Mainnet.chainId, Goerli.chainId, Localhost.chainId];
+const supportedChains = [Mainnet.chainId, Goerli.chainId];
 
 export const injected = new InjectedConnector({
   supportedChainIds: supportedChains,
