@@ -17,7 +17,7 @@ export const DAPP_CONFIG: Config = {
       POLLING_INTERVAL
     ),
     [Localhost.chainId]: pollingIntervalProvider(
-      'htto://localhost:8545',
+      'http://localhost:8545',
       POLLING_INTERVAL
     ),
   },
