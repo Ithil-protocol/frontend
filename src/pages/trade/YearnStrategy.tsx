@@ -79,6 +79,12 @@ export default function YearnStrategyPage() {
     return quoteValue.multipliedBy(slippageValue);
   }, [quoteValue, slippageValue]);
 
+  const borrowed = useMemo(() => {
+    return maxSpent > marginAmountValue
+      ? maxSpent.minus(marginAmountValue)
+      : BigNumber(0);
+  }, [maxSpent, marginAmountValue]);
+
   const allowance = useAllowance(
     spentToken.address,
     STRATEGIES.YearnStrategy.address
@@ -96,10 +102,18 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    maxSpent,
+    borrowed,
     minObtained,
     STRATEGIES.YearnStrategy
   );
+
+  const borrowInterestPercent = useMemo(() => {
+    return borrowIR.multipliedBy(leverage - 1).dividedBy(100);
+  }, [borrowIR, leverage]);
+
+  const disabledButton = useMemo(() => {
+    return borrowInterestPercent.comparedTo(5) === 1;
+  }, [borrowInterestPercent]);
 
   const buttonText = useMemo(() => {
     if (!allowance) return 'Open';
@@ -176,6 +190,13 @@ export default function YearnStrategyPage() {
       heading="Yearn Strategy"
       description="Leveraged staking on the most common yVaults"
     >
+      {disabledButton && (
+        <div tw="fixed bottom-4 left-0 right-0 h-auto flex justify-center items-center">
+          <div tw="bg-error p-4 w-auto rounded-lg text-white-100 font-bold">
+            Borrow interest exceeds maximum (5%)
+          </div>
+        </div>
+      )}
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
         <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
           <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
@@ -218,10 +239,7 @@ export default function YearnStrategyPage() {
               <InfoItem
                 tooltipText="Percentage to be paid as borrowing fees"
                 label="Borrow Interest"
-                value={`-${borrowIR
-                  .multipliedBy(leverage - 1)
-                  .dividedBy(100)
-                  .toFixed(2)}%`}
+                value={`-${borrowInterestPercent.toFixed(2)}%`}
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
@@ -290,7 +308,7 @@ export default function YearnStrategyPage() {
               full
               action
               bold
-              disabled={!allowance}
+              disabled={!allowance || disabledButton}
               onClick={handleExecute}
               isLoading={isLoadingApprove || isLoadingOpenPos}
             />
