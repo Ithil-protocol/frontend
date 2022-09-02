@@ -79,6 +79,17 @@ export default function YearnStrategyPage() {
     return quoteValue.multipliedBy(slippageValue);
   }, [quoteValue, slippageValue]);
 
+  const borrowed = useMemo(() => {
+    let _borrowed = 
+      maxSpent > marginAmountValue
+      ? maxSpent.minus(marginAmountValue)
+      : BigNumber(0)
+    return _borrowed
+  }, [
+    maxSpent,
+    marginAmountValue
+  ]);
+
   const allowance = useAllowance(
     spentToken.address,
     STRATEGIES.YearnStrategy.address
@@ -96,7 +107,7 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    maxSpent,
+    borrowed,
     minObtained,
     STRATEGIES.YearnStrategy
   );

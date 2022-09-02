@@ -167,6 +167,22 @@ export default function MarginTradingPage() {
     quoteValueDst,
   ]);
 
+  const borrowed = useMemo(() => {
+    let _borrowed;
+      if(collateralIsSpentToken){
+        _borrowed =
+          maxSpent > marginAmountValue
+          ? maxSpent.minus(marginAmountValue)
+          : BigNumber(0)
+      } else 
+        _borrowed = maxSpent;
+    return _borrowed
+  }, [
+    collateralIsSpentToken,
+    maxSpent,
+    marginAmountValue
+  ]);
+
   const handleChangeToken = () => {
     const tempToken: TokenDetails = spentToken;
     setSpentToken(obtainedToken);
@@ -222,7 +238,7 @@ export default function MarginTradingPage() {
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
-    maxSpent,
+    borrowed,
     minObtained,
     STRATEGIES.YearnStrategy
   );

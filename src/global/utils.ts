@@ -87,24 +87,21 @@ export function baseInterestRate(
   netLoans: BigNumber,
   insuranceReserveBalance: BigNumber,
   balance: BigNumber,
-  collateral: BigNumber,
-  maxSpent: BigNumber,
+  borrowed: BigNumber,
   riskFactor: BigNumber
 ) {
   return baseFee.plus(
     netLoans
       .plus(
         BigNumber.max(netLoans.minus(insuranceReserveBalance), 0)
-          .plus(maxSpent)
-          .minus(collateral)
+          .plus(borrowed)
       )
       .multipliedBy(riskFactor)
       .dividedBy(
         balance
           .plus(netLoans)
-          .plus(maxSpent)
+          .plus(borrowed)
           .minus(insuranceReserveBalance)
-          .minus(collateral)
       )
   );
 }
