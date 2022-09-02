@@ -35,12 +35,15 @@ export function useBorrowInterestRate(
     borrowed,
     riskFactor
   );
-  
+
   const leveragedAmount = borrowed.dividedBy(margin);
   const numerator = minObtained.plus(dstBalance.multipliedBy(2));
   const denominator = numerator.plus(minObtained);
 
-  const borrowIR = baseIR.multipliedBy(leveragedAmount).multipliedBy(numerator).dividedBy(denominator);
+  const borrowIR = baseIR
+    .multipliedBy(leveragedAmount)
+    .multipliedBy(numerator)
+    .dividedBy(denominator);
 
   return borrowIR;
 }
