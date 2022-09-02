@@ -154,7 +154,10 @@ export default function YearnStrategyPage() {
   }, [maxLeverage]);
 
   return (
-    <Page heading="Yearn Strategy">
+    <Page
+      heading="Yearn Strategy"
+      description="Leveraged staking on the most common yVaults"
+    >
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
         <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
           <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">

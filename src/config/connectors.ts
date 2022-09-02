@@ -1,20 +1,22 @@
-import { Goerli, Mainnet, Rinkeby } from '@usedapp/core';
+import { Goerli, Mainnet, Localhost } from '@usedapp/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 import { infuraUrl } from '@/global/utils';
 
+const supportedChains = [Mainnet.chainId, Goerli.chainId, Localhost.chainId];
+
 export const injected = new InjectedConnector({
-  supportedChainIds: [Mainnet.chainId, Goerli.chainId, Rinkeby.chainId],
+  supportedChainIds: supportedChains,
 });
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
     [Mainnet.chainId]: infuraUrl(Mainnet.chainId),
     [Goerli.chainId]: infuraUrl(Goerli.chainId),
-    [Rinkeby.chainId]: infuraUrl(Rinkeby.chainId),
+    [Localhost.chainId]: 'http://localhost:8545',
   },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
-  supportedChainIds: [Mainnet.chainId, Goerli.chainId, Rinkeby.chainId],
+  supportedChainIds: supportedChains,
 });

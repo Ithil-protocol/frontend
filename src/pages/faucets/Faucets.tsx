@@ -29,11 +29,11 @@ export default function FaucetsPage() {
   };
 
   return (
-    <Page heading="Faucets">
-      <div tw="flex flex-col justify-center items-center gap-3 self-center max-width[616px] text-center">
-        <Txt.Body2Regular tw="text-secondary-200 mb-9">
-          Get some test ERC20 here and play with the testnet strategies
-        </Txt.Body2Regular>
+    <Page
+      heading="Faucets"
+      description="Get some test ERC20 here and play with the testnet strategies"
+    >
+      <div tw="flex flex-col justify-center items-center gap-3 self-center min-width[350px] max-width[616px] text-center">
         <DataTable
           head={[
             {

@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Rinkeby, Mainnet, useEthers } from '@usedapp/core';
+import { Chain, Goerli, Localhost, Mainnet, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from '@/components/based/Button';
@@ -70,8 +70,8 @@ const NetworkMenu = () => {
           />
           <MenuItem
             Icon={CurrencyEth}
-            label={Rinkeby.chainName}
-            network={Rinkeby}
+            label={Localhost.chainName}
+            network={Localhost}
             onClick={() => setVisibility(false)}
           />
         </div>

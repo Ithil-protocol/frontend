@@ -253,7 +253,10 @@ export default function MarginTradingPage() {
   }, [maxLeverage]);
 
   return (
-    <Page heading="Margin Trading Strategy">
+    <Page
+      heading="Margin Trading Strategy"
+      description="Go long or short on any token pair"
+    >
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
         <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
           <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
