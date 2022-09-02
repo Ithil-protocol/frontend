@@ -98,11 +98,11 @@ export const TRADE_STRATEGIES = [
   },
   {
     id: 3,
-    title: 'Battle in the Curve wars',
+    title: 'Rest assured with Aave',
     description: 'Coming soon...',
-    apyMin: '10',
-    apyMax: '100x',
-    risk: 'Medium',
+    apyMin: '5',
+    apyMax: '20x',
+    risk: 'Low',
     url: '',
   },
   {
@@ -111,7 +111,7 @@ export const TRADE_STRATEGIES = [
     description: 'Coming soon...',
     apyMin: '10',
     apyMax: '100x',
-    risk: 'Low',
+    risk: 'Medium',
     url: '',
   },
 ];
