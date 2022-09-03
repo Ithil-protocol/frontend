@@ -1,8 +1,8 @@
 import { useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 
-import { useRiskFactor } from './useRiskFactor';
 import { useVaultData } from './useVault';
+import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 
 import { StrategyContractType } from '@/global/types';
 import { CORE } from '@/global/constants';
@@ -19,7 +19,11 @@ export function useBorrowInterestRate(
   const vaultData = useVaultData(spentToken);
   const balance = useTokenBalance(spentToken, CORE.Vault.address);
   const dstBalanceNative = useTokenBalance(obtainedToken, strategy.address);
-  const riskFactor: BigNumber = useRiskFactor(strategy, obtainedToken);
+  const riskFactor: BigNumber = useComputePairRiskFactor(
+    spentToken,
+    obtainedToken,
+    strategy
+  );
   const netLoans: BigNumber = BigNumber(vaultData?.netLoans.toString());
   const baseFee: BigNumber = BigNumber(vaultData?.baseFee.toString());
   const dstBalance: BigNumber = BigNumber(dstBalanceNative?.toString() || 0);

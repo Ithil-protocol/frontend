@@ -108,7 +108,7 @@ export default function YearnStrategyPage() {
   );
 
   const borrowInterestPercent = useMemo(() => {
-    return borrowIR.multipliedBy(leverage - 1).dividedBy(100);
+    return borrowIR.dividedBy(100);
   }, [borrowIR, leverage]);
 
   const estimatedAPY = useMemo(() => {
