@@ -80,7 +80,7 @@ export default function YearnStrategyPage() {
   }, [quoteValue, slippageValue]);
 
   const borrowed = useMemo(() => {
-    return maxSpent > marginAmountValue
+    return maxSpent.comparedTo(marginAmountValue) > 0
       ? maxSpent.minus(marginAmountValue)
       : BigNumber(0);
   }, [maxSpent, marginAmountValue]);
