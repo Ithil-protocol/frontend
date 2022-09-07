@@ -53,7 +53,7 @@ export default function usePositionDetails(
     return longShortValue === 'Long'
       ? principalValue.plus(collateralValue).dividedBy(collateralValue)
       : allowanceValue.minus(collateralValue).dividedBy(collateralValue);
-  }, [allowanceValue, collateralValue, longShortValue, principalValue]);
+  }, [longShortValue, principalValue, collateralValue, allowanceValue]);
 
   const tokenPairValue = useMemo(() => {
     return longShortValue === 'Long'
@@ -212,5 +212,6 @@ export default function usePositionDetails(
     pnlValue,
     createdAtValue,
     feesValue,
+    quoteValue,
   };
 }
