@@ -183,6 +183,13 @@ export default function YearnStrategyPage() {
     for (let i = 1; i <= maxLeverage; i += increment) {
       marks[i] = `${formatAmount(i, 0, true, 2)}x`;
     }
+    if (
+      !Object.keys(marks)
+        .map((mark) => Number(mark))
+        .includes(maxLeverage)
+    ) {
+      marks[maxLeverage] = `${formatAmount(maxLeverage, 0, true, 2)}x`;
+    }
     return marks;
   }, [maxLeverage]);
 
