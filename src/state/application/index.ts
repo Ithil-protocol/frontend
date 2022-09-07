@@ -5,11 +5,13 @@ import { ThemeType, WalletConnectorType } from './types';
 export interface IApplicationState {
   readonly theme: ThemeType;
   readonly walletConnector: WalletConnectorType;
+  readonly txTimestamp: number;
 }
 
 const initialState: IApplicationState = {
   theme: 'dark',
   walletConnector: 'none',
+  txTimestamp: 0,
 };
 
 const ApplicationSlice = createSlice({
@@ -22,9 +24,13 @@ const ApplicationSlice = createSlice({
     updateWalletConnector(state, action: PayloadAction<WalletConnectorType>) {
       state.walletConnector = action.payload;
     },
+    updateTxTimestamp(state, action: PayloadAction<number>) {
+      state.txTimestamp = action.payload;
+    },
   },
 });
 
-export const { toggleTheme, updateWalletConnector } = ApplicationSlice.actions;
+export const { toggleTheme, updateWalletConnector, updateTxTimestamp } =
+  ApplicationSlice.actions;
 
 export default ApplicationSlice.reducer;

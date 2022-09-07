@@ -1,21 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { ArrowSquareOut, Check, Copy } from 'phosphor-react';
 // import ClipLoader from 'react-spinners/ClipLoader';
 import {
   getExplorerAddressLink,
+  getExplorerTransactionLink,
   shortenAddress,
   useEthers,
+  useTransactions,
 } from '@usedapp/core';
+import { ClipLoader } from 'react-spinners';
 
 import Txt from '@/components/based/Txt';
 import Modal from '@/components/based/Modal';
 import {
+  useTheme,
+  useTxTimestamp,
+  useUpdateTxTimestamp,
   useWalletConnector,
   useWalletConnectorIcon,
 } from '@/state/application/hooks';
 import useCopyClipboard from '@/hooks/useCopyClipboard';
+import { shortenString } from '@/global/utils';
 
 interface IAccountModal {
   open: boolean;
@@ -23,10 +30,27 @@ interface IAccountModal {
 }
 
 const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
+  const theme = useTheme();
   const { account, chainId, deactivate } = useEthers();
   const walletConnector = useWalletConnector();
   const WalletConnectorIcon = useWalletConnectorIcon();
   const [isCopied, copyText] = useCopyClipboard();
+  const txTimestamp = useTxTimestamp();
+  const updateTxTimestamp = useUpdateTxTimestamp();
+  const { transactions } = useTransactions({ refresh: 'everyBlock' });
+
+  const displayedTxs = useMemo(() => {
+    if (txTimestamp === 0 || !transactions.length) return [];
+    return transactions.filter(
+      (tx) => tx.submittedAt > txTimestamp && tx.transaction.chainId === chainId
+    );
+  }, [chainId, transactions, txTimestamp]);
+
+  useEffect(() => {
+    if (txTimestamp === 0) {
+      updateTxTimestamp(new Date().getTime());
+    }
+  }, [txTimestamp, updateTxTimestamp]);
 
   const handleCopyAddress = () => {
     if (!account) return;
@@ -99,48 +123,73 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
 
         <div tw="w-full height[1px] bg-font-200" />
         <Txt.Heading2 tw="mt-6 text-center">Transactions</Txt.Heading2>
-        <Txt.Body2Regular tw="mt-6 mb-5 flex-grow text-font-200 text-center">
-          Your transactions will appear here.
-        </Txt.Body2Regular>
-        {/* 
-        {transactions.map((t) => {
-          return (
-            <div key={t.tx} tw="flex flex-row justify-between">
-              <div tw="flex flex-col justify-between">
-                <a
-                  tw="mb-1"
-                  rel="noreferrer"
-                  href={`https://rinkeby.etherscan.io/tx/${t.tx}`}
-                  target="_blank"
-                >
-                  <Txt.Body2Bold tw="text-secondary underline">
-                    View Tx
-                  </Txt.Body2Bold>
-                </a>
-                <Txt.Body2Regular tw="text-font-200">
-                  {getTransactionLabel(t)}
-                </Txt.Body2Regular>
-              </div>
-              {t.status === 'pending' ? (
-                <div tw="flex flex-col justify-between items-center self-center">
-                  <ClipLoader loading color={'blue'} size={18} tw="mb-1.5" />
-                  <Txt.CaptionMedium tw="text-font-200">
-                    Pending
-                  </Txt.CaptionMedium>
+        {displayedTxs.length ? (
+          displayedTxs.map((tx) => {
+            return (
+              <div key={tx.transaction.hash} tw="flex flex-row justify-between">
+                <div tw="flex flex-col justify-between">
+                  {chainId && (
+                    <a
+                      tw="mb-1"
+                      rel="noreferrer"
+                      href={getExplorerTransactionLink(
+                        tx.transaction.hash,
+                        chainId
+                      )}
+                      target="_blank"
+                    >
+                      <Txt.Body2Bold tw="text-secondary underline">
+                        View Tx
+                      </Txt.Body2Bold>
+                    </a>
+                  )}
+                  <Txt.Body2Regular tw="text-font-200 overflow-hidden">
+                    {shortenString(tx.transaction.hash)}
+                  </Txt.Body2Regular>
                 </div>
-              ) : (
-                <div tw="flex flex-col items-center self-center">
-                  <div tw="flex items-center justify-center h-5 w-5 rounded-3xl bg-success">
-                    <Check tw="text-primary w-3 h-3" />
+                {!tx.receipt ? (
+                  <div tw="flex flex-col justify-between items-center self-center">
+                    <ClipLoader
+                      loading
+                      color={theme == 'dark' ? '#fff' : '#000'}
+                      size={18}
+                      tw="mb-1.5"
+                    />
+                    <Txt.CaptionMedium tw="text-font-200">
+                      Pending
+                    </Txt.CaptionMedium>
                   </div>
-                  <Txt.CaptionMedium tw="text-success">
-                    Finished
-                  </Txt.CaptionMedium>
-                </div>
-              )}
-            </div>
-          );
-        })} */}
+                ) : (
+                  <div tw="flex flex-col items-center self-center">
+                    {tx.receipt.status === 1 ? (
+                      <>
+                        <div tw="flex items-center justify-center h-5 w-5 rounded-3xl bg-success">
+                          <Check tw="text-primary w-3 h-3" />
+                        </div>
+                        <Txt.CaptionMedium tw="text-success">
+                          Succeeded
+                        </Txt.CaptionMedium>
+                      </>
+                    ) : (
+                      <>
+                        <div tw="flex items-center justify-center h-5 w-5 rounded-3xl bg-error">
+                          <Check tw="text-primary w-3 h-3" />
+                        </div>
+                        <Txt.CaptionMedium tw="text-error">
+                          Failed
+                        </Txt.CaptionMedium>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <Txt.Body2Regular tw="mt-6 mb-5 flex-grow text-font-200 text-center">
+            Your transactions will appear here.
+          </Txt.Body2Regular>
+        )}
       </div>
     </Modal>
   );
