@@ -41,9 +41,12 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
 
   const displayedTxs = useMemo(() => {
     if (txTimestamp === 0 || !transactions.length) return [];
-    return transactions.filter(
-      (tx) => tx.submittedAt > txTimestamp && tx.transaction.chainId === chainId
-    );
+    return transactions
+      .filter(
+        (tx) =>
+          tx.submittedAt > txTimestamp && tx.transaction.chainId === chainId
+      )
+      .slice(0, 5);
   }, [chainId, transactions, txTimestamp]);
 
   useEffect(() => {
