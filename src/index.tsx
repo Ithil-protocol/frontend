@@ -24,6 +24,7 @@ import reportWebVitals from './reportWebVitals';
 import { DAPP_CONFIG } from '@/config/dapp';
 import store, { persistor } from '@/state/store';
 import './index.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

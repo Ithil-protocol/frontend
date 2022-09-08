@@ -2,6 +2,7 @@
 import 'twin.macro';
 import React, { FC, useMemo } from 'react';
 // import { ArrowRight } from 'phosphor-react';
+import BigNumber from 'bignumber.js';
 
 import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
@@ -55,6 +56,7 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
   );
 
   const maxOrMin = useMemo(() => {
+    if (!quoteValue) return BigNumber(0);
     return quoteValue.multipliedBy(
       1 +
         (longShortValue === 'Long' ? -1 : 1) *

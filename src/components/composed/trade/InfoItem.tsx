@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { FC } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import Tooltip from '@/components/based/Tooltip';
 import Txt from '@/components/based/Txt';
@@ -16,7 +17,7 @@ const InfoItemText: FC<IInfoItemText> = ({ value }) => {
 interface IInfoItem {
   label: string;
   details?: string;
-  value: string | number | undefined;
+  value: string | number | undefined | null;
   valueColor?: 'black' | 'red' | 'green';
   tooltipText?: string;
 }
@@ -36,16 +37,22 @@ const InfoItem: FC<IInfoItem> = ({
       </div>
       <div tw="flex flex-row gap-2">
         {details && <InfoItemText value={details} />}
-        {value && (
-          <Txt.Body2Bold
-            css={[
-              tw`text-secondary ml-2`,
-              valueColor === 'green' && tw`text-success`,
-              valueColor === 'red' && tw`text-error`,
-            ]}
-          >
-            {value}
-          </Txt.Body2Bold>
+        {value === null ? (
+          <div tw="w-10">
+            <Skeleton height={18} />
+          </div>
+        ) : (
+          value && (
+            <Txt.Body2Bold
+              css={[
+                tw`text-secondary ml-2`,
+                valueColor === 'green' && tw`text-success`,
+                valueColor === 'red' && tw`text-error`,
+              ]}
+            >
+              {value}
+            </Txt.Body2Bold>
+          )
         )}
       </div>
     </div>

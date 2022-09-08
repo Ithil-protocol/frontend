@@ -3,19 +3,25 @@ import 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'phosphor-react';
+import Skeleton from 'react-loading-skeleton';
+import { PulseLoader } from 'react-spinners';
 
 import Container from '@/components/based/Container';
 import Txt from '@/components/based/Txt';
 import TradingChart from '@/components/composed/trade/TradingChart';
 import APYChart from '@/components/composed/trade/APYChart';
-import PositionDetailsWidget from '@/components/composed/dashboard/PositionDetailsWidget';
+import PositionDetailsWidget, {
+  SkeletonPositionDetailsWidget,
+} from '@/components/composed/dashboard/PositionDetailsWidget';
 import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
 import { usePositions } from '@/hooks/usePositions';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import { getStrategyByType, getTokenByAddress } from '@/global/utils';
 import { STRATEGIES } from '@/global/constants';
+import { useTheme } from '@/state/application/hooks';
 
 export default function PositionDetails() {
+  const theme = useTheme();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -84,7 +90,7 @@ export default function PositionDetails() {
               onClick={() => navigate('/dashboard')}
             />
             <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
-              {investmentToken && collateralToken && (
+              {investmentToken && collateralToken ? (
                 <>
                   <div tw="relative mr-3">
                     <div tw="w-9 h-9 border-radius[100%] bg-primary-100 absolute bottom[0] left[28px] z-index[2]"></div>
@@ -113,16 +119,22 @@ export default function PositionDetails() {
                   </div>{' '}
                   {`${investmentToken?.symbol}/${collateralToken?.symbol}`}
                 </>
+              ) : (
+                <div tw="relative mr-3 w-48">
+                  <Skeleton count={1} inline />
+                </div>
               )}
             </Txt.Heading1>
           </div>
           <div tw="w-full flex flex-col desktop:flex-row gap-6">
             <div tw="flex flex-col w-full desktop:w-4/12">
-              {positionDetails && (
+              {positionDetails ? (
                 <PositionDetailsWidget
                   details={positionDetails}
                   strategy={selectedStrategy}
                 />
+              ) : (
+                <SkeletonPositionDetailsWidget />
               )}
               {positionId && (
                 <PositionControlPanel
@@ -130,9 +142,8 @@ export default function PositionDetails() {
                 />
               )}
             </div>
-            {collateralToken &&
-              investmentToken &&
-              (strategyType === 'margin' ? (
+            {collateralToken && investmentToken ? (
+              strategyType === 'margin' ? (
                 <TradingChart
                   firstToken={investmentToken}
                   secondToken={collateralToken}
@@ -140,7 +151,15 @@ export default function PositionDetails() {
                 />
               ) : (
                 <APYChart spentToken={collateralToken} />
-              ))}
+              )
+            ) : (
+              <div tw="w-full height[500px] max-height[500px] box-content desktop:w-8/12 flex flex-col items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16 justify-center">
+                <PulseLoader
+                  color={theme === 'dark' ? '#ffffff8d' : '#0000008d'}
+                  size={10}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

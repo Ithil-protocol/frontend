@@ -8,6 +8,7 @@ import { formatUnits } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
 import toast from 'react-hot-toast';
+import Skeleton from 'react-loading-skeleton';
 
 import Txt from '@/components/based/Txt';
 import Button from '@/components/based/Button';
@@ -124,6 +125,7 @@ export default function MarginTradingPage() {
   }, [collateralIsSpentToken, slippagePercent]);
 
   const maxSpent = useMemo(() => {
+    if (!quoteValueSrc) return null;
     let _maxSpent;
     if (collateralIsSpentToken) {
       _maxSpent =
@@ -147,6 +149,7 @@ export default function MarginTradingPage() {
 
   const minObtained = useMemo(() => {
     let _minObtained;
+    if (!quoteValueDst) return null;
     if (collateralIsSpentToken) {
       _minObtained =
         priority === 'sell'
@@ -168,6 +171,7 @@ export default function MarginTradingPage() {
   ]);
 
   const borrowed = useMemo(() => {
+    if (!maxSpent) return null;
     let _borrowed;
     if (collateralIsSpentToken) {
       _borrowed =
@@ -196,6 +200,14 @@ export default function MarginTradingPage() {
     }
     if (!tokenBalance || tokenBalance.isZero()) {
       toast.error('Purchase the spent tokens!');
+      return;
+    }
+    if (!minObtained) {
+      toast.error('Invalid minObtained!');
+      return;
+    }
+    if (!maxSpent) {
+      toast.error('Invalid maxSpent!');
       return;
     }
     if (
@@ -233,8 +245,8 @@ export default function MarginTradingPage() {
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
-    borrowed,
-    minObtained,
+    borrowed || BigNumber(0),
+    minObtained || BigNumber(0),
     STRATEGIES.YearnStrategy
   );
 
@@ -362,36 +374,41 @@ export default function MarginTradingPage() {
                 </Txt.InputText>
               }
             />
-            <SliderBar
-              label="Leverage"
-              tooltipText="The capital boost on the margin invested"
-              min={1}
-              max={maxLeverage}
-              step={0.2}
-              value={Number(leverage.toFixed(1))}
-              onChange={(value) => setLeverage(value as number)}
-              marks={sliderMarks}
-            />
+            {Object.values(sliderMarks).length && maxLeverage ? (
+              <SliderBar
+                label="Leverage"
+                tooltipText="The capital boost on the margin invested"
+                min={1}
+                max={maxLeverage}
+                step={0.2}
+                value={Number(leverage.toFixed(1))}
+                onChange={(value) => setLeverage(value as number)}
+                marks={sliderMarks}
+              />
+            ) : (
+              <div tw="w-full">
+                <Skeleton height={12} count={2} />
+              </div>
+            )}
             <div tw="w-full">
               <InfoItem
                 tooltipText="The max amount you swap including collateral to get the desired number of tokens"
                 label="Max Spent"
                 value={
-                  !maxSpent.isNaN()
+                  maxSpent && !maxSpent.isNaN()
                     ? formatAmount(maxSpent, spentToken.decimals, true, 5)
-                    : '0'
+                    : null
                 }
                 details={spentToken.symbol}
               />
               <InfoItem
                 tooltipText="The lowest you get as a result of the swap"
                 label="Min Obtained"
-                value={formatAmount(
-                  minObtained,
-                  obtainedToken.decimals,
-                  true,
-                  5
-                )}
+                value={
+                  minObtained
+                    ? formatAmount(minObtained, obtainedToken.decimals, true, 5)
+                    : null
+                }
                 details={obtainedToken.symbol}
               />
               <InfoItem
@@ -400,7 +417,7 @@ export default function MarginTradingPage() {
                 value={
                   !borrowInterestPercent.isNaN()
                     ? `-${borrowInterestPercent.toFixed(2)}%`
-                    : '0%'
+                    : null
                 }
               />
             </div>

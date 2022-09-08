@@ -5,6 +5,9 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { initialize, pageview } from 'react-ga';
 import { useEthers } from '@usedapp/core';
 import { ShepherdTour } from 'react-shepherd';
+import { SkeletonTheme } from 'react-loading-skeleton';
+
+import { useTheme } from './state/application/hooks';
 
 import Navbar from '@/components/navigation/Navbar';
 import { injected } from '@/config/connectors';
@@ -21,6 +24,7 @@ const App = () => {
   }, []);
 
   const { activate } = useEthers();
+  const theme = useTheme();
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
@@ -33,24 +37,29 @@ const App = () => {
 
   return (
     <ShepherdTour steps={steps} tourOptions={options}>
-      <div
-        css={[tw`flex flex-col bg-primary min-h-screen desktop:flex-row`]}
-        id="first-element"
+      <SkeletonTheme
+        baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
+        highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
       >
-        <div tw="flex-grow flex flex-col">
-          <Navbar />
-          <Routes>
-            {APP_ROUTES.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.component}
-              />
-            ))}
-            <Route path="*" element={<Navigate to="/trade" replace />} />
-          </Routes>
+        <div
+          css={[tw`flex flex-col bg-primary min-h-screen desktop:flex-row`]}
+          id="first-element"
+        >
+          <div tw="flex-grow flex flex-col">
+            <Navbar />
+            <Routes>
+              {APP_ROUTES.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.component}
+                />
+              ))}
+              <Route path="*" element={<Navigate to="/trade" replace />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </SkeletonTheme>
     </ShepherdTour>
   );
 };

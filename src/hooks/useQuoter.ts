@@ -26,7 +26,7 @@ export function useQuoter(
 
   if (error) {
     console.error(error.message);
-    return new BigNumber(0);
+    return null;
   }
-  return new BigNumber(value?.[0].toString() ?? '0');
+  return value?.[0] ? new BigNumber(value[0].toString()) : null;
 }

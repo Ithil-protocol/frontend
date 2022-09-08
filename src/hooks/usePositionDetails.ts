@@ -93,7 +93,7 @@ export default function usePositionDetails(
   );
 
   const currentPriceValue = useMemo(() => {
-    if (!heldToken || !owedToken) return undefined;
+    if (!heldToken || !owedToken || !currentPrice) return undefined;
     return currentPrice
       .dividedBy(longShortValue === 'Long' ? allowanceValue : principalValue)
       .multipliedBy(
@@ -166,6 +166,7 @@ export default function usePositionDetails(
   );
 
   const pnlValue = useMemo(() => {
+    if (!quoteValue) return BigNumber(0);
     return longShortValue === 'Long'
       ? quoteValue.minus(principalValue).minus(collateralValue).minus(feesValue)
       : allowanceValue.minus(quoteValue).minus(collateralValue);

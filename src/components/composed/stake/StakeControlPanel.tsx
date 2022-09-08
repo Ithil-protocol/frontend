@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useMemo, useState } from 'react';
 import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
@@ -19,7 +19,7 @@ import { useApprove } from '@/hooks/useToken';
 interface IStakeControlWidget {
   title: string;
   token: TokenDetails;
-  value: string;
+  value: string | null;
   maxValue?: string;
   onSubmit: (inputValue: string) => Promise<void>;
   secondaryButton?: boolean;
@@ -130,7 +130,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
             ? `Balance: ${formatAmount(balance?.toString(), token.decimals)} ${
                 token.symbol
               }`
-            : '-'
+            : null
         }
         maxValue={formatAmount(
           balance?.toString() || '0',
@@ -150,7 +150,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
                 maximumWithdrawal?.toString() || '0',
                 token.decimals
               )} ${token.symbol}`
-            : '-'
+            : null
         }
         maxValue={formatAmount(
           maximumWithdrawal?.toString() || '0',
