@@ -99,20 +99,34 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
             </div>
           </div> */}
           <InfoItem label="Position" value={positionValue} />
-          {openPriceValue && (
-            <InfoItem label="Open price" value={openPriceValue.toFixed(4)} />
-          )}
-          {currentPriceValue && (
-            <InfoItem
-              label="Current price"
-              value={currentPriceValue.toFixed(4)}
-            />
-          )}
+          <InfoItem
+            label="Open price"
+            value={
+              openPriceValue && !openPriceValue.isNaN()
+                ? openPriceValue.toFixed(4)
+                : null
+            }
+          />
+          <InfoItem
+            label="Current price"
+            value={
+              currentPriceValue && !currentPriceValue.isNaN()
+                ? currentPriceValue.toFixed(4)
+                : null
+            }
+          />
           <InfoItem
             label="Fees"
-            value={formatAmount(feesValue, collateralToken?.decimals)}
+            value={
+              !feesValue.isZero()
+                ? formatAmount(feesValue, collateralToken?.decimals)
+                : null
+            }
           />
-          <InfoItem label="Profit" value={pnlText} />
+          <InfoItem
+            label="Profit"
+            value={pnlText.includes('NaN') ? null : pnlText}
+          />
           {/* <div tw="flex flex-row gap-3 w-full my-4">
             <div tw="bg-primary-200 rounded-lg px-4 py-3 box-border flex flex-col w-full">
               <Txt.Body2Regular>Entry Price</Txt.Body2Regular>
