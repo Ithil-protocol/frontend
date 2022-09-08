@@ -6,7 +6,7 @@ import { useQuoter } from './useQuoter';
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 
 import { OpenedPositionType, StrategyContractType } from '@/global/types';
-import { formatAmount, getTokenByAddress, parseAmount } from '@/global/utils';
+import { formatAmount, getTokenByAddress } from '@/global/utils';
 
 export default function usePositionDetails(
   details: OpenedPositionType,
@@ -32,13 +32,13 @@ export default function usePositionDetails(
     () =>
       getTokenByAddress(details.heldToken) ||
       (owedToken && {
-        name: `Yearn ${owedToken.name}`,
+        name: `${strategy.type} ${owedToken.name}`,
         address: details.heldToken,
         symbol: `y${owedToken.symbol}`,
         decimals: owedToken.decimals,
         logoURI: owedToken.logoURI,
       }),
-    [details.heldToken, owedToken]
+    [details.heldToken, owedToken, strategy.type]
   );
   const collateralToken = useMemo(
     () => getTokenByAddress(details.collateralToken),
