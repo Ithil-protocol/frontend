@@ -8,6 +8,7 @@ import { useEthers, useTokenBalance } from '@usedapp/core';
 import { MaxUint256 } from '@ethersproject/constants';
 import { formatUnits } from '@ethersproject/units';
 import { toast } from 'react-toastify';
+import Skeleton from 'react-loading-skeleton';
 
 import { TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
@@ -76,6 +77,7 @@ export default function YearnStrategyPage() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const minObtained = useMemo(() => {
+    if (!quoteValue) return null;
     return quoteValue.multipliedBy(slippageValue);
   }, [quoteValue, slippageValue]);
 
@@ -103,7 +105,7 @@ export default function YearnStrategyPage() {
     obtainedTokenAddress,
     marginAmountValue,
     borrowed,
-    minObtained,
+    minObtained || BigNumber(0),
     STRATEGIES.YearnStrategy
   );
 
@@ -223,17 +225,23 @@ export default function YearnStrategyPage() {
                 onTokenChange={(value) => setSpentToken(value)}
               />
             </div>
-            <SliderBar
-              id="leverage"
-              label="Leverage"
-              tooltipText="The capital boost on the margin invested"
-              min={1}
-              max={maxLeverage}
-              step={0.01}
-              value={Number(leverage.toFixed(2))}
-              onChange={(value) => setLeverage(value as number)}
-              marks={sliderMarks}
-            />
+            {Object.values(sliderMarks).length && maxLeverage ? (
+              <SliderBar
+                id="leverage"
+                label="Leverage"
+                tooltipText="The capital boost on the margin invested"
+                min={1}
+                max={maxLeverage}
+                step={0.2}
+                value={Number(leverage.toFixed(1))}
+                onChange={(value) => setLeverage(value as number)}
+                marks={sliderMarks}
+              />
+            ) : (
+              <div tw="w-full">
+                <Skeleton height={12} count={2} />
+              </div>
+            )}
             <div tw="w-full">
               <InfoItem
                 tooltipText="The max amount you invest including collateral"
@@ -241,7 +249,7 @@ export default function YearnStrategyPage() {
                 value={
                   !maxSpent.isNaN()
                     ? formatAmount(maxSpent, spentToken.decimals)
-                    : '0'
+                    : null
                 }
                 details={spentToken.symbol}
               />
@@ -255,14 +263,14 @@ export default function YearnStrategyPage() {
                 label="Borrow Interest"
                 value={
                   borrowInterestPercent.isNaN()
-                    ? '0%'
+                    ? null
                     : `-${borrowInterestPercent.toFixed(2)}%`
                 }
               />
               <InfoItem
                 tooltipText="Maximum amount to be spent in the position, including collateral"
                 label="Estimated APY"
-                value={estimatedAPY ? `${estimatedAPY.toFixed(2)}%` : '0%'}
+                value={estimatedAPY ? `${estimatedAPY.toFixed(2)}%` : null}
               />
             </div>
             <div tw="w-full">

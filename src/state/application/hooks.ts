@@ -2,7 +2,7 @@
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
-import { toggleTheme, updateWalletConnector } from './index';
+import { toggleTheme, updateTxTimestamp, updateWalletConnector } from './index';
 import { ThemeType, WalletConnectorType } from './types';
 
 import { AppState } from '@/state/store';
@@ -54,4 +54,14 @@ export const useWalletConnectorIcon = () => {
 
   if (connector === 'none') return null;
   return connector === 'injected' ? MetaMaskIcon : WalletConnectIcon;
+};
+
+// === txTimestamp ===
+
+export const useTxTimestamp = () =>
+  useAppSelector((state) => state.application.txTimestamp) as number;
+
+export const useUpdateTxTimestamp = () => {
+  const dispatch = useDispatch();
+  return (txTimestamp: number) => dispatch(updateTxTimestamp(txTimestamp));
 };

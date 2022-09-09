@@ -6,7 +6,7 @@ import { useQuoter } from './useQuoter';
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 
 import { OpenedPositionType, StrategyContractType } from '@/global/types';
-import { formatAmount, getTokenByAddress, parseAmount } from '@/global/utils';
+import { formatAmount, getTokenByAddress } from '@/global/utils';
 
 export default function usePositionDetails(
   details: OpenedPositionType,
@@ -32,13 +32,13 @@ export default function usePositionDetails(
     () =>
       getTokenByAddress(details.heldToken) ||
       (owedToken && {
-        name: `Yearn ${owedToken.name}`,
+        name: `${strategy.type} ${owedToken.name}`,
         address: details.heldToken,
         symbol: `y${owedToken.symbol}`,
         decimals: owedToken.decimals,
         logoURI: owedToken.logoURI,
       }),
-    [details.heldToken, owedToken]
+    [details.heldToken, owedToken, strategy.type]
   );
   const collateralToken = useMemo(
     () => getTokenByAddress(details.collateralToken),
@@ -53,7 +53,7 @@ export default function usePositionDetails(
     return longShortValue === 'Long'
       ? principalValue.plus(collateralValue).dividedBy(collateralValue)
       : allowanceValue.minus(collateralValue).dividedBy(collateralValue);
-  }, [allowanceValue, collateralValue, longShortValue, principalValue]);
+  }, [longShortValue, principalValue, collateralValue, allowanceValue]);
 
   const tokenPairValue = useMemo(() => {
     return longShortValue === 'Long'
@@ -93,7 +93,7 @@ export default function usePositionDetails(
   );
 
   const currentPriceValue = useMemo(() => {
-    if (!heldToken || !owedToken) return undefined;
+    if (!heldToken || !owedToken || !currentPrice) return undefined;
     return currentPrice
       .dividedBy(longShortValue === 'Long' ? allowanceValue : principalValue)
       .multipliedBy(
@@ -166,6 +166,7 @@ export default function usePositionDetails(
   );
 
   const pnlValue = useMemo(() => {
+    if (!quoteValue) return BigNumber(0);
     return longShortValue === 'Long'
       ? quoteValue.minus(principalValue).minus(collateralValue).minus(feesValue)
       : allowanceValue.minus(quoteValue).minus(collateralValue);
@@ -212,5 +213,6 @@ export default function usePositionDetails(
     pnlValue,
     createdAtValue,
     feesValue,
+    quoteValue,
   };
 }

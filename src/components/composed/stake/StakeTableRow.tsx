@@ -4,6 +4,7 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
+import Skeleton from 'react-loading-skeleton';
 
 import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
 import { ITableRow } from '@/components/based/table/DataTable';
@@ -34,7 +35,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   }, [vaultBalance, vaultData]);
 
   const totalBorrowed = useMemo(() => {
-    if (!vaultData?.netLoans || vaultBalance.isZero()) return 0;
+    if (!vaultData?.netLoans || vaultBalance.isZero()) return null;
     return BigNumber(vaultData?.netLoans.toString());
   }, [vaultBalance, vaultData]);
 
@@ -86,7 +87,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {aprValue ? `${aprValue}%` : '0%'}
+                    {aprValue ? `${aprValue}%` : <Skeleton width={60} />}
                   </Txt.Body2Regular>
                 </td>
               );
@@ -94,7 +95,11 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {formatAmount(tvl, vaultToken?.decimals)}
+                    {tvl.isNaN() ? (
+                      <Skeleton width={60} />
+                    ) : (
+                      formatAmount(tvl, vaultToken?.decimals)
+                    )}
                   </Txt.Body2Regular>
                 </td>
               );
@@ -102,7 +107,11 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {formatAmount(totalBorrowed, vaultToken?.decimals)}
+                    {totalBorrowed ? (
+                      formatAmount(totalBorrowed, vaultToken?.decimals)
+                    ) : (
+                      <Skeleton width={120} />
+                    )}
                   </Txt.Body2Regular>
                 </td>
               );
@@ -110,12 +119,14 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {wrappedTokenBalance?.gt(0)
-                      ? formatAmount(
-                          wrappedTokenBalance.toString(),
-                          vaultToken?.decimals
-                        )
-                      : '0'}
+                    {wrappedTokenBalance ? (
+                      formatAmount(
+                        wrappedTokenBalance.toString(),
+                        vaultToken?.decimals
+                      )
+                    ) : (
+                      <Skeleton width={120} />
+                    )}
                   </Txt.Body2Regular>
                 </td>
               );
