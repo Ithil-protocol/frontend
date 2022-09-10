@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import React, { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { initialize, pageview } from 'react-ga';
 import { useEthers } from '@usedapp/core';
 import { ShepherdTour } from 'react-shepherd';
@@ -19,12 +19,14 @@ import 'shepherd.js/dist/css/shepherd.css';
 initialize('G-YG89SWDD9M');
 
 const App = () => {
-  useEffect(() => {
-    pageview(window.location.pathname + window.location.search);
-  }, []);
-
   const { activate } = useEthers();
   const theme = useTheme();
+  const location = useLocation();
+
+  // Fired on every route change
+  useEffect(() => {
+    pageview(location.pathname + location.search);
+  }, [location]);
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
