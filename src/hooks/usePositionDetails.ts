@@ -113,7 +113,7 @@ export default function usePositionDetails(
       return collateralValue
         .multipliedBy(riskFactor)
         .dividedBy(10000)
-        .plus(principalValue)
+        .plus(principalValue.plus(feesValue))
         .multipliedBy(new BigNumber(10).pow(heldToken.decimals))
         .dividedBy(
           allowanceValue.multipliedBy(new BigNumber(10).pow(owedToken.decimals))
@@ -123,7 +123,7 @@ export default function usePositionDetails(
         .minus(collateralValue.multipliedBy(riskFactor).dividedBy(10000))
         .multipliedBy(new BigNumber(10).pow(owedToken.decimals))
         .dividedBy(
-          principalValue.multipliedBy(new BigNumber(10).pow(heldToken.decimals))
+          (principalValue.plus(feesValue)).multipliedBy(new BigNumber(10).pow(heldToken.decimals))
         );
   }, [
     allowanceValue,
