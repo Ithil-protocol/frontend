@@ -279,7 +279,7 @@ export default function MarginTradingPage() {
     if (maxLeverage === 1) return { 1: '1x' };
     const increment = (maxLeverage - 1) / 10;
     for (let i = 1; i <= maxLeverage; i += increment) {
-      marks[i] = `${formatAmount(i, 0, true, 2)}x`;
+      marks[i] = i == 1 ? `${formatAmount(i, 0, true, 2)}x` : ' ';
     }
     if (
       !Object.keys(marks)
@@ -388,7 +388,7 @@ export default function MarginTradingPage() {
                 tooltipText="The capital boost on the margin invested"
                 min={1}
                 max={maxLeverage}
-                step={0.2}
+                step={0.1}
                 value={Number(leverage.toFixed(1))}
                 onChange={(value) => setLeverage(value as number)}
                 marks={sliderMarks}
