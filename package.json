@@ -6,7 +6,7 @@
     "@craco/craco": "^6.4.5",
     "@emotion/core": "^11.0.0",
     "@ethersproject/experimental": "^5.6.3",
-    "@ithil-protocol/deployed": "github:Ithil-protocol/deployed",
+    "@ithil-protocol/deployed": "git+https://github.com/Ithil-protocol/deployed.git#09507a73e0ba88cbed8c7f44979fe871e389ea21",
     "@popperjs/core": "^2.11.5",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.14.1",

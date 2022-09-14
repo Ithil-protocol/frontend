@@ -107,13 +107,28 @@ export default function usePositionDetails(
     strategy
   );
 
+  const feesValue = useMemo(() => {
+    const _feesValue = new BigNumber(BN.from(details.fees).toString());
+    const interestRateValue = new BigNumber(
+      BN.from(details.interestRate).toString()
+    );
+    const createdAtValue = new BigNumber(BN.from(details.createdAt).toString());
+
+    const now = new BigNumber(Math.floor(new Date().getTime() / 1000));
+    return interestRateValue
+      .multipliedBy(now.minus(createdAtValue))
+      .multipliedBy(principalValue)
+      .dividedBy(864000000)
+      .plus(_feesValue);
+  }, [details, principalValue]);
+
   const liqPriceValue = useMemo(() => {
     if (!heldToken || !owedToken) return undefined;
     if (longShortValue === 'Long')
       return collateralValue
         .multipliedBy(riskFactor)
         .dividedBy(10000)
-        .plus(principalValue)
+        .plus(principalValue.plus(feesValue))
         .multipliedBy(new BigNumber(10).pow(heldToken.decimals))
         .dividedBy(
           allowanceValue.multipliedBy(new BigNumber(10).pow(owedToken.decimals))
@@ -123,7 +138,9 @@ export default function usePositionDetails(
         .minus(collateralValue.multipliedBy(riskFactor).dividedBy(10000))
         .multipliedBy(new BigNumber(10).pow(owedToken.decimals))
         .dividedBy(
-          principalValue.multipliedBy(new BigNumber(10).pow(heldToken.decimals))
+          principalValue
+            .plus(feesValue)
+            .multipliedBy(new BigNumber(10).pow(heldToken.decimals))
         );
   }, [
     allowanceValue,
@@ -141,21 +158,6 @@ export default function usePositionDetails(
       ? currentPriceValue.dividedBy(liqPriceValue).minus(1).multipliedBy(100)
       : liqPriceValue.dividedBy(currentPriceValue).minus(1).multipliedBy(100);
   }, [currentPriceValue, liqPriceValue, longShortValue]);
-
-  const feesValue = useMemo(() => {
-    const _feesValue = new BigNumber(BN.from(details.fees).toString());
-    const interestRateValue = new BigNumber(
-      BN.from(details.interestRate).toString()
-    );
-    const createdAtValue = new BigNumber(BN.from(details.createdAt).toString());
-
-    const now = new BigNumber(Math.floor(new Date().getTime() / 1000));
-    return interestRateValue
-      .multipliedBy(now.minus(createdAtValue))
-      .multipliedBy(principalValue)
-      .dividedBy(864000000)
-      .plus(_feesValue);
-  }, [details, principalValue]);
 
   // console.log(formatAmount(feesValue, collateralToken?.decimals));
   const quoteValue = useQuoter(

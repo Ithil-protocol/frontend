@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React, { FC, useEffect, useMemo } from 'react';
-import { ArrowSquareOut, Check, Copy } from 'phosphor-react';
+import { ArrowSquareOut, Check, X, Copy } from 'phosphor-react';
 // import ClipLoader from 'react-spinners/ClipLoader';
 import {
   getExplorerAddressLink,
@@ -163,7 +163,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
                     </Txt.CaptionMedium>
                   </div>
                 ) : (
-                  <div tw="flex flex-col items-center self-center">
+                  <div tw="flex flex-col items-center self-center w-20">
                     {tx.receipt.status === 1 ? (
                       <>
                         <div tw="flex items-center justify-center h-5 w-5 rounded-3xl bg-success">
@@ -176,7 +176,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
                     ) : (
                       <>
                         <div tw="flex items-center justify-center h-5 w-5 rounded-3xl bg-error">
-                          <Check tw="text-primary w-3 h-3" />
+                          <X tw="text-primary w-3 h-3" />
                         </div>
                         <Txt.CaptionMedium tw="text-error">
                           Failed
