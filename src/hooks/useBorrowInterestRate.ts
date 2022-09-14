@@ -53,5 +53,14 @@ export function useBorrowInterestRate(
         .multipliedBy(numerator)
         .dividedBy(denominator);
 
+  console.log(
+    baseIR.toFixed(),
+    leveragedAmount.toFixed(),
+    numerator.toFixed(),
+    denominator.toFixed()
+  );
+
+  console.log('riskFactor =>', riskFactor.toFixed());
+
   return borrowIR;
 }

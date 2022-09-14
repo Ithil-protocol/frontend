@@ -47,6 +47,8 @@ export default function YearnStrategyPage() {
   const tokenBalance = useTokenBalance(spentToken.address, account);
   const obtainedTokenAddress = useLatestVault(spentToken.address);
 
+  console.log(obtainedTokenAddress);
+
   const slippageValue = useMemo(() => {
     return (100 - Number(slippagePercent)) / 100;
   }, [slippagePercent]);

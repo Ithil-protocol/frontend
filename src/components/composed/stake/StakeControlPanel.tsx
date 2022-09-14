@@ -99,7 +99,8 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
   //const maximumWithdrawal = useClaimable(token.address);
 
   const maximumWithdrawal = useMemo(() => {
-    if (!wrappedTokenBalance || vaultBalance.isZero()) return undefined;
+    if (!wrappedTokenBalance) return null;
+    if (BigNumber(wrappedTokenBalance.toString()).isZero()) return 0;
     return new BigNumber(wrappedTokenBalance.toString())
       .multipliedBy(vaultBalance)
       .dividedBy(wrappedTokenSupply);
@@ -145,7 +146,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
       <StakeControlWidget
         title="Withdraw"
         value={
-          maximumWithdrawal
+          maximumWithdrawal !== null
             ? `Available: ${formatAmount(
                 maximumWithdrawal?.toString() || '0',
                 token.decimals

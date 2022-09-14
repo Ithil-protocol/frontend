@@ -38,7 +38,7 @@ export function useMaxLeverage(
 
   const maxLeverage = BigNumber.max(
     BigNumber.min(
-      BigNumber('500').dividedBy(baseIR).multipliedBy(2),
+      BigNumber('500').dividedBy(baseIR).multipliedBy(2).plus(1),
       BigNumber(balance?.toString() || 0)
         .minus(insuranceReserveBalance)
         .dividedBy(margin)

@@ -35,12 +35,12 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   }, [vaultBalance, vaultData]);
 
   const totalBorrowed = useMemo(() => {
-    if (!vaultData?.netLoans || vaultBalance.isZero()) return null;
+    if (!vaultData?.netLoans) return null;
     return BigNumber(vaultData?.netLoans.toString());
-  }, [vaultBalance, vaultData]);
+  }, [vaultData]);
 
   const shareValue = useMemo(() => {
-    if (wrappedTokenSupply.isZero()) return null;
+    if (wrappedTokenSupply.isZero()) return BigNumber(0);
     return vaultBalance.dividedBy(wrappedTokenSupply);
   }, [vaultBalance, wrappedTokenSupply]);
 
@@ -87,7 +87,11 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>
-                    {aprValue ? `${aprValue}%` : <Skeleton width={60} />}
+                    {aprValue !== null ? (
+                      `${aprValue}%`
+                    ) : (
+                      <Skeleton width={60} />
+                    )}
                   </Txt.Body2Regular>
                 </td>
               );
