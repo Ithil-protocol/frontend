@@ -12,7 +12,8 @@ export function useMaxLeverage(
   spentToken: string,
   obtainedToken: string,
   margin: BigNumber,
-  strategy: StrategyContractType
+  strategy: StrategyContractType,
+  borrowed: BigNumber
 ) {
   const vaultData = useVaultData(spentToken);
   const balance = useTokenBalance(spentToken, CORE.Vault.address);
@@ -32,7 +33,7 @@ export function useMaxLeverage(
     netLoans,
     insuranceReserveBalance,
     BigNumber(balance?.toString() || 0),
-    BigNumber('0'),
+    borrowed,
     riskFactor
   );
 

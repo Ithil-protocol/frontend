@@ -14,7 +14,8 @@ export function useBorrowInterestRate(
   margin: BigNumber,
   borrowed: BigNumber,
   minObtained: BigNumber,
-  strategy: StrategyContractType
+  strategy: StrategyContractType,
+  collateralIsSpentToken: boolean
 ) {
   const vaultData = useVaultData(spentToken);
   const balance = useTokenBalance(spentToken, CORE.Vault.address);
@@ -42,7 +43,9 @@ export function useBorrowInterestRate(
 
   const leveragedAmount = margin.isZero()
     ? BigNumber(0)
-    : borrowed.dividedBy(margin);
+    : collateralIsSpentToken
+    ? borrowed.dividedBy(margin)
+    : minObtained.dividedBy(margin);
   const numerator = minObtained.plus(dstBalance.multipliedBy(2));
   const denominator = numerator.plus(minObtained);
 
@@ -52,15 +55,6 @@ export function useBorrowInterestRate(
         .multipliedBy(leveragedAmount)
         .multipliedBy(numerator)
         .dividedBy(denominator);
-
-  console.log(
-    baseIR.toFixed(),
-    leveragedAmount.toFixed(),
-    numerator.toFixed(),
-    denominator.toFixed()
-  );
-
-  console.log('riskFactor =>', riskFactor.toFixed());
 
   return borrowIR;
 }
