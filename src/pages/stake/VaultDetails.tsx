@@ -22,7 +22,7 @@ const Banner: FC<IBanner> = ({ heading, body }) => {
     <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
       <Txt.Heading2 tw="mb-4">{heading}</Txt.Heading2>
       <div tw="flex flex-row justify-between w-full">
-        <div tw="flex gap-2 items-center">
+        <div tw="flex gap-2 items-center justify-center w-full">
           <Txt.Body2Regular tw="text-secondary">{body}</Txt.Body2Regular>
         </div>
       </div>

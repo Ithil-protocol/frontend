@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Mainnet, useEthers } from '@usedapp/core';
+import { Chain, Goerli, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from '@/components/based/Button';
@@ -56,12 +56,12 @@ const NetworkMenu = () => {
       }
       menu={
         <div tw="rounded-md cursor-pointer flex flex-col justify-start gap-3 py-4 pr-16 pl-4 bg-primary-100 border border-primary-400">
-          <MenuItem
+          {/* <MenuItem
             Icon={CurrencyEth}
             label={Mainnet.chainName}
             network={Mainnet}
             onClick={() => setVisibility(false)}
-          />
+          /> */}
           <MenuItem
             Icon={CurrencyEth}
             label={Goerli.chainName}
