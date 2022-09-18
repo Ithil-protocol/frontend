@@ -57,8 +57,8 @@ export default function MarginTradingPage() {
     );
   }, [leverage, marginAmount, collateralToken]);
 
-  const vaultData = useVaultData(spentToken.address);
-  const tokenBalance = useTokenBalance(spentToken.address, account);
+  const vaultData = useVaultData(collateralToken.address);
+  const tokenBalance = useTokenBalance(collateralToken.address, account);
 
   const marginAmountValue = useMemo(() => {
     return parseAmount(marginAmount, collateralToken.decimals);
@@ -234,11 +234,20 @@ export default function MarginTradingPage() {
     openPosition(newOrder);
   };
 
+  // const quoteValueMargin = useQuoter(
+  //   obtainedToken.address,
+  //   spentToken.address,
+  //   marginAmountValue,
+  //   STRATEGIES.MarginTradingStrategy
+  // );
   const maxLeverage = useMaxLeverage(
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
     STRATEGIES.MarginTradingStrategy
+    // collateralIsSpentToken
+    //   ? marginAmountValue
+    //   : quoteValueMargin || BigNumber(0)
   );
 
   const borrowIR = useBorrowInterestRate(
@@ -247,11 +256,12 @@ export default function MarginTradingPage() {
     marginAmountValue,
     borrowed || BigNumber(0),
     minObtained || BigNumber(0),
-    STRATEGIES.YearnStrategy
+    STRATEGIES.MarginTradingStrategy,
+    collateralIsSpentToken
   );
 
   const borrowInterestPercent = useMemo(() => {
-    return borrowIR.multipliedBy(leverage - 1).dividedBy(100);
+    return borrowIR.dividedBy(100);
   }, [borrowIR, leverage]);
 
   const disabledButton = useMemo(() => {
@@ -388,8 +398,8 @@ export default function MarginTradingPage() {
                 tooltipText="The capital boost on the margin invested"
                 min={1}
                 max={maxLeverage}
-                step={0.1}
-                value={Number(leverage.toFixed(1))}
+                step={0.01}
+                value={Number(leverage.toFixed(2))}
                 onChange={(value) => setLeverage(value as number)}
                 marks={sliderMarks}
               />

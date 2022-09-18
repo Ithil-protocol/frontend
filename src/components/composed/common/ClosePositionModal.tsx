@@ -45,10 +45,10 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
   const { closePosition, isLoading } = useClosePosition(strategy);
 
   const quoteValue = useQuoter(
-    longShortValue === 'Long' && strategy.type === 'margin'
+    longShortValue === 'Long'
       ? activePosition.heldToken
       : activePosition.owedToken,
-    longShortValue === 'Long' && strategy.type === 'margin'
+    longShortValue === 'Long'
       ? activePosition.owedToken
       : activePosition.heldToken,
     longShortValue === 'Long' ? allowanceValue : principalValue.plus(feesValue),

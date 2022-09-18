@@ -18,7 +18,7 @@ import Page from '@/components/based/Page';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { baseInterestRate, formatAmount, parseAmount } from '@/global/utils';
+import { formatAmount, parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import { useAllowance, useApprove } from '@/hooks/useToken';
@@ -47,8 +47,6 @@ export default function YearnStrategyPage() {
   const tokenBalance = useTokenBalance(spentToken.address, account);
   const obtainedTokenAddress = useLatestVault(spentToken.address);
 
-  console.log(obtainedTokenAddress);
-
   const slippageValue = useMemo(() => {
     return (100 - Number(slippagePercent)) / 100;
   }, [slippagePercent]);
@@ -70,13 +68,6 @@ export default function YearnStrategyPage() {
     STRATEGIES.YearnStrategy
   );
 
-  const maxLeverage = useMaxLeverage(
-    spentToken.address,
-    obtainedTokenAddress,
-    marginAmountValue,
-    STRATEGIES.YearnStrategy
-  );
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const minObtained = useMemo(() => {
     if (!quoteValue) return null;
@@ -88,6 +79,13 @@ export default function YearnStrategyPage() {
       ? maxSpent.minus(marginAmountValue)
       : BigNumber(0);
   }, [maxSpent, marginAmountValue]);
+
+  const maxLeverage = useMaxLeverage(
+    spentToken.address,
+    obtainedTokenAddress,
+    marginAmountValue,
+    STRATEGIES.YearnStrategy
+  );
 
   const allowance = useAllowance(
     spentToken.address,
@@ -108,7 +106,8 @@ export default function YearnStrategyPage() {
     marginAmountValue,
     borrowed,
     minObtained || BigNumber(0),
-    STRATEGIES.YearnStrategy
+    STRATEGIES.YearnStrategy,
+    true
   );
 
   const borrowInterestPercent = useMemo(() => {
@@ -116,7 +115,10 @@ export default function YearnStrategyPage() {
   }, [borrowIR, leverage]);
 
   const estimatedAPY = useMemo(() => {
-    return leverage * (baseApy - borrowIR.dividedBy(100).toNumber());
+    return (
+      leverage *
+      (baseApy - borrowIR.multipliedBy(365).dividedBy(100).toNumber())
+    );
   }, [baseApy, borrowIR, leverage]);
 
   const disabledButton = useMemo(() => {
@@ -161,7 +163,7 @@ export default function YearnStrategyPage() {
       obtainedToken: obtainedTokenAddress,
       collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(0),
       collateralIsSpentToken: true,
-      minObtained: 0,
+      minObtained: minObtained?.toFixed(0) || '0',
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
@@ -234,8 +236,8 @@ export default function YearnStrategyPage() {
                 tooltipText="The capital boost on the margin invested"
                 min={1}
                 max={maxLeverage}
-                step={0.1}
-                value={Number(leverage.toFixed(1))}
+                step={0.01}
+                value={Number(leverage.toFixed(2))}
                 onChange={(value) => setLeverage(value as number)}
                 marks={sliderMarks}
               />

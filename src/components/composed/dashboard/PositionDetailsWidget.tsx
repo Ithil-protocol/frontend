@@ -33,7 +33,7 @@ const DetailItem: FC<IDetailItem> = ({ label, value, details, valueColor }) => {
           value && (
             <Txt.Body2Bold
               css={[
-                tw`text-secondary ml-2`,
+                tw`ml-2 text-secondary`,
                 valueColor === 'green' && tw`text-success`,
                 valueColor === 'red' && tw`text-error`,
               ]}
@@ -84,11 +84,14 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
     liqPriceValue,
     collateralToken,
     distFromLiquidation,
+    allowanceValue,
     pnlText,
     heldToken,
-    quoteValue,
+    owedToken,
+    principalValue,
     pnlValue,
     createdAtValue,
+    interestRateValue
   } = usePositionDetails(details, strategy);
 
   return (
@@ -111,7 +114,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
           )}
           details={collateralToken?.symbol}
         />
-        <DetailItem
+        {/* <DetailItem
           label="Obtained"
           value={
             quoteValue && currentPriceValue
@@ -122,6 +125,28 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
               : null
           }
           details={heldToken?.symbol}
+        /> */}
+        <DetailItem
+          label="Allowance"
+          value={
+            !allowanceValue.isNaN()
+              ? formatAmount(allowanceValue, heldToken?.decimals)
+              : null
+          }
+          details={heldToken?.symbol}
+        />
+        <DetailItem
+          label="Principal"
+          value={
+            !principalValue.isNaN()
+              ? formatAmount(principalValue, owedToken?.decimals)
+              : null
+          }
+          details={owedToken?.symbol}
+        />
+        <DetailItem
+          label="Daily interest rate"
+          value={interestRateValue ? formatAmount(interestRateValue,2) + "%" : null}
         />
         <DetailItem
           label="Open price"

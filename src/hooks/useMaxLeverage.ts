@@ -32,7 +32,6 @@ export function useMaxLeverage(
     netLoans,
     insuranceReserveBalance,
     BigNumber(balance?.toString() || 0),
-    BigNumber('0'),
     riskFactor
   );
 

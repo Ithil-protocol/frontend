@@ -87,19 +87,14 @@ export function baseInterestRate(
   netLoans: BigNumber,
   insuranceReserveBalance: BigNumber,
   balance: BigNumber,
-  borrowed: BigNumber,
   riskFactor: BigNumber
 ) {
-  return baseFee.plus(
-    netLoans
-      .plus(
-        BigNumber.max(netLoans.minus(insuranceReserveBalance), 0).plus(borrowed)
-      )
-      .multipliedBy(riskFactor)
-      .dividedBy(
-        balance.plus(netLoans).plus(borrowed).minus(insuranceReserveBalance)
-      )
-  );
+  const uncovered = BigNumber.max(netLoans.minus(insuranceReserveBalance), 0);
+  const interestRateRawNum = riskFactor.multipliedBy(netLoans.plus(uncovered));
+  const interestRateRaw = interestRateRawNum
+    .dividedBy(netLoans.plus(balance).minus(insuranceReserveBalance))
+    .toFixed(0);
+  return BigNumber(interestRateRaw).plus(baseFee);
 }
 
 export function shortenString(str: string) {
