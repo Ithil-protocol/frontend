@@ -18,7 +18,7 @@ import Page from '@/components/based/Page';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { baseInterestRate, formatAmount, parseAmount } from '@/global/utils';
+import { formatAmount, parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import { useAllowance, useApprove } from '@/hooks/useToken';
@@ -84,8 +84,7 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    STRATEGIES.YearnStrategy,
-    marginAmountValue
+    STRATEGIES.YearnStrategy
   );
 
   const allowance = useAllowance(
@@ -116,7 +115,10 @@ export default function YearnStrategyPage() {
   }, [borrowIR, leverage]);
 
   const estimatedAPY = useMemo(() => {
-    return leverage * (baseApy - borrowIR.dividedBy(100).toNumber());
+    return (
+      leverage *
+      (baseApy - borrowIR.multipliedBy(365).dividedBy(100).toNumber())
+    );
   }, [baseApy, borrowIR, leverage]);
 
   const disabledButton = useMemo(() => {
@@ -161,7 +163,7 @@ export default function YearnStrategyPage() {
       obtainedToken: obtainedTokenAddress,
       collateral: parseAmount(marginAmount, spentToken.decimals).toFixed(0),
       collateralIsSpentToken: true,
-      minObtained: 0,
+      minObtained: minObtained?.toFixed(0) || '0',
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };

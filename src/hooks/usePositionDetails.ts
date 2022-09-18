@@ -28,6 +28,10 @@ export default function usePositionDetails(
     () => getTokenByAddress(details.owedToken),
     [details]
   );
+  const interestRateValue = useMemo(
+    () => new BigNumber(BN.from(details.interestRate).toString()),
+    [details]
+  );
   const heldToken = useMemo(
     () =>
       getTokenByAddress(details.heldToken) ||
@@ -215,5 +219,6 @@ export default function usePositionDetails(
     createdAtValue,
     feesValue,
     quoteValue,
+    interestRateValue,
   };
 }

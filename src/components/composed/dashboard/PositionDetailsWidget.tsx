@@ -33,7 +33,7 @@ const DetailItem: FC<IDetailItem> = ({ label, value, details, valueColor }) => {
           value && (
             <Txt.Body2Bold
               css={[
-                tw`text-secondary ml-2`,
+                tw`ml-2 text-secondary`,
                 valueColor === 'green' && tw`text-success`,
                 valueColor === 'red' && tw`text-error`,
               ]}
@@ -91,6 +91,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
     principalValue,
     pnlValue,
     createdAtValue,
+    interestRateValue
   } = usePositionDetails(details, strategy);
 
   return (
@@ -142,6 +143,10 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
               : null
           }
           details={owedToken?.symbol}
+        />
+        <DetailItem
+          label="Daily interest rate"
+          value={interestRateValue ? formatAmount(interestRateValue,2) + "%" : null}
         />
         <DetailItem
           label="Open price"

@@ -234,20 +234,20 @@ export default function MarginTradingPage() {
     openPosition(newOrder);
   };
 
-  const quoteValueMargin = useQuoter(
-    obtainedToken.address,
-    spentToken.address,
-    marginAmountValue,
-    STRATEGIES.MarginTradingStrategy
-  );
+  // const quoteValueMargin = useQuoter(
+  //   obtainedToken.address,
+  //   spentToken.address,
+  //   marginAmountValue,
+  //   STRATEGIES.MarginTradingStrategy
+  // );
   const maxLeverage = useMaxLeverage(
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
-    STRATEGIES.MarginTradingStrategy,
-    collateralIsSpentToken
-      ? marginAmountValue
-      : quoteValueMargin || BigNumber(0)
+    STRATEGIES.MarginTradingStrategy
+    // collateralIsSpentToken
+    //   ? marginAmountValue
+    //   : quoteValueMargin || BigNumber(0)
   );
 
   const borrowIR = useBorrowInterestRate(
@@ -256,12 +256,12 @@ export default function MarginTradingPage() {
     marginAmountValue,
     borrowed || BigNumber(0),
     minObtained || BigNumber(0),
-    STRATEGIES.YearnStrategy,
+    STRATEGIES.MarginTradingStrategy,
     collateralIsSpentToken
   );
 
   const borrowInterestPercent = useMemo(() => {
-    return borrowIR.multipliedBy(leverage - 1).dividedBy(100);
+    return borrowIR.dividedBy(100);
   }, [borrowIR, leverage]);
 
   const disabledButton = useMemo(() => {
