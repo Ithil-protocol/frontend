@@ -14,8 +14,5 @@ export function useClosePosition(strategy: StrategyContractType) {
   );
   const isLoading = useHandleTxStatus(state, resetState);
 
-  return {
-    isLoading,
-    closePosition: send,
-  };
+  return { state, isLoading, closePosition: send };
 }
