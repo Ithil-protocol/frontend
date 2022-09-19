@@ -135,7 +135,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
                       rel="noreferrer"
                       href={getExplorerTransactionLink(
                         tx.transaction.hash,
-                        chainId
+                        tx.transaction.chainId
                       )}
                       target="_blank"
                     >
