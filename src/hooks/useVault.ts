@@ -89,6 +89,5 @@ export function useClaimable(tokenAddress: string) {
     console.error(error.message);
     return null;
   }
-  console.log('value', value?.toString());
   return value;
 }

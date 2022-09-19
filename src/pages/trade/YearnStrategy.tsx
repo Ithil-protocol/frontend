@@ -47,8 +47,6 @@ export default function YearnStrategyPage() {
   const tokenBalance = useTokenBalance(spentToken.address, account);
   const obtainedTokenAddress = useLatestVault(spentToken.address);
 
-  console.log(obtainedTokenAddress);
-
   const slippageValue = useMemo(() => {
     return (100 - Number(slippagePercent)) / 100;
   }, [slippagePercent]);
@@ -70,13 +68,6 @@ export default function YearnStrategyPage() {
     STRATEGIES.YearnStrategy
   );
 
-  const maxLeverage = useMaxLeverage(
-    spentToken.address,
-    obtainedTokenAddress,
-    marginAmountValue,
-    STRATEGIES.YearnStrategy
-  );
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const minObtained = useMemo(() => {
     if (!quoteValue) return null;
@@ -88,6 +79,14 @@ export default function YearnStrategyPage() {
       ? maxSpent.minus(marginAmountValue)
       : BigNumber(0);
   }, [maxSpent, marginAmountValue]);
+
+  const maxLeverage = useMaxLeverage(
+    spentToken.address,
+    obtainedTokenAddress,
+    marginAmountValue,
+    STRATEGIES.YearnStrategy,
+    marginAmountValue
+  );
 
   const allowance = useAllowance(
     spentToken.address,
@@ -108,7 +107,8 @@ export default function YearnStrategyPage() {
     marginAmountValue,
     borrowed,
     minObtained || BigNumber(0),
-    STRATEGIES.YearnStrategy
+    STRATEGIES.YearnStrategy,
+    true
   );
 
   const borrowInterestPercent = useMemo(() => {
@@ -234,8 +234,8 @@ export default function YearnStrategyPage() {
                 tooltipText="The capital boost on the margin invested"
                 min={1}
                 max={maxLeverage}
-                step={0.1}
-                value={Number(leverage.toFixed(1))}
+                step={0.01}
+                value={Number(leverage.toFixed(2))}
                 onChange={(value) => setLeverage(value as number)}
                 marks={sliderMarks}
               />

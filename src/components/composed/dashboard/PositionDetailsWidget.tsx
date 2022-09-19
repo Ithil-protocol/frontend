@@ -84,9 +84,11 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
     liqPriceValue,
     collateralToken,
     distFromLiquidation,
+    allowanceValue,
     pnlText,
     heldToken,
-    quoteValue,
+    owedToken,
+    principalValue,
     pnlValue,
     createdAtValue,
   } = usePositionDetails(details, strategy);
@@ -111,7 +113,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
           )}
           details={collateralToken?.symbol}
         />
-        <DetailItem
+        {/* <DetailItem
           label="Obtained"
           value={
             quoteValue && currentPriceValue
@@ -122,6 +124,24 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
               : null
           }
           details={heldToken?.symbol}
+        /> */}
+        <DetailItem
+          label="Allowance"
+          value={
+            !allowanceValue.isNaN()
+              ? formatAmount(allowanceValue, heldToken?.decimals)
+              : null
+          }
+          details={heldToken?.symbol}
+        />
+        <DetailItem
+          label="Principal"
+          value={
+            !principalValue.isNaN()
+              ? formatAmount(principalValue, owedToken?.decimals)
+              : null
+          }
+          details={owedToken?.symbol}
         />
         <DetailItem
           label="Open price"
