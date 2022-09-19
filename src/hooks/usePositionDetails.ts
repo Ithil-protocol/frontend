@@ -159,7 +159,6 @@ export default function usePositionDetails(
       : liqPriceValue.dividedBy(currentPriceValue).minus(1).multipliedBy(100);
   }, [currentPriceValue, liqPriceValue, longShortValue]);
 
-  // console.log(formatAmount(feesValue, collateralToken?.decimals));
   const quoteValue = useQuoter(
     longShortValue === 'Long' ? details.heldToken : details.owedToken,
     longShortValue === 'Long' ? details.owedToken : details.heldToken,
