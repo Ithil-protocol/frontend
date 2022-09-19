@@ -20,7 +20,7 @@ export function useQuoter(
         strategy && {
           contract: new Contract(strategy.address, strategy.abi),
           method: 'quote',
-          args: [srcToken, destToken, amount.toFixed()],
+          args: [srcToken, destToken, amount.toFixed(0)],
         }
     ) ?? {};
 
