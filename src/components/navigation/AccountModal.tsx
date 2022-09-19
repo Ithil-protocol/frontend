@@ -3,13 +3,7 @@ import 'twin.macro';
 import React, { FC, useEffect, useMemo } from 'react';
 import { ArrowSquareOut, Check, X, Copy } from 'phosphor-react';
 // import ClipLoader from 'react-spinners/ClipLoader';
-import {
-  getExplorerAddressLink,
-  getExplorerTransactionLink,
-  shortenAddress,
-  useEthers,
-  useTransactions,
-} from '@usedapp/core';
+import { shortenAddress, useEthers, useTransactions } from '@usedapp/core';
 import { ClipLoader } from 'react-spinners';
 
 import Txt from '@/components/based/Txt';
@@ -22,7 +16,11 @@ import {
   useWalletConnectorIcon,
 } from '@/state/application/hooks';
 import useCopyClipboard from '@/hooks/useCopyClipboard';
-import { shortenString } from '@/global/utils';
+import {
+  getExplorerAddressLink,
+  getExplorerTransactionLink,
+  shortenString,
+} from '@/global/utils';
 
 interface IAccountModal {
   open: boolean;
@@ -137,7 +135,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
                       rel="noreferrer"
                       href={getExplorerTransactionLink(
                         tx.transaction.hash,
-                        chainId
+                        tx.transaction.chainId
                       )}
                       target="_blank"
                     >

@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 // import { ArrowRight } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
+import { useNavigate } from 'react-router-dom';
 
 import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
@@ -29,6 +30,7 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
   selectedId,
   strategy,
 }) => {
+  const navigate = useNavigate();
   const _position = usePositions(selectedId, strategy);
   const activePosition: OpenedPositionType = _position || INIT_POSITION_VALUE;
   const {
@@ -42,7 +44,7 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
     collateralToken,
     feesValue,
   } = usePositionDetails(activePosition, strategy);
-  const { closePosition, isLoading } = useClosePosition(strategy);
+  const { closePosition, isLoading, state } = useClosePosition(strategy);
 
   const quoteValue = useQuoter(
     longShortValue === 'Long' && strategy.type === 'margin'
@@ -66,8 +68,15 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
 
   const handleClose = () => {
     closePosition(selectedId, maxOrMin.toFixed(0));
-    onClose();
   };
+
+  useEffect(() => {
+    if (state.status === 'Success') {
+      onClose();
+      navigate('/dashboard');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <Modal tw="bg-secondary" open={open} onClose={onClose}>
