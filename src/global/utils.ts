@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
-import { DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
+import { DEFAULT_SUPPORTED_CHAINS, Goerli, Mainnet } from '@usedapp/core';
 
 import { STRATEGIES, TOKEN_LIST } from './constants';
 import { TokenDetails } from './types';
@@ -104,4 +104,22 @@ export function baseInterestRate(
 
 export function shortenString(str: string) {
   return str.substring(0, 6) + '...' + str.substring(str.length - 4);
+}
+
+export function getExplorerAddressLink(address: string, chainId: number) {
+  switch (chainId) {
+    case Goerli.chainId:
+      return Goerli.getExplorerAddressLink(address);
+    default:
+      return address;
+  }
+}
+
+export function getExplorerTransactionLink(tx: string, chainId: number) {
+  switch (chainId) {
+    case Goerli.chainId:
+      return Goerli.getExplorerTransactionLink(tx);
+    default:
+      return tx;
+  }
 }
