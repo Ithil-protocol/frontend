@@ -56,12 +56,6 @@ const NetworkMenu = () => {
       }
       menu={
         <div tw="rounded-md cursor-pointer flex flex-col justify-start gap-3 py-4 pr-16 pl-4 bg-primary-100 border border-primary-400">
-          {/* <MenuItem
-            Icon={CurrencyEth}
-            label={Mainnet.chainName}
-            network={Mainnet}
-            onClick={() => setVisibility(false)}
-          /> */}
           <MenuItem
             Icon={CurrencyEth}
             label={Goerli.chainName}

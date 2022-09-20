@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
-import { DEFAULT_SUPPORTED_CHAINS, Goerli, Mainnet } from '@usedapp/core';
+import { DEFAULT_SUPPORTED_CHAINS, Goerli } from '@usedapp/core';
 
 import { STRATEGIES, TOKEN_LIST } from './constants';
 import { TokenDetails } from './types';
@@ -8,10 +8,20 @@ import { TokenDetails } from './types';
 export function infuraUrl(chainId: number) {
   const chainName =
     DEFAULT_SUPPORTED_CHAINS.find((network) => network.chainId === chainId)
-      ?.chainName || Mainnet.chainName;
+      ?.chainName || Goerli.chainName;
 
   return `https://${chainName.toLowerCase()}.infura.io/v3/${
-    process.env.REACT_APP_INFURA_ID
+    process.env.REACT_APP_INFURA_KEY
+  }`;
+}
+
+export function alchemyUrl(chainId: number) {
+  const chainName =
+    DEFAULT_SUPPORTED_CHAINS.find((network) => network.chainId === chainId)
+      ?.chainName || Goerli.chainName;
+
+  return `https://eth-${chainName.toLowerCase()}.g.alchemy.com/v2/${
+    process.env.REACT_APP_ALCHEMY_KEY
   }`;
 }
 
