@@ -103,8 +103,10 @@ module.exports = {
         'spin-slow': 'spin 3s linear infinite',
       },
       screens: {
-        tablet: '480px',
-        desktop: '1024px',
+        mobile: '100px',
+        tablet: '700px',
+        laptop: '1080px',
+        desktop: '1300px',
       },
     },
   },

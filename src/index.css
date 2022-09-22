@@ -85,7 +85,7 @@ body * {
   --primary-warning-light: 243, 231, 168;
 }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 100px) {
   :root {
     --fontsize-caption-medium: 12px;
     --lineheight-caption-medium: 19.2px;

@@ -22,11 +22,13 @@ const TradingChart: FC<ITradingChart> = ({
   const [activeChart, setActiveChart] = useState<'basic' | 'trading'>('basic');
   return (
     <div tw="w-full height[500px] tablet:height[500px] desktop:height[700px] desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
-      <div tw="w-full flex flex-row justify-between pb-5 ">
+      <div tw="w-full flex tablet:flex-row tablet:justify-between pb-5 mobile:flex-col mobile:items-center">
         <Txt.Heading2>{`${obtainedToken.symbol}/${spentToken.symbol}`}</Txt.Heading2>
         {!disableTrading && (
-          <div tw="hidden desktop:flex flex-row items-center gap-1">
-            <Txt.Body2Regular tw="mr-4">View:</Txt.Body2Regular>
+          <div tw="flex flex-row items-center gap-1">
+            <Txt.Body2Regular tw="tablet:display[initial] mr-4 mobile:hidden">
+              View:
+            </Txt.Body2Regular>
             <TabButton
               text="Basic"
               active={activeChart === 'basic'}

@@ -45,7 +45,7 @@ const Dropdown: FC<IDropdown> = ({
           </div>
           <Portal>
             <div
-              tw="pt-2"
+              tw="pt-2 z-index[999]"
               ref={setPopperElement as any}
               style={styles.popper}
               {...attributes.popper}

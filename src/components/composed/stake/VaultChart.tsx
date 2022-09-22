@@ -108,9 +108,13 @@ const VaultChart: FC<IVaultChart> = ({
   }, [utilisationRate, vaultData]);
 
   return (
-    <div tw="w-full height[:auto] max-height[500px] box-content desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16">
+    <div tw="laptop:w-full laptop:box-border height[:auto] max-height[500px] laptop:max-height[initial] mobile:pb-12 desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
       <Txt.Body1Bold>Vault Chart</Txt.Body1Bold>
-      <Line options={CHART_OPTIONS} data={data} />
+      <Line
+        options={CHART_OPTIONS}
+        data={data}
+        style={{ maxHeight: '500px' }}
+      />
     </div>
   );
 };
