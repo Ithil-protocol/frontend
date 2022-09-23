@@ -8,6 +8,7 @@ import { WalletIndicator } from './WalletIndicator';
 import NetworkMenu from './NetworkMenu';
 import AccountModal from './AccountModal';
 import NetworkAlertBar from './NetworkAlertBar';
+import MobileMenu from './MobileMenu';
 
 import { useTheme } from '@/state/application/hooks';
 import Button from '@/components/based/Button';
@@ -16,6 +17,8 @@ import ThemeSwitch from '@/components/navigation/ThemeSwitch';
 import KebabMenu from '@/components/navigation/KebabMenu';
 import { ReactComponent as LogoFullLight } from '@/assets/images/logoFullLight.svg';
 import { ReactComponent as LogoFullDark } from '@/assets/images/logoFullDark.svg';
+import { ReactComponent as LogoSymbolLight } from '@/assets/images/logoSymbolLight.svg';
+import { ReactComponent as LogoSymbolDark } from '@/assets/images/logoSymbolDark.svg';
 
 const Navbar = () => {
   const { account, chainId } = useEthers();
@@ -29,15 +32,34 @@ const Navbar = () => {
         <NetworkAlertBar content="Wrong network - Support only Goerli testnet." />
       )}
       <div tw="w-full px-5 desktop:w-[calc(100% - 9rem)] my-6 tablet:mx-auto flex flex-row items-center justify-between">
-        <span tw="flex flex-row items-center">
-          {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
-          <span tw="ml-24 flex flex-row items-center" id="navigation">
-            <NavigationMenu />
-            <ThemeSwitch />
+        <span tw="flex flex-row items-center mobile:flex-grow">
+          <a href="/">
+            <div tw="tablet:display[initial] mobile:hidden">
+              {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
+            </div>
+            <div tw="tablet:hidden mobile:display[initial] mobile:flex mobile:gap-x-2">
+              {theme === 'dark' ? <LogoSymbolDark /> : <LogoSymbolLight />}
+            </div>
+          </a>
+          <span
+            tw="laptop:static laptop:ml-24 laptop:mr-0 flex flex-row items-center laptop:justify-start mobile:flex-grow mobile:justify-end mobile:ml-0 mobile:mr-4 gap-x-4"
+            id="navigation"
+          >
+            <div tw="mobile:hidden laptop:display[initial]">
+              <NavigationMenu />
+            </div>
+            <div tw="laptop:hidden mobile:display[initial]">
+              <MobileMenu />
+            </div>
+            <div tw="tablet:display[initial] mobile:hidden">
+              <ThemeSwitch />
+            </div>
           </span>
         </span>
         <span tw="flex flex-row items-center gap-2" id="connector">
-          <NetworkMenu />
+          <div tw="tablet:display[initial] mobile:hidden">
+            <NetworkMenu />
+          </div>
           {account ? (
             <WalletIndicator onClick={() => setAccountModalOpened(true)} />
           ) : (

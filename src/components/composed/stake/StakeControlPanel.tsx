@@ -21,7 +21,7 @@ interface IStakeControlWidget {
   token: TokenDetails;
   value: string | null;
   maxValue?: string;
-  onSubmit: (inputValue: string) => Promise<void>;
+  onSubmit: (inputValue: string) => Promise<string>;
   secondaryButton?: boolean;
   isLoading: boolean;
   isApproved?: boolean;
@@ -44,7 +44,9 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
       toast.error('Input correct amount!');
       return;
     }
-    onSubmit(inputAmount).then(() => setInputAmount('0'));
+    onSubmit(inputAmount).then((res: string) => {
+      if (res === 'stake') setInputAmount('0');
+    });
   };
   return (
     <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 my-3 border-1 border-font-200 dark:border-primary-400">
@@ -114,12 +116,15 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
   const handleStake = async (amount: string) => {
     if (isApproved) {
       await stake(token.address, parseUnits(amount, token.decimals));
+      return 'stake';
     } else {
       await approve(CORE.Vault.address, MaxUint256);
+      return 'approve';
     }
   };
   const handleUnstake = async (amount: string) => {
     await unstake(token.address, parseUnits(amount, token.decimals));
+    return 'unstake';
   };
 
   return (

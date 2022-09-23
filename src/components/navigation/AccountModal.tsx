@@ -3,7 +3,12 @@ import 'twin.macro';
 import React, { FC, useEffect, useMemo } from 'react';
 import { ArrowSquareOut, Check, X, Copy } from 'phosphor-react';
 // import ClipLoader from 'react-spinners/ClipLoader';
-import { shortenAddress, useEthers, useTransactions } from '@usedapp/core';
+import {
+  shortenAddress,
+  useEtherBalance,
+  useEthers,
+  useTransactions,
+} from '@usedapp/core';
 import { ClipLoader } from 'react-spinners';
 
 import Txt from '@/components/based/Txt';
@@ -17,6 +22,7 @@ import {
 } from '@/state/application/hooks';
 import useCopyClipboard from '@/hooks/useCopyClipboard';
 import {
+  formatAmount,
   getExplorerAddressLink,
   getExplorerTransactionLink,
   shortenString,
@@ -30,6 +36,7 @@ interface IAccountModal {
 const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
   const theme = useTheme();
   const { account, chainId, deactivate } = useEthers();
+  const balance = useEtherBalance(account);
   const walletConnector = useWalletConnector();
   const WalletConnectorIcon = useWalletConnectorIcon();
   const [isCopied, copyText] = useCopyClipboard();
@@ -91,8 +98,13 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
         <div tw="flex flex-row items-center mb-3">
           {!!WalletConnectorIcon && <WalletConnectorIcon tw="h-6 w-6 mr-2" />}
           {!!account && (
-            <Txt.Body1Bold tw="text-secondary">
+            <Txt.Body1Bold tw="text-secondary flex">
               {shortenAddress(account)}
+              {!!balance && (
+                <Txt.ButtonMedium tw="ml-2">{`(${formatAmount(
+                  balance.toString()
+                )} ETH)`}</Txt.ButtonMedium>
+              )}
             </Txt.Body1Bold>
           )}
         </div>

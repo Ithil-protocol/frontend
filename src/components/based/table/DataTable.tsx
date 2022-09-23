@@ -86,6 +86,7 @@ interface IDataTable {
   detailedRowContent?: ReactNode;
   onRowClick?: (rowIdx: number) => void;
   RowComponent?: any;
+  overflow?: boolean;
 }
 
 const DataTable: FC<IDataTable> = ({
@@ -99,10 +100,11 @@ const DataTable: FC<IDataTable> = ({
   detailedRowContent,
   onRowClick,
   RowComponent = TableRow,
+  overflow = true,
 }) => {
   return (
-    <div tw="w-full">
-      <div css={tableContainerStyle}>
+    <div tw="w-full overflow-x-auto">
+      <div css={[tableContainerStyle, overflow ? tw`min-width[780px]` : tw``]}>
         <table css={tw`w-full`} className="table">
           <thead>
             <tr>

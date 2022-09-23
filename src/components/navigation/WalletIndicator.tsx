@@ -22,7 +22,7 @@ export const WalletIndicator: FC<IWalletIndicator> = ({ onClick }) => {
       onClick={onClick}
     >
       {!!balance && (
-        <Txt.ButtonMedium tw="mr-2">{`${formatAmount(
+        <Txt.ButtonMedium tw="mr-2 tablet:display[initial] mobile:hidden">{`${formatAmount(
           balance.toString()
         )} ETH`}</Txt.ButtonMedium>
       )}

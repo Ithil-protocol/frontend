@@ -66,7 +66,7 @@ export default function StakePage() {
 
   return (
     <Page heading="Stake">
-      <div tw="flex flex-row justify-center items-center gap-3 self-start mb-4 whitespace-nowrap">
+      <div tw="tablet:width[initial] flex tablet:flex-row justify-center tablet:items-center gap-3 self-start mb-4 whitespace-nowrap mobile:flex-col mobile:w-full mobile:items-start">
         <InputField
           tw="mr-9"
           value={searchInputValue}
@@ -78,19 +78,24 @@ export default function StakePage() {
             </Txt.Body2Regular>
           }
         />
-        <Txt.Body1Regular>Sort by:</Txt.Body1Regular>
-        <SortButton
-          buttonLabel={apySortLabel}
-          selected={!!apySortValue}
-          menu={APY_MENU}
-          onChange={(val) => setApySortValue(val)}
-        />
-        <SortButton
-          buttonLabel={tvlSortLabel}
-          selected={!!tvlSortValue}
-          menu={TVL_MENU}
-          onChange={(val) => setTvlSortValue(val)}
-        />
+        <div tw="flex justify-center items-center gap-3">
+          <Txt.Body1Regular tw="mobile:hidden tablet:display[initial]">
+            Sort by:
+          </Txt.Body1Regular>
+          <SortButton
+            buttonLabel={apySortLabel}
+            selected={!!apySortValue}
+            menu={APY_MENU}
+            tw="mobile:w-full tablet:w-auto"
+            onChange={(val) => setApySortValue(val)}
+          />
+          <SortButton
+            buttonLabel={tvlSortLabel}
+            selected={!!tvlSortValue}
+            menu={TVL_MENU}
+            onChange={(val) => setTvlSortValue(val)}
+          />
+        </div>
         {(apySortValue !== '' || tvlSortValue !== '') && (
           <Button text="Clear" secondary onClick={handleSortClear} />
         )}
