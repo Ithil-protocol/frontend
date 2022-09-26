@@ -42,6 +42,7 @@ export default function MarginTradingPage() {
   );
   const [leverage, setLeverage] = useState<number>(1);
   const [marginAmount, setMarginAmount] = useState<string>('0');
+  const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
   const [slippagePercent, setSlippagePercent] = useState<string>(
     STRATEGIES.MarginTradingStrategy.defaultSlippage
   );
@@ -392,6 +393,17 @@ export default function MarginTradingPage() {
                   {collateralToken.symbol}
                 </Txt.InputText>
               }
+            />
+            <TabsSwitch
+              activeIndex={marginMaxPercent}
+              onChange={(value: string) => {
+                setMarginMaxPercent(value);
+              }}
+              items={[...Array(4)].map((_, idx) => ({
+                title: `${(idx + 1) * 25}%`,
+                value: `${(idx + 1) * 25}`,
+              }))}
+              theme="secondary"
             />
             {Object.values(sliderMarks).length && maxLeverage ? (
               <SliderBar

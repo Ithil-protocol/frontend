@@ -15,15 +15,19 @@ interface ITabButton {
   onClick: MouseEventHandler<HTMLButtonElement>;
   active?: boolean;
   Icon?: any;
+  theme: 'primary' | 'secondary';
 }
 
-const TabButton: FC<ITabButton> = ({ text, onClick, active, Icon }) => {
+const TabButton: FC<ITabButton> = ({ text, onClick, active, Icon, theme }) => {
   return (
     <button
       css={[
-        tw`border-none rounded-md cursor-pointer flex flex-row items-center justify-center px-3 py-2`,
+        tw`rounded-md cursor-pointer flex flex-row items-center justify-center px-3 py-2`,
         tw`bg-none text-secondary w-1/2`,
         active && tw`bg-font-100 dark:bg-font`,
+        theme === 'secondary'
+          ? tw`border-1 border-font-200 dark:border-primary-400 max-width[70px]`
+          : tw`border-none`,
       ]}
       onClick={onClick}
     >
@@ -46,14 +50,23 @@ interface ITabsSwitch {
   items: TabType[];
   activeIndex: string;
   onChange: (value: string) => void;
+  theme?: 'primary' | 'secondary';
 }
 
-const TabsSwitch: FC<ITabsSwitch> = ({ activeIndex, onChange, items }) => {
+const TabsSwitch: FC<ITabsSwitch> = ({
+  activeIndex,
+  onChange,
+  items,
+  theme = 'primary',
+}) => {
   return (
     <div tw="w-full">
       <div
         css={[
-          tw`flex flex-row items-center gap-2 border-2 border-font-200 rounded-xl p-1 dark:border-primary-400`,
+          tw`flex flex-row items-center gap-2 rounded-xl p-1`,
+          theme === 'primary'
+            ? tw`border-2 border-font-200 dark:border-primary-400`
+            : tw`justify-between`,
         ]}
       >
         {items.map((tab) => (
@@ -63,6 +76,7 @@ const TabsSwitch: FC<ITabsSwitch> = ({ activeIndex, onChange, items }) => {
             text={tab.title}
             active={tab.value == activeIndex}
             onClick={() => onChange(tab.value)}
+            theme={theme}
           />
         ))}
       </div>
