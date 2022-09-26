@@ -68,7 +68,11 @@ export default function usePositionDetails(
         ? principalValue.plus(collateralValue).dividedBy(allowanceValue)
         : allowanceValue.minus(collateralValue).dividedBy(principalValue);
     return _priceValue.multipliedBy(
-      new BigNumber(10).pow(heldToken.decimals - owedToken.decimals)
+      new BigNumber(10).pow(
+        longShortValue === 'Long'
+          ? heldToken.decimals - owedToken.decimals
+          : owedToken.decimals - heldToken.decimals
+      )
     );
   }, [
     allowanceValue,
@@ -97,7 +101,11 @@ export default function usePositionDetails(
     return currentPrice
       .dividedBy(longShortValue === 'Long' ? allowanceValue : principalValue)
       .multipliedBy(
-        new BigNumber(10).pow(heldToken.decimals - owedToken.decimals)
+        new BigNumber(10).pow(
+          longShortValue === 'Long'
+            ? heldToken.decimals - owedToken.decimals
+            : owedToken.decimals - heldToken.decimals
+        )
       );
   }, [currentPrice, heldToken, owedToken]);
 
