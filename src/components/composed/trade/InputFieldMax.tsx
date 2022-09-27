@@ -16,6 +16,7 @@ import { formatAmount } from '@/global/utils';
 interface IInputFieldMax {
   label?: string;
   onChange: (value: string) => void;
+  onInput?: () => void;
   renderRight?: React.ReactNode;
   value: string;
   token: TokenDetails;
@@ -24,11 +25,13 @@ interface IInputFieldMax {
   onMaxClick?: () => void;
   maxValue?: string;
   stateChanger: Dispatch<SetStateAction<string>>;
+  noMax?: boolean;
 }
 
 const InputFieldMax: FC<IInputFieldMax> = ({
   label,
   onChange,
+  onInput,
   value,
   token,
   placeholder,
@@ -36,6 +39,7 @@ const InputFieldMax: FC<IInputFieldMax> = ({
   maxValue,
   renderRight,
   stateChanger,
+  noMax = false,
 }) => {
   const { address, decimals, symbol } = token;
   const { account } = useEthers();
@@ -75,19 +79,22 @@ const InputFieldMax: FC<IInputFieldMax> = ({
           tw="flex-grow bg-primary-200 rounded-md text-input-text font-sans text-font font-normal focus:outline-none max-w-none min-width[20px]"
           type="text"
           value={inputValue}
+          onInput={onInput}
           onChange={({ target: { value } }) => {
             setInputValue(value);
             onChange(value);
           }}
         />
-        <button
-          onClick={() => getMax()}
-          css={[
-            tw`border-primary-400 dark:border-primary-300 rounded-md border-2 h-8 px-2`,
-          ]}
-        >
-          <Txt.Body2Regular>Max</Txt.Body2Regular>
-        </button>
+        {!noMax && (
+          <button
+            onClick={() => getMax()}
+            css={[
+              tw`border-primary-400 dark:border-primary-300 rounded-md border-2 h-8 px-2`,
+            ]}
+          >
+            <Txt.Body2Regular>Max</Txt.Body2Regular>
+          </button>
+        )}
         {renderRight || (
           <Txt.InputText tw="text-font-100">{symbol}</Txt.InputText>
         )}

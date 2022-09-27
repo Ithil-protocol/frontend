@@ -382,12 +382,14 @@ export default function MarginTradingPage() {
             <InputFieldMax
               label="Margin"
               placeholder="0"
+              noMax
               value={marginAmount}
               token={collateralToken}
               stateChanger={setMarginAmount}
               onChange={(value) => {
                 setMarginAmount(value);
               }}
+              onInput={() => setMarginMaxPercent('1')}
               renderRight={
                 <Txt.InputText tw="text-font-100">
                   {collateralToken.symbol}
@@ -398,6 +400,16 @@ export default function MarginTradingPage() {
               activeIndex={marginMaxPercent}
               onChange={(value: string) => {
                 setMarginMaxPercent(value);
+                if (tokenBalance) {
+                  setMarginAmount(
+                    Number(
+                      formatUnits(
+                        tokenBalance.mul(Number(value)).div(100),
+                        collateralToken.decimals
+                      )
+                    ).toString()
+                  );
+                }
               }}
               items={[...Array(4)].map((_, idx) => ({
                 title: `${(idx + 1) * 25}%`,
