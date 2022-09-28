@@ -8,6 +8,7 @@ import { ShepherdTour } from 'react-shepherd';
 import { SkeletonTheme } from 'react-loading-skeleton';
 
 import { useTheme } from './state/application/hooks';
+import MaintenancePage from './pages/maintenance/Maintenance';
 
 import Navbar from '@/components/navigation/Navbar';
 import { injected } from '@/config/connectors';
@@ -22,6 +23,8 @@ const App = () => {
   const { activate } = useEthers();
   const theme = useTheme();
   const location = useLocation();
+  const isMaintenanceMode: boolean =
+    process.env.REACT_APP_MAINTENANCE_MODE === 'true';
 
   // Fired on every route change
   useEffect(() => {
@@ -48,16 +51,25 @@ const App = () => {
           id="first-element"
         >
           <div tw="flex-grow flex flex-col">
-            <Navbar />
+            {!isMaintenanceMode && <Navbar />}
             <Routes>
-              {APP_ROUTES.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={route.component}
-                />
-              ))}
-              <Route path="*" element={<Navigate to="/trade" replace />} />
+              {!isMaintenanceMode ? (
+                APP_ROUTES.map((route) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={route.component}
+                  />
+                ))
+              ) : (
+                <Route path="/" element={<MaintenancePage />} />
+              )}
+              <Route
+                path="*"
+                element={
+                  <Navigate to={isMaintenanceMode ? '/' : '/trade'} replace />
+                }
+              />
             </Routes>
           </div>
         </div>
