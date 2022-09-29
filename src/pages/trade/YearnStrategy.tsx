@@ -255,6 +255,7 @@ export default function YearnStrategyPage() {
                 value: `${(idx + 1) * 25}`,
               }))}
               theme="secondary"
+              nospace
             />
             {Object.values(sliderMarks).length && maxLeverage ? (
               <SliderBar

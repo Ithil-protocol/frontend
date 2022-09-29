@@ -416,6 +416,7 @@ export default function MarginTradingPage() {
                 value: `${(idx + 1) * 25}`,
               }))}
               theme="secondary"
+              nospace
             />
             {Object.values(sliderMarks).length && maxLeverage ? (
               <SliderBar
