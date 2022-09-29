@@ -27,12 +27,14 @@ import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
 import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
 import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
+import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
 
   const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
   const [marginAmount, setMarginAmount] = useState<string>('0');
+  const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
   const [leverage, setLeverage] = useState<number>(1);
 
   const [baseApy, setBaseApy] = useState<number>(0);
@@ -219,14 +221,42 @@ export default function YearnStrategyPage() {
             <div tw="flex w-full justify-between items-center" id="margin">
               <TokenInputField
                 label="Margin"
+                noMax
                 availableTokens={TOKEN_LIST}
                 value={marginAmount}
                 setValue={setMarginAmount}
                 stateChanger={setMarginAmount}
+                onInput={() => setMarginMaxPercent('1')}
                 token={spentToken}
-                onTokenChange={(value) => setSpentToken(value)}
+                onTokenChange={(value) => {
+                  setSpentToken(value);
+                  setMarginAmount('0');
+                  setMarginMaxPercent('1');
+                }}
               />
             </div>
+            <TabsSwitch
+              activeIndex={marginMaxPercent}
+              onChange={(value: string) => {
+                setMarginMaxPercent(value);
+                if (tokenBalance) {
+                  setMarginAmount(
+                    Number(
+                      formatUnits(
+                        tokenBalance.mul(Number(value)).div(100),
+                        spentToken.decimals
+                      )
+                    ).toString()
+                  );
+                }
+              }}
+              items={[...Array(4)].map((_, idx) => ({
+                title: `${(idx + 1) * 25}%`,
+                value: `${(idx + 1) * 25}`,
+              }))}
+              theme="secondary"
+              nospace
+            />
             {Object.values(sliderMarks).length && maxLeverage ? (
               <SliderBar
                 id="leverage"

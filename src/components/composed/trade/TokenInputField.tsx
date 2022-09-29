@@ -13,9 +13,11 @@ interface ITokenInputField {
   label: string;
   value: string;
   setValue: (value: string) => void;
+  onInput?: () => void;
   placeholder?: string;
   onTokenChange: (token: TokenDetails) => void;
   token: TokenDetails;
+  noMax?: boolean;
   availableTokens?: TokenDetails[];
   stateChanger: Dispatch<SetStateAction<string>>;
 }
@@ -27,8 +29,10 @@ const TokenInputField: FC<ITokenInputField> = ({
   placeholder,
   onTokenChange,
   token,
-  availableTokens,
   stateChanger,
+  onInput,
+  availableTokens,
+  noMax = false,
 }) => {
   const [tokenModalOpened, setTokenModalOpened] = useState(false);
 
@@ -39,6 +43,8 @@ const TokenInputField: FC<ITokenInputField> = ({
         value={value}
         onChange={setValue}
         token={token}
+        noMax={noMax}
+        onInput={onInput}
         stateChanger={stateChanger}
         placeholder={placeholder ?? '0'}
         renderRight={

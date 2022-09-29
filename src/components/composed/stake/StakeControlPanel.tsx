@@ -7,6 +7,8 @@ import { parseUnits } from '@ethersproject/units';
 import { MaxUint256 } from '@ethersproject/constants';
 import toast from 'react-hot-toast';
 
+import TabsSwitch from '../trade/TabsSwitch';
+
 import { CORE } from '@/global/constants';
 import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
@@ -15,6 +17,7 @@ import InfoItem from '@/components/composed/trade/InfoItem';
 import { formatAmount } from '@/global/utils';
 import { useClaimable, useStake, useUnstake } from '@/hooks/useVault';
 import { useApprove } from '@/hooks/useToken';
+import Txt from '@/components/based/Txt';
 
 interface IStakeControlWidget {
   title: string;
@@ -38,6 +41,7 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
   isApproved = true,
 }) => {
   const [inputAmount, setInputAmount] = useState('');
+  const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
 
   const handleSubmit = () => {
     if (!inputAmount || Number(inputAmount) <= 0) {
@@ -52,14 +56,35 @@ const StakeControlWidget: FC<IStakeControlWidget> = ({
     <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 my-3 border-1 border-font-200 dark:border-primary-400">
       <InfoItem label={title} value={value} />
       <InputFieldMax
+        label="Margin"
         placeholder="0"
+        noMax
         value={inputAmount}
-        maxValue={maxValue}
         token={token}
         stateChanger={setInputAmount}
         onChange={(value) => {
           setInputAmount(value);
         }}
+        onInput={() => setMarginMaxPercent('1')}
+        renderRight={
+          <Txt.InputText tw="text-font-100">{token.symbol}</Txt.InputText>
+        }
+      />
+      <TabsSwitch
+        activeIndex={marginMaxPercent}
+        onChange={(value: string) => {
+          setMarginMaxPercent(value);
+          if (maxValue) {
+            setInputAmount(
+              ((Number(maxValue) * Number(value)) / 100).toString()
+            );
+          }
+        }}
+        items={[...Array(4)].map((_, idx) => ({
+          title: `${(idx + 1) * 25}%`,
+          value: `${(idx + 1) * 25}`,
+        }))}
+        theme="secondary"
       />
       <Button
         text={isApproved ? title : 'Approve'}
