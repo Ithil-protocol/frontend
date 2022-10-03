@@ -16,11 +16,13 @@ export const Text: FC<IText> = ({ value }) => {
 interface ITokenPair {
   collateralTokenSymbol: string;
   investmentTokenSymbol: string;
+  noText?: boolean;
 }
 
 export const TokenPair: FC<ITokenPair> = ({
   collateralTokenSymbol,
   investmentTokenSymbol,
+  noText = false,
 }) => {
   const collateralTokenLogoURI = TOKEN_LIST.find(
     (token) => token.symbol === collateralTokenSymbol
@@ -31,7 +33,12 @@ export const TokenPair: FC<ITokenPair> = ({
   )?.logoURI;
 
   return (
-    <div tw="flex flex-row justify-start items-center gap-6">
+    <div
+      css={[
+        tw`inline-block -ml-3.5`,
+        !noText && tw`flex flex-row justify-start items-center gap-6`,
+      ]}
+    >
       <div tw="relative">
         <div tw="w-7 h-7 border-radius[100%] bg-primary-100 absolute bottom[-2px] left[18px] z-index[2]"></div>
         {investmentTokenLogoURI ? (
@@ -57,7 +64,9 @@ export const TokenPair: FC<ITokenPair> = ({
           </div>
         )}
       </div>
-      <Text value={`${investmentTokenSymbol}/${collateralTokenSymbol}`} />
+      {!noText && (
+        <Text value={`${investmentTokenSymbol}/${collateralTokenSymbol}`} />
+      )}
     </div>
   );
 };
