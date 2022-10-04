@@ -2,12 +2,12 @@
 import tw from 'twin.macro';
 import React, { FC } from 'react';
 
-interface IRiskPercentBalls {
+interface IRiskPercentCircles {
   value: number;
   max?: number;
 }
 
-const RiskPercentBalls: FC<IRiskPercentBalls> = ({ value, max = 5 }) => {
+const RiskPercentCircles: FC<IRiskPercentCircles> = ({ value, max = 5 }) => {
   return (
     <div tw="flex flex-row items-center gap-x-1 justify-center">
       {[...Array(max)].map((_, idx) => (
@@ -23,4 +23,4 @@ const RiskPercentBalls: FC<IRiskPercentBalls> = ({ value, max = 5 }) => {
   );
 };
 
-export default RiskPercentBalls;
+export default RiskPercentCircles;

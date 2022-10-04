@@ -7,12 +7,13 @@ import DataTable from '@/components/based/table/DataTable';
 import Txt from '@/components/based/Txt';
 import { TRADE_STRATEGIES } from '@/global/constants';
 import TradeTableRow from '@/components/composed/trade/TradeTableRow';
+import Tooltip from '@/components/based/Tooltip';
 
 const TradePage = () => {
   return (
     <Page heading="Trading Strategies">
       <div
-        tw="laptop:flex laptop:width[initial] flex-row gap-x-4 flex-wrap gap-y-4 justify-center laptop:min-width[800px] mobile:display[initial] mobile:min-width[initial] mobile:w-full mt-2"
+        tw="laptop:flex laptop:w-full flex-row gap-x-4 flex-wrap gap-y-4 justify-center laptop:min-width[800px] mobile:display[initial] mobile:min-width[initial] mobile:w-full mt-2"
         id="strategies"
       >
         <DataTable
@@ -34,6 +35,7 @@ const TradePage = () => {
                   <Txt.Body2Regular tw="text-font-100">
                     Exposure
                   </Txt.Body2Regular>
+                  <Tooltip text="Exposure" />
                 </div>
               ),
             },
@@ -54,6 +56,7 @@ const TradePage = () => {
                   <Txt.Body2Regular tw="text-font-100">
                     Utilisation Rate
                   </Txt.Body2Regular>
+                  <Tooltip text="Utilisation Rate" />
                 </div>
               ),
             },
@@ -64,6 +67,7 @@ const TradePage = () => {
                   <Txt.Body2Regular tw="text-font-100">
                     Risk profile
                   </Txt.Body2Regular>
+                  <Tooltip text="Risk profile" />
                 </div>
               ),
             },

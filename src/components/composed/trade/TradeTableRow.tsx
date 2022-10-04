@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { TokenPair } from '@/components/composed/dashboard/TableCell';
 import { ITableRow } from '@/components/based/table/DataTable';
-import RiskPercentBalls from '@/components/composed/trade/RiskPercentBalls';
+import RiskPercentBalls from '@/components/composed/trade/RiskPercentCircles';
 import Txt from '@/components/based/Txt';
 
 type ITradeTableRow = ITableRow;
