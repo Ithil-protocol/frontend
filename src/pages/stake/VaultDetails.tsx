@@ -11,6 +11,7 @@ import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useTotalSupply } from '@/hooks/useToken';
 import VaultChart from '@/components/composed/stake/VaultChart';
+import { useComputePairRiskFactor } from '@/hooks/useComputePairRiskFactor';
 
 export interface IBanner {
   heading: string | number;
