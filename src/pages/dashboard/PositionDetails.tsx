@@ -136,8 +136,11 @@ export default function PositionDetails() {
               ) : (
                 <SkeletonPositionDetailsWidget />
               )}
-              {positionId && (
+              {positionId && collateralToken && (
                 <PositionControlPanel
+                  positionId={positionId}
+                  strategy={selectedStrategy}
+                  token={collateralToken}
                   onClosePosition={() => setClosePositionModalOpened(true)}
                 />
               )}

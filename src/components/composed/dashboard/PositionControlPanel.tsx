@@ -1,25 +1,42 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
+import { useEthers, useTokenBalance } from '@usedapp/core';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 
-// import { TokenDetails } from '@/global/types';
+import TabsSwitch from '../trade/TabsSwitch';
+import InputFieldMax from '../trade/InputFieldMax';
+
+import { StrategyContractType, TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
 // import SliderBar from '@/components/based/Slidebar';
-// import TokenInputField from '@/components/composed/trade/TokenInputField';
+import { useEditPosition } from '@/hooks/useEditPosition';
+import Txt from '@/components/based/Txt';
 // import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 
 interface IPositionControlPanel {
   onClosePosition: () => void;
+  positionId: string;
+  token: TokenDetails;
+  strategy: StrategyContractType;
 }
 
 const PositionControlPanel: FC<IPositionControlPanel> = ({
+  positionId,
+  strategy,
+  token,
   onClosePosition,
 }) => {
-  // const { tokens } = TokenList;
   // const [controlType, setControlType] = useState<boolean>(false);
-  // const [token, setToken] = useState<TokenDetails>(tokens[0]);
-  // const [tokenInputValue, setTokenInputValue] = useState('');
-  // const [buttonText, setButtonText] = useState('Top up');
+  const { account } = useEthers();
+  const [topupMaxPercent, setTopupMaxPercent] = useState<string>('1');
+  const tokenBalance = useTokenBalance(token.address, account);
+  const [tokenInputValue, setTokenInputValue] = useState('');
+  const { editPosition, isLoading } = useEditPosition(strategy);
+
+  const handleTopup = () => {
+    editPosition(positionId, parseUnits(tokenInputValue, token.decimals));
+  };
 
   return (
     <div tw="flex flex-col w-full mb-8">
@@ -40,32 +57,52 @@ const PositionControlPanel: FC<IPositionControlPanel> = ({
           marks={{ 50: 'Withdraw', 150: 'Topup' }}
         />
       </div> */}
-      {/* <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
-        <InfoItem label="Liquidation price" value="3000 ETH/USDC" />
-        <TabsSwitch
-          activeIndex={controlType ? 'topup' : 'withdraw'}
-          onChange={(value: string) => setControlType(value === 'topup')}
-          items={[
-            {
-              title: 'Top up',
-              value: 'topup',
-            },
-            {
-              title: 'Withdraw',
-              value: 'withdraw',
-            },
-          ]}
-        />
-        <TokenInputField
-          label="Top up"
-          availableTokens={tokens}
+      <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2 mb-3">
+        <InputFieldMax
+          label="Margin"
+          placeholder="0"
+          noMax
           value={tokenInputValue}
-          setValue={setTokenInputValue}
           token={token}
-          onTokenChange={(value) => setToken(value)}
+          stateChanger={setTokenInputValue}
+          onChange={(value) => {
+            setTokenInputValue(value);
+          }}
+          onInput={() => setTopupMaxPercent('1')}
+          renderRight={
+            <Txt.InputText tw="text-font-100">{token.symbol}</Txt.InputText>
+          }
         />
-        <Button text={buttonText} full action bold />
-      </div> */}
+        <TabsSwitch
+          activeIndex={topupMaxPercent}
+          onChange={(value: string) => {
+            setTopupMaxPercent(value);
+            if (tokenBalance) {
+              setTokenInputValue(
+                Number(
+                  formatUnits(
+                    tokenBalance.mul(Number(value)).div(100),
+                    token.decimals
+                  )
+                ).toString()
+              );
+            }
+          }}
+          items={[...Array(4)].map((_, idx) => ({
+            title: `${(idx + 1) * 25}%`,
+            value: `${(idx + 1) * 25}`,
+          }))}
+          theme="secondary"
+        />
+        <Button
+          text="Top up"
+          full
+          action
+          bold
+          onClick={handleTopup}
+          isLoading={isLoading}
+        />
+      </div>
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
         {/* <InfoItem label="Position Value" value="3000 USDC" /> */}
         <Button
