@@ -35,7 +35,9 @@ const PositionControlPanel: FC<IPositionControlPanel> = ({
   const { editPosition, isLoading } = useEditPosition(strategy);
 
   const handleTopup = () => {
-    editPosition(positionId, parseUnits(tokenInputValue, token.decimals));
+    editPosition(positionId, parseUnits(tokenInputValue, token.decimals), {
+      gasLimit: 2_000_000,
+    });
   };
 
   return (
