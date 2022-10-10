@@ -17,7 +17,11 @@ import { getStrategyByType, getTokenByAddress } from '@/global/utils';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import Page from '@/components/based/Page';
-import { PositionOpenType, StrategyContractType } from '@/global/types';
+import {
+  ClosedPositionType,
+  PositionOpenType,
+  StrategyContractType,
+} from '@/global/types';
 import { STRATEGIES } from '@/global/constants';
 
 export default function DashboardPage() {
@@ -60,17 +64,24 @@ export default function DashboardPage() {
   const filteredPositions = useMemo(() => {
     if (!openedPositions || !closedPositions || !liquidatedPositions)
       return null;
+    const closedIdPositions = closedPositions.map((pos) => pos.id);
     switch (activeTab) {
       case 'active':
         return openedPositions.filter(
           (position) =>
-            !closedPositions.includes(position.id) &&
+            !closedIdPositions.includes(position.id) &&
             !liquidatedPositions.includes(position.id)
         );
       case 'closed':
-        return openedPositions.filter((position) =>
-          closedPositions.includes(position.id)
-        );
+        return openedPositions.filter((position, idx) => {
+          const closedIdx = closedIdPositions.indexOf(position.id);
+          const isIncluded = closedIdx !== -1;
+          if (isIncluded) {
+            (openedPositions[idx] as ClosedPositionType).amountOut =
+              closedPositions[closedIdx].amountOut;
+          }
+          return isIncluded;
+        });
       case 'liquidated':
         return openedPositions.filter((position) =>
           liquidatedPositions.includes(position.id)
@@ -126,8 +137,20 @@ export default function DashboardPage() {
           { id: 'token_pair', content: 'Assets' },
           { id: 'position', content: 'Strategy' },
           { id: 'collateral', content: 'Collateral' },
-          { id: 'profit', content: 'Performance' },
-        ].concat(activeTab === 'active' ? [{ id: 'action', content: '' }] : [])}
+        ]
+          .concat(
+            activeTab === 'closed'
+              ? [{ id: 'amount_out', content: 'AmoutOut' }]
+              : []
+          )
+          .concat(
+            activeTab === 'active'
+              ? [{ id: 'profit', content: 'Performance' }]
+              : []
+          )
+          .concat(
+            activeTab === 'active' ? [{ id: 'action', content: '' }] : []
+          )}
         data={
           displayedPositions?.map((position) => {
             const collateralTokenSymbol = getTokenByAddress(
@@ -155,6 +178,7 @@ export default function DashboardPage() {
               position_info: JSON.stringify(position),
               position_status: activeTab,
               collateral: null,
+              amount_out: (position as ClosedPositionType).amountOut,
               profit: null,
               action: (
                 <CloseButton

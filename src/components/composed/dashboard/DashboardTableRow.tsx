@@ -68,6 +68,12 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
                   <Txt.Body2Regular>{positionValue}</Txt.Body2Regular>
                 </td>
               );
+            case 'amount_out':
+              return (
+                <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
+                  <Txt.Body2Regular>{row[headCell.id]}</Txt.Body2Regular>
+                </td>
+              );
             case 'collateral':
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
