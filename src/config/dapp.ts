@@ -1,4 +1,4 @@
-import { ChainId, Config, Goerli, Hardhat } from '@usedapp/core';
+import { ChainId, Config, Goerli, Hardhat, Mainnet } from '@usedapp/core';
 
 import { alchemyUrl, pollingIntervalProvider } from '@/global/utils';
 
@@ -29,4 +29,12 @@ export const DAPP_CONFIG: Config = {
   },
   pollingInterval: POLLING_INTERVAL,
   multicallVersion: 2,
+  multicallAddresses: {
+    [Goerli.chainId]: Goerli.multicall2Address ?? '',
+    ...(IS_HARDHAT_SET
+      ? {
+          [Hardhat.chainId]: Mainnet.multicall2Address ?? '',
+        }
+      : {}),
+  },
 };
