@@ -24,7 +24,8 @@ export function useClosedPositions(strategy: StrategyContractType) {
   if (!account) return [];
 
   return (
-    logs?.value?.map((log) => `${log.data.id.toString()}_${strategy.type}`) ||
-    []
+    logs?.value
+      ?.filter((log) => log.data.owner === account)
+      .map((log) => `${log.data.id.toString()}_${strategy.type}`) || []
   );
 }

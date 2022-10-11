@@ -1,11 +1,17 @@
-import { Goerli, TransactionStatus, useEthers } from '@usedapp/core';
+import { Goerli, Hardhat, TransactionStatus, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
+
+import { IS_HARDHAT_SET } from '@/config/dapp';
 
 export function useCheckValidChain() {
   const { chainId } = useEthers();
 
-  return !!chainId && chainId === Goerli.chainId;
+  return (
+    !!chainId &&
+    (chainId === Goerli.chainId ||
+      (IS_HARDHAT_SET && chainId === Hardhat.chainId))
+  );
 }
 
 export function useHandleTxStatus(
