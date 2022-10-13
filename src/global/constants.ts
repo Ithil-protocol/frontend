@@ -14,7 +14,8 @@ import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.
 import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
 import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
 
-import { ContractType, StrategyContractType } from './types';
+import BalancerPools from './pools.json';
+import { ContractType, StrategyContractType, TokenDetails } from './types';
 
 const abi = [
   'function balanceOf(address owner) external view returns (uint256)',
@@ -35,6 +36,13 @@ export const MOCKS: { [key: string]: ContractType } = {
 };
 
 export const { tokens: TOKEN_LIST } = TokenList;
+
+export const BALANCER_POOLS: TokenDetails[] = BalancerPools.map((pool) => ({
+  name: pool.lpToken.name,
+  symbol: `BAL-${pool.id}`,
+  decimals: 18,
+  address: pool.lpToken.id,
+}));
 
 export const CORE: { [key: string]: ContractType } = {
   Vault: {
@@ -97,21 +105,21 @@ export const TRADE_STRATEGIES = [
     url: '/trade/yearn-strategy',
   },
   {
+    id: 4,
+    title: 'Join the veBAL revolution on Balancer',
+    description: 'Balancer + Aura strategy',
+    apyMin: '10',
+    apyMax: '100x',
+    risk: 'Medium',
+    url: '/trade/balancer-aura-strategy',
+  },
+  {
     id: 3,
     title: 'Rest assured with Aave',
     description: 'Coming soon...',
     apyMin: '5',
     apyMax: '20x',
     risk: 'Low',
-    url: '',
-  },
-  {
-    id: 4,
-    title: 'Join the veBAL revolution on Balancer',
-    description: 'Coming soon...',
-    apyMin: '10',
-    apyMax: '100x',
-    risk: 'Medium',
     url: '',
   },
 ];

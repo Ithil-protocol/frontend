@@ -58,7 +58,7 @@ const TokenModal: FC<ITokenModal> = ({
         renderRight={<MagnifyingGlass tw="text-secondary" />}
       />
       <div tw="w-full height[1px] bg-primary-300 my-4"></div>
-      <div tw="w-full height[384px]">
+      <div tw="w-full height[384px] overflow-y-auto">
         {filteredTokenList.map((token) => {
           return (
             <div
@@ -70,7 +70,17 @@ const TokenModal: FC<ITokenModal> = ({
               onClick={() => token !== selectedToken && onSelect(token)}
             >
               <div tw="flex flex-row justify-start items-center p-0 my-2">
-                <img tw="w-8 h-8 mr-4" src={token.logoURI} alt="token image" />
+                {token.logoURI ? (
+                  <img
+                    tw="w-8 h-8 mr-4"
+                    src={token.logoURI}
+                    alt="token image"
+                  />
+                ) : (
+                  <div tw="w-6 h-6 bg-primary-400 rounded-full flex items-center justify-center mr-4">
+                    <Txt.Body2Bold>?</Txt.Body2Bold>
+                  </div>
+                )}
                 <div tw="flex flex-col justify-start">
                   <Txt.Body2Regular>{token.symbol}</Txt.Body2Regular>
                   <Txt.CaptionMedium>{token.name}</Txt.CaptionMedium>

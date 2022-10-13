@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "lpToken": {
+      "id": "0x072f14b85add63488ddad88f855fda4a99d6ac9b",
+      "name": "Balancer 50 SNX 50 WETH"
+    },
+    "totalStaked": "4823875872608017526734"
+  },
+  {
+    "id": "2",
+    "lpToken": {
+      "id": "0x0b09dea16768f0799065c475be02919503cb2a35",
+      "name": "Balancer 60 WETH 40 DAI"
+    },
+    "totalStaked": "12370538331167513612559"
+  },
+  {
+    "id": "6",
+    "lpToken": {
+      "id": "0x96646936b91d6b9d7d0c47c496afbf3d6ec7b6f8",
+      "name": "Balancer 50 USDC 50 WETH"
+    },
+    "totalStaked": "92514494914457946793836"
+  },
+  {
+    "id": "7",
+    "lpToken": {
+      "id": "0xa6f548df93de924d73be7d25dc02554c6bd66db5",
+      "name": "Balancer 50 WBTC 50 WETH"
+    },
+    "totalStaked": "532687832332536762321"
+  },
+  {
+    "id": "8",
+    "lpToken": {
+      "id": "0xbf96189eee9357a95c7719f4f5047f76bde804e5",
+      "name": "Balancer 80 LDO 20 WETH"
+    },
+    "totalStaked": "266624924752456011541806"
+  },
+  {
+    "id": "20",
+    "lpToken": {
+      "id": "0xcfca23ca9ca720b6e98e3eb9b6aa0ffc4a5c08b9",
+      "name": "50WETH-50AURA"
+    },
+    "totalStaked": "81765918050831041695476"
+  },
+  {
+    "id": "30",
+    "lpToken": {
+      "id": "0xc45d42f801105e861e86658648e3678ad7aa70f9",
+      "name": "50OHM-25DAI-25WETH"
+    },
+    "totalStaked": "168894951924340683769363"
+  },
+  {
+    "id": "38",
+    "lpToken": {
+      "id": "0x1b65fe4881800b91d4277ba738b567cbb200a60d",
+      "name": "80TEMPLE-20DAI"
+    },
+    "totalStaked": "12570076587726148331180996"
+  },
+  {
+    "id": "46",
+    "lpToken": {
+      "id": "0xa7ff759dbef9f3efdd1d59beee44b966acafe214",
+      "name": "USDC-PAL"
+    },
+    "totalStaked": "489533720136076633133670"
+  }
+]
