@@ -51,7 +51,7 @@ const PoolModal: FC<IPoolModal> = ({
   return (
     <Modal tw="bg-secondary width[600px]" open={open} onClose={onClose}>
       <div tw="flex flex-row justify-center items-center w-full">
-        <Txt.Heading2 tw="self-end">Select a token</Txt.Heading2>
+        <Txt.Heading2 tw="self-end">Select a pool</Txt.Heading2>
       </div>
       <InputField
         value={search}
