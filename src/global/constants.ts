@@ -15,7 +15,12 @@ import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.
 import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
 
 import BalancerPools from './pools.json';
-import { ContractType, StrategyContractType, TokenDetails } from './types';
+import {
+  ContractType,
+  PoolDetails,
+  StrategyContractType,
+  TokenDetails,
+} from './types';
 
 const abi = [
   'function balanceOf(address owner) external view returns (uint256)',
@@ -37,11 +42,11 @@ export const MOCKS: { [key: string]: ContractType } = {
 
 export const { tokens: TOKEN_LIST } = TokenList;
 
-export const BALANCER_POOLS: TokenDetails[] = BalancerPools.map((pool) => ({
+export const BALANCER_POOLS: PoolDetails[] = BalancerPools.map((pool) => ({
   name: pool.lpToken.name,
-  symbol: `BAL-${pool.id}`,
   decimals: 18,
   address: pool.lpToken.id,
+  tokens: [TOKEN_LIST[0], TOKEN_LIST[4]],
 }));
 
 export const CORE: { [key: string]: ContractType } = {

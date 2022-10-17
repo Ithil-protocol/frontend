@@ -10,7 +10,7 @@ import { formatUnits } from '@ethersproject/units';
 import { toast } from 'react-toastify';
 import Skeleton from 'react-loading-skeleton';
 
-import { TokenDetails } from '@/global/types';
+import { PoolDetails, TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
 import SliderBar from '@/components/based/Slidebar';
 import InputField from '@/components/based/InputField';
@@ -31,11 +31,17 @@ import {
 } from '@/global/constants';
 import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
 import TabsSwitch from '@/components/composed/trade/TabsSwitch';
+import PoolSelect from '@/components/composed/trade/PoolSelect';
 
 export default function BalancerAuraStrategyPage() {
   const { account } = useEthers();
 
-  const [spentToken, setSpentToken] = useState<TokenDetails>(BALANCER_POOLS[0]);
+  const [selectedPool, setSelectedPool] = useState<PoolDetails>(
+    BALANCER_POOLS[0]
+  );
+  const [spentToken, setSpentToken] = useState<TokenDetails>(
+    selectedPool.tokens[0]
+  );
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
   const [leverage, setLeverage] = useState<number>(1);
@@ -50,7 +56,7 @@ export default function BalancerAuraStrategyPage() {
     useState<boolean>(false);
 
   const tokenBalance = useTokenBalance(spentToken.address, account);
-  const obtainedTokenAddress = spentToken.address;
+  const obtainedTokenAddress = selectedPool.address;
 
   const slippageValue = useMemo(() => {
     return (100 - Number(slippagePercent)) / 100;
@@ -221,11 +227,16 @@ export default function BalancerAuraStrategyPage() {
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
         <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
           <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
+            <PoolSelect
+              pool={selectedPool}
+              availablePools={BALANCER_POOLS}
+              onPoolChange={(pool) => setSelectedPool(pool)}
+            />
             <div tw="flex w-full justify-between items-center" id="margin">
               <TokenInputField
                 label="Margin"
                 noMax
-                availableTokens={BALANCER_POOLS}
+                availableTokens={selectedPool.tokens}
                 value={marginAmount}
                 setValue={setMarginAmount}
                 stateChanger={setMarginAmount}
