@@ -42,9 +42,9 @@ const PoolModal: FC<IPoolModal> = ({
 
     const val = value.trim().toLowerCase();
     setFilteredPoolList(
-      availablePools
-        .filter(({ name }) => name.trim().includes(val.toUpperCase()))
-        .slice(0, 6)
+      availablePools.filter(({ name }) =>
+        name.trim().includes(val.toUpperCase())
+      )
     );
   };
 
