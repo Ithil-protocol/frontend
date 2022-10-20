@@ -11,8 +11,9 @@ import {
 } from '@/global/types';
 import { formatAmount } from '@/global/utils';
 import { usePositions } from '@/hooks/usePositions';
-import { STRATEGIES } from '@/global/constants';
+import { STRATEGIES } from '@/global/ithil';
 import usePositionDetails from '@/hooks/usePositionDetails';
+import { useChainId } from '@/hooks';
 
 type IDashboardTableRow = ITableRow;
 
@@ -22,14 +23,15 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
   hoverable,
   onClick,
 }) => {
+  const chainId = useChainId();
   const position = JSON.parse(
     row['position_info'] as string
   ) as OpenedPositionType;
   const status: PositionOpenType = row['position_status'] as PositionOpenType;
   const strategy: StrategyContractType =
     position.type === 'margin'
-      ? STRATEGIES.MarginTradingStrategy
-      : STRATEGIES.YearnStrategy;
+      ? STRATEGIES[chainId].MarginTradingStrategy
+      : STRATEGIES[chainId].YearnStrategy;
 
   const activePosition = usePositions(Number(position.id), strategy);
 

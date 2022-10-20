@@ -1,12 +1,13 @@
-import { ChainId, Config, Goerli, Hardhat, Mainnet } from '@usedapp/core';
+import { Config, Goerli, Localhost, Mainnet } from '@usedapp/core';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
 
 import { alchemyUrl, pollingIntervalProvider } from '@/global/utils';
 
 export const POLLING_INTERVAL = 10_000;
 
-export const IS_HARDHAT_SET =
+export const IS_LOCALHOST_SET =
   process.env.NODE_ENV === 'development' &&
-  process.env.REACT_APP_HARDHAT_ENV === 'true';
+  process.env.REACT_APP_LOCALHOST_ENV === 'true';
 
 const defaulUrls = {
   [Goerli.chainId]: pollingIntervalProvider(
@@ -16,25 +17,38 @@ const defaulUrls = {
 };
 
 export const DAPP_CONFIG: Config = {
-  readOnlyChainId: ChainId.Goerli,
-  networks: [Goerli].concat(IS_HARDHAT_SET ? [Hardhat] : []),
+  readOnlyChainId: Mainnet.chainId,
+  networks: [Goerli].concat(
+    IS_LOCALHOST_SET
+      ? [
+          {
+            ...Localhost,
+            multicallAddress: Mainnet.multicallAddress,
+            multicall2Address: Mainnet.multicall2Address,
+            rpcUrl:
+              process.env.REACT_APP_LOCALHOST_RPC ?? 'http://localhost:8545',
+          },
+        ]
+      : []
+  ),
   readOnlyUrls: {
     ...defaulUrls,
-    ...(IS_HARDHAT_SET
+    ...(IS_LOCALHOST_SET
       ? {
-          [Hardhat.chainId]:
-            process.env.REACT_APP_HARDHAT_RPC ?? 'http://localhost:8545',
+          [Localhost.chainId]: new StaticJsonRpcProvider(
+            process.env.REACT_APP_LOCALHOST_RPC ?? 'http://localhost:8545',
+            {
+              name: 'Localhost',
+              chainId: 1337,
+            }
+          ),
         }
       : {}),
   },
   pollingInterval: POLLING_INTERVAL,
-  multicallVersion: 2,
+  multicallVersion: 1,
   multicallAddresses: {
-    [Goerli.chainId]: Goerli.multicall2Address ?? '',
-    ...(IS_HARDHAT_SET
-      ? {
-          [Hardhat.chainId]: Mainnet.multicall2Address ?? '',
-        }
-      : {}),
+    [Goerli.chainId]: Goerli.multicallAddress,
+    [Localhost.chainId]: Mainnet.multicallAddress,
   },
 };

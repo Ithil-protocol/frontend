@@ -24,17 +24,16 @@ import { useAllowance, useApprove } from '@/hooks/useToken';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
-import {
-  STRATEGIES,
-  DEFAULT_DEADLINE,
-  BALANCER_POOLS,
-} from '@/global/constants';
+import { DEFAULT_DEADLINE } from '@/global/constants';
+import { STRATEGIES, BALANCER_POOLS } from '@/global/ithil';
 import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
 import TabsSwitch from '@/components/composed/trade/TabsSwitch';
 import PoolSelect from '@/components/composed/trade/PoolSelect';
+import { useChainId } from '@/hooks';
 
 export default function BalancerAuraStrategyPage() {
   const { account } = useEthers();
+  const chainId = useChainId();
 
   const [selectedPool, setSelectedPool] = useState<PoolDetails>(
     BALANCER_POOLS[0]
@@ -49,7 +48,7 @@ export default function BalancerAuraStrategyPage() {
   const [baseApy, setBaseApy] = useState<number>(0);
 
   const [slippagePercent, setSlippagePercent] = useState<string>(
-    STRATEGIES.YearnStrategy.defaultSlippage
+    STRATEGIES[chainId].YearnStrategy.defaultSlippage
   );
   const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] =
@@ -76,7 +75,7 @@ export default function BalancerAuraStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
-    STRATEGIES.YearnStrategy
+    STRATEGIES[chainId].YearnStrategy
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -95,13 +94,13 @@ export default function BalancerAuraStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    STRATEGIES.YearnStrategy,
+    STRATEGIES[chainId].YearnStrategy,
     marginAmountValue
   );
 
   const allowance = useAllowance(
     spentToken.address,
-    STRATEGIES.YearnStrategy.address
+    STRATEGIES[chainId].YearnStrategy.address
   );
 
   const { isLoading: isLoadingApprove, approve } = useApprove(
@@ -109,7 +108,7 @@ export default function BalancerAuraStrategyPage() {
   );
 
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
-    STRATEGIES.YearnStrategy
+    STRATEGIES[chainId].YearnStrategy
   );
 
   const borrowIR = useBorrowInterestRate(
@@ -118,13 +117,13 @@ export default function BalancerAuraStrategyPage() {
     marginAmountValue,
     borrowed,
     minObtained || BigNumber(0),
-    STRATEGIES.YearnStrategy,
+    STRATEGIES[chainId].YearnStrategy,
     true
   );
 
   const borrowInterestPercent = useMemo(() => {
     return borrowIR.dividedBy(100);
-  }, [borrowIR, leverage]);
+  }, [borrowIR]);
 
   const estimatedAPY = useMemo(() => {
     return leverage * (baseApy - borrowIR.dividedBy(100).toNumber());

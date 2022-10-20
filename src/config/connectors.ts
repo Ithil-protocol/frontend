@@ -1,13 +1,13 @@
-import { Goerli, Hardhat } from '@usedapp/core';
+import { Goerli, Localhost } from '@usedapp/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-import { IS_HARDHAT_SET } from './dapp';
+import { IS_LOCALHOST_SET } from './dapp';
 
 import { alchemyUrl } from '@/global/utils';
 
 const supportedChains = [Goerli.chainId].concat(
-  IS_HARDHAT_SET ? [Hardhat.chainId] : []
+  IS_LOCALHOST_SET ? [Localhost.chainId] : []
 );
 
 export const injected = new InjectedConnector({
@@ -21,10 +21,10 @@ const defaulUrls = {
 export const walletconnect = new WalletConnectConnector({
   rpc: {
     ...defaulUrls,
-    ...(IS_HARDHAT_SET
+    ...(IS_LOCALHOST_SET
       ? {
-          [Hardhat.chainId]:
-            process.env.REACT_APP_HARDHAT_RPC ?? 'http://localhost:8545',
+          [Localhost.chainId]:
+            process.env.REACT_APP_LOCALHOST_RPC ?? 'http://localhost:8545',
         }
       : {}),
   },

@@ -1,26 +1,5 @@
 import { BigNumber as BN } from '@ethersproject/bignumber';
 import { Interface } from '@ethersproject/abi';
-import Mocks from '@ithil-protocol/deployed/goerli/deployments/mocks.json';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
-import Vault from '@ithil-protocol/deployed/goerli/deployments/Vault.json';
-import Liquidator from '@ithil-protocol/deployed/goerli/deployments/Liquidator.json';
-import MTS from '@ithil-protocol/deployed/goerli/deployments/MarginTradingStrategy.json';
-import YS from '@ithil-protocol/deployed/goerli/deployments/YearnStrategy.json';
-import ES from '@ithil-protocol/deployed/goerli/deployments/EulerStrategy.json';
-import VaultABI from '@ithil-protocol/deployed/goerli/abi/Vault.json';
-import LiqudidatorABI from '@ithil-protocol/deployed/goerli/abi/Liquidator.json';
-import MarginTradingStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
-import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.json';
-import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
-import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
-
-import BalancerPools from './pools.json';
-import {
-  ContractType,
-  PoolDetails,
-  StrategyContractType,
-  TokenDetails,
-} from './types';
 
 const abi = [
   'function balanceOf(address owner) external view returns (uint256)',
@@ -33,55 +12,6 @@ const abi = [
 ];
 export const ERC20ABI = new Interface(abi);
 
-export const MOCKS: { [key: string]: ContractType } = {
-  MockYearnRegistry: {
-    address: Mocks.mocks.MockYearnRegistry,
-    abi: new Interface(MockYearnRegistryABI),
-  },
-};
-
-export const { tokens: TOKEN_LIST } = TokenList;
-
-export const BALANCER_POOLS: PoolDetails[] = BalancerPools.map((pool) => ({
-  name: pool.lpToken.name,
-  decimals: 18,
-  address: pool.lpToken.id,
-  tokens: [TOKEN_LIST[0], TOKEN_LIST[4]],
-}));
-
-export const CORE: { [key: string]: ContractType } = {
-  Vault: {
-    address: Vault.address,
-    abi: new Interface(VaultABI),
-  },
-  Liquidator: {
-    address: Liquidator.address,
-    abi: new Interface(LiqudidatorABI),
-  },
-};
-export const STRATEGIES: { [key: string]: StrategyContractType } = {
-  MarginTradingStrategy: {
-    address: MTS.address,
-    abi: new Interface(MarginTradingStrategyABI),
-    defaultSlippage: '0.1',
-    type: 'margin',
-    label: 'Margin Trading',
-  },
-  YearnStrategy: {
-    address: YS.address,
-    abi: new Interface(YearnStrategyABI),
-    defaultSlippage: '0.01',
-    type: 'yearn',
-    label: 'Yearn Strategy',
-  },
-  EulerStrategy: {
-    address: ES.address,
-    abi: new Interface(EulerStrategyABI),
-    defaultSlippage: '0.01',
-    type: 'euler',
-    label: 'Euler Strategy',
-  },
-};
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
@@ -167,9 +97,9 @@ export const POSITION_CHART_OPTIONS = {
 
 export const INIT_POSITION_VALUE = {
   id: '0',
-  owedToken: TOKEN_LIST[0].address,
-  heldToken: TOKEN_LIST[1].address,
-  collateralToken: TOKEN_LIST[0].address,
+  owedToken: '',
+  heldToken: '',
+  collateralToken: '',
   collateral: BN.from(0),
   principal: BN.from(0),
   allowance: BN.from(0),

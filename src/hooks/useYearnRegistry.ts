@@ -6,20 +6,21 @@ import {
   // useLogs,
 } from '@usedapp/core';
 
-import { useCheckValidChain } from './index';
+import { useChainId, useCheckValidChain } from './index';
 
-import { MOCKS } from '@/global/constants';
+import { MOCKS } from '@/global/ithil';
 
 export function useLatestVault(tokenAddress: string) {
+  const chainId = useChainId();
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        MOCKS.MockYearnRegistry && {
+        MOCKS[chainId].MockYearnRegistry && {
           contract: new Contract(
-            MOCKS.MockYearnRegistry.address,
-            MOCKS.MockYearnRegistry.abi
+            MOCKS[chainId].MockYearnRegistry.address,
+            MOCKS[chainId].MockYearnRegistry.abi
           ),
           method: 'latestVault',
           args: [tokenAddress],

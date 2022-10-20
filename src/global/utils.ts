@@ -2,7 +2,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
 import { DEFAULT_SUPPORTED_CHAINS, Goerli } from '@usedapp/core';
 
-import { STRATEGIES, TOKEN_LIST } from './constants';
+import { STRATEGIES, TOKEN_LIST } from './ithil';
 import { TokenDetails } from './types';
 
 export function infuraUrl(chainId: number) {
@@ -65,16 +65,16 @@ export function formatAmountToNumber(value: BigNumber | string, decimals = 18) {
   return new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals));
 }
 
-export function getTokenByAddress(tokenAddress: string) {
-  return TOKEN_LIST.find((token) => token.address === tokenAddress);
+export function getTokenByAddress(tokenAddress: string, chainId: number) {
+  return TOKEN_LIST[chainId].find((token) => token.address === tokenAddress);
 }
 
-export function getStrategyByType(type: string) {
-  const filtered = Object.keys(STRATEGIES).filter(
-    (id) => STRATEGIES[id].type === type
+export function getStrategyByType(type: string, chainId: number) {
+  const filtered = Object.keys(STRATEGIES[chainId]).filter(
+    (id) => STRATEGIES[chainId][id].type === type
   );
   if (!filtered.length) return undefined;
-  return STRATEGIES[filtered[0]];
+  return STRATEGIES[chainId][filtered[0]];
 }
 
 export async function importToken(token: TokenDetails) {

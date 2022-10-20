@@ -18,21 +18,26 @@ import Page from '@/components/based/Page';
 import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
-import { baseInterestRate, formatAmount, parseAmount } from '@/global/utils';
+import { formatAmount, parseAmount } from '@/global/utils';
 import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import { useAllowance, useApprove } from '@/hooks/useToken';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
-import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
+import { DEFAULT_DEADLINE } from '@/global/constants';
+import { STRATEGIES, TOKEN_LIST } from '@/global/ithil';
 import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
 import TabsSwitch from '@/components/composed/trade/TabsSwitch';
+import { useChainId } from '@/hooks';
 
 export default function YearnStrategyPage() {
   const { account } = useEthers();
+  const chainId = useChainId();
 
-  const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
+  const [spentToken, setSpentToken] = useState<TokenDetails>(
+    TOKEN_LIST[chainId][0]
+  );
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
   const [leverage, setLeverage] = useState<number>(1);
@@ -40,7 +45,7 @@ export default function YearnStrategyPage() {
   const [baseApy, setBaseApy] = useState<number>(0);
 
   const [slippagePercent, setSlippagePercent] = useState<string>(
-    STRATEGIES.YearnStrategy.defaultSlippage
+    STRATEGIES[chainId].YearnStrategy.defaultSlippage
   );
   const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] =
@@ -67,7 +72,7 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
-    STRATEGIES.YearnStrategy
+    STRATEGIES[chainId].YearnStrategy
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,13 +91,13 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    STRATEGIES.YearnStrategy,
+    STRATEGIES[chainId].YearnStrategy,
     marginAmountValue
   );
 
   const allowance = useAllowance(
     spentToken.address,
-    STRATEGIES.YearnStrategy.address
+    STRATEGIES[chainId].YearnStrategy.address
   );
 
   const { isLoading: isLoadingApprove, approve } = useApprove(
@@ -100,7 +105,7 @@ export default function YearnStrategyPage() {
   );
 
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
-    STRATEGIES.YearnStrategy
+    STRATEGIES[chainId].YearnStrategy
   );
 
   const borrowIR = useBorrowInterestRate(
@@ -109,13 +114,13 @@ export default function YearnStrategyPage() {
     marginAmountValue,
     borrowed,
     minObtained || BigNumber(0),
-    STRATEGIES.YearnStrategy,
+    STRATEGIES[chainId].YearnStrategy,
     true
   );
 
   const borrowInterestPercent = useMemo(() => {
     return borrowIR.dividedBy(100);
-  }, [borrowIR, leverage]);
+  }, [borrowIR]);
 
   const estimatedAPY = useMemo(() => {
     return leverage * (baseApy - borrowIR.dividedBy(100).toNumber());
@@ -222,7 +227,7 @@ export default function YearnStrategyPage() {
               <TokenInputField
                 label="Margin"
                 noMax
-                availableTokens={TOKEN_LIST}
+                availableTokens={TOKEN_LIST[chainId]}
                 value={marginAmount}
                 setValue={setMarginAmount}
                 stateChanger={setMarginAmount}

@@ -7,7 +7,8 @@ import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
 import InputField from '@/components/based/InputField';
 import { TokenDetails } from '@/global/types';
-import { TOKEN_LIST } from '@/global/constants';
+import { TOKEN_LIST } from '@/global/ithil';
+import { useChainId } from '@/hooks';
 
 interface ITokenModal {
   open: boolean;
@@ -24,9 +25,10 @@ const TokenModal: FC<ITokenModal> = ({
   onClose,
   onSelect,
 }) => {
+  const chainId = useChainId();
   const [search, setSearch] = useState('');
   const [filteredTokenList, setFilteredTokenList] = useState<TokenDetails[]>(
-    availableTokens ?? TOKEN_LIST
+    availableTokens ?? TOKEN_LIST[chainId]
   );
 
   useEffect(() => {
@@ -41,9 +43,9 @@ const TokenModal: FC<ITokenModal> = ({
 
     const val = value.trim().toLowerCase();
     setFilteredTokenList(
-      TOKEN_LIST.filter(({ symbol }) =>
+      TOKEN_LIST[chainId].filter(({ symbol }) =>
         symbol.trim().includes(val.toUpperCase())
-      ).slice(0, 6)
+      )
     );
   };
 

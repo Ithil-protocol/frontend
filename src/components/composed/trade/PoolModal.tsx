@@ -7,7 +7,7 @@ import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
 import InputField from '@/components/based/InputField';
 import { PoolDetails } from '@/global/types';
-import { BALANCER_POOLS } from '@/global/constants';
+import { BALANCER_POOLS } from '@/global/ithil';
 
 interface IPoolModal {
   open: boolean;

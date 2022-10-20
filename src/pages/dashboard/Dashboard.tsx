@@ -18,10 +18,12 @@ import ClosePositionModal from '@/components/composed/common/ClosePositionModal'
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import Page from '@/components/based/Page';
 import { PositionOpenType, StrategyContractType } from '@/global/types';
-import { STRATEGIES } from '@/global/constants';
+import { STRATEGIES } from '@/global/ithil';
+import { useChainId } from '@/hooks';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const chainId = useChainId();
   const [selectedId, setSelectedId] = useState<number>(-1);
   const [selectedStrategy, setSelectedStrategy] =
     useState<StrategyContractType>();
@@ -30,18 +32,22 @@ export default function DashboardPage() {
     useState(false);
 
   const openedMarginPositions = useOpenedPositions(
-    STRATEGIES.MarginTradingStrategy
+    STRATEGIES[chainId].MarginTradingStrategy
   );
-  const openedYearnPositions = useOpenedPositions(STRATEGIES.YearnStrategy);
+  const openedYearnPositions = useOpenedPositions(
+    STRATEGIES[chainId].YearnStrategy
+  );
   const closedMarginPositions = useClosedPositions(
-    STRATEGIES.MarginTradingStrategy
+    STRATEGIES[chainId].MarginTradingStrategy
   );
-  const closedYearnPositions = useClosedPositions(STRATEGIES.YearnStrategy);
+  const closedYearnPositions = useClosedPositions(
+    STRATEGIES[chainId].YearnStrategy
+  );
   const liquidatedMarginPositions = useLiquidatedPositions(
-    STRATEGIES.MarginTradingStrategy
+    STRATEGIES[chainId].MarginTradingStrategy
   );
   const liquidatedYearnPositions = useLiquidatedPositions(
-    STRATEGIES.YearnStrategy
+    STRATEGIES[chainId].YearnStrategy
   );
 
   const openedPositions = useMemo(
@@ -131,18 +137,20 @@ export default function DashboardPage() {
         data={
           displayedPositions?.map((position) => {
             const collateralTokenSymbol = getTokenByAddress(
-              position.collateralToken
+              position.collateralToken,
+              chainId
             )?.symbol;
             const investmentTokenSymbol =
               position.type === 'margin'
                 ? getTokenByAddress(
                     position.collateralToken == position.heldToken
                       ? position.owedToken
-                      : position.heldToken
+                      : position.heldToken,
+                    chainId
                   )?.symbol
                 : `y${collateralTokenSymbol}`;
             const positionId = position.id.split('_')[0];
-            const strategy = getStrategyByType(position.type);
+            const strategy = getStrategyByType(position.type, chainId);
 
             return {
               token_pair: (

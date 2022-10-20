@@ -17,12 +17,14 @@ import PositionControlPanel from '@/components/composed/dashboard/PositionContro
 import { usePositions } from '@/hooks/usePositions';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import { getStrategyByType, getTokenByAddress } from '@/global/utils';
-import { STRATEGIES } from '@/global/constants';
+import { STRATEGIES } from '@/global/ithil';
 import { useTheme } from '@/state/application/hooks';
+import { useChainId } from '@/hooks';
 
 export default function PositionDetails() {
   const theme = useTheme();
   const navigate = useNavigate();
+  const chainId = useChainId();
   const [searchParams] = useSearchParams();
 
   const positionId = useMemo(
@@ -34,8 +36,8 @@ export default function PositionDetails() {
     [searchParams]
   );
   const selectedStrategy =
-    getStrategyByType(strategyType || 'margin') ||
-    STRATEGIES.MarginTradingStrategy;
+    getStrategyByType(strategyType || 'margin', chainId) ||
+    STRATEGIES[chainId].MarginTradingStrategy;
   const positionDetails = usePositions(Number(positionId), selectedStrategy);
 
   const [closePositionModalOpened, setClosePositionModalOpened] =
@@ -43,14 +45,14 @@ export default function PositionDetails() {
 
   const spentToken = useMemo(() => {
     if (positionDetails?.owedToken) {
-      return getTokenByAddress(positionDetails.owedToken);
+      return getTokenByAddress(positionDetails.owedToken, chainId);
     }
     return null;
-  }, [positionDetails]);
+  }, [chainId, positionDetails.owedToken]);
   const obtainedToken = useMemo(() => {
     if (positionDetails?.heldToken) {
       return (
-        getTokenByAddress(positionDetails.heldToken) ||
+        getTokenByAddress(positionDetails.heldToken, chainId) ||
         (spentToken && {
           name: `Yearn ${spentToken.name}`,
           address: positionDetails.heldToken,
@@ -61,13 +63,13 @@ export default function PositionDetails() {
       );
     }
     return null;
-  }, [positionDetails, spentToken]);
+  }, [chainId, positionDetails.heldToken, spentToken]);
   const collateralToken = useMemo(() => {
     if (positionDetails?.collateralToken) {
-      return getTokenByAddress(positionDetails.collateralToken);
+      return getTokenByAddress(positionDetails.collateralToken, chainId);
     }
     return null;
-  }, [positionDetails]);
+  }, [chainId, positionDetails.collateralToken]);
   const investmentToken =
     collateralToken?.address == obtainedToken?.address
       ? spentToken
