@@ -46,9 +46,9 @@ export const DAPP_CONFIG: Config = {
       : {}),
   },
   pollingInterval: POLLING_INTERVAL,
-  multicallVersion: 1,
+  multicallVersion: 2,
   multicallAddresses: {
-    [Goerli.chainId]: Goerli.multicallAddress,
-    [Localhost.chainId]: Mainnet.multicallAddress,
+    [Goerli.chainId]: Goerli.multicall2Address ?? '',
+    [Localhost.chainId]: Mainnet.multicall2Address ?? '',
   },
 };

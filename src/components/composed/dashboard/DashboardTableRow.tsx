@@ -9,9 +9,8 @@ import {
   PositionOpenType,
   StrategyContractType,
 } from '@/global/types';
-import { formatAmount } from '@/global/utils';
+import { formatAmount, getStrategyByType } from '@/global/utils';
 import { usePositions } from '@/hooks/usePositions';
-import { STRATEGIES } from '@/global/ithil';
 import usePositionDetails from '@/hooks/usePositionDetails';
 import { useChainId } from '@/hooks';
 
@@ -28,10 +27,10 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
     row['position_info'] as string
   ) as OpenedPositionType;
   const status: PositionOpenType = row['position_status'] as PositionOpenType;
-  const strategy: StrategyContractType =
-    position.type === 'margin'
-      ? STRATEGIES[chainId].MarginTradingStrategy
-      : STRATEGIES[chainId].YearnStrategy;
+  const strategy: StrategyContractType | undefined = getStrategyByType(
+    position.type,
+    chainId
+  );
 
   const activePosition = usePositions(Number(position.id), strategy);
 

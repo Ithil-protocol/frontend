@@ -12,7 +12,7 @@ import { formatAmount, getTokenByAddress } from '@/global/utils';
 
 export default function usePositionDetails(
   details: OpenedPositionType,
-  strategy: StrategyContractType
+  strategy?: StrategyContractType
 ) {
   const chainId = useChainId();
   const principalValue = useMemo(
@@ -35,13 +35,13 @@ export default function usePositionDetails(
     () =>
       getTokenByAddress(details.heldToken, chainId) ||
       (owedToken && {
-        name: `${strategy.type} ${owedToken.name}`,
+        name: `${strategy?.type} ${owedToken.name}`,
         address: details.heldToken,
         symbol: `y${owedToken.symbol}`,
         decimals: owedToken.decimals,
         logoURI: owedToken.logoURI,
       }),
-    [chainId, details.heldToken, owedToken, strategy.type]
+    [chainId, details.heldToken, owedToken, strategy?.type]
   );
   const collateralToken = useMemo(
     () => getTokenByAddress(details.collateralToken, chainId),
@@ -87,8 +87,8 @@ export default function usePositionDetails(
   ]);
 
   const positionValue = useMemo(() => {
-    return `${strategy.label} ${
-      strategy.type === 'margin' ? `${longShortValue}` : ''
+    return `${strategy?.label} ${
+      strategy?.type === 'margin' ? `${longShortValue}` : ''
     }`;
   }, [strategy, longShortValue, tokenPairValue]);
 

@@ -9,14 +9,16 @@ import { StrategyContractType } from '@/global/types';
 export function useComputePairRiskFactor(
   srcToken: string,
   destToken: string,
-  strategy: StrategyContractType
+  strategy?: StrategyContractType
 ) {
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        strategy.address && {
+        srcToken &&
+        destToken &&
+        strategy && {
           contract: new Contract(strategy.address, strategy.abi),
           method: 'computePairRiskFactor',
           args: [srcToken, destToken],

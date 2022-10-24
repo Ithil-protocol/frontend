@@ -10,16 +10,13 @@ import {
   TokenPair,
   CloseButton,
 } from '@/components/composed/dashboard/TableCell';
-import { useLiquidatedPositions } from '@/hooks/useLiquidatedPositions';
-import { useOpenedPositions } from '@/hooks/useOpenedPositions';
-import { useClosedPositions } from '@/hooks/useClosedPositions';
 import { getStrategyByType, getTokenByAddress } from '@/global/utils';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import Page from '@/components/based/Page';
 import { PositionOpenType, StrategyContractType } from '@/global/types';
-import { STRATEGIES } from '@/global/ithil';
 import { useChainId } from '@/hooks';
+import { useFilterdPositions } from '@/hooks/useFilteredPositions';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -31,58 +28,7 @@ export default function DashboardPage() {
   const [closePositionModalOpened, setClosePositionModalOpened] =
     useState(false);
 
-  const openedMarginPositions = useOpenedPositions(
-    STRATEGIES[chainId].MarginTradingStrategy
-  );
-  const openedYearnPositions = useOpenedPositions(
-    STRATEGIES[chainId].YearnStrategy
-  );
-  const closedMarginPositions = useClosedPositions(
-    STRATEGIES[chainId].MarginTradingStrategy
-  );
-  const closedYearnPositions = useClosedPositions(
-    STRATEGIES[chainId].YearnStrategy
-  );
-  const liquidatedMarginPositions = useLiquidatedPositions(
-    STRATEGIES[chainId].MarginTradingStrategy
-  );
-  const liquidatedYearnPositions = useLiquidatedPositions(
-    STRATEGIES[chainId].YearnStrategy
-  );
-
-  const openedPositions = useMemo(
-    () => [...openedMarginPositions, ...openedYearnPositions],
-    [openedMarginPositions, openedYearnPositions]
-  );
-  const closedPositions = useMemo(
-    () => [...closedMarginPositions, ...closedYearnPositions],
-    [closedMarginPositions, closedYearnPositions]
-  );
-  const liquidatedPositions = useMemo(
-    () => [...liquidatedMarginPositions, ...liquidatedYearnPositions],
-    [liquidatedMarginPositions, liquidatedYearnPositions]
-  );
-
-  const filteredPositions = useMemo(() => {
-    if (!openedPositions || !closedPositions || !liquidatedPositions)
-      return null;
-    switch (activeTab) {
-      case 'active':
-        return openedPositions.filter(
-          (position) =>
-            !closedPositions.includes(position.id) &&
-            !liquidatedPositions.includes(position.id)
-        );
-      case 'closed':
-        return openedPositions.filter((position) =>
-          closedPositions.includes(position.id)
-        );
-      case 'liquidated':
-        return openedPositions.filter((position) =>
-          liquidatedPositions.includes(position.id)
-        );
-    }
-  }, [openedPositions, closedPositions, activeTab, liquidatedPositions]);
+  const filteredPositions = useFilterdPositions(activeTab);
 
   const displayedPositions = useMemo(() => {
     if (!filteredPositions) return null;

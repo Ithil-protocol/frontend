@@ -8,6 +8,7 @@ import {
   TokenDetails,
 } from './types';
 import BalancerPools from './pools.json';
+import YearnRegisteryABI from './YearnRegistery.json';
 
 const getIthilMocks = (chainName: string) => {
   try {
@@ -15,10 +16,28 @@ const getIthilMocks = (chainName: string) => {
   } catch (error) {
     return {
       mocks: {
-        MockKyberNetworkProxy: '0x9AAb3f75489902f3a48495025729a0AF77d4b11e',
+        MockKyberNetworkProxy: '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
         MockYearnRegistry: '0x50c1a2eA0a861A967D9d0FFE2AE4012c2E053804',
       },
     };
+  }
+};
+
+const getIthilBalancer = (chainName: string) => {
+  try {
+    return require(`@ithil-protocol/deployed/${chainName}/deployments/BalancerStrategy.json`);
+  } catch (error) {
+    return {
+      address: '0xae91699D7D7E767Ce55E6ac255AB8Fe54E147295',
+    };
+  }
+};
+
+const getIthilBalancerABI = (chainName: string) => {
+  try {
+    return require(`@ithil-protocol/deployed/${chainName}/abi/BalancerStrategy.json`);
+  } catch (error) {
+    return [];
   }
 };
 
@@ -31,12 +50,15 @@ const getIthilDeployed = (
   Liquidator: any;
   MTS: any;
   YS: any;
+  BS: any;
   ES: any;
   VaultABI: any;
   LiqudidatorABI: any;
   MarginTradingStrategyABI: any;
   YearnStrategyABI: any;
+  BalancerStrategyABI: any;
   EulerStrategyABI: any;
+  BaseStrategyABI: any;
   MockYearnRegistryABI: any;
 } => {
   return {
@@ -46,12 +68,15 @@ const getIthilDeployed = (
     Liquidator: require(`@ithil-protocol/deployed/${chainName}/deployments/Liquidator.json`),
     MTS: require(`@ithil-protocol/deployed/${chainName}/deployments/MarginTradingStrategy.json`),
     YS: require(`@ithil-protocol/deployed/${chainName}/deployments/YearnStrategy.json`),
+    BS: getIthilBalancer(chainName),
     ES: require(`@ithil-protocol/deployed/${chainName}/deployments/EulerStrategy.json`),
     VaultABI: require(`@ithil-protocol/deployed/${chainName}/abi/Vault.json`),
     LiqudidatorABI: require(`@ithil-protocol/deployed/${chainName}/abi/Liquidator.json`),
     MarginTradingStrategyABI: require(`@ithil-protocol/deployed/${chainName}/abi/MarginTradingStrategy.json`),
     YearnStrategyABI: require(`@ithil-protocol/deployed/${chainName}/abi/YearnStrategy.json`),
+    BalancerStrategyABI: getIthilBalancerABI(chainName),
     EulerStrategyABI: require(`@ithil-protocol/deployed/${chainName}/abi/EulerStrategy.json`),
+    BaseStrategyABI: require(`@ithil-protocol/deployed/${chainName}/abi/BaseStrategy.json`),
     MockYearnRegistryABI: require(`@ithil-protocol/deployed/${chainName}/abi/MockYearnRegistry.json`),
   };
 };
@@ -73,7 +98,11 @@ export const MOCKS: {
     {
       MockYearnRegistry: {
         address: chain.deployed.Mocks.mocks.MockYearnRegistry,
-        abi: new Interface(chain.deployed.MockYearnRegistryABI),
+        abi: new Interface(
+          chain.id === 5
+            ? chain.deployed.MockYearnRegistryABI
+            : YearnRegisteryABI
+        ),
       },
     },
   ])
@@ -101,6 +130,7 @@ export const CORE: { [chainId: number]: { [key: string]: ContractType } } =
       },
     ])
   );
+
 export const STRATEGIES: {
   [chainId: string]: { [key: string]: StrategyContractType };
 } = getObjectFromArray(
@@ -121,6 +151,13 @@ export const STRATEGIES: {
         type: 'yearn',
         label: 'Yearn Strategy',
       },
+      BalancerStrategy: {
+        address: chain.deployed.BS.address,
+        abi: new Interface(chain.deployed.BalancerStrategyABI),
+        defaultSlippage: '0.01',
+        type: 'balancer',
+        label: 'Balancer Strategy',
+      },
       EulerStrategy: {
         address: chain.deployed.ES.address,
         abi: new Interface(chain.deployed.EulerStrategyABI),
@@ -132,9 +169,13 @@ export const STRATEGIES: {
   ])
 );
 
+export const BASE_STRATEGY_ABI = new Interface(
+  DEPLOYED_CHAINS[0].deployed.BaseStrategyABI
+);
+
 export const BALANCER_POOLS: PoolDetails[] = BalancerPools.map((pool) => ({
   name: pool.lpToken.name,
   decimals: 18,
   address: pool.lpToken.id,
-  tokens: [TOKEN_LIST[Goerli.chainId][0], TOKEN_LIST[Goerli.chainId][4]],
+  tokens: [TOKEN_LIST[Localhost.chainId][0], TOKEN_LIST[Localhost.chainId][4]],
 }));

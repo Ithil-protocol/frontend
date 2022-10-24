@@ -29,7 +29,7 @@ export function useOpenedPositions(strategy: StrategyContractType) {
         args: [null, account],
       },
     {
-      fromBlock: 0,
+      fromBlock: 15681755,
       toBlock: 'latest',
     }
   );

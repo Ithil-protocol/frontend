@@ -142,7 +142,7 @@ export default function YearnStrategyPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(STRATEGIES.YearnStrategy.address, MaxUint256);
+    approve(STRATEGIES[chainId].YearnStrategy.address, MaxUint256);
   };
 
   const handleOpenOrder = async () => {
@@ -172,7 +172,7 @@ export default function YearnStrategyPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder, { gasLimit: 700_000 });
+    openPosition(newOrder, { gasLimit: 30_000_000 });
   };
 
   const handleExecute = () => {
@@ -207,6 +207,10 @@ export default function YearnStrategyPage() {
   useEffect(() => {
     setLeverage(1);
   }, [maxLeverage]);
+
+  useEffect(() => {
+    setSpentToken(TOKEN_LIST[chainId][0]);
+  }, [chainId]);
 
   return (
     <Page

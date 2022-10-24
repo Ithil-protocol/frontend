@@ -48,7 +48,7 @@ export default function PositionDetails() {
       return getTokenByAddress(positionDetails.owedToken, chainId);
     }
     return null;
-  }, [chainId, positionDetails.owedToken]);
+  }, [chainId, positionDetails?.owedToken]);
   const obtainedToken = useMemo(() => {
     if (positionDetails?.heldToken) {
       return (
@@ -63,13 +63,13 @@ export default function PositionDetails() {
       );
     }
     return null;
-  }, [chainId, positionDetails.heldToken, spentToken]);
+  }, [chainId, positionDetails?.heldToken, spentToken]);
   const collateralToken = useMemo(() => {
     if (positionDetails?.collateralToken) {
       return getTokenByAddress(positionDetails.collateralToken, chainId);
     }
     return null;
-  }, [chainId, positionDetails.collateralToken]);
+  }, [chainId, positionDetails?.collateralToken]);
   const investmentToken =
     collateralToken?.address == obtainedToken?.address
       ? spentToken

@@ -48,7 +48,7 @@ export default function BalancerAuraStrategyPage() {
   const [baseApy, setBaseApy] = useState<number>(0);
 
   const [slippagePercent, setSlippagePercent] = useState<string>(
-    STRATEGIES[chainId].YearnStrategy.defaultSlippage
+    STRATEGIES[chainId].BalancerStrategy.defaultSlippage
   );
   const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] =
@@ -75,7 +75,7 @@ export default function BalancerAuraStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
-    STRATEGIES[chainId].YearnStrategy
+    STRATEGIES[chainId].BalancerStrategy
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -94,13 +94,13 @@ export default function BalancerAuraStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    STRATEGIES[chainId].YearnStrategy,
+    STRATEGIES[chainId].BalancerStrategy,
     marginAmountValue
   );
 
   const allowance = useAllowance(
     spentToken.address,
-    STRATEGIES[chainId].YearnStrategy.address
+    STRATEGIES[chainId].BalancerStrategy.address
   );
 
   const { isLoading: isLoadingApprove, approve } = useApprove(
@@ -108,7 +108,7 @@ export default function BalancerAuraStrategyPage() {
   );
 
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
-    STRATEGIES[chainId].YearnStrategy
+    STRATEGIES[chainId].BalancerStrategy
   );
 
   const borrowIR = useBorrowInterestRate(
@@ -117,7 +117,7 @@ export default function BalancerAuraStrategyPage() {
     marginAmountValue,
     borrowed,
     minObtained || BigNumber(0),
-    STRATEGIES[chainId].YearnStrategy,
+    STRATEGIES[chainId].BalancerStrategy,
     true
   );
 
@@ -145,7 +145,7 @@ export default function BalancerAuraStrategyPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(STRATEGIES.YearnStrategy.address, MaxUint256);
+    approve(STRATEGIES[chainId].BalancerStrategy.address, MaxUint256);
   };
 
   const handleOpenOrder = async () => {
@@ -175,7 +175,7 @@ export default function BalancerAuraStrategyPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder, { gasLimit: 700_000 });
+    openPosition(newOrder, { gasLimit: 30_000_000 });
   };
 
   const handleExecute = () => {

@@ -237,7 +237,7 @@ export default function MarginTradingPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder);
+    openPosition(newOrder, { gasLimit: 30_000_000 });
   };
 
   const quoteValueMargin = useQuoter(
