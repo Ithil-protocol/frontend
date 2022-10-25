@@ -26,7 +26,8 @@ export const TRADE_STRATEGIES = [
     description: 'Go long or short on any token pair via Kyber Network',
     apyMin: '0',
     apyMax: '∞x',
-    risk: 'High',
+    uRate: 15,
+    risk: 5,
     url: '/trade/margin-trading',
   },
   {
@@ -36,7 +37,8 @@ export const TRADE_STRATEGIES = [
       'Stake your favorite token on any Yearn and earn vault and multiply your APY',
     apyMin: '5',
     apyMax: '20x',
-    risk: 'Low',
+    uRate: 15,
+    risk: 2,
     url: '/trade/yearn-strategy',
   },
   {
@@ -54,7 +56,8 @@ export const TRADE_STRATEGIES = [
     description: 'Coming soon...',
     apyMin: '5',
     apyMax: '20x',
-    risk: 'Low',
+    uRate: 15,
+    risk: 2,
     url: '',
   },
 ];
