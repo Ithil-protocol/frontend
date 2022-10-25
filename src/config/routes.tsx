@@ -9,6 +9,7 @@ import YearnStrategyPage from '@/pages/trade/YearnStrategy';
 import PositionDetails from '@/pages/dashboard/PositionDetails';
 import FaucetsPage from '@/pages/faucets/Faucets';
 import VaultDetails from '@/pages/stake/VaultDetails';
+import EulerStrategyPage from '@/pages/trade/EulerStrategy';
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -27,6 +28,12 @@ const APP_ROUTES: RouteType[] = [
     path: '/trade/yearn-strategy',
     component: <YearnStrategyPage />,
     title: 'Yearn Strategy',
+    isNavLinked: false,
+  },
+  {
+    path: '/trade/euler-strategy',
+    component: <EulerStrategyPage />,
+    title: 'Euler Strategy',
     isNavLinked: false,
   },
   {
