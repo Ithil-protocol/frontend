@@ -9,6 +9,7 @@ import Button from '@/components/based/Button';
 import Txt from '@/components/based/Txt';
 import Dropdown from '@/components/based/Dropdown';
 import { ReactComponent as CurrencyEth } from '@/assets/images/currencyEthereum.svg';
+import { addTenderlyChain } from '@/global/utils';
 
 interface IMenuItem {
   Icon: any;
@@ -21,9 +22,13 @@ const MenuItem: FC<IMenuItem> = ({ Icon, label, network, onClick }) => {
   const { switchNetwork } = useEthers();
 
   const handleChangeNetwork = async () => {
-    switchNetwork(network.chainId).then(() => {
-      window.location.reload();
-    });
+    if (network.chainId === Localhost.chainId) {
+      addTenderlyChain();
+    } else {
+      switchNetwork(network.chainId).then(() => {
+        window.location.reload();
+      });
+    }
     onClick();
   };
 

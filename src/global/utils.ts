@@ -139,3 +139,40 @@ export function getExplorerTransactionLink(tx: string, chainId: number) {
       return tx;
   }
 }
+
+export async function addTenderlyChain() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x539' }],
+    });
+  } catch (switchError: any) {
+    // This error code indicates that the chain has not been added to MetaMask.
+    if (switchError.code === 4902) {
+      window.ethereum
+        .request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x539',
+              chainName: 'Tenderly(Localhost)',
+              nativeCurrency: {
+                name: 'Ethereum',
+                symbol: 'ETH',
+                decimals: 18,
+              },
+              rpcUrls: [
+                'https://rpc.tenderly.co/fork/261f0c8d-5e1d-4797-bfb6-389820b020a6',
+              ],
+            },
+          ],
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((error: Error) => {
+          console.log(error);
+        });
+    }
+  }
+}
