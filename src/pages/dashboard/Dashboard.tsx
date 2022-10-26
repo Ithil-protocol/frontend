@@ -78,8 +78,20 @@ export default function DashboardPage() {
           { id: 'token_pair', content: 'Assets' },
           { id: 'position', content: 'Strategy' },
           { id: 'collateral', content: 'Collateral' },
-          { id: 'profit', content: 'Performance' },
-        ].concat(activeTab === 'active' ? [{ id: 'action', content: '' }] : [])}
+        ]
+          .concat(
+            activeTab === 'closed'
+              ? [{ id: 'amount_out', content: 'AmoutOut' }]
+              : []
+          )
+          .concat(
+            activeTab === 'active'
+              ? [{ id: 'profit', content: 'Performance' }]
+              : []
+          )
+          .concat(
+            activeTab === 'active' ? [{ id: 'action', content: '' }] : []
+          )}
         data={
           displayedPositions?.map((position) => {
             const collateralTokenSymbol = getTokenByAddress(
@@ -109,6 +121,7 @@ export default function DashboardPage() {
               position_info: JSON.stringify(position),
               position_status: activeTab,
               collateral: null,
+              amount_out: (position as ClosedPositionType).amountOut,
               profit: null,
               action: (
                 <CloseButton

@@ -76,6 +76,7 @@ const VaultChart: FC<IVaultChart> = ({ vaultData, utilisationRate }) => {
   };
 
   const data = {
+    labels: [...Array(101)].map((_, idx) => idx),
     datasets: [
       {
         data: chartData,
@@ -85,7 +86,29 @@ const VaultChart: FC<IVaultChart> = ({ vaultData, utilisationRate }) => {
     ],
   };
 
+  const calcInterestRate = (utilization: number) => {
+    if (!vaultData) return;
+    const baseFee = BigNumber(vaultData.baseFee.toString());
+    const netLoans = BigNumber(vaultData.netLoans.toString());
+    const insuranceReserveBalance = BigNumber(
+      vaultData.insuranceReserveBalance.toString()
+    );
+    const calced = netLoans.minus(insuranceReserveBalance);
+    return Number(
+      BigNumber(utilization)
+        .multipliedBy(
+          (calced.isGreaterThan(0) ? calced : BigNumber(0))
+            .plus(1)
+            .dividedBy(netLoans)
+        )
+        .plus(baseFee)
+        .dividedBy(20000)
+        .toString()
+    );
+  };
+
   useEffect(() => {
+    setChartData([...Array(101)].map((_, idx) => calcInterestRate(idx)));
     /*
     if (vaultData && utilisationRate !== 0 && balance !== 0) {
       if (vaultData.insuranceReserveBalance > vaultData.netLoans) {
