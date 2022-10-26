@@ -2,15 +2,11 @@ import { Goerli, Localhost, TransactionStatus, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 
-import { IS_LOCALHOST_SET } from '@/config/dapp';
-
 export function useCheckValidChain() {
   const { chainId } = useEthers();
 
   return (
-    !!chainId &&
-    (chainId === Goerli.chainId ||
-      (IS_LOCALHOST_SET && chainId === Localhost.chainId))
+    !!chainId && (chainId === Goerli.chainId || chainId === Localhost.chainId)
   );
 }
 

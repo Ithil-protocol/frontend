@@ -9,7 +9,6 @@ import Button from '@/components/based/Button';
 import Txt from '@/components/based/Txt';
 import Dropdown from '@/components/based/Dropdown';
 import { ReactComponent as CurrencyEth } from '@/assets/images/currencyEthereum.svg';
-import { IS_LOCALHOST_SET } from '@/config/dapp';
 
 interface IMenuItem {
   Icon: any;
@@ -63,14 +62,12 @@ const NetworkMenu = () => {
             network={Goerli}
             onClick={() => setVisibility(false)}
           />
-          {IS_LOCALHOST_SET && (
-            <MenuItem
-              Icon={CurrencyEth}
-              label={Localhost.chainName}
-              network={Localhost}
-              onClick={() => setVisibility(false)}
-            />
-          )}
+          <MenuItem
+            Icon={CurrencyEth}
+            label={Localhost.chainName}
+            network={Localhost}
+            onClick={() => setVisibility(false)}
+          />
         </div>
       }
       visible={visible}

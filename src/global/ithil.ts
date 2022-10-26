@@ -177,5 +177,6 @@ export const BALANCER_POOLS: PoolDetails[] = BalancerPools.map((pool) => ({
   name: pool.lpToken.name,
   decimals: 18,
   address: pool.lpToken.id,
-  tokens: [TOKEN_LIST[Localhost.chainId][0], TOKEN_LIST[Localhost.chainId][4]],
-}));
+  isDisabled: pool.disabled,
+  tokens: pool.tokens.map((idx) => TOKEN_LIST[Localhost.chainId][idx]),
+})).filter((pool) => !pool.isDisabled);

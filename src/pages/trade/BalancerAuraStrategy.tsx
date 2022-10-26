@@ -211,6 +211,10 @@ export default function BalancerAuraStrategyPage() {
     setLeverage(1);
   }, [maxLeverage]);
 
+  useEffect(() => {
+    setSpentToken(selectedPool.tokens[0]);
+  }, [selectedPool]);
+
   return (
     <Page
       heading="Balancer+Aura Strategy"

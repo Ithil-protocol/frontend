@@ -26,6 +26,7 @@ export interface PoolDetails {
   decimals: number;
   address: string;
   tokens: TokenDetails[];
+  isDisabled: boolean;
   logoURI?: string | undefined;
 }
 

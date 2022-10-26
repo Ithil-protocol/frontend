@@ -19,6 +19,9 @@ export const DISCORD_URL = 'https://discord.gg/tEaGBcGdQC';
 
 export const YEARN_API_URL = 'https://api.yearn.finance/v1/chains/1/vaults/all';
 
+export const TENDERLY_RPC_API =
+  'https://rpc.tenderly.co/fork/261f0c8d-5e1d-4797-bfb6-389820b020a6';
+
 export const TRADE_STRATEGIES = [
   {
     id: 1,
