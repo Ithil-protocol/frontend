@@ -16,7 +16,11 @@ import PositionDetailsWidget, {
 import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
 import { usePositions } from '@/hooks/usePositions';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
-import { getStrategyByType, getTokenByAddress } from '@/global/utils';
+import {
+  getPoolNameByAddress,
+  getStrategyByType,
+  getTokenByAddress,
+} from '@/global/utils';
 import { STRATEGIES } from '@/global/ithil';
 import { useTheme } from '@/state/application/hooks';
 import { useChainId } from '@/hooks';
@@ -53,17 +57,25 @@ export default function PositionDetails() {
     if (positionDetails?.heldToken) {
       return (
         getTokenByAddress(positionDetails.heldToken, chainId) ||
-        (spentToken && {
-          name: `Yearn ${spentToken.name}`,
-          address: positionDetails.heldToken,
-          symbol: `y${spentToken.symbol}`,
-          decimals: spentToken.decimals,
-          logoURI: undefined,
-        })
+        (strategyType === 'yearn'
+          ? spentToken && {
+              name: `Yearn ${spentToken.name}`,
+              address: positionDetails.heldToken,
+              symbol: `y${spentToken.symbol}`,
+              decimals: spentToken.decimals,
+              logoURI: undefined,
+            }
+          : {
+              name: 'Balancer Pool',
+              address: positionDetails.heldToken,
+              symbol: getPoolNameByAddress(positionDetails.heldToken),
+              decimals: 18,
+              logoURI: undefined,
+            })
       );
     }
     return null;
-  }, [chainId, positionDetails?.heldToken, spentToken]);
+  }, [chainId, positionDetails?.heldToken, spentToken, strategyType]);
   const collateralToken = useMemo(() => {
     if (positionDetails?.collateralToken) {
       return getTokenByAddress(positionDetails.collateralToken, chainId);

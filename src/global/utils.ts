@@ -2,7 +2,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
 import { DEFAULT_SUPPORTED_CHAINS, Goerli } from '@usedapp/core';
 
-import { STRATEGIES, TOKEN_LIST } from './ithil';
+import { BALANCER_POOLS, STRATEGIES, TOKEN_LIST } from './ithil';
 import { TokenDetails } from './types';
 
 export function infuraUrl(chainId: number) {
@@ -114,6 +114,12 @@ export function baseInterestRate(
 
 export function shortenString(str: string) {
   return str.substring(0, 6) + '...' + str.substring(str.length - 4);
+}
+
+export function getPoolNameByAddress(address: string) {
+  return BALANCER_POOLS.filter(
+    (pool) => pool.address.toLocaleLowerCase() === address.toLocaleLowerCase()
+  )[0]?.name;
 }
 
 export function getExplorerAddressLink(address: string, chainId: number) {

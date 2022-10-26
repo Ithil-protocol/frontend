@@ -21,7 +21,7 @@ interface IVaultChart {
 
 const VaultChart: FC<IVaultChart> = ({ vaultData, utilisationRate }) => {
   const theme = useTheme();
-  const [chartData] = useState<any>([]);
+  const [chartData, setChartData] = useState<any>([]);
   const CHART_OPTIONS = {
     responsive: true,
     maintainAspectRatio: false,
@@ -124,6 +124,7 @@ const VaultChart: FC<IVaultChart> = ({ vaultData, utilisationRate }) => {
       }
     }
     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [utilisationRate, vaultData]);
 
   return (

@@ -76,12 +76,13 @@ export function useFilterdPositions(
       case 'active':
         return openedPositions.filter(
           (position) =>
-            !closedPositions.includes(position.id) &&
-            !liquidatedPositions.includes(position.id)
+            closedPositions.findIndex((cPos) => position.id === cPos.id) ===
+              -1 && !liquidatedPositions.includes(position.id)
         );
       case 'closed':
-        return openedPositions.filter((position) =>
-          closedPositions.includes(position.id)
+        return openedPositions.filter(
+          (position) =>
+            closedPositions.findIndex((cPos) => position.id === cPos.id) !== -1
         );
       case 'liquidated':
         return openedPositions.filter((position) =>

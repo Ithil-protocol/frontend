@@ -10,11 +10,19 @@ import {
   TokenPair,
   CloseButton,
 } from '@/components/composed/dashboard/TableCell';
-import { getStrategyByType, getTokenByAddress } from '@/global/utils';
+import {
+  getPoolNameByAddress,
+  getStrategyByType,
+  getTokenByAddress,
+} from '@/global/utils';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import Page from '@/components/based/Page';
-import { PositionOpenType, StrategyContractType } from '@/global/types';
+import {
+  ClosedPositionType,
+  PositionOpenType,
+  StrategyContractType,
+} from '@/global/types';
 import { useChainId } from '@/hooks';
 import { useFilterdPositions } from '@/hooks/useFilteredPositions';
 
@@ -106,6 +114,12 @@ export default function DashboardPage() {
                       : position.heldToken,
                     chainId
                   )?.symbol
+                : position.type === 'balancer'
+                ? getPoolNameByAddress(
+                    position.collateralToken == position.heldToken
+                      ? position.owedToken
+                      : position.heldToken
+                  )
                 : `y${collateralTokenSymbol}`;
             const positionId = position.id.split('_')[0];
             const strategy = getStrategyByType(position.type, chainId);
