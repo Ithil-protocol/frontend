@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import tw from 'twin.macro';
+import 'twin.macro';
 import React, { FC, ReactNode } from 'react';
 
 import Txt from '@/components/based/Txt';

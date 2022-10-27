@@ -2,7 +2,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from 'bignumber.js';
 import { DEFAULT_SUPPORTED_CHAINS, Goerli } from '@usedapp/core';
 
-import { STRATEGIES, TOKEN_LIST } from './constants';
+import { BALANCER_POOLS, STRATEGIES, TOKEN_LIST } from './ithil';
 import { TokenDetails } from './types';
 
 export function infuraUrl(chainId: number) {
@@ -65,16 +65,16 @@ export function formatAmountToNumber(value: BigNumber | string, decimals = 18) {
   return new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals));
 }
 
-export function getTokenByAddress(tokenAddress: string) {
-  return TOKEN_LIST.find((token) => token.address === tokenAddress);
+export function getTokenByAddress(tokenAddress: string, chainId: number) {
+  return TOKEN_LIST[chainId].find((token) => token.address === tokenAddress);
 }
 
-export function getStrategyByType(type: string) {
-  const filtered = Object.keys(STRATEGIES).filter(
-    (id) => STRATEGIES[id].type === type
+export function getStrategyByType(type: string, chainId: number) {
+  const filtered = Object.keys(STRATEGIES[chainId]).filter(
+    (id) => STRATEGIES[chainId][id].type === type
   );
   if (!filtered.length) return undefined;
-  return STRATEGIES[filtered[0]];
+  return STRATEGIES[chainId][filtered[0]];
 }
 
 export async function importToken(token: TokenDetails) {
@@ -116,6 +116,12 @@ export function shortenString(str: string) {
   return str.substring(0, 6) + '...' + str.substring(str.length - 4);
 }
 
+export function getPoolNameByAddress(address: string) {
+  return BALANCER_POOLS.filter(
+    (pool) => pool.address.toLocaleLowerCase() === address.toLocaleLowerCase()
+  )[0]?.name;
+}
+
 export function getExplorerAddressLink(address: string, chainId: number) {
   switch (chainId) {
     case Goerli.chainId:
@@ -131,5 +137,42 @@ export function getExplorerTransactionLink(tx: string, chainId: number) {
       return Goerli.getExplorerTransactionLink(tx);
     default:
       return tx;
+  }
+}
+
+export async function addTenderlyChain() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x539' }],
+    });
+  } catch (switchError: any) {
+    // This error code indicates that the chain has not been added to MetaMask.
+    if (switchError.code === 4902) {
+      window.ethereum
+        .request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x539',
+              chainName: 'Tenderly(Localhost)',
+              nativeCurrency: {
+                name: 'Ethereum',
+                symbol: 'ETH',
+                decimals: 18,
+              },
+              rpcUrls: [
+                'https://rpc.tenderly.co/fork/261f0c8d-5e1d-4797-bfb6-389820b020a6',
+              ],
+            },
+          ],
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((error: Error) => {
+          console.log(error);
+        });
+    }
   }
 }

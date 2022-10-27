@@ -11,7 +11,7 @@ import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useTotalSupply } from '@/hooks/useToken';
 import VaultChart from '@/components/composed/stake/VaultChart';
-import { useComputePairRiskFactor } from '@/hooks/useComputePairRiskFactor';
+import { useChainId } from '@/hooks';
 
 export interface IBanner {
   heading: string | number;
@@ -33,10 +33,11 @@ const Banner: FC<IBanner> = ({ heading, body }) => {
 
 export default function VaultDetails() {
   const navigate = useNavigate();
+  const chainId = useChainId();
   const [searchParams] = useSearchParams();
 
   const token = useMemo(() => searchParams.get('token') || '', [searchParams]);
-  const vaultToken = getTokenByAddress(token);
+  const vaultToken = getTokenByAddress(token, chainId);
   const vaultBalance = useBalance(token);
   const vaultData = useVaultData(token);
   const wrappedTokenSupply = useTotalSupply(vaultData?.wrappedToken);

@@ -16,7 +16,7 @@ export function useClosedPositions(strategy: StrategyContractType) {
         args: [],
       },
     {
-      fromBlock: 0,
+      fromBlock: 15681755,
       toBlock: 'latest',
     }
   );

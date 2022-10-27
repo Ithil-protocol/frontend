@@ -1,10 +1,10 @@
-import { Goerli } from '@usedapp/core';
+import { Goerli, Localhost } from '@usedapp/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-import { infuraUrl, alchemyUrl } from '@/global/utils';
+import { alchemyUrl } from '@/global/utils';
 
-const supportedChains = [Goerli.chainId];
+const supportedChains = [Goerli.chainId, Localhost.chainId];
 
 export const injected = new InjectedConnector({
   supportedChainIds: supportedChains,
@@ -13,6 +13,8 @@ export const injected = new InjectedConnector({
 export const walletconnect = new WalletConnectConnector({
   rpc: {
     [Goerli.chainId]: alchemyUrl(Goerli.chainId),
+    [Localhost.chainId]:
+      process.env.REACT_APP_LOCALHOST_RPC ?? 'http://localhost:8545',
   },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,

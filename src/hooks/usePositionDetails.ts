@@ -1,17 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo } from 'react';
 import BigNumber from 'bignumber.js';
 import { BigNumber as BN } from '@ethersproject/bignumber';
 
 import { useQuoter } from './useQuoter';
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
+import { useChainId } from '.';
 
 import { OpenedPositionType, StrategyContractType } from '@/global/types';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 
 export default function usePositionDetails(
   details: OpenedPositionType,
-  strategy: StrategyContractType
+  strategy?: StrategyContractType
 ) {
+  const chainId = useChainId();
   const principalValue = useMemo(
     () => new BigNumber(BN.from(details.principal).toString()),
     [details]
@@ -25,24 +28,24 @@ export default function usePositionDetails(
     [details]
   );
   const owedToken = useMemo(
-    () => getTokenByAddress(details.owedToken),
-    [details]
+    () => getTokenByAddress(details.owedToken, chainId),
+    [chainId, details.owedToken]
   );
   const heldToken = useMemo(
     () =>
-      getTokenByAddress(details.heldToken) ||
+      getTokenByAddress(details.heldToken, chainId) ||
       (owedToken && {
-        name: `${strategy.type} ${owedToken.name}`,
+        name: `${strategy?.type} ${owedToken.name}`,
         address: details.heldToken,
         symbol: `y${owedToken.symbol}`,
         decimals: owedToken.decimals,
         logoURI: owedToken.logoURI,
       }),
-    [details.heldToken, owedToken, strategy.type]
+    [chainId, details.heldToken, owedToken, strategy?.type]
   );
   const collateralToken = useMemo(
-    () => getTokenByAddress(details.collateralToken),
-    [details]
+    () => getTokenByAddress(details.collateralToken, chainId),
+    [chainId, details.collateralToken]
   );
 
   const longShortValue = useMemo(() => {
@@ -84,8 +87,8 @@ export default function usePositionDetails(
   ]);
 
   const positionValue = useMemo(() => {
-    return `${strategy.label} ${
-      strategy.type === 'margin' ? `${longShortValue}` : ''
+    return `${strategy?.label} ${
+      strategy?.type === 'margin' ? `${longShortValue}` : ''
     }`;
   }, [strategy, longShortValue, tokenPairValue]);
 

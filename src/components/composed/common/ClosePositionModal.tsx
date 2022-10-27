@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 // import { ArrowRight } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
 import { useNavigate } from 'react-router-dom';

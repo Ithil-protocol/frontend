@@ -2,18 +2,22 @@ import { Contract } from '@ethersproject/contracts';
 import { useCall, useContractFunction } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 
-import { useCheckValidChain, useHandleTxStatus } from './index';
+import { useChainId, useCheckValidChain, useHandleTxStatus } from './index';
 
-import { CORE } from '@/global/constants';
+import { CORE } from '@/global/ithil';
 
 export function useBalance(tokenAddress: string) {
+  const chainId = useChainId();
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        CORE.Vault && {
-          contract: new Contract(CORE.Vault.address, CORE.Vault.abi),
+        CORE[chainId].Vault && {
+          contract: new Contract(
+            CORE[chainId].Vault.address,
+            CORE[chainId].Vault.abi
+          ),
           method: 'balance',
           args: [tokenAddress],
         }
@@ -27,13 +31,17 @@ export function useBalance(tokenAddress: string) {
 }
 
 export function useVaultData(tokenAddress: string) {
+  const chainId = useChainId();
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        CORE.Vault && {
-          contract: new Contract(CORE.Vault.address, CORE.Vault.abi),
+        CORE[chainId].Vault && {
+          contract: new Contract(
+            CORE[chainId].Vault.address,
+            CORE[chainId].Vault.abi
+          ),
           method: 'vaults',
           args: [tokenAddress],
         }
@@ -47,8 +55,10 @@ export function useVaultData(tokenAddress: string) {
 }
 
 export function useStake() {
+  const chainId = useChainId();
   const { send, state, resetState } = useContractFunction(
-    CORE.Vault && new Contract(CORE.Vault.address, CORE.Vault.abi),
+    CORE[chainId].Vault &&
+      new Contract(CORE[chainId].Vault.address, CORE[chainId].Vault.abi),
     'stake'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -60,8 +70,10 @@ export function useStake() {
 }
 
 export function useUnstake() {
+  const chainId = useChainId();
   const { send, state, resetState } = useContractFunction(
-    CORE.Vault && new Contract(CORE.Vault.address, CORE.Vault.abi),
+    CORE[chainId].Vault &&
+      new Contract(CORE[chainId].Vault.address, CORE[chainId].Vault.abi),
     'unstake'
   );
   const isLoading = useHandleTxStatus(state, resetState);
@@ -73,13 +85,17 @@ export function useUnstake() {
 }
 
 export function useClaimable(tokenAddress: string) {
+  const chainId = useChainId();
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        CORE.Vault && {
-          contract: new Contract(CORE.Vault.address, CORE.Vault.abi),
+        CORE[chainId].Vault && {
+          contract: new Contract(
+            CORE[chainId].Vault.address,
+            CORE[chainId].Vault.abi
+          ),
           method: 'claimable',
           args: [tokenAddress],
         }

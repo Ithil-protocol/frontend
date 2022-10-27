@@ -3,9 +3,10 @@ import BigNumber from 'bignumber.js';
 
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 import { useVaultData } from './useVault';
+import { useChainId } from '.';
 
 import { StrategyContractType } from '@/global/types';
-import { CORE } from '@/global/constants';
+import { CORE } from '@/global/ithil';
 import { baseInterestRate } from '@/global/utils';
 
 export function useMaxLeverage(
@@ -15,8 +16,9 @@ export function useMaxLeverage(
   strategy: StrategyContractType,
   borrowed: BigNumber
 ) {
+  const chainId = useChainId();
   const vaultData = useVaultData(spentToken);
-  const balance = useTokenBalance(spentToken, CORE.Vault.address);
+  const balance = useTokenBalance(spentToken, CORE[chainId].Vault.address);
   const riskFactor: BigNumber = useComputePairRiskFactor(
     spentToken,
     obtainedToken,

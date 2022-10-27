@@ -3,7 +3,8 @@ import tw from 'twin.macro';
 import React, { FC } from 'react';
 
 import Txt from '@/components/based/Txt';
-import { TOKEN_LIST } from '@/global/constants';
+import { TOKEN_LIST } from '@/global/ithil';
+import { useChainId } from '@/hooks';
 
 interface IText {
   value: string;
@@ -24,11 +25,12 @@ export const TokenPair: FC<ITokenPair> = ({
   investmentTokenSymbol,
   noText = false,
 }) => {
-  const collateralTokenLogoURI = TOKEN_LIST.find(
+  const chainId = useChainId();
+  const collateralTokenLogoURI = TOKEN_LIST[chainId].find(
     (token) => token.symbol === collateralTokenSymbol
   )?.logoURI;
 
-  const investmentTokenLogoURI = TOKEN_LIST.find(
+  const investmentTokenLogoURI = TOKEN_LIST[chainId].find(
     (token) => token.symbol === investmentTokenSymbol
   )?.logoURI;
 

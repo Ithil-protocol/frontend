@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, SetStateAction, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import BigNumber from 'bignumber.js';
 
@@ -19,14 +19,9 @@ interface IVaultChart {
   balance: BigNumber | 0;
 }
 
-const VaultChart: FC<IVaultChart> = ({
-  vaultData,
-  utilisationRate,
-  balance,
-}) => {
+const VaultChart: FC<IVaultChart> = ({ vaultData, utilisationRate }) => {
   const theme = useTheme();
   const [chartData, setChartData] = useState<any>([]);
-
   const CHART_OPTIONS = {
     responsive: true,
     maintainAspectRatio: false,
@@ -129,6 +124,7 @@ const VaultChart: FC<IVaultChart> = ({
       }
     }
     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [utilisationRate, vaultData]);
 
   return (

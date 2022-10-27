@@ -7,14 +7,15 @@ import { StrategyContractType } from '@/global/types';
 
 export function usePositions(
   positionId: number,
-  strategy: StrategyContractType
+  strategy?: StrategyContractType
 ) {
   const isValid = useCheckValidChain();
 
   const { value, error } =
     useCall(
       isValid &&
-        strategy && {
+        strategy &&
+        positionId && {
           contract: new Contract(strategy.address, strategy.abi),
           method: 'positions',
           args: [positionId],

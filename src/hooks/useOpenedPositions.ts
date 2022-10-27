@@ -26,10 +26,10 @@ export function useOpenedPositions(strategy: StrategyContractType) {
       strategy && {
         contract: new Contract(strategy.address, strategy.abi),
         event: 'PositionWasOpened',
-        args: [],
+        args: [null, account],
       },
     {
-      fromBlock: 0,
+      fromBlock: 15681755,
       toBlock: 'latest',
     }
   );

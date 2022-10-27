@@ -10,10 +10,11 @@ import {
   TokenPair,
   CloseButton,
 } from '@/components/composed/dashboard/TableCell';
-import { useLiquidatedPositions } from '@/hooks/useLiquidatedPositions';
-import { useOpenedPositions } from '@/hooks/useOpenedPositions';
-import { useClosedPositions } from '@/hooks/useClosedPositions';
-import { getStrategyByType, getTokenByAddress } from '@/global/utils';
+import {
+  getPoolNameByAddress,
+  getStrategyByType,
+  getTokenByAddress,
+} from '@/global/utils';
 import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
 import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
 import Page from '@/components/based/Page';
@@ -22,10 +23,12 @@ import {
   PositionOpenType,
   StrategyContractType,
 } from '@/global/types';
-import { STRATEGIES } from '@/global/constants';
+import { useChainId } from '@/hooks';
+import { useFilterdPositions } from '@/hooks/useFilteredPositions';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const chainId = useChainId();
   const [selectedId, setSelectedId] = useState<number>(-1);
   const [selectedStrategy, setSelectedStrategy] =
     useState<StrategyContractType>();
@@ -33,61 +36,7 @@ export default function DashboardPage() {
   const [closePositionModalOpened, setClosePositionModalOpened] =
     useState(false);
 
-  const openedMarginPositions = useOpenedPositions(
-    STRATEGIES.MarginTradingStrategy
-  );
-  const openedYearnPositions = useOpenedPositions(STRATEGIES.YearnStrategy);
-  const closedMarginPositions = useClosedPositions(
-    STRATEGIES.MarginTradingStrategy
-  );
-  const closedYearnPositions = useClosedPositions(STRATEGIES.YearnStrategy);
-  const liquidatedMarginPositions = useLiquidatedPositions(
-    STRATEGIES.MarginTradingStrategy
-  );
-  const liquidatedYearnPositions = useLiquidatedPositions(
-    STRATEGIES.YearnStrategy
-  );
-
-  const openedPositions = useMemo(
-    () => [...openedMarginPositions, ...openedYearnPositions],
-    [openedMarginPositions, openedYearnPositions]
-  );
-  const closedPositions = useMemo(
-    () => [...closedMarginPositions, ...closedYearnPositions],
-    [closedMarginPositions, closedYearnPositions]
-  );
-  const liquidatedPositions = useMemo(
-    () => [...liquidatedMarginPositions, ...liquidatedYearnPositions],
-    [liquidatedMarginPositions, liquidatedYearnPositions]
-  );
-
-  const filteredPositions = useMemo(() => {
-    if (!openedPositions || !closedPositions || !liquidatedPositions)
-      return null;
-    const closedIdPositions = closedPositions.map((pos) => pos.id);
-    switch (activeTab) {
-      case 'active':
-        return openedPositions.filter(
-          (position) =>
-            !closedIdPositions.includes(position.id) &&
-            !liquidatedPositions.includes(position.id)
-        );
-      case 'closed':
-        return openedPositions.filter((position, idx) => {
-          const closedIdx = closedIdPositions.indexOf(position.id);
-          const isIncluded = closedIdx !== -1;
-          if (isIncluded) {
-            (openedPositions[idx] as ClosedPositionType).amountOut =
-              closedPositions[closedIdx].amountOut;
-          }
-          return isIncluded;
-        });
-      case 'liquidated':
-        return openedPositions.filter((position) =>
-          liquidatedPositions.includes(position.id)
-        );
-    }
-  }, [openedPositions, closedPositions, activeTab, liquidatedPositions]);
+  const filteredPositions = useFilterdPositions(activeTab);
 
   const displayedPositions = useMemo(() => {
     if (!filteredPositions) return null;
@@ -154,18 +103,26 @@ export default function DashboardPage() {
         data={
           displayedPositions?.map((position) => {
             const collateralTokenSymbol = getTokenByAddress(
-              position.collateralToken
+              position.collateralToken,
+              chainId
             )?.symbol;
             const investmentTokenSymbol =
               position.type === 'margin'
                 ? getTokenByAddress(
                     position.collateralToken == position.heldToken
                       ? position.owedToken
-                      : position.heldToken
+                      : position.heldToken,
+                    chainId
                   )?.symbol
+                : position.type === 'balancer'
+                ? getPoolNameByAddress(
+                    position.collateralToken == position.heldToken
+                      ? position.owedToken
+                      : position.heldToken
+                  )
                 : `y${collateralTokenSymbol}`;
             const positionId = position.id.split('_')[0];
-            const strategy = getStrategyByType(position.type);
+            const strategy = getStrategyByType(position.type, chainId);
 
             return {
               token_pair: (
