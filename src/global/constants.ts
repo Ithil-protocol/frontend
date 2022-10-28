@@ -50,7 +50,8 @@ export const TRADE_STRATEGIES = [
     description: 'Balancer + Aura strategy',
     apyMin: '10',
     apyMax: '100x',
-    risk: 'Medium',
+    uRate: 15,
+    risk: 2,
     url: '/trade/balancer-aura-strategy',
   },
   {
