@@ -4,11 +4,12 @@ import 'twin.macro';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
-import { useEthers, useTokenBalance } from '@usedapp/core';
+import { Localhost, useEthers, useTokenBalance } from '@usedapp/core';
 import { MaxUint256 } from '@ethersproject/constants';
 import { formatUnits } from '@ethersproject/units';
 import { toast } from 'react-toastify';
 import Skeleton from 'react-loading-skeleton';
+import { useNavigate } from 'react-router-dom';
 
 import { PoolDetails, TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
@@ -34,6 +35,7 @@ import { useChainId } from '@/hooks';
 export default function BalancerAuraStrategyPage() {
   const { account } = useEthers();
   const chainId = useChainId();
+  const navigate = useNavigate();
 
   const [selectedPool, setSelectedPool] = useState<PoolDetails>(
     BALANCER_POOLS[0]
@@ -214,6 +216,13 @@ export default function BalancerAuraStrategyPage() {
   useEffect(() => {
     setSpentToken(selectedPool.tokens[0]);
   }, [selectedPool]);
+
+  useEffect(() => {
+    if (chainId !== Localhost.chainId) {
+      navigate('/trade');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId]);
 
   return (
     <Page

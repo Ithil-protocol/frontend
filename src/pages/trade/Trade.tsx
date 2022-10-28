@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
 import React from 'react';
+import { Localhost } from '@usedapp/core';
 
 import Page from '@/components/based/Page';
 import DataTable from '@/components/based/table/DataTable';
@@ -8,8 +9,10 @@ import Txt from '@/components/based/Txt';
 import { TRADE_STRATEGIES } from '@/global/constants';
 import TradeTableRow from '@/components/composed/trade/TradeTableRow';
 import Tooltip from '@/components/based/Tooltip';
+import { useChainId } from '@/hooks';
 
 const TradePage = () => {
+  const chainId = useChainId();
   return (
     <Page heading="Trading Strategies">
       <div
@@ -80,7 +83,10 @@ const TradePage = () => {
             utilisation_rate: strategy.uRate,
             risk_profile: strategy.risk,
             action: null,
-            url: strategy.url,
+            url:
+              strategy.id === 4 && chainId !== Localhost.chainId
+                ? ''
+                : strategy.url,
           }))}
           loading={false}
           RowComponent={TradeTableRow}
