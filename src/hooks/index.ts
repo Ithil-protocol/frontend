@@ -12,7 +12,7 @@ export function useCheckValidChain() {
 
 export function useChainId() {
   const { chainId } = useEthers();
-  return chainId ?? 5;
+  return chainId || Goerli.chainId;
 }
 
 export function useHandleTxStatus(

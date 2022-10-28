@@ -26,13 +26,13 @@ export const TokenPair: FC<ITokenPair> = ({
   noText = false,
 }) => {
   const chainId = useChainId();
-  const collateralTokenLogoURI = TOKEN_LIST[chainId].find(
+  const collateralTokenLogoURI = TOKEN_LIST[chainId]?.filter(
     (token) => token.symbol === collateralTokenSymbol
-  )?.logoURI;
+  )[0]?.logoURI;
 
-  const investmentTokenLogoURI = TOKEN_LIST[chainId].find(
+  const investmentTokenLogoURI = TOKEN_LIST[chainId]?.filter(
     (token) => token.symbol === investmentTokenSymbol
-  )?.logoURI;
+  )[0]?.logoURI;
 
   return (
     <div
