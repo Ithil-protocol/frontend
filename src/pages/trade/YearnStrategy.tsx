@@ -4,7 +4,7 @@ import 'twin.macro';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FadersHorizontal } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
-import { useEthers, useTokenBalance } from '@usedapp/core';
+import { Localhost, useEthers, useTokenBalance } from '@usedapp/core';
 import { MaxUint256 } from '@ethersproject/constants';
 import { formatUnits } from '@ethersproject/units';
 import { toast } from 'react-toastify';
@@ -172,7 +172,9 @@ export default function YearnStrategyPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder, { gasLimit: 30_000_000 });
+    openPosition(newOrder, {
+      gasLimit: chainId === Localhost.chainId ? 30_000_000 : 700_000,
+    });
   };
 
   const handleExecute = () => {

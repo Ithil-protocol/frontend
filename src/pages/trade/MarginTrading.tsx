@@ -3,7 +3,7 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
-import { useEthers, useTokenBalance } from '@usedapp/core';
+import { Localhost, useEthers, useTokenBalance } from '@usedapp/core';
 import { formatUnits } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
@@ -237,7 +237,9 @@ export default function MarginTradingPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder, { gasLimit: 30_000_000 });
+    openPosition(newOrder, {
+      gasLimit: chainId === Localhost.chainId ? 30_000_000 : 700_000,
+    });
   };
 
   const quoteValueMargin = useQuoter(
