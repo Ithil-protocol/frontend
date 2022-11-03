@@ -10,6 +10,10 @@ export const injected = new InjectedConnector({
   supportedChainIds: supportedChains,
 });
 
+const defaulUrls = {
+  [Goerli.chainId]: alchemyUrl(Goerli.chainId),
+};
+
 export const walletconnect = new WalletConnectConnector({
   rpc: {
     [Goerli.chainId]: alchemyUrl(Goerli.chainId),

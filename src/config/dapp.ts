@@ -6,6 +6,17 @@ import { TENDERLY_RPC_API } from '@/global/constants';
 
 export const POLLING_INTERVAL = 10_000;
 
+export const IS_HARDHAT_SET =
+  process.env.NODE_ENV === 'development' &&
+  process.env.REACT_APP_HARDHAT_ENV === 'true';
+
+const defaulUrls = {
+  [Goerli.chainId]: pollingIntervalProvider(
+    alchemyUrl(Goerli.chainId),
+    POLLING_INTERVAL
+  ),
+};
+
 export const DAPP_CONFIG: Config = {
   readOnlyChainId: Mainnet.chainId,
   networks: [

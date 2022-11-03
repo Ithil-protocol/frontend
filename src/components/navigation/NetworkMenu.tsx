@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Localhost, useEthers } from '@usedapp/core';
+import { Chain, Goerli, Hardhat, Localhost, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from '@/components/based/Button';
