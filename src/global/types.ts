@@ -21,6 +21,15 @@ export interface TokenDetails {
   logoURI?: string | undefined;
 }
 
+export interface PoolDetails {
+  name: string;
+  decimals: number;
+  address: string;
+  tokens: TokenDetails[];
+  isDisabled: boolean;
+  logoURI?: string | undefined;
+}
+
 export type IntervalType = '1d' | '1m' | '12m' | '60m';
 
 export type PriorityType = 'buy' | 'sell';
@@ -72,6 +81,13 @@ export interface OpenedPositionType extends PositionType {
   id: string;
   type: string;
   label: string;
+}
+
+export interface ClosedPositionType extends PositionType {
+  id: string;
+  type: string;
+  label: string;
+  amountOut: string;
 }
 
 export type KeyableType = { [key: string]: string };

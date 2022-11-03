@@ -1,6 +1,8 @@
-import { ChainId, Config, Goerli, Hardhat, Mainnet } from '@usedapp/core';
+import { Config, Goerli, Localhost, Mainnet } from '@usedapp/core';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
 
 import { alchemyUrl, pollingIntervalProvider } from '@/global/utils';
+import { TENDERLY_RPC_API } from '@/global/constants';
 
 export const POLLING_INTERVAL = 10_000;
 
@@ -16,25 +18,30 @@ const defaulUrls = {
 };
 
 export const DAPP_CONFIG: Config = {
-  readOnlyChainId: ChainId.Goerli,
-  networks: [Goerli].concat(IS_HARDHAT_SET ? [Hardhat] : []),
+  readOnlyChainId: Mainnet.chainId,
+  networks: [
+    Goerli,
+    {
+      ...Localhost,
+      multicallAddress: Mainnet.multicallAddress,
+      multicall2Address: Mainnet.multicall2Address,
+      rpcUrl: TENDERLY_RPC_API,
+    },
+  ],
   readOnlyUrls: {
-    ...defaulUrls,
-    ...(IS_HARDHAT_SET
-      ? {
-          [Hardhat.chainId]:
-            process.env.REACT_APP_HARDHAT_RPC ?? 'http://localhost:8545',
-        }
-      : {}),
+    [Goerli.chainId]: pollingIntervalProvider(
+      alchemyUrl(Goerli.chainId),
+      POLLING_INTERVAL
+    ),
+    [Localhost.chainId]: new StaticJsonRpcProvider(TENDERLY_RPC_API, {
+      name: 'Localhost',
+      chainId: 1337,
+    }),
   },
   pollingInterval: POLLING_INTERVAL,
   multicallVersion: 2,
   multicallAddresses: {
     [Goerli.chainId]: Goerli.multicall2Address ?? '',
-    ...(IS_HARDHAT_SET
-      ? {
-          [Hardhat.chainId]: Mainnet.multicall2Address ?? '',
-        }
-      : {}),
+    [Localhost.chainId]: Mainnet.multicall2Address ?? '',
   },
 };

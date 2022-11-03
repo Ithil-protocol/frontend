@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts';
 import { useCall } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 
-import { useCheckValidChain, useHandleTxStatus } from './index';
+import { useCheckValidChain } from './index';
 
 import { StrategyContractType } from '@/global/types';
 

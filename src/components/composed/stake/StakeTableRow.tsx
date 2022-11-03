@@ -12,16 +12,18 @@ import Txt from '@/components/based/Txt';
 import { formatAmount, getTokenByAddress } from '@/global/utils';
 import { useBalance, useVaultData } from '@/hooks/useVault';
 import { useTotalSupply } from '@/hooks/useToken';
-import { useUpdateVaultStatus, useVaultsState } from '@/state/vaults/hooks';
+import { useUpdateVaultStatus } from '@/state/vaults/hooks';
+import { useChainId } from '@/hooks';
 
 type IStakeTableRow = ITableRow;
 
 const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
   const navigate = useNavigate();
   const { account } = useEthers();
+  const chainId = useChainId();
   const [expanded, setExpanded] = useState(false);
   const vaultTokenAddress = row['token_address'] as string;
-  const vaultToken = getTokenByAddress(vaultTokenAddress);
+  const vaultToken = getTokenByAddress(vaultTokenAddress, chainId);
   const vaultBalance = useBalance(vaultTokenAddress);
   const vaultData = useVaultData(vaultTokenAddress);
   const wrappedTokenBalance = useTokenBalance(vaultData?.wrappedToken, account);

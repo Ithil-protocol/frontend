@@ -8,6 +8,7 @@ import InputFieldMax from './InputFieldMax';
 import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
 import TokenModal from '@/components/composed/trade/TokenModal';
+import Txt from '@/components/based/Txt';
 
 interface ITokenInputField {
   label: string;
@@ -54,9 +55,19 @@ const TokenInputField: FC<ITokenInputField> = ({
                 tw`bg-primary-400 dark:bg-primary-300 h-6 tablet:h-7 desktop:h-8`,
               ]}
               text={token.symbol}
-              leftIcon={() => (
-                <img tw="w-4 h-4 mr-1" src={token.logoURI} alt="token image" />
-              )}
+              leftIcon={() =>
+                token.logoURI ? (
+                  <img
+                    tw="w-4 h-4 mr-1"
+                    src={token.logoURI}
+                    alt="token image"
+                  />
+                ) : (
+                  <div tw="w-6 h-6 bg-primary-400 rounded-full flex items-center justify-center mr-1">
+                    <Txt.Body2Bold>?</Txt.Body2Bold>
+                  </div>
+                )
+              }
               rightIcon={ArrowDown}
               onClick={() => setTokenModalOpened(true)}
             />

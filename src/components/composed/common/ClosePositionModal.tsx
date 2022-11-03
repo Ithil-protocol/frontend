@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 // import { ArrowRight } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
 import { useNavigate } from 'react-router-dom';
@@ -67,7 +67,7 @@ const ClosePositionModal: FC<IClosePositionModal> = ({
   }, [longShortValue, quoteValue, strategy.defaultSlippage]);
 
   const handleClose = () => {
-    closePosition(selectedId, maxOrMin.toFixed(0));
+    closePosition(selectedId, maxOrMin.toFixed(0), { gasLimit: 2_000_000 });
   };
 
   useEffect(() => {

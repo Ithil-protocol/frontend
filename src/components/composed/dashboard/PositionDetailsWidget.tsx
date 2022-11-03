@@ -33,7 +33,7 @@ const DetailItem: FC<IDetailItem> = ({ label, value, details, valueColor }) => {
           value && (
             <Txt.Body2Bold
               css={[
-                tw`text-secondary ml-2`,
+                tw`ml-2 text-secondary`,
                 valueColor === 'green' && tw`text-success`,
                 valueColor === 'red' && tw`text-error`,
               ]}
@@ -93,6 +93,14 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
     createdAtValue,
   } = usePositionDetails(details, strategy);
 
+  const usedHeldTokenSymbol =
+    positionValue === 'Balancer Strategy ' ? 'bpt' : heldToken?.symbol;
+
+  const usedPairValue =
+    positionValue === 'Balancer Strategy '
+      ? `bpt/${owedToken?.symbol}`
+      : tokenPairValue;
+
   return (
     <div tw="flex flex-col w-full mb-3">
       <div tw="flex flex-col justify-between items-center rounded-xl p-6 bg-primary-100 gap-2">
@@ -132,7 +140,7 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
               ? formatAmount(allowanceValue, heldToken?.decimals)
               : null
           }
-          details={heldToken?.symbol}
+          details={usedHeldTokenSymbol}
         />
         <DetailItem
           label="Principal"
@@ -146,17 +154,17 @@ const PositionDetailsWidget: FC<IPositionDetailsWidget> = ({
         <DetailItem
           label="Open price"
           value={openPriceValue ? openPriceValue.toFixed(4) : null}
-          details={tokenPairValue}
+          details={usedPairValue}
         />
         <DetailItem
           label="Current price"
           value={currentPriceValue ? currentPriceValue.toFixed(4) : null}
-          details={tokenPairValue}
+          details={usedPairValue}
         />
         <DetailItem
           label="Liq. price"
           value={liqPriceValue ? liqPriceValue.toFixed(4) : null}
-          details={tokenPairValue}
+          details={usedPairValue}
         />
         <DetailItem
           label="Distance from liquidation"

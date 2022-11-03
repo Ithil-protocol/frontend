@@ -10,10 +10,12 @@ import DataTable from '@/components/based/table/DataTable';
 import Page from '@/components/based/Page';
 import { useRedeem } from '@/hooks/useToken';
 import { RedeemTokenInfoType, TokenDetails } from '@/global/types';
-import { TOKEN_LIST } from '@/global/constants';
+import { TOKEN_LIST } from '@/global/ithil';
 import { importToken } from '@/global/utils';
+import { useChainId } from '@/hooks';
 
 export default function FaucetsPage() {
+  const chainId = useChainId();
   const [redeemTokenInfo, setRedeemTokenInfo] = useState<RedeemTokenInfoType>();
   const { isLoading } = useRedeem(redeemTokenInfo);
 
@@ -45,7 +47,7 @@ export default function FaucetsPage() {
               content: '',
             },
           ]}
-          data={TOKEN_LIST.map((token) => ({
+          data={TOKEN_LIST[chainId].map((token) => ({
             token: (
               <Txt.TokenText symbol={token.symbol} tw="text-left">
                 {token.symbol}

@@ -6,45 +6,44 @@ import { MagnifyingGlass } from 'phosphor-react';
 import Modal from '@/components/based/Modal';
 import Txt from '@/components/based/Txt';
 import InputField from '@/components/based/InputField';
-import { TokenDetails } from '@/global/types';
-import { TOKEN_LIST } from '@/global/ithil';
-import { useChainId } from '@/hooks';
+import { PoolDetails } from '@/global/types';
+import { BALANCER_POOLS } from '@/global/ithil';
 
-interface ITokenModal {
+interface IPoolModal {
   open: boolean;
-  availableTokens?: TokenDetails[];
-  selectedToken?: TokenDetails;
+  availablePools?: PoolDetails[];
+  selectedPool?: PoolDetails;
   onClose: () => void;
-  onSelect(token: TokenDetails): void;
+  onSelect(pool: PoolDetails): void;
 }
 
-const TokenModal: FC<ITokenModal> = ({
+const PoolModal: FC<IPoolModal> = ({
   open,
-  availableTokens,
-  selectedToken,
+  availablePools,
+  selectedPool,
   onClose,
   onSelect,
 }) => {
-  const chainId = useChainId();
   const [search, setSearch] = useState('');
-  const [filteredTokenList, setFilteredTokenList] = useState<TokenDetails[]>(
-    availableTokens ?? TOKEN_LIST[chainId]
+  const [filteredPoolList, setFilteredPoolList] = useState<PoolDetails[]>(
+    availablePools ?? BALANCER_POOLS
   );
 
   useEffect(() => {
-    if (availableTokens) {
+    if (availablePools) {
       setSearch('');
-      setFilteredTokenList(availableTokens);
+      setFilteredPoolList(availablePools);
     }
-  }, [availableTokens]);
+  }, [availablePools]);
 
   const searchOnChange = (value: string) => {
+    if (!availablePools) return;
     setSearch(value);
 
     const val = value.trim().toLowerCase();
-    setFilteredTokenList(
-      TOKEN_LIST[chainId].filter(({ symbol }) =>
-        symbol.trim().includes(val.toUpperCase())
+    setFilteredPoolList(
+      availablePools.filter(({ name }) =>
+        name.trim().includes(val.toUpperCase())
       )
     );
   };
@@ -52,7 +51,7 @@ const TokenModal: FC<ITokenModal> = ({
   return (
     <Modal tw="bg-secondary width[600px]" open={open} onClose={onClose}>
       <div tw="flex flex-row justify-center items-center w-full">
-        <Txt.Heading2 tw="self-end">Select a token</Txt.Heading2>
+        <Txt.Heading2 tw="self-end">Select a pool</Txt.Heading2>
       </div>
       <InputField
         value={search}
@@ -61,31 +60,26 @@ const TokenModal: FC<ITokenModal> = ({
       />
       <div tw="w-full height[1px] bg-primary-300 my-4"></div>
       <div tw="w-full height[384px] overflow-y-auto">
-        {filteredTokenList.map((token) => {
+        {filteredPoolList.map((pool) => {
           return (
             <div
-              key={token.name}
+              key={pool.name}
               css={[
                 tw`w-full flex flex-row justify-between cursor-pointer`,
-                token === selectedToken && tw`opacity-50 cursor-default`,
+                pool === selectedPool && tw`opacity-50 cursor-default`,
               ]}
-              onClick={() => token !== selectedToken && onSelect(token)}
+              onClick={() => pool !== selectedPool && onSelect(pool)}
             >
               <div tw="flex flex-row justify-start items-center p-0 my-2">
-                {token.logoURI ? (
-                  <img
-                    tw="w-8 h-8 mr-4"
-                    src={token.logoURI}
-                    alt="token image"
-                  />
+                {pool.logoURI ? (
+                  <img tw="w-8 h-8 mr-4" src={pool.logoURI} alt="token image" />
                 ) : (
                   <div tw="w-6 h-6 bg-primary-400 rounded-full flex items-center justify-center mr-4">
                     <Txt.Body2Bold>?</Txt.Body2Bold>
                   </div>
                 )}
                 <div tw="flex flex-col justify-start">
-                  <Txt.Body2Regular>{token.symbol}</Txt.Body2Regular>
-                  <Txt.CaptionMedium>{token.name}</Txt.CaptionMedium>
+                  <Txt.Body2Regular>{pool.name}</Txt.Body2Regular>
                 </div>
               </div>
             </div>
@@ -96,4 +90,4 @@ const TokenModal: FC<ITokenModal> = ({
   );
 };
 
-export default TokenModal;
+export default PoolModal;

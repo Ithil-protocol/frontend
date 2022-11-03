@@ -10,13 +10,14 @@ export function useQuoter(
   srcToken: string,
   destToken: string,
   amount: BigNumber,
-  strategy: StrategyContractType
+  strategy?: StrategyContractType
 ) {
   const isValid = useCheckValidChain();
-
   const { value, error } =
     useCall(
       isValid &&
+        srcToken &&
+        destToken &&
         strategy && {
           contract: new Contract(strategy.address, strategy.abi),
           method: 'quote',

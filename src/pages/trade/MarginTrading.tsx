@@ -3,7 +3,7 @@ import 'twin.macro';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, FadersHorizontal, XCircle } from 'phosphor-react';
-import { useEthers, useTokenBalance } from '@usedapp/core';
+import { Localhost, useEthers, useTokenBalance } from '@usedapp/core';
 import { formatUnits } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { MaxUint256 } from '@ethersproject/constants';
@@ -26,25 +26,30 @@ import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useQuoter } from '@/hooks/useQuoter';
 import { formatAmount, parseAmount } from '@/global/utils';
 import { useAllowance, useApprove } from '@/hooks/useToken';
-import { STRATEGIES, DEFAULT_DEADLINE, TOKEN_LIST } from '@/global/constants';
+import { STRATEGIES, TOKEN_LIST } from '@/global/ithil';
+import { DEFAULT_DEADLINE } from '@/global/constants';
 import { useVaultData } from '@/hooks/useVault';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
+import { useChainId } from '@/hooks';
 
 export default function MarginTradingPage() {
   const { account } = useEthers();
+  const chainId = useChainId();
 
   const [collateralIsSpentToken, setCollateralIsSpentToken] =
     useState<boolean>(true);
-  const [spentToken, setSpentToken] = useState<TokenDetails>(TOKEN_LIST[0]);
+  const [spentToken, setSpentToken] = useState<TokenDetails>(
+    TOKEN_LIST[chainId][0]
+  );
   const [obtainedToken, setObtainedToken] = useState<TokenDetails>(
-    TOKEN_LIST[4]
+    TOKEN_LIST[chainId][4]
   );
   const [leverage, setLeverage] = useState<number>(1);
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
   const [slippagePercent, setSlippagePercent] = useState<string>(
-    STRATEGIES.MarginTradingStrategy.defaultSlippage
+    STRATEGIES[chainId].MarginTradingStrategy.defaultSlippage
   );
   const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<any>(false);
@@ -80,19 +85,19 @@ export default function MarginTradingPage() {
     spentToken.address,
     obtainedToken.address,
     leveragedValue,
-    STRATEGIES.MarginTradingStrategy
+    STRATEGIES[chainId].MarginTradingStrategy
   );
 
   const quoteValueSrc = useQuoter(
     obtainedToken.address,
     spentToken.address,
     leveragedValue,
-    STRATEGIES.MarginTradingStrategy
+    STRATEGIES[chainId].MarginTradingStrategy
   );
 
   const allowance = useAllowance(
     collateralToken.address,
-    STRATEGIES.MarginTradingStrategy.address
+    STRATEGIES[chainId].MarginTradingStrategy.address
   );
   const { isLoading: isLoadingApprove, approve } = useApprove(
     collateralToken.address
@@ -101,7 +106,7 @@ export default function MarginTradingPage() {
     isLoading: isLoadingOpenPos,
     openPosition,
     state,
-  } = useOpenPosition(STRATEGIES.MarginTradingStrategy);
+  } = useOpenPosition(STRATEGIES[chainId].MarginTradingStrategy);
 
   useEffect(() => {
     if (collateralIsSpentToken) {
@@ -118,7 +123,7 @@ export default function MarginTradingPage() {
       return 'Approve';
     }
     return 'Open';
-  }, [allowance, collateralToken.decimals, marginAmount]);
+  }, [allowance, marginAmountValue]);
 
   const slippageValue = useMemo(() => {
     if (collateralIsSpentToken) return (100 - Number(slippagePercent)) / 100;
@@ -191,7 +196,7 @@ export default function MarginTradingPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(STRATEGIES.MarginTradingStrategy.address, MaxUint256);
+    approve(STRATEGIES[chainId].MarginTradingStrategy.address, MaxUint256);
   };
 
   const handleOpenOrder = async () => {
@@ -232,21 +237,23 @@ export default function MarginTradingPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder);
+    openPosition(newOrder, {
+      gasLimit: chainId === Localhost.chainId ? 30_000_000 : 700_000,
+    });
   };
 
   const quoteValueMargin = useQuoter(
     obtainedToken.address,
     spentToken.address,
     marginAmountValue,
-    STRATEGIES.MarginTradingStrategy
+    STRATEGIES[chainId].MarginTradingStrategy
   );
 
   const maxLeverage = useMaxLeverage(
     spentToken.address,
     obtainedToken.address,
     marginAmountValue,
-    STRATEGIES.MarginTradingStrategy,
+    STRATEGIES[chainId].MarginTradingStrategy,
     collateralIsSpentToken
       ? marginAmountValue
       : quoteValueMargin || BigNumber(0)
@@ -258,7 +265,7 @@ export default function MarginTradingPage() {
     marginAmountValue,
     borrowed || BigNumber(0),
     minObtained || BigNumber(0),
-    STRATEGIES.MarginTradingStrategy,
+    STRATEGIES[chainId].MarginTradingStrategy,
     collateralIsSpentToken
   );
 

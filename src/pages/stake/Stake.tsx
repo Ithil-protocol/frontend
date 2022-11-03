@@ -12,9 +12,10 @@ import Button from '@/components/based/Button';
 import InputField from '@/components/based/InputField';
 import Tooltip from '@/components/based/Tooltip';
 import StakeTableRow from '@/components/composed/stake/StakeTableRow';
-import { TOKEN_LIST } from '@/global/constants';
+import { TOKEN_LIST } from '@/global/ithil';
 import { useVaultsState } from '@/state/vaults/hooks';
 import { formatAmountToNumber } from '@/global/utils';
+import { useChainId } from '@/hooks';
 
 const APY_MENU: KeyableType = {
   highest: 'Highest',
@@ -30,6 +31,7 @@ export default function StakePage() {
   const [tvlSortValue, setTvlSortValue] = useState<string>('');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
   const vaults = useVaultsState();
+  const chainId = useChainId();
 
   const apySortLabel = useMemo(
     () => `APY${apySortValue ? ` - ${APY_MENU[apySortValue]}` : ''}`,
@@ -41,8 +43,9 @@ export default function StakePage() {
   );
 
   const sortedTokens = useMemo(() => {
-    if (apySortValue === '' && tvlSortValue === '') return [...TOKEN_LIST];
-    return [...TOKEN_LIST].sort((a, b) => {
+    if (apySortValue === '' && tvlSortValue === '')
+      return [...TOKEN_LIST[chainId]];
+    return [...TOKEN_LIST[chainId]].sort((a, b) => {
       let result = 0;
       if (apySortValue) {
         const diffValue = (vaults[b.address].apr - vaults[a.address].apr) * 100;
@@ -57,7 +60,7 @@ export default function StakePage() {
       }
       return result;
     });
-  }, [apySortValue, tvlSortValue, vaults]);
+  }, [apySortValue, chainId, tvlSortValue, vaults]);
 
   const handleSortClear = () => {
     setApySortValue('');

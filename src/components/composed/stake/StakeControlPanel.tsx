@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React, { FC, ReactNode, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from '@ethersproject/units';
@@ -9,15 +9,16 @@ import toast from 'react-hot-toast';
 
 import TabsSwitch from '../trade/TabsSwitch';
 
-import { CORE } from '@/global/constants';
+import { CORE } from '@/global/ithil';
 import { TokenDetails } from '@/global/types';
 import Button from '@/components/based/Button';
 import InputFieldMax from '@/components/composed/trade/InputFieldMax';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import { formatAmount } from '@/global/utils';
-import { useClaimable, useStake, useUnstake } from '@/hooks/useVault';
+import { useStake, useUnstake } from '@/hooks/useVault';
 import { useApprove } from '@/hooks/useToken';
 import Txt from '@/components/based/Txt';
+import { useChainId } from '@/hooks';
 
 interface IStakeControlWidget {
   title: string;
@@ -114,13 +115,14 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
   wrappedTokenSupply,
 }) => {
   const { account } = useEthers();
+  const chainId = useChainId();
   const balance = useTokenBalance(token.address, account);
   const { stake, isLoading: isStakeLoading } = useStake();
   const { unstake, isLoading: isUnstakeLoading } = useUnstake();
   const tokenAllowance = useTokenAllowance(
     token.address,
     account,
-    CORE.Vault.address
+    CORE[chainId].Vault.address
   );
   const { approve, isLoading: isApproveLoading } = useApprove(token.address);
   //const maximumWithdrawal = useClaimable(token.address);
@@ -143,7 +145,7 @@ const StakeControlPanel: FC<IStakeControlPanel> = ({
       await stake(token.address, parseUnits(amount, token.decimals));
       return 'stake';
     } else {
-      await approve(CORE.Vault.address, MaxUint256);
+      await approve(CORE[chainId].Vault.address, MaxUint256);
       return 'approve';
     }
   };

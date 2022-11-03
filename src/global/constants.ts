@@ -1,20 +1,5 @@
 import { BigNumber as BN } from '@ethersproject/bignumber';
 import { Interface } from '@ethersproject/abi';
-import Mocks from '@ithil-protocol/deployed/goerli/deployments/mocks.json';
-import TokenList from '@ithil-protocol/deployed/goerli/deployments/tokenlist.json';
-import Vault from '@ithil-protocol/deployed/goerli/deployments/Vault.json';
-import Liquidator from '@ithil-protocol/deployed/goerli/deployments/Liquidator.json';
-import MTS from '@ithil-protocol/deployed/goerli/deployments/MarginTradingStrategy.json';
-import YS from '@ithil-protocol/deployed/goerli/deployments/YearnStrategy.json';
-import ES from '@ithil-protocol/deployed/goerli/deployments/EulerStrategy.json';
-import VaultABI from '@ithil-protocol/deployed/goerli/abi/Vault.json';
-import LiqudidatorABI from '@ithil-protocol/deployed/goerli/abi/Liquidator.json';
-import MarginTradingStrategyABI from '@ithil-protocol/deployed/goerli/abi/MarginTradingStrategy.json';
-import YearnStrategyABI from '@ithil-protocol/deployed/goerli/abi/YearnStrategy.json';
-import EulerStrategyABI from '@ithil-protocol/deployed/goerli/abi/EulerStrategy.json';
-import MockYearnRegistryABI from '@ithil-protocol/deployed/goerli/abi/MockYearnRegistry.json';
-
-import { ContractType, StrategyContractType } from './types';
 
 const abi = [
   'function balanceOf(address owner) external view returns (uint256)',
@@ -27,54 +12,15 @@ const abi = [
 ];
 export const ERC20ABI = new Interface(abi);
 
-export const MOCKS: { [key: string]: ContractType } = {
-  MockYearnRegistry: {
-    address: Mocks.mocks.MockYearnRegistry,
-    abi: new Interface(MockYearnRegistryABI),
-  },
-};
-
-export const { tokens: TOKEN_LIST } = TokenList;
-
-export const CORE: { [key: string]: ContractType } = {
-  Vault: {
-    address: Vault.address,
-    abi: new Interface(VaultABI),
-  },
-  Liquidator: {
-    address: Liquidator.address,
-    abi: new Interface(LiqudidatorABI),
-  },
-};
-export const STRATEGIES: { [key: string]: StrategyContractType } = {
-  MarginTradingStrategy: {
-    address: MTS.address,
-    abi: new Interface(MarginTradingStrategyABI),
-    defaultSlippage: '0.1',
-    type: 'margin',
-    label: 'Margin Trading',
-  },
-  YearnStrategy: {
-    address: YS.address,
-    abi: new Interface(YearnStrategyABI),
-    defaultSlippage: '0.01',
-    type: 'yearn',
-    label: 'Yearn Strategy',
-  },
-  EulerStrategy: {
-    address: ES.address,
-    abi: new Interface(EulerStrategyABI),
-    defaultSlippage: '0.01',
-    type: 'euler',
-    label: 'Euler Strategy',
-  },
-};
 export const WEB_APP_URL = 'https://ithil.fi';
 export const DOC_URL = 'https://docs.ithil.fi';
 export const GITHUB_URL = 'https://github.com/Ithil-protocol';
 export const DISCORD_URL = 'https://discord.gg/tEaGBcGdQC';
 
 export const YEARN_API_URL = 'https://api.yearn.finance/v1/chains/1/vaults/all';
+
+export const TENDERLY_RPC_API =
+  'https://rpc.tenderly.co/fork/261f0c8d-5e1d-4797-bfb6-389820b020a6';
 
 export const TRADE_STRATEGIES = [
   {
@@ -83,7 +29,8 @@ export const TRADE_STRATEGIES = [
     description: 'Go long or short on any token pair via Kyber Network',
     apyMin: '0',
     apyMax: '∞x',
-    risk: 'High',
+    uRate: 15,
+    risk: 5,
     url: '/trade/margin-trading',
   },
   {
@@ -93,8 +40,19 @@ export const TRADE_STRATEGIES = [
       'Stake your favorite token on any Yearn and earn vault and multiply your APY',
     apyMin: '5',
     apyMax: '20x',
-    risk: 'Low',
+    uRate: 15,
+    risk: 2,
     url: '/trade/yearn-strategy',
+  },
+  {
+    id: 4,
+    title: 'Join the veBAL revolution on Balancer',
+    description: 'Balancer + Aura strategy',
+    apyMin: '10',
+    apyMax: '100x',
+    uRate: 15,
+    risk: 2,
+    url: '/trade/balancer-aura-strategy',
   },
   {
     id: 3,
@@ -102,16 +60,8 @@ export const TRADE_STRATEGIES = [
     description: 'Coming soon...',
     apyMin: '5',
     apyMax: '20x',
-    risk: 'Low',
-    url: '',
-  },
-  {
-    id: 4,
-    title: 'Join the veBAL revolution on Balancer',
-    description: 'Coming soon...',
-    apyMin: '10',
-    apyMax: '100x',
-    risk: 'Medium',
+    uRate: 15,
+    risk: 2,
     url: '',
   },
 ];
@@ -154,9 +104,9 @@ export const POSITION_CHART_OPTIONS = {
 
 export const INIT_POSITION_VALUE = {
   id: '0',
-  owedToken: TOKEN_LIST[0].address,
-  heldToken: TOKEN_LIST[1].address,
-  collateralToken: TOKEN_LIST[0].address,
+  owedToken: '',
+  heldToken: '',
+  collateralToken: '',
   collateral: BN.from(0),
   principal: BN.from(0),
   allowance: BN.from(0),

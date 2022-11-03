@@ -1733,7 +1733,7 @@
 
 "@ithil-protocol/deployed@Ithil-protocol/deployed":
   version "1.0.0"
-  resolved "https://codeload.github.com/Ithil-protocol/deployed/tar.gz/1b3aee0ddbb494e6565d957f1d051aeb8b5941ee"
+  resolved "https://codeload.github.com/Ithil-protocol/deployed/tar.gz/79eab410e53f374d15c79296d70c9c00360f616f"
 
 "@jest/console@^27.5.1":
   version "27.5.1"

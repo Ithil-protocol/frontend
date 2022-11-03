@@ -9,10 +9,10 @@ import {
   PositionOpenType,
   StrategyContractType,
 } from '@/global/types';
-import { formatAmount } from '@/global/utils';
+import { formatAmount, getStrategyByType } from '@/global/utils';
 import { usePositions } from '@/hooks/usePositions';
-import { STRATEGIES } from '@/global/constants';
 import usePositionDetails from '@/hooks/usePositionDetails';
+import { useChainId } from '@/hooks';
 
 type IDashboardTableRow = ITableRow;
 
@@ -22,14 +22,15 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
   hoverable,
   onClick,
 }) => {
+  const chainId = useChainId();
   const position = JSON.parse(
     row['position_info'] as string
   ) as OpenedPositionType;
   const status: PositionOpenType = row['position_status'] as PositionOpenType;
-  const strategy: StrategyContractType =
-    position.type === 'margin'
-      ? STRATEGIES.MarginTradingStrategy
-      : STRATEGIES.YearnStrategy;
+  const strategy: StrategyContractType | undefined = getStrategyByType(
+    position.type,
+    chainId
+  );
 
   const activePosition = usePositions(Number(position.id), strategy);
 
@@ -66,6 +67,12 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
               return (
                 <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
                   <Txt.Body2Regular>{positionValue}</Txt.Body2Regular>
+                </td>
+              );
+            case 'amount_out':
+              return (
+                <td key={headCell.id} css={tw`py-4 cursor-pointer`}>
+                  <Txt.Body2Regular>{row[headCell.id]}</Txt.Body2Regular>
                 </td>
               );
             case 'collateral':

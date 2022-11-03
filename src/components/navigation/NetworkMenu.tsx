@@ -2,14 +2,14 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Hardhat, useEthers } from '@usedapp/core';
+import { Chain, Goerli, Hardhat, Localhost, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from '@/components/based/Button';
 import Txt from '@/components/based/Txt';
 import Dropdown from '@/components/based/Dropdown';
 import { ReactComponent as CurrencyEth } from '@/assets/images/currencyEthereum.svg';
-import { IS_HARDHAT_SET } from '@/config/dapp';
+import { addTenderlyChain } from '@/global/utils';
 
 interface IMenuItem {
   Icon: any;
@@ -22,9 +22,13 @@ const MenuItem: FC<IMenuItem> = ({ Icon, label, network, onClick }) => {
   const { switchNetwork } = useEthers();
 
   const handleChangeNetwork = async () => {
-    switchNetwork(network.chainId).then(() => {
-      window.location.reload();
-    });
+    if (network.chainId === Localhost.chainId) {
+      addTenderlyChain();
+    } else {
+      switchNetwork(network.chainId).then(() => {
+        window.location.reload();
+      });
+    }
     onClick();
   };
 
@@ -63,14 +67,12 @@ const NetworkMenu = () => {
             network={Goerli}
             onClick={() => setVisibility(false)}
           />
-          {IS_HARDHAT_SET && (
-            <MenuItem
-              Icon={CurrencyEth}
-              label={Hardhat.chainName}
-              network={Hardhat}
-              onClick={() => setVisibility(false)}
-            />
-          )}
+          <MenuItem
+            Icon={CurrencyEth}
+            label={Localhost.chainName}
+            network={Localhost}
+            onClick={() => setVisibility(false)}
+          />
         </div>
       }
       visible={visible}

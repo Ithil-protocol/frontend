@@ -9,8 +9,9 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { formatUnits } from '@ethersproject/units';
 import { toast } from 'react-toastify';
 import Skeleton from 'react-loading-skeleton';
+import { useNavigate } from 'react-router-dom';
 
-import { TokenDetails } from '@/global/types';
+import { PoolDetails, TokenDetails } from '@/global/types';
 import Txt from '@/components/based/Txt';
 import SliderBar from '@/components/based/Slidebar';
 import InputField from '@/components/based/InputField';
@@ -19,24 +20,28 @@ import Button from '@/components/based/Button';
 import InfoItem from '@/components/composed/trade/InfoItem';
 import TokenInputField from '@/components/composed/trade/TokenInputField';
 import { formatAmount, parseAmount } from '@/global/utils';
-import { useLatestVault } from '@/hooks/useYearnRegistry';
 import { useQuoter } from '@/hooks/useQuoter';
 import { useAllowance, useApprove } from '@/hooks/useToken';
 import { useOpenPosition } from '@/hooks/useOpenPosition';
 import { useMaxLeverage } from '@/hooks/useMaxLeverage';
 import APYChart from '@/components/composed/trade/APYChart';
 import { DEFAULT_DEADLINE } from '@/global/constants';
-import { STRATEGIES, TOKEN_LIST } from '@/global/ithil';
+import { STRATEGIES, BALANCER_POOLS } from '@/global/ithil';
 import { useBorrowInterestRate } from '@/hooks/useBorrowInterestRate';
 import TabsSwitch from '@/components/composed/trade/TabsSwitch';
+import PoolSelect from '@/components/composed/trade/PoolSelect';
 import { useChainId } from '@/hooks';
 
-export default function YearnStrategyPage() {
+export default function BalancerAuraStrategyPage() {
   const { account } = useEthers();
   const chainId = useChainId();
+  const navigate = useNavigate();
 
+  const [selectedPool, setSelectedPool] = useState<PoolDetails>(
+    BALANCER_POOLS[0]
+  );
   const [spentToken, setSpentToken] = useState<TokenDetails>(
-    TOKEN_LIST[chainId][0]
+    selectedPool.tokens[0]
   );
   const [marginAmount, setMarginAmount] = useState<string>('0');
   const [marginMaxPercent, setMarginMaxPercent] = useState<string>('1');
@@ -45,14 +50,14 @@ export default function YearnStrategyPage() {
   const [baseApy, setBaseApy] = useState<number>(0);
 
   const [slippagePercent, setSlippagePercent] = useState<string>(
-    STRATEGIES[chainId].YearnStrategy.defaultSlippage
+    STRATEGIES[chainId].BalancerStrategy.defaultSlippage
   );
   const [deadline, setDeadline] = useState<string>(DEFAULT_DEADLINE);
   const [showAdvancedOptions, setShowAdvancedOptions] =
     useState<boolean>(false);
 
   const tokenBalance = useTokenBalance(spentToken.address, account);
-  const obtainedTokenAddress = useLatestVault(spentToken.address);
+  const obtainedTokenAddress = selectedPool.address;
 
   const slippageValue = useMemo(() => {
     return (100 - Number(slippagePercent)) / 100;
@@ -72,7 +77,7 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     maxSpent,
-    STRATEGIES[chainId].YearnStrategy
+    STRATEGIES[chainId].BalancerStrategy
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,13 +96,13 @@ export default function YearnStrategyPage() {
     spentToken.address,
     obtainedTokenAddress,
     marginAmountValue,
-    STRATEGIES[chainId].YearnStrategy,
+    STRATEGIES[chainId].BalancerStrategy,
     marginAmountValue
   );
 
   const allowance = useAllowance(
     spentToken.address,
-    STRATEGIES[chainId].YearnStrategy.address
+    STRATEGIES[chainId].BalancerStrategy.address
   );
 
   const { isLoading: isLoadingApprove, approve } = useApprove(
@@ -105,7 +110,7 @@ export default function YearnStrategyPage() {
   );
 
   const { isLoading: isLoadingOpenPos, openPosition } = useOpenPosition(
-    STRATEGIES[chainId].YearnStrategy
+    STRATEGIES[chainId].BalancerStrategy
   );
 
   const borrowIR = useBorrowInterestRate(
@@ -114,7 +119,7 @@ export default function YearnStrategyPage() {
     marginAmountValue,
     borrowed,
     minObtained || BigNumber(0),
-    STRATEGIES[chainId].YearnStrategy,
+    STRATEGIES[chainId].BalancerStrategy,
     true
   );
 
@@ -142,7 +147,7 @@ export default function YearnStrategyPage() {
 
   const handleApprove = () => {
     if (!account || !Number(marginAmount)) return;
-    approve(STRATEGIES[chainId].YearnStrategy.address, MaxUint256);
+    approve(STRATEGIES[chainId].BalancerStrategy.address, MaxUint256);
   };
 
   const handleOpenOrder = async () => {
@@ -172,9 +177,7 @@ export default function YearnStrategyPage() {
       maxSpent: maxSpent.toFixed(0),
       deadline: deadlineTimestamp,
     };
-    openPosition(newOrder, {
-      gasLimit: chainId === Localhost.chainId ? 30_000_000 : 700_000,
-    });
+    openPosition(newOrder, { gasLimit: 30_000_000 });
   };
 
   const handleExecute = () => {
@@ -211,12 +214,19 @@ export default function YearnStrategyPage() {
   }, [maxLeverage]);
 
   useEffect(() => {
-    setSpentToken(TOKEN_LIST[chainId][0]);
+    setSpentToken(selectedPool.tokens[0]);
+  }, [selectedPool]);
+
+  useEffect(() => {
+    if (chainId !== Localhost.chainId) {
+      navigate('/trade');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId]);
 
   return (
     <Page
-      heading="Yearn Strategy"
+      heading="Balancer+Aura Strategy"
       description="Leveraged staking on the most common yVaults"
     >
       {disabledButton && (
@@ -229,11 +239,16 @@ export default function YearnStrategyPage() {
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
         <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
           <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
+            <PoolSelect
+              pool={selectedPool}
+              availablePools={BALANCER_POOLS}
+              onPoolChange={(pool) => setSelectedPool(pool)}
+            />
             <div tw="flex w-full justify-between items-center" id="margin">
               <TokenInputField
                 label="Margin"
                 noMax
-                availableTokens={TOKEN_LIST[chainId]}
+                availableTokens={selectedPool.tokens}
                 value={marginAmount}
                 setValue={setMarginAmount}
                 stateChanger={setMarginAmount}

@@ -3,7 +3,8 @@ import tw from 'twin.macro';
 import React, { FC } from 'react';
 
 import Txt from '@/components/based/Txt';
-import { TOKEN_LIST } from '@/global/constants';
+import { TOKEN_LIST } from '@/global/ithil';
+import { useChainId } from '@/hooks';
 
 interface IText {
   value: string;
@@ -16,22 +17,30 @@ export const Text: FC<IText> = ({ value }) => {
 interface ITokenPair {
   collateralTokenSymbol: string;
   investmentTokenSymbol: string;
+  noText?: boolean;
 }
 
 export const TokenPair: FC<ITokenPair> = ({
   collateralTokenSymbol,
   investmentTokenSymbol,
+  noText = false,
 }) => {
-  const collateralTokenLogoURI = TOKEN_LIST.find(
+  const chainId = useChainId();
+  const collateralTokenLogoURI = TOKEN_LIST[chainId]?.filter(
     (token) => token.symbol === collateralTokenSymbol
-  )?.logoURI;
+  )[0]?.logoURI;
 
-  const investmentTokenLogoURI = TOKEN_LIST.find(
+  const investmentTokenLogoURI = TOKEN_LIST[chainId]?.filter(
     (token) => token.symbol === investmentTokenSymbol
-  )?.logoURI;
+  )[0]?.logoURI;
 
   return (
-    <div tw="flex flex-row justify-start items-center gap-6">
+    <div
+      css={[
+        tw`inline-block -ml-3.5`,
+        !noText && tw`flex flex-row justify-start items-center gap-6`,
+      ]}
+    >
       <div tw="relative">
         <div tw="w-7 h-7 border-radius[100%] bg-primary-100 absolute bottom[-2px] left[18px] z-index[2]"></div>
         {investmentTokenLogoURI ? (
@@ -57,7 +66,9 @@ export const TokenPair: FC<ITokenPair> = ({
           </div>
         )}
       </div>
-      <Text value={`${investmentTokenSymbol}/${collateralTokenSymbol}`} />
+      {!noText && (
+        <Text value={`${investmentTokenSymbol}/${collateralTokenSymbol}`} />
+      )}
     </div>
   );
 };
