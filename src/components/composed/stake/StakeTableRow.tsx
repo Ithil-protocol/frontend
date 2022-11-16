@@ -6,14 +6,14 @@ import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
 import Skeleton from 'react-loading-skeleton';
 
-import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
-import { ITableRow } from '@/components/based/table/DataTable';
-import Txt from '@/components/based/Txt';
-import { formatAmount, getTokenByAddress } from '@/global/utils';
-import { useBalance, useVaultData } from '@/hooks/useVault';
-import { useTotalSupply } from '@/hooks/useToken';
-import { useUpdateVaultStatus } from '@/state/vaults/hooks';
-import { useChainId } from '@/hooks';
+import StakeControlPanel from 'src/components/composed/stake/StakeControlPanel';
+import { ITableRow } from 'src/components/based/table/DataTable';
+import Txt from 'src/components/based/Txt';
+import { formatAmount, getTokenByAddress } from 'src/global/utils';
+import { useBalance, useVaultData } from 'src/hooks/useVault';
+import { useTotalSupply } from 'src/hooks/useToken';
+import { useUpdateVaultStatus } from 'src/state/vaults/hooks';
+import { useChainId } from 'src/hooks';
 
 type IStakeTableRow = ITableRow;
 

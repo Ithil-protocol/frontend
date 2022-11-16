@@ -5,14 +5,14 @@ import { ClipLoader } from 'react-spinners';
 import { v4 as uuid } from 'uuid';
 import { Bathtub, Plus } from 'phosphor-react';
 
-import Txt from '@/components/based/Txt';
-import DataTable from '@/components/based/table/DataTable';
-import Page from '@/components/based/Page';
-import { useRedeem } from '@/hooks/useToken';
-import { RedeemTokenInfoType, TokenDetails } from '@/global/types';
-import { TOKEN_LIST } from '@/global/ithil';
-import { importToken } from '@/global/utils';
-import { useChainId } from '@/hooks';
+import Txt from 'src/components/based/Txt';
+import DataTable from 'src/components/based/table/DataTable';
+import Page from 'src/components/based/Page';
+import { useRedeem } from 'src/hooks/useToken';
+import { RedeemTokenInfoType, TokenDetails } from 'src/global/types';
+import { TOKEN_LIST } from 'src/global/ithil';
+import { importToken } from 'src/global/utils';
+import { useChainId } from 'src/hooks';
 
 export default function FaucetsPage() {
   const chainId = useChainId();

@@ -5,9 +5,9 @@ import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 import { useVaultData } from './useVault';
 import { useChainId } from '.';
 
-import { StrategyContractType } from '@/global/types';
-import { CORE } from '@/global/ithil';
-import { baseInterestRate } from '@/global/utils';
+import { StrategyContractType } from 'src/global/types';
+import { CORE } from 'src/global/ithil';
+import { baseInterestRate } from 'src/global/utils';
 
 export function useMaxLeverage(
   spentToken: string,

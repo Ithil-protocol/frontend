@@ -2,8 +2,8 @@
 import tw from 'twin.macro';
 import React, { FC, useEffect, useState } from 'react';
 
-import Txt from '@/components/based/Txt';
-import Tooltip from '@/components/based/Tooltip';
+import Txt from 'src/components/based/Txt';
+import Tooltip from 'src/components/based/Tooltip';
 
 interface IInputField {
   label?: string;

@@ -3,7 +3,7 @@ import { useContractFunction } from '@usedapp/core';
 
 import { useCheckValidChain, useHandleTxStatus } from './index';
 
-import { StrategyContractType } from '@/global/types';
+import { StrategyContractType } from 'src/global/types';
 
 export function useEditPosition(strategy: StrategyContractType) {
   const isValid = useCheckValidChain();

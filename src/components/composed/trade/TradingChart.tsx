@@ -2,11 +2,11 @@
 import 'twin.macro';
 import React, { FC, useState } from 'react';
 
-import { TokenDetails } from '@/global/types';
-import Txt from '@/components/based/Txt';
-import TabButton from '@/components/based/TabButton';
-import TradingViewAdvancedChart from '@/components/based/charts/TradingViewAdvancedChart';
-import TradingViewBasicChart from '@/components/based/charts/TradingViewBasicChart';
+import { TokenDetails } from 'src/global/types';
+import Txt from 'src/components/based/Txt';
+import TabButton from 'src/components/based/TabButton';
+import TradingViewAdvancedChart from 'src/components/based/charts/TradingViewAdvancedChart';
+import TradingViewBasicChart from 'src/components/based/charts/TradingViewBasicChart';
 
 interface ITradingChart {
   firstToken: TokenDetails;

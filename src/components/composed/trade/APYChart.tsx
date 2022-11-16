@@ -3,11 +3,11 @@ import 'twin.macro';
 import React, { FC, SetStateAction, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import Txt from '@/components/based/Txt';
-import { YEARN_API_URL } from '@/global/constants';
-import fetchAPI from '@/global/api';
-import { TokenDetails } from '@/global/types';
-import { useTheme } from '@/state/application/hooks';
+import Txt from 'src/components/based/Txt';
+import { YEARN_API_URL } from 'src/global/constants';
+import fetchAPI from 'src/global/api';
+import { TokenDetails } from 'src/global/types';
+import { useTheme } from 'src/state/application/hooks';
 
 const SCALING_FACTOR = 100;
 

@@ -5,7 +5,7 @@ import { Question } from 'phosphor-react';
 import ReactTooltip from 'react-tooltip';
 import { v4 as uuidv4 } from 'uuid';
 
-import Txt from '@/components/based/Txt';
+import Txt from 'src/components/based/Txt';
 
 interface ITooltip {
   text: string;

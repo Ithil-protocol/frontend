@@ -2,10 +2,10 @@
 import tw from 'twin.macro';
 import React, { FC, MouseEventHandler } from 'react';
 
-import Txt from '@/components/based/Txt';
-import Tooltip from '@/components/based/Tooltip';
-import { ReactComponent as RadioButtonNotSelected } from '@/assets/images/radioButton/notSelected.svg';
-import { ReactComponent as RadioButtonSelected } from '@/assets/images/radioButton/selected.svg';
+import Txt from 'src/components/based/Txt';
+import Tooltip from 'src/components/based/Tooltip';
+import { ReactComponent as RadioButtonNotSelected } from 'src/assets/images/radioButton/notSelected.svg';
+import { ReactComponent as RadioButtonSelected } from 'src/assets/images/radioButton/selected.svg';
 
 interface RadioItem {
   label: string;

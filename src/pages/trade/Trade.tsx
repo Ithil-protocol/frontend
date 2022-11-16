@@ -1,15 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro';
-import React from 'react';
 import { Localhost } from '@usedapp/core';
 
-import Page from '@/components/based/Page';
-import DataTable from '@/components/based/table/DataTable';
-import Txt from '@/components/based/Txt';
-import { TRADE_STRATEGIES } from '@/global/constants';
-import TradeTableRow from '@/components/composed/trade/TradeTableRow';
-import Tooltip from '@/components/based/Tooltip';
-import { useChainId } from '@/hooks';
+import Page from 'src/components/based/Page';
+import DataTable from 'src/components/based/table/DataTable';
+import Txt from 'src/components/based/Txt';
+import { TRADE_STRATEGIES } from 'src/global/constants';
+import TradeTableRow from 'src/components/composed/trade/TradeTableRow';
+import Tooltip from 'src/components/based/Tooltip';
+import { useChainId } from 'src/hooks';
 
 const TradePage = () => {
   const chainId = useChainId();

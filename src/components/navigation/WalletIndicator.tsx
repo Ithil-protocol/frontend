@@ -3,9 +3,9 @@ import 'twin.macro';
 import React, { FC } from 'react';
 import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
 
-import Txt from '@/components/based/Txt';
-import { useWalletConnectorIcon } from '@/state/application/hooks';
-import { formatAmount } from '@/global/utils';
+import Txt from 'src/components/based/Txt';
+import { useWalletConnectorIcon } from 'src/state/application/hooks';
+import { formatAmount } from 'src/global/utils';
 
 interface IWalletIndicator {
   onClick: () => void;

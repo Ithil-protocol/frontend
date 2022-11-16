@@ -6,24 +6,24 @@ import { ArrowLeft } from 'phosphor-react';
 import Skeleton from 'react-loading-skeleton';
 import { PulseLoader } from 'react-spinners';
 
-import Container from '@/components/based/Container';
-import Txt from '@/components/based/Txt';
-import TradingChart from '@/components/composed/trade/TradingChart';
-import APYChart from '@/components/composed/trade/APYChart';
+import Container from 'src/components/based/Container';
+import Txt from 'src/components/based/Txt';
+import TradingChart from 'src/components/composed/trade/TradingChart';
+import APYChart from 'src/components/composed/trade/APYChart';
 import PositionDetailsWidget, {
   SkeletonPositionDetailsWidget,
-} from '@/components/composed/dashboard/PositionDetailsWidget';
-import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
-import { usePositions } from '@/hooks/usePositions';
-import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
+} from 'src/components/composed/dashboard/PositionDetailsWidget';
+import PositionControlPanel from 'src/components/composed/dashboard/PositionControlPanel';
+import { usePositions } from 'src/hooks/usePositions';
+import ClosePositionModal from 'src/components/composed/common/ClosePositionModal';
 import {
   getPoolNameByAddress,
   getStrategyByType,
   getTokenByAddress,
-} from '@/global/utils';
-import { STRATEGIES } from '@/global/ithil';
-import { useTheme } from '@/state/application/hooks';
-import { useChainId } from '@/hooks';
+} from 'src/global/utils';
+import { STRATEGIES } from 'src/global/ithil';
+import { useTheme } from 'src/state/application/hooks';
+import { useChainId } from 'src/hooks';
 
 export default function PositionDetails() {
   const theme = useTheme();

@@ -11,22 +11,22 @@ import {
 } from '@usedapp/core';
 import { ClipLoader } from 'react-spinners';
 
-import Txt from '@/components/based/Txt';
-import Modal from '@/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import Modal from 'src/components/based/Modal';
 import {
   useTheme,
   useTxTimestamp,
   useUpdateTxTimestamp,
   useWalletConnector,
   useWalletConnectorIcon,
-} from '@/state/application/hooks';
-import useCopyClipboard from '@/hooks/useCopyClipboard';
+} from 'src/state/application/hooks';
+import useCopyClipboard from 'src/hooks/useCopyClipboard';
 import {
   formatAmount,
   getExplorerAddressLink,
   getExplorerTransactionLink,
   shortenString,
-} from '@/global/utils';
+} from 'src/global/utils';
 
 interface IAccountModal {
   open: boolean;

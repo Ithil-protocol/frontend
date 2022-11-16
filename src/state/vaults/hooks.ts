@@ -4,7 +4,7 @@ import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 import { updateVaultStatus } from './index';
 import { VaultStatusType, VaultsType } from './types';
 
-import { AppState } from '@/state/store';
+import { AppState } from 'src/state/store';
 
 const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 

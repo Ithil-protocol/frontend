@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { useChainId, useCheckValidChain, useHandleTxStatus } from './index';
 
-import { CORE } from '@/global/ithil';
+import { CORE } from 'src/global/ithil';
 
 export function useBalance(tokenAddress: string) {
   const chainId = useChainId();

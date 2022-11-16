@@ -3,10 +3,10 @@ import 'twin.macro';
 import React, { FC, useState } from 'react';
 import { Placement } from '@popperjs/core';
 
-import Dropdown from '@/components/based/Dropdown';
-import Button from '@/components/based/Button';
-import Txt from '@/components/based/Txt';
-import { KeyableType } from '@/global/types';
+import Dropdown from 'src/components/based/Dropdown';
+import Button from 'src/components/based/Button';
+import Txt from 'src/components/based/Txt';
+import { KeyableType } from 'src/global/types';
 
 interface IMenuItem {
   label: string;

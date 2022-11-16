@@ -4,8 +4,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import BigNumber from 'bignumber.js';
 
-import Txt from '@/components/based/Txt';
-import { useTheme } from '@/state/application/hooks';
+import Txt from 'src/components/based/Txt';
+import { useTheme } from 'src/state/application/hooks';
 
 interface IVaultData {
   baseFee: BigNumber;

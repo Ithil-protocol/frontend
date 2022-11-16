@@ -3,10 +3,10 @@ import tw from 'twin.macro';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { TokenPair } from '@/components/composed/dashboard/TableCell';
-import { ITableRow } from '@/components/based/table/DataTable';
-import RiskPercentBalls from '@/components/composed/trade/RiskPercentCircles';
-import Txt from '@/components/based/Txt';
+import { TokenPair } from 'src/components/composed/dashboard/TableCell';
+import { ITableRow } from 'src/components/based/table/DataTable';
+import RiskPercentBalls from 'src/components/composed/trade/RiskPercentCircles';
+import Txt from 'src/components/based/Txt';
 
 type ITradeTableRow = ITableRow;
 

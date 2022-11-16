@@ -2,9 +2,9 @@
 import tw from 'twin.macro';
 import React, { FC } from 'react';
 
-import Txt from '@/components/based/Txt';
-import { TOKEN_LIST } from '@/global/ithil';
-import { useChainId } from '@/hooks';
+import Txt from 'src/components/based/Txt';
+import { TOKEN_LIST } from 'src/global/ithil';
+import { useChainId } from 'src/hooks';
 
 interface IText {
   value: string;

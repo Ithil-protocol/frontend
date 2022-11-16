@@ -3,19 +3,19 @@ import 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { MagnifyingGlass } from 'phosphor-react';
 
-import Txt from '@/components/based/Txt';
-import Page from '@/components/based/Page';
-import DataTable from '@/components/based/table/DataTable';
-import SortButton from '@/components/composed/stake/SortButton';
-import { KeyableType } from '@/global/types';
-import Button from '@/components/based/Button';
-import InputField from '@/components/based/InputField';
-import Tooltip from '@/components/based/Tooltip';
-import StakeTableRow from '@/components/composed/stake/StakeTableRow';
-import { TOKEN_LIST } from '@/global/ithil';
-import { useVaultsState } from '@/state/vaults/hooks';
-import { formatAmountToNumber } from '@/global/utils';
-import { useChainId } from '@/hooks';
+import Txt from 'src/components/based/Txt';
+import Page from 'src/components/based/Page';
+import DataTable from 'src/components/based/table/DataTable';
+import SortButton from 'src/components/composed/stake/SortButton';
+import { KeyableType } from 'src/global/types';
+import Button from 'src/components/based/Button';
+import InputField from 'src/components/based/InputField';
+import Tooltip from 'src/components/based/Tooltip';
+import StakeTableRow from 'src/components/composed/stake/StakeTableRow';
+import { TOKEN_LIST } from 'src/global/ithil';
+import { useVaultsState } from 'src/state/vaults/hooks';
+import { formatAmountToNumber } from 'src/global/utils';
+import { useChainId } from 'src/hooks';
 
 const APY_MENU: KeyableType = {
   highest: 'Highest',

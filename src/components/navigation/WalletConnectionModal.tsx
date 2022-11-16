@@ -3,12 +3,12 @@ import React, { FC } from 'react';
 import tw from 'twin.macro';
 import { useEthers } from '@usedapp/core';
 
-import Modal from '@/components/based/Modal';
-import Txt from '@/components/based/Txt';
-import { useUpdateWalletConnector } from '@/state/application/hooks';
-import { injected, walletconnect } from '@/config/connectors';
-import { ReactComponent as MetaMaskIcon } from '@/assets/images/metamask.svg';
-import { ReactComponent as WalletConnectIcon } from '@/assets/images/walletconnect.svg';
+import Modal from 'src/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import { useUpdateWalletConnector } from 'src/state/application/hooks';
+import { injected, walletconnect } from 'src/config/connectors';
+import { ReactComponent as MetaMaskIcon } from 'src/assets/images/metamask.svg';
+import { ReactComponent as WalletConnectIcon } from 'src/assets/images/walletconnect.svg';
 
 interface IWalletModal {
   id?: string;

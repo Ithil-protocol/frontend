@@ -5,8 +5,8 @@ import { CaretDown } from 'phosphor-react';
 
 import TokenModal from './TokenModal';
 
-import Button from '@/components/based/Button';
-import { TokenDetails } from '@/global/types';
+import Button from 'src/components/based/Button';
+import { TokenDetails } from 'src/global/types';
 
 interface ITokenField {
   onTokenChange(token: TokenDetails): void;

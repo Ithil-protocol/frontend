@@ -6,7 +6,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import DataTablePagination from './DataTablePagination';
 import { tableContainerStyle, tdSkeletonStyle } from './styles';
 
-import Txt from '@/components/based/Txt';
+import Txt from 'src/components/based/Txt';
 
 type TableHeadType = {
   id: string;

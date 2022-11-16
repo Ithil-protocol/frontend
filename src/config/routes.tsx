@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { RouteType } from '@/global/types';
-import StakePage from '@/pages/stake/Stake';
-import TradePage from '@/pages/trade/Trade';
-import DashboardPage from '@/pages/dashboard/Dashboard';
-import MarginTradingPage from '@/pages/trade/MarginTrading';
-import YearnStrategyPage from '@/pages/trade/YearnStrategy';
-import PositionDetails from '@/pages/dashboard/PositionDetails';
-import FaucetsPage from '@/pages/faucets/Faucets';
-import VaultDetails from '@/pages/stake/VaultDetails';
-import BalancerAuraStrategyPage from '@/pages/trade/BalancerAuraStrategy';
+import { RouteType } from 'src/global/types';
+import StakePage from 'src/pages/stake/Stake';
+import TradePage from 'src/pages/trade/Trade';
+import DashboardPage from 'src/pages/dashboard/Dashboard';
+import MarginTradingPage from 'src/pages/trade/MarginTrading';
+import YearnStrategyPage from 'src/pages/trade/YearnStrategy';
+import PositionDetails from 'src/pages/dashboard/PositionDetails';
+import FaucetsPage from 'src/pages/faucets/Faucets';
+import VaultDetails from 'src/pages/stake/VaultDetails';
+import BalancerAuraStrategyPage from 'src/pages/trade/BalancerAuraStrategy';
 
 const APP_ROUTES: RouteType[] = [
   {

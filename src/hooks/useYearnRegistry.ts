@@ -8,7 +8,7 @@ import {
 
 import { useChainId, useCheckValidChain } from './index';
 
-import { MOCKS } from '@/global/ithil';
+import { MOCKS } from 'src/global/ithil';
 
 export function useLatestVault(tokenAddress: string) {
   const chainId = useChainId();

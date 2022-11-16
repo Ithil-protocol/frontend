@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC, MouseEventHandler } from 'react';
 
-import Txt from '@/components/based/Txt';
+import Txt from 'src/components/based/Txt';
 
 type TabType = {
   title: string;

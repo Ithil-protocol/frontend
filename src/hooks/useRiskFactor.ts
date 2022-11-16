@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { useCheckValidChain } from './index';
 
-import { StrategyContractType } from '@/global/types';
+import { StrategyContractType } from 'src/global/types';
 
 export function useRiskFactor(
   strategy: StrategyContractType,

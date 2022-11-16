@@ -3,7 +3,7 @@ import { useEthers, useLogs } from '@usedapp/core';
 
 import { useCheckValidChain } from './index';
 
-import { OpenedPositionType, StrategyContractType } from '@/global/types';
+import { OpenedPositionType, StrategyContractType } from 'src/global/types';
 
 export function useOpenedPositions(strategy: StrategyContractType) {
   /**

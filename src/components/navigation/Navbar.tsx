@@ -10,15 +10,15 @@ import AccountModal from './AccountModal';
 import NetworkAlertBar from './NetworkAlertBar';
 import MobileMenu from './MobileMenu';
 
-import { useTheme } from '@/state/application/hooks';
-import Button from '@/components/based/Button';
-import NavigationMenu from '@/components/navigation/NavigationMenu';
-import ThemeSwitch from '@/components/navigation/ThemeSwitch';
-import KebabMenu from '@/components/navigation/KebabMenu';
-import { ReactComponent as LogoFullLight } from '@/assets/images/logoFullLight.svg';
-import { ReactComponent as LogoFullDark } from '@/assets/images/logoFullDark.svg';
-import { ReactComponent as LogoSymbolLight } from '@/assets/images/logoSymbolLight.svg';
-import { ReactComponent as LogoSymbolDark } from '@/assets/images/logoSymbolDark.svg';
+import { useTheme } from 'src/state/application/hooks';
+import Button from 'src/components/based/Button';
+import NavigationMenu from 'src/components/navigation/NavigationMenu';
+import ThemeSwitch from 'src/components/navigation/ThemeSwitch';
+import KebabMenu from 'src/components/navigation/KebabMenu';
+import { ReactComponent as LogoFullLight } from 'src/assets/images/logoFullLight.svg';
+import { ReactComponent as LogoFullDark } from 'src/assets/images/logoFullDark.svg';
+import { ReactComponent as LogoSymbolLight } from 'src/assets/images/logoSymbolLight.svg';
+import { ReactComponent as LogoSymbolDark } from 'src/assets/images/logoSymbolDark.svg';
 
 const Navbar = () => {
   const { account, chainId } = useEthers();

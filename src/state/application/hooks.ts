@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import { toggleTheme, updateTxTimestamp, updateWalletConnector } from './index';
 import { ThemeType, WalletConnectorType } from './types';
 
-import { AppState } from '@/state/store';
-import { ReactComponent as MetaMaskIcon } from '@/assets/images/metamask.svg';
-import { ReactComponent as WalletConnectIcon } from '@/assets/images/walletconnect.svg';
+import { AppState } from 'src/state/store';
+import { ReactComponent as MetaMaskIcon } from 'src/assets/images/metamask.svg';
+import { ReactComponent as WalletConnectIcon } from 'src/assets/images/walletconnect.svg';
 
 const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 

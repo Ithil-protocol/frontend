@@ -9,9 +9,9 @@ import React, {
 } from 'react';
 import { useEthers, useTokenBalance } from '@usedapp/core';
 
-import Txt from '@/components/based/Txt';
-import { TokenDetails } from '@/global/types';
-import { formatAmount } from '@/global/utils';
+import Txt from 'src/components/based/Txt';
+import { TokenDetails } from 'src/global/types';
+import { formatAmount } from 'src/global/utils';
 
 interface IInputFieldMax {
   label?: string;

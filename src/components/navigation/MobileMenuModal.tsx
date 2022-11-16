@@ -7,12 +7,12 @@ import { Circle } from 'phosphor-react';
 import ThemeSwitch from './ThemeSwitch';
 import NetworkMenu from './NetworkMenu';
 
-import Txt from '@/components/based/Txt';
-import Modal from '@/components/based/Modal';
-import { useTheme } from '@/state/application/hooks';
-import APP_ROUTES from '@/config/routes';
-import { ReactComponent as LogoFullLight } from '@/assets/images/logoFullLight.svg';
-import { ReactComponent as LogoFullDark } from '@/assets/images/logoFullDark.svg';
+import Txt from 'src/components/based/Txt';
+import Modal from 'src/components/based/Modal';
+import { useTheme } from 'src/state/application/hooks';
+import APP_ROUTES from 'src/config/routes';
+import { ReactComponent as LogoFullLight } from 'src/assets/images/logoFullLight.svg';
+import { ReactComponent as LogoFullDark } from 'src/assets/images/logoFullDark.svg';
 
 interface IMobileMenuModal {
   open: boolean;

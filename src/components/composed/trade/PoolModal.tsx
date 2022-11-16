@@ -3,11 +3,11 @@ import tw from 'twin.macro';
 import React, { FC, useEffect, useState } from 'react';
 import { MagnifyingGlass } from 'phosphor-react';
 
-import Modal from '@/components/based/Modal';
-import Txt from '@/components/based/Txt';
-import InputField from '@/components/based/InputField';
-import { PoolDetails } from '@/global/types';
-import { BALANCER_POOLS } from '@/global/ithil';
+import Modal from 'src/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import InputField from 'src/components/based/InputField';
+import { PoolDetails } from 'src/global/types';
+import { BALANCER_POOLS } from 'src/global/ithil';
 
 interface IPoolModal {
   open: boolean;

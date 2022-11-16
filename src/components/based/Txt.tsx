@@ -2,9 +2,9 @@
 import tw from 'twin.macro';
 import React, { FC, ReactNode } from 'react';
 
-import { IBaseProps } from '@/global/types';
-import { TOKEN_LIST } from '@/global/ithil';
-import { useChainId } from '@/hooks';
+import { IBaseProps } from 'src/global/types';
+import { TOKEN_LIST } from 'src/global/ithil';
+import { useChainId } from 'src/hooks';
 
 export interface ITxtProps extends IBaseProps {
   children: ReactNode;

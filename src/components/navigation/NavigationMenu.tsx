@@ -4,8 +4,8 @@ import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Circle } from 'phosphor-react';
 
-import APP_ROUTES from '@/config/routes';
-import Txt from '@/components/based/Txt';
+import APP_ROUTES from 'src/config/routes';
+import Txt from 'src/components/based/Txt';
 
 interface INavigationMenu {
   onMenuClick?: () => void;
