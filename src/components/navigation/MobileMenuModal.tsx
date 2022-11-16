@@ -29,20 +29,20 @@ const MobileMenuModal: FC<IMobileMenuModal> = ({ open, onClose }) => {
     APP_ROUTES[0];
 
   return (
-    <Modal tw="bg-secondary min-width[450]" open={open} onClose={onClose}>
+    <Modal tw="bg-secondary [min-width:450]" open={open} onClose={onClose}>
       <div tw="w-full h-full flex flex-col">
         <Txt.Heading2 tw="flex justify-center mb-6">
           {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
         </Txt.Heading2>
-        <div tw="w-full height[1px] bg-font-200" />
-        <div tw="w-full flex-grow flex items-center justify-center flex-col gap-6">
+        <div tw="w-full [height:1px] bg-font-200" />
+        <div tw="w-full grow flex items-center justify-center flex-col gap-6">
           {APP_ROUTES.filter((route) => route.isNavLinked).map((route) => {
             const isSelected = route.path === selectedRoute?.path;
             return (
               <Link
                 to={route.path}
                 key={route.path}
-                tw="text-secondary flex flex-col align-items[center] cursor-pointer rounded-md w-auto relative"
+                tw="text-secondary flex flex-col [align-items:center] cursor-pointer rounded-md w-auto relative"
                 onClick={onClose}
               >
                 <Txt.Body1Regular
@@ -57,7 +57,7 @@ const MobileMenuModal: FC<IMobileMenuModal> = ({ open, onClose }) => {
             );
           })}
         </div>
-        <div tw="w-full height[1px] bg-font-200 tablet:hidden mobile:display[initial]" />
+        <div tw="w-full [height:1px] bg-font-200 tablet:hidden mobile:[display:initial]" />
         <div tw="w-full items-center justify-center flex-row gap-6 pt-4 tablet:hidden mobile:flex">
           <ThemeSwitch />
           <NetworkMenu />

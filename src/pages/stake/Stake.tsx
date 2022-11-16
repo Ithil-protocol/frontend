@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
+import tw from 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { MagnifyingGlass } from 'phosphor-react';
 
@@ -69,7 +69,13 @@ export default function StakePage() {
 
   return (
     <Page heading="Stake">
-      <div tw="tablet:width[initial] flex tablet:flex-row justify-center tablet:items-center gap-3 self-start mb-4 whitespace-nowrap mobile:flex-col mobile:w-full mobile:items-start">
+      <div
+        css={[
+          tw`flex justify-center gap-3 self-start mb-4 whitespace-nowrap`,
+          tw`mobile:flex-col mobile:w-full mobile:items-start`,
+          tw`tablet:items-center tablet:flex-row tablet:[width:initial]`,
+        ]}
+      >
         <InputField
           tw="mr-9"
           value={searchInputValue}
@@ -82,7 +88,7 @@ export default function StakePage() {
           }
         />
         <div tw="flex justify-center items-center gap-3">
-          <Txt.Body1Regular tw="mobile:hidden tablet:display[initial]">
+          <Txt.Body1Regular tw="mobile:hidden tablet:[display:initial]">
             Sort by:
           </Txt.Body1Regular>
           <SortButton

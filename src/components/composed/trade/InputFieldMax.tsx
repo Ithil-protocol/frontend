@@ -67,7 +67,7 @@ const InputFieldMax: FC<IInputFieldMax> = ({
       {label && <Txt.Body2Regular>{label}</Txt.Body2Regular>}
       <div
         css={[
-          tw`flex flex-row items-center bg-primary-200 rounded-md tablet:height[48px] height[43px] px-3 gap-1`,
+          tw`flex flex-row items-center bg-primary-200 rounded-md tablet:[height:48px] [height:43px] px-3 gap-1`,
           inputIsFocused &&
             tw`outline-[#4E5F71 solid]! dark:outline-[#A4B1BE solid]!`,
         ]}
@@ -76,7 +76,7 @@ const InputFieldMax: FC<IInputFieldMax> = ({
           placeholder={placeholder}
           onFocus={() => setInputIsFocused(true)}
           onBlur={() => setInputIsFocused(false)}
-          tw="flex-grow bg-primary-200 rounded-md text-input-text font-sans text-font font-normal focus:outline-none max-w-none min-width[20px]"
+          tw="flex-grow bg-primary-200 rounded-md text-input-text font-sans text-font font-normal focus:outline-none max-w-none [min-width:20px]"
           type="text"
           value={inputValue}
           onInput={onInput}

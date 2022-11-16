@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
-import React, { FC, useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
 import BigNumber from 'bignumber.js';
+import { FC, useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 
 import Txt from 'src/components/based/Txt';
 import { useTheme } from 'src/state/application/hooks';
+import tw from 'twin.macro';
 
 interface IVaultData {
   baseFee: BigNumber;
@@ -128,7 +128,14 @@ const VaultChart: FC<IVaultChart> = ({ vaultData, utilisationRate }) => {
   }, [utilisationRate, vaultData]);
 
   return (
-    <div tw="laptop:w-full laptop:box-border height[:auto] max-height[500px] laptop:max-height[initial] mobile:pb-12 desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
+    <div
+      css={[
+        tw`mobile:pb-12 desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100`,
+        tw`laptop:w-full laptop:box-border laptop:[max-height:initial]`,
+        tw`desktop:p-10`,
+        tw`[height:auto] [max-height:500px]`,
+      ]}
+    >
       <Txt.Body1Bold>Vault Chart</Txt.Body1Bold>
       <Line
         options={CHART_OPTIONS}

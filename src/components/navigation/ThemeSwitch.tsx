@@ -17,12 +17,12 @@ const ThemeSwitch: FC<IBaseProps> = ({ className }) => {
       className={className}
       onChange={toggleTheme}
       uncheckedIcon={
-        <div tw="flex justify-center items-center height[100%]">
+        <div tw="flex justify-center items-center [height:100%]">
           <SwitchDark />
         </div>
       }
       checkedIcon={
-        <div tw="flex justify-center items-center height[100%]">
+        <div tw="flex justify-center items-center [height:100%]">
           <SwitchLight />
         </div>
       }

@@ -76,7 +76,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
+          tw`cursor-pointer bg-primary-100 transition-all [transition-duration:300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
         ]}
         onClick={() => {
@@ -142,7 +142,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
                   <button
                     onClick={handleInfoClick}
                     css={[
-                      tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
+                      tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all [transition-duration:200ms]`,
                     ]}
                   >
                     Info

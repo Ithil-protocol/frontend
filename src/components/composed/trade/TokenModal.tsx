@@ -50,7 +50,7 @@ const TokenModal: FC<ITokenModal> = ({
   };
 
   return (
-    <Modal tw="bg-secondary width[600px]" open={open} onClose={onClose}>
+    <Modal tw="bg-secondary [width:600px]" open={open} onClose={onClose}>
       <div tw="flex flex-row justify-center items-center w-full">
         <Txt.Heading2 tw="self-end">Select a token</Txt.Heading2>
       </div>
@@ -59,8 +59,8 @@ const TokenModal: FC<ITokenModal> = ({
         onChange={(value) => searchOnChange(value)}
         renderRight={<MagnifyingGlass tw="text-secondary" />}
       />
-      <div tw="w-full height[1px] bg-primary-300 my-4"></div>
-      <div tw="w-full height[384px] overflow-y-auto">
+      <div tw="w-full [height:1px] bg-primary-300 my-4"></div>
+      <div tw="w-full [height:384px] overflow-y-auto">
         {filteredTokenList.map((token) => {
           return (
             <div

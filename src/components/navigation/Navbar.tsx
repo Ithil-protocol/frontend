@@ -34,10 +34,10 @@ const Navbar = () => {
       <div tw="w-full px-5 desktop:w-[calc(100% - 9rem)] my-6 tablet:mx-auto flex flex-row items-center justify-between">
         <span tw="flex flex-row items-center mobile:flex-grow">
           <a href="/">
-            <div tw="tablet:display[initial] mobile:hidden">
+            <div tw="tablet:[display:initial] mobile:hidden">
               {theme === 'dark' ? <LogoFullDark /> : <LogoFullLight />}
             </div>
-            <div tw="tablet:hidden mobile:display[initial] mobile:flex mobile:gap-x-2">
+            <div tw="tablet:hidden mobile:[display:initial] mobile:flex mobile:gap-x-2">
               {theme === 'dark' ? <LogoSymbolDark /> : <LogoSymbolLight />}
             </div>
           </a>
@@ -45,19 +45,19 @@ const Navbar = () => {
             tw="laptop:static laptop:ml-24 laptop:mr-0 flex flex-row items-center laptop:justify-start mobile:flex-grow mobile:justify-end mobile:ml-0 mobile:mr-4 gap-x-4"
             id="navigation"
           >
-            <div tw="mobile:hidden laptop:display[initial]">
+            <div tw="mobile:hidden laptop:[display:initial]">
               <NavigationMenu />
             </div>
-            <div tw="laptop:hidden mobile:display[initial]">
+            <div tw="laptop:hidden mobile:[display:initial]">
               <MobileMenu />
             </div>
-            <div tw="tablet:display[initial] mobile:hidden">
+            <div tw="tablet:[display:initial] mobile:hidden">
               <ThemeSwitch />
             </div>
           </span>
         </span>
         <span tw="flex flex-row items-center gap-2" id="connector">
-          <div tw="tablet:display[initial] mobile:hidden">
+          <div tw="tablet:[display:initial] mobile:hidden">
             <NetworkMenu />
           </div>
           {account ? (

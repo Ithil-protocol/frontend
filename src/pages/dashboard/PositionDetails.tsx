@@ -100,33 +100,33 @@ export default function PositionDetails() {
           <div tw="flex flex-row items-baseline w-full">
             <ArrowLeft
               size={28}
-              tw="text-font-200 mr-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s] float-left"
+              tw="text-font-200 mr-6 cursor-pointer hover:[transform:scale(1.1)] transition-all [transition-duration:.2s] float-left"
               onClick={() => navigate('/dashboard')}
             />
             <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
               {investmentToken && collateralToken ? (
                 <>
                   <div tw="relative mr-3">
-                    <div tw="w-9 h-9 border-radius[100%] bg-primary-100 absolute bottom[0] left[28px] z-index[2]"></div>
+                    <div tw="w-9 h-9 [border-radius:100%] bg-primary-100 absolute [bottom:0] [left:28px] [z-index:2]"></div>
                     {investmentToken && investmentToken.logoURI ? (
                       <img
-                        tw="w-9 h-9 z-index[3]"
+                        tw="w-9 h-9 [z-index:3]"
                         src={investmentToken.logoURI}
                         alt={investmentToken?.symbol}
                       />
                     ) : (
-                      <div tw="w-9 h-9 bg-primary-400 rounded-full z-index[3] flex items-center justify-center">
+                      <div tw="w-9 h-9 bg-primary-400 rounded-full [z-index:3] flex items-center justify-center">
                         <Txt.Body2Bold>?</Txt.Body2Bold>
                       </div>
                     )}
                     {collateralToken ? (
                       <img
-                        tw="w-9 h-9 left-8 bottom-0 absolute z-index[4]"
+                        tw="w-9 h-9 left-8 bottom-0 absolute [z-index:4]"
                         src={collateralToken?.logoURI}
                         alt={collateralToken?.symbol}
                       />
                     ) : (
-                      <div tw="w-9 h-9 bg-primary-400 rounded-full left-8 bottom-0 absolute z-index[4] flex items-center justify-center">
+                      <div tw="w-9 h-9 bg-primary-400 rounded-full left-8 bottom-0 absolute [z-index:4] flex items-center justify-center">
                         <Txt.Body2Bold>?</Txt.Body2Bold>
                       </div>
                     )}
@@ -170,7 +170,7 @@ export default function PositionDetails() {
                 <APYChart spentToken={collateralToken} />
               )
             ) : (
-              <div tw="w-full height[500px] max-height[500px] box-content desktop:w-8/12 flex flex-col items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16 justify-center">
+              <div tw="w-full [height:500px] [max-height:500px] box-content desktop:w-8/12 flex flex-col items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16 justify-center">
                 <PulseLoader
                   color={theme === 'dark' ? '#ffffff8d' : '#0000008d'}
                   size={10}

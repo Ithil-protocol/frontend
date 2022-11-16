@@ -17,12 +17,12 @@ const NetworkAlertBar: FC<INetworkAlertBar> = ({ content }) => {
   };
 
   return (
-    <div tw="w-full height[50px] bg-error text-white font-bold flex items-center justify-center">
+    <div tw="w-full [height:50px] bg-error text-white font-bold flex items-center justify-center">
       {content}
       <button
         onClick={hanldeSwitchNetwork}
         css={[
-          tw`ml-3 rounded-lg py-1 px-3 border-1 border-white text-white bg-white-100 bg-opacity-10 hover:bg-white hover:text-error transition-all transition-duration[200ms]`,
+          tw`ml-3 rounded-lg py-1 px-3 border-1 border-white text-white bg-white-100 bg-opacity-10 hover:bg-white hover:text-error transition-all [transition-duration:200ms]`,
         ]}
       >
         Switch

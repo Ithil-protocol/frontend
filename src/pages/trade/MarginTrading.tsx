@@ -334,7 +334,7 @@ export default function MarginTradingPage() {
         </div>
       )}
       <div tw="w-full flex flex-col desktop:flex-row gap-6">
-        <div tw="flex flex-col gap-3 flex-grow w-full desktop:w-4/12">
+        <div tw="flex flex-col gap-3 grow w-full desktop:w-4/12">
           <div tw="flex flex-col justify-between items-center rounded-xl p-5 bg-primary-100 gap-7">
             <TabsSwitch
               activeIndex={collateralIsSpentToken ? 'long' : 'short'}
@@ -369,7 +369,7 @@ export default function MarginTradingPage() {
               )}
               <ArrowRight
                 size={28}
-                tw="text-font-200 mx-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s]"
+                tw="text-font-200 mx-6 cursor-pointer hover:[transform:scale(1.1)] transition-all [transition-duration:.2s]"
                 onClick={handleChangeToken}
               />
               {collateralIsSpentToken ? (

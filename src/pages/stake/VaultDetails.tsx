@@ -97,10 +97,10 @@ export default function VaultDetails() {
           <div tw="flex flex-row items-baseline w-full">
             <ArrowLeft
               size={28}
-              tw="text-font-200 mr-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s] float-left"
+              tw="text-font-200 mr-6 cursor-pointer hover:[transform:scale(1.1)] transition-all [transition-duration:.2s] float-left"
               onClick={() => navigate('/stake')}
             />
-            <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
+            <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 grow -ml-8">
               <img
                 tw="w-9 h-9"
                 src={vaultToken?.logoURI}

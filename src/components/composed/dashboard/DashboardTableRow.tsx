@@ -54,7 +54,7 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
+          tw`cursor-pointer bg-primary-100 transition-all [transition-duration:300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
         ]}
         onClick={() => {

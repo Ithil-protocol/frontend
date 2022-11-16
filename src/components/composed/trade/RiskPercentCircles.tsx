@@ -14,7 +14,7 @@ const RiskPercentCircles: FC<IRiskPercentCircles> = ({ value, max = 5 }) => {
         <div
           css={[
             tw`rounded-full border-success border-1 w-5 h-5 block`,
-            idx < value ? tw`bg-success` : tw`background[transparent]`,
+            idx < value ? tw`bg-success` : tw`[background:transparent]`,
           ]}
           key={idx}
         ></div>
