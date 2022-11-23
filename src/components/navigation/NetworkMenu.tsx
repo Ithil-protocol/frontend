@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Hardhat, Localhost, useEthers } from '@usedapp/core';
+import { Chain, Goerli, Localhost, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from 'src/components/based/Button';
@@ -50,8 +50,8 @@ const NetworkMenu = () => {
   const [visible, setVisibility] = useState(false);
 
   const chainName = useMemo(() => {
-    if (!chainId) return '-';
-    return getChainById(chainId)?.chainName || '-';
+    if (!chainId) return 'Goerli R/O';
+    return getChainById(chainId)?.chainName || 'Goerli R/O';
   }, [chainId]);
 
   return (
