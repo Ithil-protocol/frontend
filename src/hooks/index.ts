@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 
 import { IS_HARDHAT_SET } from 'src/config/dapp';
+import { VALID_CHAINS } from 'src/global/ithil'
 
 export function useCheckValidChain() {
   const { chainId } = useEthers();
@@ -14,7 +15,10 @@ export function useCheckValidChain() {
 
 export function useChainId() {
   const { chainId } = useEthers();
-  return chainId || Goerli.chainId;
+  if (chainId === undefined) return Goerli.chainId;
+
+  const validChain = VALID_CHAINS.includes(chainId) ? chainId : Goerli.chainId;
+  return validChain;
 }
 
 export function useHandleTxStatus(
