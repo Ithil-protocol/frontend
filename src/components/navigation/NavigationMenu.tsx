@@ -4,8 +4,8 @@ import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Circle } from 'phosphor-react';
 
-import APP_ROUTES from '@/config/routes';
-import Txt from '@/components/based/Txt';
+import APP_ROUTES from 'src/config/routes';
+import Txt from 'src/components/based/Txt';
 
 interface INavigationMenu {
   onMenuClick?: () => void;
@@ -20,7 +20,7 @@ const NavigationMenu: FC<INavigationMenu> = ({ onMenuClick }) => {
     APP_ROUTES[0];
 
   return (
-    <div tw="flex flex-row items-center min-width[256px] bg-primary">
+    <div tw="flex flex-row items-center [min-width:256px] bg-primary">
       <div tw="flex px-3 gap-3 desktop:gap-6">
         {APP_ROUTES.filter((route) => route.isNavLinked).map((route) => {
           const isSelected = route.path === selectedRoute?.path;
@@ -28,7 +28,7 @@ const NavigationMenu: FC<INavigationMenu> = ({ onMenuClick }) => {
             <Link
               to={route.path}
               key={route.path}
-              tw="text-secondary flex flex-col align-items[center] cursor-pointer rounded-md w-auto relative"
+              tw="text-secondary flex flex-col [align-items:center] cursor-pointer rounded-md w-auto relative"
               onClick={() => onMenuClick && onMenuClick()}
             >
               <Txt.Body1Regular

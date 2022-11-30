@@ -2,7 +2,7 @@
 import tw from 'twin.macro';
 import React, { FC, MouseEventHandler } from 'react';
 
-import Txt from '@/components/based/Txt';
+import Txt from 'src/components/based/Txt';
 
 type TabType = {
   title: string;
@@ -26,7 +26,7 @@ const TabButton: FC<ITabButton> = ({ text, onClick, active, Icon, theme }) => {
         tw`bg-none text-secondary w-1/2`,
         active && tw`bg-font-100 dark:bg-font`,
         theme === 'secondary'
-          ? tw`border-1 border-font-200 dark:border-primary-400 max-width[70px] px-0 py-1`
+          ? tw`border-1 border-font-200 dark:border-primary-400 [max-width:70px] px-0 py-1`
           : tw`border-none`,
       ]}
       onClick={onClick}

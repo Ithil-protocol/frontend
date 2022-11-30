@@ -3,7 +3,7 @@ import 'twin.macro';
 
 import React from 'react';
 
-import Txt from '@/components/based/Txt';
+import Txt from 'src/components/based/Txt';
 
 export default function MaintenancePage() {
   return (

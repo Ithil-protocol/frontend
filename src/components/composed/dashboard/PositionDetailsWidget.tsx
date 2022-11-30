@@ -3,10 +3,10 @@ import tw from 'twin.macro';
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import Txt from '@/components/based/Txt';
-import { formatAmount } from '@/global/utils';
-import { OpenedPositionType, StrategyContractType } from '@/global/types';
-import usePositionDetails from '@/hooks/usePositionDetails';
+import Txt from 'src/components/based/Txt';
+import { formatAmount } from 'src/global/utils';
+import { OpenedPositionType, StrategyContractType } from 'src/global/types';
+import usePositionDetails from 'src/hooks/usePositionDetails';
 
 interface IDetailItem {
   label: string;

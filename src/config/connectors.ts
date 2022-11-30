@@ -2,7 +2,7 @@ import { Goerli, Localhost } from '@usedapp/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-import { alchemyUrl } from '@/global/utils';
+import { alchemyUrl } from 'src/global/utils';
 
 const supportedChains = [Goerli.chainId, Localhost.chainId];
 

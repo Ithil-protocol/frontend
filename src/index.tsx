@@ -21,8 +21,8 @@ import {
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { DAPP_CONFIG } from '@/config/dapp';
-import store, { persistor } from '@/state/store';
+import { DAPP_CONFIG } from 'src/config/dapp';
+import store, { persistor } from 'src/state/store';
 import './index.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 

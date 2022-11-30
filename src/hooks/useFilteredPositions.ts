@@ -5,7 +5,7 @@ import { useLiquidatedPositions } from './useLiquidatedPositions';
 import { useOpenedPositions } from './useOpenedPositions';
 import { useChainId } from '.';
 
-import { STRATEGIES } from '@/global/ithil';
+import { STRATEGIES } from 'src/global/ithil';
 
 export function useFilterdPositions(
   filter: 'active' | 'closed' | 'liquidated'

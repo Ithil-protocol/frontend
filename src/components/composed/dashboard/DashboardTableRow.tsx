@@ -2,17 +2,17 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo } from 'react';
 
-import { ITableRow } from '@/components/based/table/DataTable';
-import Txt from '@/components/based/Txt';
+import { ITableRow } from 'src/components/based/table/DataTable';
+import Txt from 'src/components/based/Txt';
 import {
   OpenedPositionType,
   PositionOpenType,
   StrategyContractType,
-} from '@/global/types';
-import { formatAmount, getStrategyByType } from '@/global/utils';
-import { usePositions } from '@/hooks/usePositions';
-import usePositionDetails from '@/hooks/usePositionDetails';
-import { useChainId } from '@/hooks';
+} from 'src/global/types';
+import { formatAmount, getStrategyByType } from 'src/global/utils';
+import { usePositions } from 'src/hooks/usePositions';
+import usePositionDetails from 'src/hooks/usePositionDetails';
+import { useChainId } from 'src/hooks';
 
 type IDashboardTableRow = ITableRow;
 
@@ -54,7 +54,7 @@ const DashboardTableRow: FC<IDashboardTableRow> = ({
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
+          tw`cursor-pointer bg-primary-100 transition-all [transition-duration:300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
         ]}
         onClick={() => {

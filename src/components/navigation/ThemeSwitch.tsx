@@ -3,10 +3,10 @@ import 'twin.macro';
 import React, { FC } from 'react';
 import Switch from 'react-switch';
 
-import { IBaseProps } from '@/global/types';
-import { useTheme, useToggleTheme } from '@/state/application/hooks';
-import { ReactComponent as SwitchDark } from '@/assets/images/switchDark.svg';
-import { ReactComponent as SwitchLight } from '@/assets/images/switchLight.svg';
+import { IBaseProps } from 'src/global/types';
+import { useTheme, useToggleTheme } from 'src/state/application/hooks';
+import { ReactComponent as SwitchDark } from 'src/assets/images/switchDark.svg';
+import { ReactComponent as SwitchLight } from 'src/assets/images/switchLight.svg';
 
 const ThemeSwitch: FC<IBaseProps> = ({ className }) => {
   const theme = useTheme();
@@ -17,12 +17,12 @@ const ThemeSwitch: FC<IBaseProps> = ({ className }) => {
       className={className}
       onChange={toggleTheme}
       uncheckedIcon={
-        <div tw="flex justify-center items-center height[100%]">
+        <div tw="flex justify-center items-center [height:100%]">
           <SwitchDark />
         </div>
       }
       checkedIcon={
-        <div tw="flex justify-center items-center height[100%]">
+        <div tw="flex justify-center items-center [height:100%]">
           <SwitchLight />
         </div>
       }

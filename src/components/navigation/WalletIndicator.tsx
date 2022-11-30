@@ -3,9 +3,9 @@ import 'twin.macro';
 import React, { FC } from 'react';
 import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
 
-import Txt from '@/components/based/Txt';
-import { useWalletConnectorIcon } from '@/state/application/hooks';
-import { formatAmount } from '@/global/utils';
+import Txt from 'src/components/based/Txt';
+import { useWalletConnectorIcon } from 'src/state/application/hooks';
+import { formatAmount } from 'src/global/utils';
 
 interface IWalletIndicator {
   onClick: () => void;
@@ -22,14 +22,14 @@ export const WalletIndicator: FC<IWalletIndicator> = ({ onClick }) => {
       onClick={onClick}
     >
       {!!balance && (
-        <Txt.ButtonMedium tw="mr-2 tablet:display[initial] mobile:hidden">{`${formatAmount(
+        <Txt.ButtonMedium tw="mr-2 tablet:[display:initial] mobile:hidden">{`${formatAmount(
           balance.toString()
         )} ETH`}</Txt.ButtonMedium>
       )}
       <div tw="h-7 max-h-7 tablet:h-8   desktop:h-8 desktop:max-h-8 px-2 rounded-md bg-primary-400 flex flex-row justify-center items-center gap-1 dark:bg-primary-100">
         {WalletConnectorIcon && <WalletConnectorIcon tw="h-4 w-4" />}
         {account && (
-          <Txt.ButtonMedium tw="line-height[0px]">
+          <Txt.ButtonMedium tw="[line-height:0px]">
             {shortenAddress(account)}
           </Txt.ButtonMedium>
         )}

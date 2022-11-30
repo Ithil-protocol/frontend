@@ -2,7 +2,6 @@
 import 'twin.macro';
 import React, { FC, useEffect, useMemo } from 'react';
 import { ArrowSquareOut, Check, X, Copy } from 'phosphor-react';
-// import ClipLoader from 'react-spinners/ClipLoader';
 import {
   shortenAddress,
   useEtherBalance,
@@ -11,22 +10,22 @@ import {
 } from '@usedapp/core';
 import { ClipLoader } from 'react-spinners';
 
-import Txt from '@/components/based/Txt';
-import Modal from '@/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import Modal from 'src/components/based/Modal';
 import {
   useTheme,
   useTxTimestamp,
   useUpdateTxTimestamp,
   useWalletConnector,
   useWalletConnectorIcon,
-} from '@/state/application/hooks';
-import useCopyClipboard from '@/hooks/useCopyClipboard';
+} from 'src/state/application/hooks';
+import useCopyClipboard from 'src/hooks/useCopyClipboard';
 import {
   formatAmount,
   getExplorerAddressLink,
   getExplorerTransactionLink,
   shortenString,
-} from '@/global/utils';
+} from 'src/global/utils';
 
 interface IAccountModal {
   open: boolean;
@@ -76,7 +75,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
   };
 
   return (
-    <Modal tw="bg-secondary min-width[450]" open={open} onClose={onClose}>
+    <Modal tw="bg-secondary [min-width:450]" open={open} onClose={onClose}>
       <div tw="w-full h-full flex flex-col">
         <Txt.Heading2 tw="text-center mb-6">Account</Txt.Heading2>
         <div tw="flex flex-row items-center justify-between mb-4">
@@ -134,7 +133,7 @@ const AccountModal: FC<IAccountModal> = ({ open, onClose }) => {
           </div>
         </div>
 
-        <div tw="w-full height[1px] bg-font-200" />
+        <div tw="w-full [height:1px] bg-font-200" />
         <Txt.Heading2 tw="mt-6 text-center">Transactions</Txt.Heading2>
         {displayedTxs.length ? (
           displayedTxs.map((tx) => {

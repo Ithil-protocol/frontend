@@ -3,11 +3,11 @@ import tw from 'twin.macro';
 import React, { FC, useEffect, useState } from 'react';
 import { MagnifyingGlass } from 'phosphor-react';
 
-import Modal from '@/components/based/Modal';
-import Txt from '@/components/based/Txt';
-import InputField from '@/components/based/InputField';
-import { PoolDetails } from '@/global/types';
-import { BALANCER_POOLS } from '@/global/ithil';
+import Modal from 'src/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import InputField from 'src/components/based/InputField';
+import { PoolDetails } from 'src/global/types';
+import { BALANCER_POOLS } from 'src/global/ithil';
 
 interface IPoolModal {
   open: boolean;
@@ -49,7 +49,7 @@ const PoolModal: FC<IPoolModal> = ({
   };
 
   return (
-    <Modal tw="bg-secondary width[600px]" open={open} onClose={onClose}>
+    <Modal tw="bg-secondary [width:600px]" open={open} onClose={onClose}>
       <div tw="flex flex-row justify-center items-center w-full">
         <Txt.Heading2 tw="self-end">Select a pool</Txt.Heading2>
       </div>
@@ -58,8 +58,8 @@ const PoolModal: FC<IPoolModal> = ({
         onChange={(value) => searchOnChange(value)}
         renderRight={<MagnifyingGlass tw="text-secondary" />}
       />
-      <div tw="w-full height[1px] bg-primary-300 my-4"></div>
-      <div tw="w-full height[384px] overflow-y-auto">
+      <div tw="w-full [height:1px] bg-primary-300 my-4"></div>
+      <div tw="w-full [height:384px] overflow-y-auto">
         {filteredPoolList.map((pool) => {
           return (
             <div

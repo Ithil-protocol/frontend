@@ -2,8 +2,8 @@
 import tw from 'twin.macro';
 import React, { FC, useEffect, useState } from 'react';
 
-import Txt from '@/components/based/Txt';
-import Tooltip from '@/components/based/Tooltip';
+import Txt from 'src/components/based/Txt';
+import Tooltip from 'src/components/based/Tooltip';
 
 interface IInputField {
   label?: string;
@@ -42,7 +42,7 @@ const InputField: FC<IInputField> = ({
       </div>
       <div
         css={[
-          tw`flex flex-row items-center bg-primary-200 rounded-md tablet:height[48px] height[43px] px-3 gap-1`,
+          tw`flex flex-row items-center bg-primary-200 rounded-md tablet:[height:48px] [height:43px] px-3 gap-1`,
           inputIsFocused &&
             tw`outline-[#4E5F71 solid]! dark:outline-[#A4B1BE solid]!`,
         ]}
@@ -51,7 +51,7 @@ const InputField: FC<IInputField> = ({
           placeholder={placeholder}
           onFocus={() => setInputIsFocused(true)}
           onBlur={() => setInputIsFocused(false)}
-          tw="flex-grow bg-primary-200 rounded-md text-input-text font-sans text-font font-normal max-w-none min-width[20px]"
+          tw="flex-grow bg-primary-200 rounded-md text-input-text font-sans text-font font-normal max-w-none [min-width:20px]"
           type="text"
           value={inputValue}
           onChange={({ target: { value } }) => {

@@ -5,13 +5,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'phosphor-react';
 import BigNumber from 'bignumber.js';
 
-import { useBalance, useVaultData } from '@/hooks/useVault';
-import Container from '@/components/based/Container';
-import Txt from '@/components/based/Txt';
-import { formatAmount, getTokenByAddress } from '@/global/utils';
-import { useTotalSupply } from '@/hooks/useToken';
-import VaultChart from '@/components/composed/stake/VaultChart';
-import { useChainId } from '@/hooks';
+import { useBalance, useVaultData } from 'src/hooks/useVault';
+import Container from 'src/components/based/Container';
+import Txt from 'src/components/based/Txt';
+import { formatAmount, getTokenByAddress } from 'src/global/utils';
+import { useTotalSupply } from 'src/hooks/useToken';
+import VaultChart from 'src/components/composed/stake/VaultChart';
+import { useChainId } from 'src/hooks';
 
 export interface IBanner {
   heading: string | number;
@@ -97,10 +97,10 @@ export default function VaultDetails() {
           <div tw="flex flex-row items-baseline w-full">
             <ArrowLeft
               size={28}
-              tw="text-font-200 mr-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s] float-left"
+              tw="text-font-200 mr-6 cursor-pointer hover:[transform:scale(1.1)] transition-all [transition-duration:.2s] float-left"
               onClick={() => navigate('/stake')}
             />
-            <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
+            <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 grow -ml-8">
               <img
                 tw="w-9 h-9"
                 src={vaultToken?.logoURI}

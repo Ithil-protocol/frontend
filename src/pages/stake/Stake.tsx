@@ -1,21 +1,21 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
+import tw from 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { MagnifyingGlass } from 'phosphor-react';
 
-import Txt from '@/components/based/Txt';
-import Page from '@/components/based/Page';
-import DataTable from '@/components/based/table/DataTable';
-import SortButton from '@/components/composed/stake/SortButton';
-import { KeyableType } from '@/global/types';
-import Button from '@/components/based/Button';
-import InputField from '@/components/based/InputField';
-import Tooltip from '@/components/based/Tooltip';
-import StakeTableRow from '@/components/composed/stake/StakeTableRow';
-import { TOKEN_LIST } from '@/global/ithil';
-import { useVaultsState } from '@/state/vaults/hooks';
-import { formatAmountToNumber } from '@/global/utils';
-import { useChainId } from '@/hooks';
+import Txt from 'src/components/based/Txt';
+import Page from 'src/components/based/Page';
+import DataTable from 'src/components/based/table/DataTable';
+import SortButton from 'src/components/composed/stake/SortButton';
+import { KeyableType } from 'src/global/types';
+import Button from 'src/components/based/Button';
+import InputField from 'src/components/based/InputField';
+import Tooltip from 'src/components/based/Tooltip';
+import StakeTableRow from 'src/components/composed/stake/StakeTableRow';
+import { TOKEN_LIST } from 'src/global/ithil';
+import { useVaultsState } from 'src/state/vaults/hooks';
+import { formatAmountToNumber } from 'src/global/utils';
+import { useChainId } from 'src/hooks';
 
 const APY_MENU: KeyableType = {
   highest: 'Highest',
@@ -69,7 +69,13 @@ export default function StakePage() {
 
   return (
     <Page heading="Stake">
-      <div tw="tablet:width[initial] flex tablet:flex-row justify-center tablet:items-center gap-3 self-start mb-4 whitespace-nowrap mobile:flex-col mobile:w-full mobile:items-start">
+      <div
+        css={[
+          tw`flex justify-center gap-3 self-start mb-4 whitespace-nowrap`,
+          tw`mobile:flex-col mobile:w-full mobile:items-start`,
+          tw`tablet:items-center tablet:flex-row tablet:[width:initial]`,
+        ]}
+      >
         <InputField
           tw="mr-9"
           value={searchInputValue}
@@ -82,7 +88,7 @@ export default function StakePage() {
           }
         />
         <div tw="flex justify-center items-center gap-3">
-          <Txt.Body1Regular tw="mobile:hidden tablet:display[initial]">
+          <Txt.Body1Regular tw="mobile:hidden tablet:[display:initial]">
             Sort by:
           </Txt.Body1Regular>
           <SortButton

@@ -10,10 +10,10 @@ import { SkeletonTheme } from 'react-loading-skeleton';
 import { useTheme } from './state/application/hooks';
 import MaintenancePage from './pages/maintenance/Maintenance';
 
-import Navbar from '@/components/navigation/Navbar';
-import { injected } from '@/config/connectors';
-import APP_ROUTES from '@/config/routes';
-import { steps, options } from '@/global/tutorial';
+import Navbar from 'src/components/navigation/Navbar';
+import { injected } from 'src/config/connectors';
+import APP_ROUTES from 'src/config/routes';
+import { steps, options } from 'src/global/tutorial';
 
 import 'shepherd.js/dist/css/shepherd.css';
 

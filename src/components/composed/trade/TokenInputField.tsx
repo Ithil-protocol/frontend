@@ -5,10 +5,10 @@ import { ArrowDown } from 'phosphor-react';
 
 import InputFieldMax from './InputFieldMax';
 
-import { TokenDetails } from '@/global/types';
-import Button from '@/components/based/Button';
-import TokenModal from '@/components/composed/trade/TokenModal';
-import Txt from '@/components/based/Txt';
+import { TokenDetails } from 'src/global/types';
+import Button from 'src/components/based/Button';
+import TokenModal from 'src/components/composed/trade/TokenModal';
+import Txt from 'src/components/based/Txt';
 
 interface ITokenInputField {
   label: string;

@@ -6,7 +6,7 @@ import { event } from 'react-ga';
 
 import Txt from './Txt';
 
-import { IBaseProps } from '@/global/types';
+import { IBaseProps } from 'src/global/types';
 
 interface IButtonProps extends IBaseProps {
   id?: string;

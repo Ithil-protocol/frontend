@@ -7,8 +7,8 @@ import { useQuoter } from './useQuoter';
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 import { useChainId } from '.';
 
-import { OpenedPositionType, StrategyContractType } from '@/global/types';
-import { formatAmount, getTokenByAddress } from '@/global/utils';
+import { OpenedPositionType, StrategyContractType } from 'src/global/types';
+import { formatAmount, getTokenByAddress } from 'src/global/utils';
 
 export default function usePositionDetails(
   details: OpenedPositionType,

@@ -2,7 +2,7 @@ import { Goerli, Localhost, TransactionStatus, useEthers } from '@usedapp/core';
 import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 
-import { IS_HARDHAT_SET } from '@/config/dapp';
+import { IS_HARDHAT_SET } from 'src/config/dapp';
 
 export function useCheckValidChain() {
   const { chainId } = useEthers();

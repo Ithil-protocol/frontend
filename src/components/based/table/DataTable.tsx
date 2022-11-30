@@ -6,7 +6,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import DataTablePagination from './DataTablePagination';
 import { tableContainerStyle, tdSkeletonStyle } from './styles';
 
-import Txt from '@/components/based/Txt';
+import Txt from 'src/components/based/Txt';
 
 type TableHeadType = {
   id: string;
@@ -38,7 +38,7 @@ const TableRow: FC<ITableRow> = ({
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
+          tw`cursor-pointer bg-primary-100 transition-all [transition-duration:300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
           detailedContent &&
             tw`
@@ -104,7 +104,7 @@ const DataTable: FC<IDataTable> = ({
 }) => {
   return (
     <div tw="w-full overflow-x-auto">
-      <div css={[tableContainerStyle, overflow ? tw`min-width[780px]` : tw``]}>
+      <div css={[tableContainerStyle, overflow ? tw`[min-width:780px]` : tw``]}>
         <table css={tw`w-full`} className="table">
           <thead>
             <tr>

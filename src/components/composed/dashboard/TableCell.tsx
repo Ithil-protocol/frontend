@@ -2,9 +2,9 @@
 import tw from 'twin.macro';
 import React, { FC } from 'react';
 
-import Txt from '@/components/based/Txt';
-import { TOKEN_LIST } from '@/global/ithil';
-import { useChainId } from '@/hooks';
+import Txt from 'src/components/based/Txt';
+import { TOKEN_LIST } from 'src/global/ithil';
+import { useChainId } from 'src/hooks';
 
 interface IText {
   value: string;
@@ -42,26 +42,26 @@ export const TokenPair: FC<ITokenPair> = ({
       ]}
     >
       <div tw="relative">
-        <div tw="w-7 h-7 border-radius[100%] bg-primary-100 absolute bottom[-2px] left[18px] z-index[2]"></div>
+        <div tw="w-7 h-7 [border-radius:100%] bg-primary-100 absolute [bottom:-2px] [left:18px] [z-index:2]"></div>
         {investmentTokenLogoURI ? (
           <img
-            tw="w-6 h-6 z-index[3]"
+            tw="w-6 h-6 [z-index:3]"
             src={investmentTokenLogoURI}
             alt={investmentTokenSymbol}
           />
         ) : (
-          <div tw="w-6 h-6 bg-primary-400 rounded-full z-index[3] flex items-center justify-center">
+          <div tw="w-6 h-6 bg-primary-400 rounded-full [z-index:3] flex items-center justify-center">
             <Txt.Body2Bold>?</Txt.Body2Bold>
           </div>
         )}
         {collateralTokenLogoURI ? (
           <img
-            tw="w-6 h-6 left-5 bottom-0 absolute z-index[4]"
+            tw="w-6 h-6 left-5 bottom-0 absolute [z-index:4]"
             src={collateralTokenLogoURI}
             alt={collateralTokenSymbol}
           />
         ) : (
-          <div tw="w-6 h-6 bg-primary-400 rounded-full left-5 bottom-0 absolute z-index[4] flex items-center justify-center">
+          <div tw="w-6 h-6 bg-primary-400 rounded-full left-5 bottom-0 absolute [z-index:4] flex items-center justify-center">
             <Txt.Body2Bold>?</Txt.Body2Bold>
           </div>
         )}
@@ -114,7 +114,7 @@ export const CloseButton: FC<ICloseButton> = ({ onClick }) => {
       <button
         onClick={onClick}
         css={[
-          tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
+          tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all [transition-duration:200ms]`,
         ]}
       >
         Close

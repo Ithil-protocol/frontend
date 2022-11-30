@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 
-import { useTheme } from '@/state/application/hooks';
+import { useTheme } from 'src/state/application/hooks';
 
 interface ITradingViewAdvancedChart {
   tokenSymbol: string;

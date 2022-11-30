@@ -7,12 +7,12 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import TabsSwitch from '../trade/TabsSwitch';
 import InputFieldMax from '../trade/InputFieldMax';
 
-import { StrategyContractType, TokenDetails } from '@/global/types';
-import Button from '@/components/based/Button';
-// import SliderBar from '@/components/based/Slidebar';
-import { useEditPosition } from '@/hooks/useEditPosition';
-import Txt from '@/components/based/Txt';
-// import TabsSwitch from '@/components/composed/trade/TabsSwitch';
+import { StrategyContractType, TokenDetails } from 'src/global/types';
+import Button from 'src/components/based/Button';
+// import SliderBar from 'src/components/based/Slidebar';
+import { useEditPosition } from 'src/hooks/useEditPosition';
+import Txt from 'src/components/based/Txt';
+// import TabsSwitch from 'src/components/composed/trade/TabsSwitch';
 
 interface IPositionControlPanel {
   onClosePosition: () => void;

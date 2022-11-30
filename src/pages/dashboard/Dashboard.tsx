@@ -3,28 +3,28 @@ import 'twin.macro';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Txt from '@/components/based/Txt';
-import Button from '@/components/based/Button';
-import DataTable from '@/components/based/table/DataTable';
+import Txt from 'src/components/based/Txt';
+import Button from 'src/components/based/Button';
+import DataTable from 'src/components/based/table/DataTable';
 import {
   TokenPair,
   CloseButton,
-} from '@/components/composed/dashboard/TableCell';
+} from 'src/components/composed/dashboard/TableCell';
 import {
   getPoolNameByAddress,
   getStrategyByType,
   getTokenByAddress,
-} from '@/global/utils';
-import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
-import DashboardTableRow from '@/components/composed/dashboard/DashboardTableRow';
-import Page from '@/components/based/Page';
+} from 'src/global/utils';
+import ClosePositionModal from 'src/components/composed/common/ClosePositionModal';
+import DashboardTableRow from 'src/components/composed/dashboard/DashboardTableRow';
+import Page from 'src/components/based/Page';
 import {
   ClosedPositionType,
   PositionOpenType,
   StrategyContractType,
-} from '@/global/types';
-import { useChainId } from '@/hooks';
-import { useFilterdPositions } from '@/hooks/useFilteredPositions';
+} from 'src/global/types';
+import { useChainId } from 'src/hooks';
+import { useFilterdPositions } from 'src/hooks/useFilteredPositions';
 
 export default function DashboardPage() {
   const navigate = useNavigate();

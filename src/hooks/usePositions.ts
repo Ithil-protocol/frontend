@@ -3,7 +3,7 @@ import { useCall } from '@usedapp/core';
 
 import { useCheckValidChain } from './index';
 
-import { StrategyContractType } from '@/global/types';
+import { StrategyContractType } from 'src/global/types';
 
 export function usePositions(
   positionId: number,

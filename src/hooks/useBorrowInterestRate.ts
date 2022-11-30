@@ -5,9 +5,9 @@ import { useVaultData } from './useVault';
 import { useComputePairRiskFactor } from './useComputePairRiskFactor';
 import { useChainId } from '.';
 
-import { StrategyContractType } from '@/global/types';
-import { CORE } from '@/global/ithil';
-import { baseInterestRate } from '@/global/utils';
+import { StrategyContractType } from 'src/global/types';
+import { CORE } from 'src/global/ithil';
+import { baseInterestRate } from 'src/global/utils';
 
 export function useBorrowInterestRate(
   spentToken: string,

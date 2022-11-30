@@ -1,22 +1,25 @@
 /** @jsxImportSource @emotion/react */
-import 'twin.macro';
-import React from 'react';
 import { Localhost } from '@usedapp/core';
 
-import Page from '@/components/based/Page';
-import DataTable from '@/components/based/table/DataTable';
-import Txt from '@/components/based/Txt';
-import { TRADE_STRATEGIES } from '@/global/constants';
-import TradeTableRow from '@/components/composed/trade/TradeTableRow';
-import Tooltip from '@/components/based/Tooltip';
-import { useChainId } from '@/hooks';
+import Page from 'src/components/based/Page';
+import DataTable from 'src/components/based/table/DataTable';
+import Txt from 'src/components/based/Txt';
+import { TRADE_STRATEGIES } from 'src/global/constants';
+import TradeTableRow from 'src/components/composed/trade/TradeTableRow';
+import Tooltip from 'src/components/based/Tooltip';
+import { useChainId } from 'src/hooks';
+import tw from 'twin.macro';
 
 const TradePage = () => {
   const chainId = useChainId();
   return (
     <Page heading="Trading Strategies">
       <div
-        tw="laptop:flex laptop:w-full flex-row gap-x-4 flex-wrap gap-y-4 justify-center laptop:min-width[800px] mobile:display[initial] mobile:min-width[initial] mobile:w-full mt-2"
+        css={[
+          tw`flex-row gap-x-4 flex-wrap gap-y-4 justify-center mt-2`,
+          tw`laptop:flex laptop:w-full laptop:[min-width:800px]`,
+          tw`mobile:[display:initial] mobile:[min-width:initial] mobile:w-full`,
+        ]}
         id="strategies"
       >
         <DataTable

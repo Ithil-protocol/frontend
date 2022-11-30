@@ -2,8 +2,8 @@
 import 'twin.macro';
 import React, { FC, ReactNode } from 'react';
 
-import Txt from '@/components/based/Txt';
-import Container from '@/components/based/Container';
+import Txt from 'src/components/based/Txt';
+import Container from 'src/components/based/Container';
 
 interface IPage {
   heading: string;

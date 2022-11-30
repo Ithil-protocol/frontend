@@ -3,12 +3,12 @@ import React, { FC } from 'react';
 import tw from 'twin.macro';
 import { useEthers } from '@usedapp/core';
 
-import Modal from '@/components/based/Modal';
-import Txt from '@/components/based/Txt';
-import { useUpdateWalletConnector } from '@/state/application/hooks';
-import { injected, walletconnect } from '@/config/connectors';
-import { ReactComponent as MetaMaskIcon } from '@/assets/images/metamask.svg';
-import { ReactComponent as WalletConnectIcon } from '@/assets/images/walletconnect.svg';
+import Modal from 'src/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import { useUpdateWalletConnector } from 'src/state/application/hooks';
+import { injected, walletconnect } from 'src/config/connectors';
+import { ReactComponent as MetaMaskIcon } from 'src/assets/images/metamask.svg';
+import { ReactComponent as WalletConnectIcon } from 'src/assets/images/walletconnect.svg';
 
 interface IWalletModal {
   id?: string;
@@ -32,8 +32,8 @@ const WalletConnectionModal: FC<IWalletModal> = ({ id, open, onClose }) => {
         <a tw="cursor-pointer">Cookies Policy</a>
         and <a tw="cursor-pointer">Privacy Policy</a>.
       </Txt.Body2Regular>
-      <div tw="w-full height[1px] bg-primary-300 my-4"></div>
-      <div tw="w-full height[384px]">
+      <div tw="w-full [height:1px] bg-primary-300 my-4"></div>
+      <div tw="w-full [height:384px]">
         <div
           tw="w-full flex flex-row justify-between cursor-pointer"
           onClick={() => {

@@ -9,16 +9,16 @@ import toast from 'react-hot-toast';
 
 import TabsSwitch from '../trade/TabsSwitch';
 
-import { CORE } from '@/global/ithil';
-import { TokenDetails } from '@/global/types';
-import Button from '@/components/based/Button';
-import InputFieldMax from '@/components/composed/trade/InputFieldMax';
-import InfoItem from '@/components/composed/trade/InfoItem';
-import { formatAmount } from '@/global/utils';
-import { useStake, useUnstake } from '@/hooks/useVault';
-import { useApprove } from '@/hooks/useToken';
-import Txt from '@/components/based/Txt';
-import { useChainId } from '@/hooks';
+import { CORE } from 'src/global/ithil';
+import { TokenDetails } from 'src/global/types';
+import Button from 'src/components/based/Button';
+import InputFieldMax from 'src/components/composed/trade/InputFieldMax';
+import InfoItem from 'src/components/composed/trade/InfoItem';
+import { formatAmount } from 'src/global/utils';
+import { useStake, useUnstake } from 'src/hooks/useVault';
+import { useApprove } from 'src/hooks/useToken';
+import Txt from 'src/components/based/Txt';
+import { useChainId } from 'src/hooks';
 
 interface IStakeControlWidget {
   title: string;

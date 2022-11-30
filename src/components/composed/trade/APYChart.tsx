@@ -3,11 +3,11 @@ import 'twin.macro';
 import React, { FC, SetStateAction, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import Txt from '@/components/based/Txt';
-import { YEARN_API_URL } from '@/global/constants';
-import fetchAPI from '@/global/api';
-import { TokenDetails } from '@/global/types';
-import { useTheme } from '@/state/application/hooks';
+import Txt from 'src/components/based/Txt';
+import { YEARN_API_URL } from 'src/global/constants';
+import fetchAPI from 'src/global/api';
+import { TokenDetails } from 'src/global/types';
+import { useTheme } from 'src/state/application/hooks';
 
 const SCALING_FACTOR = 100;
 
@@ -135,7 +135,7 @@ const APYChart: FC<IAPYChart> = ({ spentToken, setBaseApy }) => {
   };
 
   return (
-    <div tw="laptop:w-full laptop:box-border height[:auto] max-height[500px] laptop:max-height[initial] mobile:pb-12 desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
+    <div tw="laptop:w-full laptop:box-border [height:auto] [max-height:500px] laptop:[max-height:initial] mobile:pb-12 desktop:w-8/12 flex flex-col justify-between items-center rounded-xl p-5 desktop:p-10 bg-primary-100">
       <Txt.Body1Bold>APY Chart</Txt.Body1Bold>
       <Line
         options={CHART_OPTIONS}

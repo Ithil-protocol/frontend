@@ -1,8 +1,8 @@
 import { Config, Goerli, Localhost, Mainnet } from '@usedapp/core';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 
-import { alchemyUrl, pollingIntervalProvider } from '@/global/utils';
-import { TENDERLY_RPC_API } from '@/global/constants';
+import { alchemyUrl, pollingIntervalProvider } from 'src/global/utils';
+import { TENDERLY_RPC_API } from 'src/global/constants';
 
 export const POLLING_INTERVAL = 10_000;
 

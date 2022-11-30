@@ -3,8 +3,8 @@ import tw from 'twin.macro';
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import Tooltip from '@/components/based/Tooltip';
-import Txt from '@/components/based/Txt';
+import Tooltip from 'src/components/based/Tooltip';
+import Txt from 'src/components/based/Txt';
 
 interface IInfoItemText {
   value: string | number;

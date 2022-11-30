@@ -5,8 +5,8 @@ import BigNumber from 'bignumber.js';
 
 import { useHandleTxStatus } from './index';
 
-import { RedeemTokenInfoType } from '@/global/types';
-import { ERC20ABI } from '@/global/constants';
+import { RedeemTokenInfoType } from 'src/global/types';
+import { ERC20ABI } from 'src/global/constants';
 
 export function useAllowance(tokenAddress: string, spenderAddress: string) {
   const { account } = useEthers();

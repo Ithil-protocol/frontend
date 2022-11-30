@@ -11,14 +11,14 @@ import {
 } from 'phosphor-react';
 import { ShepherdTourContext } from 'react-shepherd';
 
-import Txt from '@/components/based/Txt';
-import Dropdown from '@/components/based/Dropdown';
+import Txt from 'src/components/based/Txt';
+import Dropdown from 'src/components/based/Dropdown';
 import {
   DISCORD_URL,
   DOC_URL,
   GITHUB_URL,
   WEB_APP_URL,
-} from '@/global/constants';
+} from 'src/global/constants';
 
 interface IMenuItem {
   Icon: any;

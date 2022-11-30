@@ -6,14 +6,14 @@ import BigNumber from 'bignumber.js';
 import { useEthers, useTokenBalance } from '@usedapp/core';
 import Skeleton from 'react-loading-skeleton';
 
-import StakeControlPanel from '@/components/composed/stake/StakeControlPanel';
-import { ITableRow } from '@/components/based/table/DataTable';
-import Txt from '@/components/based/Txt';
-import { formatAmount, getTokenByAddress } from '@/global/utils';
-import { useBalance, useVaultData } from '@/hooks/useVault';
-import { useTotalSupply } from '@/hooks/useToken';
-import { useUpdateVaultStatus } from '@/state/vaults/hooks';
-import { useChainId } from '@/hooks';
+import StakeControlPanel from 'src/components/composed/stake/StakeControlPanel';
+import { ITableRow } from 'src/components/based/table/DataTable';
+import Txt from 'src/components/based/Txt';
+import { formatAmount, getTokenByAddress } from 'src/global/utils';
+import { useBalance, useVaultData } from 'src/hooks/useVault';
+import { useTotalSupply } from 'src/hooks/useToken';
+import { useUpdateVaultStatus } from 'src/state/vaults/hooks';
+import { useChainId } from 'src/hooks';
 
 type IStakeTableRow = ITableRow;
 
@@ -76,7 +76,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
     <>
       <tr
         css={[
-          tw`cursor-pointer bg-primary-100 transition-all transition-duration[300ms] border-b-1 border-b-primary-300 last:border-b-0`,
+          tw`cursor-pointer bg-primary-100 transition-all [transition-duration:300ms] border-b-1 border-b-primary-300 last:border-b-0`,
           hoverable && tw`hover:bg-primary-200`,
         ]}
         onClick={() => {
@@ -142,7 +142,7 @@ const StakeTableRow: FC<IStakeTableRow> = ({ head, row, hoverable }) => {
                   <button
                     onClick={handleInfoClick}
                     css={[
-                      tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all transition-duration[200ms]`,
+                      tw`rounded-lg py-1 px-2 border-1 border-primary-400 text-font-100 hover:bg-primary-200 transition-all [transition-duration:200ms]`,
                     ]}
                   >
                     Info

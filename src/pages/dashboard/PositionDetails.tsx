@@ -6,24 +6,24 @@ import { ArrowLeft } from 'phosphor-react';
 import Skeleton from 'react-loading-skeleton';
 import { PulseLoader } from 'react-spinners';
 
-import Container from '@/components/based/Container';
-import Txt from '@/components/based/Txt';
-import TradingChart from '@/components/composed/trade/TradingChart';
-import APYChart from '@/components/composed/trade/APYChart';
+import Container from 'src/components/based/Container';
+import Txt from 'src/components/based/Txt';
+import TradingChart from 'src/components/composed/trade/TradingChart';
+import APYChart from 'src/components/composed/trade/APYChart';
 import PositionDetailsWidget, {
   SkeletonPositionDetailsWidget,
-} from '@/components/composed/dashboard/PositionDetailsWidget';
-import PositionControlPanel from '@/components/composed/dashboard/PositionControlPanel';
-import { usePositions } from '@/hooks/usePositions';
-import ClosePositionModal from '@/components/composed/common/ClosePositionModal';
+} from 'src/components/composed/dashboard/PositionDetailsWidget';
+import PositionControlPanel from 'src/components/composed/dashboard/PositionControlPanel';
+import { usePositions } from 'src/hooks/usePositions';
+import ClosePositionModal from 'src/components/composed/common/ClosePositionModal';
 import {
   getPoolNameByAddress,
   getStrategyByType,
   getTokenByAddress,
-} from '@/global/utils';
-import { STRATEGIES } from '@/global/ithil';
-import { useTheme } from '@/state/application/hooks';
-import { useChainId } from '@/hooks';
+} from 'src/global/utils';
+import { STRATEGIES } from 'src/global/ithil';
+import { useTheme } from 'src/state/application/hooks';
+import { useChainId } from 'src/hooks';
 
 export default function PositionDetails() {
   const theme = useTheme();
@@ -100,33 +100,33 @@ export default function PositionDetails() {
           <div tw="flex flex-row items-baseline w-full">
             <ArrowLeft
               size={28}
-              tw="text-font-200 mr-6 cursor-pointer hover:transform[scale(1.1)] transition-all transition-duration[.2s] float-left"
+              tw="text-font-200 mr-6 cursor-pointer hover:[transform:scale(1.1)] transition-all [transition-duration:.2s] float-left"
               onClick={() => navigate('/dashboard')}
             />
             <Txt.Heading1 tw="mb-12 flex flex-row justify-center items-center gap-8 flex-grow -ml-8">
               {investmentToken && collateralToken ? (
                 <>
                   <div tw="relative mr-3">
-                    <div tw="w-9 h-9 border-radius[100%] bg-primary-100 absolute bottom[0] left[28px] z-index[2]"></div>
+                    <div tw="w-9 h-9 [border-radius:100%] bg-primary-100 absolute [bottom:0] [left:28px] [z-index:2]"></div>
                     {investmentToken && investmentToken.logoURI ? (
                       <img
-                        tw="w-9 h-9 z-index[3]"
+                        tw="w-9 h-9 [z-index:3]"
                         src={investmentToken.logoURI}
                         alt={investmentToken?.symbol}
                       />
                     ) : (
-                      <div tw="w-9 h-9 bg-primary-400 rounded-full z-index[3] flex items-center justify-center">
+                      <div tw="w-9 h-9 bg-primary-400 rounded-full [z-index:3] flex items-center justify-center">
                         <Txt.Body2Bold>?</Txt.Body2Bold>
                       </div>
                     )}
                     {collateralToken ? (
                       <img
-                        tw="w-9 h-9 left-8 bottom-0 absolute z-index[4]"
+                        tw="w-9 h-9 left-8 bottom-0 absolute [z-index:4]"
                         src={collateralToken?.logoURI}
                         alt={collateralToken?.symbol}
                       />
                     ) : (
-                      <div tw="w-9 h-9 bg-primary-400 rounded-full left-8 bottom-0 absolute z-index[4] flex items-center justify-center">
+                      <div tw="w-9 h-9 bg-primary-400 rounded-full left-8 bottom-0 absolute [z-index:4] flex items-center justify-center">
                         <Txt.Body2Bold>?</Txt.Body2Bold>
                       </div>
                     )}
@@ -170,7 +170,7 @@ export default function PositionDetails() {
                 <APYChart spentToken={collateralToken} />
               )
             ) : (
-              <div tw="w-full height[500px] max-height[500px] box-content desktop:w-8/12 flex flex-col items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16 justify-center">
+              <div tw="w-full [height:500px] [max-height:500px] box-content desktop:w-8/12 flex flex-col items-center rounded-xl p-5 desktop:p-10 bg-primary-100 desktop:pb-16 justify-center">
                 <PulseLoader
                   color={theme === 'dark' ? '#ffffff8d' : '#0000008d'}
                   size={10}

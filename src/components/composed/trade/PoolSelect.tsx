@@ -3,10 +3,10 @@ import tw from 'twin.macro';
 import React, { FC, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
 
-import { PoolDetails } from '@/global/types';
-import Button from '@/components/based/Button';
-import Txt from '@/components/based/Txt';
-import PoolModal from '@/components/composed/trade/PoolModal';
+import { PoolDetails } from 'src/global/types';
+import Button from 'src/components/based/Button';
+import Txt from 'src/components/based/Txt';
+import PoolModal from 'src/components/composed/trade/PoolModal';
 
 interface IPoolSelect {
   onPoolChange: (pool: PoolDetails) => void;

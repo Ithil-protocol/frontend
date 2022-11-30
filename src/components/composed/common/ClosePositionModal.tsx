@@ -5,17 +5,17 @@ import React, { FC, useEffect, useMemo } from 'react';
 import BigNumber from 'bignumber.js';
 import { useNavigate } from 'react-router-dom';
 
-import Modal from '@/components/based/Modal';
-import Txt from '@/components/based/Txt';
-import Button from '@/components/based/Button';
-import InfoItem from '@/components/composed/trade/InfoItem';
-import { usePositions } from '@/hooks/usePositions';
-import { useClosePosition } from '@/hooks/useClosePosition';
-import { useQuoter } from '@/hooks/useQuoter';
-import { INIT_POSITION_VALUE } from '@/global/constants';
-import { formatAmount } from '@/global/utils';
-import { OpenedPositionType, StrategyContractType } from '@/global/types';
-import usePositionDetails from '@/hooks/usePositionDetails';
+import Modal from 'src/components/based/Modal';
+import Txt from 'src/components/based/Txt';
+import Button from 'src/components/based/Button';
+import InfoItem from 'src/components/composed/trade/InfoItem';
+import { usePositions } from 'src/hooks/usePositions';
+import { useClosePosition } from 'src/hooks/useClosePosition';
+import { useQuoter } from 'src/hooks/useQuoter';
+import { INIT_POSITION_VALUE } from 'src/global/constants';
+import { formatAmount } from 'src/global/utils';
+import { OpenedPositionType, StrategyContractType } from 'src/global/types';
+import usePositionDetails from 'src/hooks/usePositionDetails';
 
 interface IClosePositionModal {
   open: boolean;

@@ -4,9 +4,9 @@ import 'twin.macro';
 
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
-import TabButton from '@/components/based/TabButton';
-import { useTheme } from '@/state/application/hooks';
-import { IntervalType } from '@/global/types';
+import TabButton from 'src/components/based/TabButton';
+import { useTheme } from 'src/state/application/hooks';
+import { IntervalType } from 'src/global/types';
 
 interface ITradingViewBasicChart {
   tokenSymbol: string;

@@ -5,11 +5,11 @@ import { ArrowDown } from 'phosphor-react';
 import { Chain, Goerli, Hardhat, Localhost, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
-import Button from '@/components/based/Button';
-import Txt from '@/components/based/Txt';
-import Dropdown from '@/components/based/Dropdown';
-import { ReactComponent as CurrencyEth } from '@/assets/images/currencyEthereum.svg';
-import { addTenderlyChain } from '@/global/utils';
+import Button from 'src/components/based/Button';
+import Txt from 'src/components/based/Txt';
+import Dropdown from 'src/components/based/Dropdown';
+import { ReactComponent as CurrencyEth } from 'src/assets/images/currencyEthereum.svg';
+import { addTenderlyChain } from 'src/global/utils';
 
 interface IMenuItem {
   Icon: any;
