@@ -22,15 +22,16 @@
     "plugin:import/typescript"
   ],
   "rules": {
-    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "prettier/prettier": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "react/prop-types": "off",
-    "react/no-unknown-property": "off",
     "import/no-unresolved": "off",
-    "semi": [2, "always"],
-    "react/react-in-jsx-scope": "off"
+    "prettier/prettier": "off",
+    "react/no-unknown-property": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "quotes": ["error", "single"]
   }
 }

@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
-import React, { useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { initialize, pageview } from 'react-ga';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEthers } from '@usedapp/core';
 import { ShepherdTour } from 'react-shepherd';
 import { SkeletonTheme } from 'react-loading-skeleton';
@@ -14,22 +13,15 @@ import Navbar from 'src/components/navigation/Navbar';
 import { injected } from 'src/config/connectors';
 import APP_ROUTES from 'src/config/routes';
 import { steps, options } from 'src/global/tutorial';
-
+import { useAnalytics } from 'src/hooks/useAnalytics';
 import 'shepherd.js/dist/css/shepherd.css';
 
-initialize('G-YG89SWDD9M');
-
 const App = () => {
+  useAnalytics();
   const { activate } = useEthers();
   const theme = useTheme();
-  const location = useLocation();
   const isMaintenanceMode: boolean =
     process.env.REACT_APP_MAINTENANCE_MODE === 'true';
-
-  // Fired on every route change
-  useEffect(() => {
-    pageview(location.pathname + location.search);
-  }, [location]);
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
@@ -50,7 +42,7 @@ const App = () => {
           css={[tw`flex flex-col bg-primary min-h-screen desktop:flex-row`]}
           id="first-element"
         >
-          <div tw="flex-grow flex flex-col">
+          <div tw="grow flex flex-col">
             {!isMaintenanceMode && <Navbar />}
             <Routes>
               {!isMaintenanceMode ? (
