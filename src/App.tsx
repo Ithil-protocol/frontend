@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import tw from 'twin.macro';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
