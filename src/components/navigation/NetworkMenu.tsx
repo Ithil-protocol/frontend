@@ -2,13 +2,13 @@
 import tw from 'twin.macro';
 import React, { FC, useMemo, useState } from 'react';
 import { ArrowDown } from 'phosphor-react';
-import { Chain, Goerli, Hardhat, Localhost, useEthers } from '@usedapp/core';
+import { Chain, Goerli, Localhost, useEthers } from '@usedapp/core';
 import { getChainById } from '@usedapp/core/dist/esm/src/helpers';
 
 import Button from 'src/components/based/Button';
 import Txt from 'src/components/based/Txt';
 import Dropdown from 'src/components/based/Dropdown';
-import { ReactComponent as CurrencyEth } from 'src/assets/images/currencyEthereum.svg';
+import { ReactComponent as CurrencyEth } from 'src/assets/images/currency-ethereum.svg';
 import { addTenderlyChain } from 'src/global/utils';
 
 interface IMenuItem {
@@ -17,6 +17,10 @@ interface IMenuItem {
   network: Chain;
   onClick: () => void;
 }
+
+const CurrencyEth16: FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <CurrencyEth width={16} height={16} {...props} />
+);
 
 const MenuItem: FC<IMenuItem> = ({ Icon, label, network, onClick }) => {
   const { switchNetwork } = useEthers();
@@ -50,25 +54,29 @@ const NetworkMenu = () => {
   const [visible, setVisibility] = useState(false);
 
   const chainName = useMemo(() => {
-    if (!chainId) return '-';
-    return getChainById(chainId)?.chainName || '-';
+    if (!chainId) return 'Goerli R/O';
+    return getChainById(chainId)?.chainName || 'Goerli R/O';
   }, [chainId]);
 
   return (
     <Dropdown
       action={
-        <Button text={chainName} leftIcon={CurrencyEth} rightIcon={ArrowDown} />
+        <Button
+          text={chainName}
+          leftIcon={CurrencyEth16}
+          rightIcon={ArrowDown}
+        />
       }
       menu={
         <div tw="rounded-md cursor-pointer flex flex-col justify-start gap-3 py-4 pr-16 pl-4 bg-primary-100 border border-primary-400">
           <MenuItem
-            Icon={CurrencyEth}
+            Icon={CurrencyEth16}
             label={Goerli.chainName}
             network={Goerli}
             onClick={() => setVisibility(false)}
           />
           <MenuItem
-            Icon={CurrencyEth}
+            Icon={CurrencyEth16}
             label={Localhost.chainName}
             network={Localhost}
             onClick={() => setVisibility(false)}

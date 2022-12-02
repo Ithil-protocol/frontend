@@ -180,3 +180,5 @@ export const BALANCER_POOLS: PoolDetails[] = BalancerPools.map((pool) => ({
   isDisabled: pool.disabled,
   tokens: pool.tokens.map((idx) => TOKEN_LIST[Localhost.chainId][idx]),
 })).filter((pool) => !pool.isDisabled);
+
+export const VALID_CHAINS = [Localhost.chainId, Goerli.chainId];
