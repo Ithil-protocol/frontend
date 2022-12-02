@@ -67,6 +67,7 @@ const Navbar = () => {
               text="Connect wallet"
               action
               onClick={() => setWalletModalOpened(true)}
+              eventAction="connect-wallet"
             />
           )}
           <KebabMenu />

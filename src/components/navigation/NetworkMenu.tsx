@@ -65,6 +65,7 @@ const NetworkMenu = () => {
           text={chainName}
           leftIcon={CurrencyEth16}
           rightIcon={ArrowDown}
+          eventAction="network-menu"
         />
       }
       menu={
