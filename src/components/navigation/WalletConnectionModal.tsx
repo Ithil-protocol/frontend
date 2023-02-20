@@ -1,25 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import React, { FC } from 'react';
-import tw from 'twin.macro';
-import { useEthers } from '@usedapp/core';
+import React, { FC } from 'react'
+import tw from 'twin.macro'
 
-import Modal from 'src/components/based/Modal';
-import Txt from 'src/components/based/Txt';
-import { useUpdateWalletConnector } from 'src/state/application/hooks';
-import { injected, walletconnect } from 'src/config/connectors';
-import { ReactComponent as MetaMaskIcon } from 'src/assets/images/metamask.svg';
-import { ReactComponent as WalletConnectIcon } from 'src/assets/images/walletconnect.svg';
+import Modal from 'src/components/based/Modal'
+import Txt from 'src/components/based/Txt'
+import { ReactComponent as MetaMaskIcon } from 'src/assets/images/metamask.svg'
+import { ReactComponent as WalletConnectIcon } from 'src/assets/images/walletconnect.svg'
 
 interface IWalletModal {
-  id?: string;
-  open: boolean;
-  onClose(): void;
+  id?: string
+  open: boolean
+  onClose(): void
 }
 
 const WalletConnectionModal: FC<IWalletModal> = ({ id, open, onClose }) => {
-  const { activate } = useEthers();
-  const updateWalletConnector = useUpdateWalletConnector();
-  const isMetamaskInstalled = (window as any)?.ethereum;
+  const isMetamaskInstalled = (window as any)?.ethereum
 
   return (
     <Modal tw="bg-secondary" open={open} onClose={onClose} id={id}>
@@ -37,9 +32,7 @@ const WalletConnectionModal: FC<IWalletModal> = ({ id, open, onClose }) => {
         <div
           tw="w-full flex flex-row justify-between cursor-pointer"
           onClick={() => {
-            activate(injected);
-            updateWalletConnector('injected');
-            onClose();
+            onClose()
           }}
         >
           <div tw="flex flex-row justify-start items-center p-0 my-2 gap-2">
@@ -55,9 +48,7 @@ const WalletConnectionModal: FC<IWalletModal> = ({ id, open, onClose }) => {
         <div
           tw="w-full flex flex-row justify-between cursor-pointer"
           onClick={async () => {
-            activate(walletconnect);
-            updateWalletConnector('walletconnect');
-            onClose();
+            onClose()
           }}
         >
           <div tw="flex flex-row justify-start items-center p-0 my-2 gap-2">
@@ -69,7 +60,7 @@ const WalletConnectionModal: FC<IWalletModal> = ({ id, open, onClose }) => {
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default WalletConnectionModal;
+export default WalletConnectionModal
