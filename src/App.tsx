@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import 'twin.macro'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ShepherdTour } from 'react-shepherd'
 import { SkeletonTheme } from 'react-loading-skeleton'
