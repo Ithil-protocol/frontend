@@ -1,12 +1,12 @@
-import { Buffer } from 'buffer';
+import { Buffer } from 'buffer'
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { DAppProvider } from '@usedapp/core';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Toaster } from 'react-hot-toast';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { DAppProvider } from '@usedapp/core'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { Toaster } from 'react-hot-toast'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,21 +16,20 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from 'chart.js'
 
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App from './App'
+import reportWebVitals from './reportWebVitals'
 
-import { DAPP_CONFIG } from 'src/config/dapp';
-import store, { persistor } from 'src/state/store';
-import './index.css';
-import 'react-loading-skeleton/dist/skeleton.css';
+import { DAPP_CONFIG } from 'src/config/dapp'
+import store, { persistor } from 'src/state/store'
+import '@rainbow-me/rainbowkit/styles.css'
+import './index.css'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-window.Buffer = window.Buffer || Buffer;
+window.Buffer = window.Buffer || Buffer
 
 ChartJS.register(
   CategoryScale,
@@ -40,7 +39,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 root.render(
   <Router>
@@ -53,9 +52,9 @@ root.render(
       </PersistGate>
     </Provider>
   </Router>
-);
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()

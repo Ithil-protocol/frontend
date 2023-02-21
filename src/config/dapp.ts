@@ -1,21 +1,14 @@
-import { Config, Goerli, Localhost, Mainnet } from '@usedapp/core';
-import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { Config, Goerli, Localhost, Mainnet } from '@usedapp/core'
+import { StaticJsonRpcProvider } from '@ethersproject/providers'
 
-import { alchemyUrl, pollingIntervalProvider } from 'src/global/utils';
-import { TENDERLY_RPC_API } from 'src/global/constants';
+import { alchemyUrl, pollingIntervalProvider } from 'src/global/utils'
+import { TENDERLY_RPC_API } from 'src/global/constants'
 
-export const POLLING_INTERVAL = 10_000;
+export const POLLING_INTERVAL = 10_000
 
 export const IS_HARDHAT_SET =
   process.env.NODE_ENV === 'development' &&
-  process.env.REACT_APP_HARDHAT_ENV === 'true';
-
-const defaulUrls = {
-  [Goerli.chainId]: pollingIntervalProvider(
-    alchemyUrl(Goerli.chainId),
-    POLLING_INTERVAL
-  ),
-};
+  process.env.REACT_APP_HARDHAT_ENV === 'true'
 
 export const DAPP_CONFIG: Config = {
   readOnlyChainId: Mainnet.chainId,
@@ -44,4 +37,4 @@ export const DAPP_CONFIG: Config = {
     [Goerli.chainId]: Goerli.multicall2Address ?? '',
     [Localhost.chainId]: Mainnet.multicall2Address ?? '',
   },
-};
+}

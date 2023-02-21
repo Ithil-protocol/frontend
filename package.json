@@ -18,6 +18,7 @@
     "bignumber.js": "^9.1.1",
     "chart.js": "^3.9.1",
     "ethers": "^5",
+    "lodash": "^4.17.21",
     "phosphor-react": "^1.4.1",
     "rc-slider": "^10.1.1",
     "react": "^18.2.0",
@@ -70,6 +71,7 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.10.6",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.14.0",
     "@types/rc-slider": "^9.3.1",
     "@types/react": "^18.0.28",

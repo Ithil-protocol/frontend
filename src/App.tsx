@@ -13,21 +13,28 @@ import { steps, options } from 'src/global/tutorial'
 import { useAnalytics } from 'src/hooks/useAnalytics'
 import 'shepherd.js/dist/css/shepherd.css'
 
-import '@rainbow-me/rainbowkit/styles.css'
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import {
+  lightTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { goerli, localhost } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+import { ithilDarkTheme } from './styles/rainbowkit'
 
 const { chains, provider } = configureChains(
-  [localhost, goerli],
+  [goerli, localhost],
   [publicProvider()]
 )
+const { connectors } = getDefaultWallets({
+  appName: 'Ithil',
+  chains,
+})
 
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: [new InjectedConnector({ chains })],
+  connectors,
   provider,
 })
 
@@ -39,7 +46,18 @@ const App = () => {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider
+        chains={chains}
+        theme={
+          theme === 'dark'
+            ? ithilDarkTheme
+            : lightTheme({
+                borderRadius: 'small',
+                fontStack: 'system',
+              })
+        }
+        showRecentTransactions={true}
+      >
         <ShepherdTour steps={steps} tourOptions={options}>
           <SkeletonTheme
             baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
