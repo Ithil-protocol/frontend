@@ -1,28 +1,28 @@
 /** @jsxImportSource @emotion/react */
-import tw from 'twin.macro';
-import React, { FC, Fragment, ReactNode, useState } from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import tw from 'twin.macro'
+import React, { FC, Fragment, ReactNode, useState } from 'react'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 
-import DataTablePagination from './DataTablePagination';
-import { tableContainerStyle, tdSkeletonStyle } from './styles';
+import DataTablePagination from './DataTablePagination'
+import { tableContainerStyle, tdSkeletonStyle } from './styles'
 
-import Txt from 'src/components/based/Txt';
+import Txt from 'src/components/based/Txt'
 
 type TableHeadType = {
-  id: string;
-  content: string | ReactNode;
-};
+  id: string
+  content: string | ReactNode
+}
 
 type TableDataType = {
-  [headCell: string]: ReactNode | string;
-};
+  [headCell: string]: ReactNode | string
+}
 
 export interface ITableRow {
-  head: TableHeadType[];
-  row: TableDataType;
-  hoverable?: boolean;
-  detailedContent?: ReactNode;
-  onClick?: () => void;
+  head: TableHeadType[]
+  row: TableDataType
+  hoverable?: boolean
+  detailedContent?: ReactNode
+  onClick?: () => void
 }
 
 const TableRow: FC<ITableRow> = ({
@@ -32,7 +32,7 @@ const TableRow: FC<ITableRow> = ({
   detailedContent,
   onClick,
 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
   return (
     <>
@@ -47,9 +47,9 @@ const TableRow: FC<ITableRow> = ({
         ]}
         onClick={() => {
           if (detailedContent) {
-            setExpanded(!expanded);
+            setExpanded(!expanded)
           } else if (hoverable && onClick) {
-            onClick();
+            onClick()
           }
         }}
       >
@@ -61,7 +61,7 @@ const TableRow: FC<ITableRow> = ({
             >
               {row[headCell.id]}
             </td>
-          );
+          )
         })}
       </tr>
       {!!detailedContent && (
@@ -72,21 +72,21 @@ const TableRow: FC<ITableRow> = ({
         </tr>
       )}
     </>
-  );
-};
+  )
+}
 
 interface IDataTable {
-  head: TableHeadType[];
-  data: TableDataType[];
-  maxPage?: number;
-  currentPage?: number;
-  setPage?: (value: number) => void;
-  loading: boolean;
-  hoverable?: boolean;
-  detailedRowContent?: ReactNode;
-  onRowClick?: (rowIdx: number) => void;
-  RowComponent?: any;
-  overflow?: boolean;
+  head: TableHeadType[]
+  data: TableDataType[]
+  maxPage?: number
+  currentPage?: number
+  setPage?: (value: number) => void
+  loading: boolean
+  hoverable?: boolean
+  detailedRowContent?: ReactNode
+  onRowClick?: (rowIdx: number) => void
+  RowComponent?: any
+  overflow?: boolean
 }
 
 const DataTable: FC<IDataTable> = ({
@@ -176,7 +176,7 @@ const DataTable: FC<IDataTable> = ({
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DataTable;
+export default DataTable

@@ -10,6 +10,7 @@ import PositionDetails from 'src/pages/dashboard/PositionDetails';
 import FaucetsPage from 'src/pages/faucets/Faucets';
 import VaultDetails from 'src/pages/stake/VaultDetails';
 import BalancerAuraStrategyPage from 'src/pages/trade/BalancerAuraStrategy';
+import LendPage from 'src/pages/lend/LendPage';
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -40,6 +41,12 @@ const APP_ROUTES: RouteType[] = [
     path: '/stake',
     component: <StakePage />,
     title: 'Stake',
+    isNavLinked: true,
+  },
+  {
+    path: '/lend',
+    component: <LendPage />,
+    title: 'Lend',
     isNavLinked: true,
   },
   {
