@@ -8,6 +8,9 @@ import Txt from 'src/components/based/Txt'
 import Tooltip from 'src/components/based/Tooltip'
 import { PropsWithClassName } from 'src/types/components.types'
 import { TokenList } from 'src/types/onchain.types'
+import { useVaults, Vaults } from './use-vaults.hook'
+import React from 'react'
+import Skeleton from 'react-loading-skeleton'
 
 const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
   <div
@@ -22,29 +25,74 @@ const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
   </div>
 )
 
+type Columns = 'asset' | 'apy' | 'tvl' | 'borrowed' | 'deposited' | 'info'
+
+const renderCell = (vault: Vaults[number], columnKey: React.Key) => {
+  console.log({ columnKey })
+  const column = columnKey as Columns
+  const loading = (width = 60) => (
+    <Table.Cell>
+      <Skeleton width={width} />
+    </Table.Cell>
+  )
+  if (column === 'asset') {
+    return (
+      <Table.Cell css={{ padding: '$space$8' }}>
+        <div className="flex items-center gap-2">
+          <img
+            src={require(`cryptocurrency-icons/svg/icon/${vault.token.iconName}.svg`)}
+            alt={`${vault.token.name} icon`}
+          />
+          <Txt.Body2Regular className="uppercase">
+            {vault.token.name}
+          </Txt.Body2Regular>
+        </div>
+      </Table.Cell>
+    )
+  }
+
+  if (column === 'apy') return loading()
+  if (column === 'tvl') return loading()
+  if (column === 'borrowed') return loading()
+  if (column === 'deposited') return loading()
+  if (column === 'info') return <Table.Cell>{null}</Table.Cell>
+  return <Table.Cell>{null}</Table.Cell>
+}
+
 const LendPage: FC = () => {
   const sortedTokens: TokenList = []
 
-  const columns = [
-    { text: 'Asset' },
+  const columns: Array<{
+    text: string
+    key: Columns
+    tooltip?: string
+    hideText?: boolean
+  }> = [
+    { text: 'Asset', key: 'asset' },
     {
       text: 'APY',
+      key: 'apy',
       tooltip: 'Annual Percentage Yield, your ROI on the deposit',
     },
     {
       text: 'TVL',
+      key: 'tvl',
       tooltip: 'Total value locked, how many tokens have been deposited',
     },
     {
       text: 'Borrowed',
+      key: 'borrowed',
       tooltip: 'How many tokens are currently lent to risk-takers',
     },
     {
       text: 'Deposited',
+      key: 'deposited',
       tooltip: 'How many tokens are currently deposited',
     },
-    { text: 'Info', hideText: true },
+    { text: 'Info', key: 'info', hideText: true },
   ]
+
+  const { vaults } = useVaults()
 
   return (
     <Page heading="Lend">
@@ -57,11 +105,12 @@ const LendPage: FC = () => {
           css={{
             height: 'auto',
             minWidth: '100%',
+            backgroundColor: '$background',
           }}
         >
           <Table.Header columns={columns}>
             {(column) => (
-              <Table.Column key={column.text} hideHeader={column.hideText}>
+              <Table.Column key={column.key} hideHeader={column.hideText}>
                 <Row className="items-center gap-2">
                   <Txt.Body2Regular className="text-font-100">
                     {column.text}
@@ -71,39 +120,12 @@ const LendPage: FC = () => {
               </Table.Column>
             )}
           </Table.Header>
-          <Table.Body>
-            <Table.Row key="1">
-              <Table.Cell>Tony Reichert</Table.Cell>
-              <Table.Cell>CEO</Table.Cell>
-              <Table.Cell>Active</Table.Cell>
-              <Table.Cell>Active</Table.Cell>
-              <Table.Cell>Active</Table.Cell>
-              <Table.Cell>{null}</Table.Cell>
-            </Table.Row>
-            <Table.Row key="2">
-              <Table.Cell>Zoey Lang</Table.Cell>
-              <Table.Cell>Technical Lead</Table.Cell>
-              <Table.Cell>Paused</Table.Cell>
-              <Table.Cell>Paused</Table.Cell>
-              <Table.Cell>Paused</Table.Cell>
-              <Table.Cell>{null}</Table.Cell>
-            </Table.Row>
-            <Table.Row key="3">
-              <Table.Cell>Jane Fisher</Table.Cell>
-              <Table.Cell>Senior Developer</Table.Cell>
-              <Table.Cell>Active</Table.Cell>
-              <Table.Cell>Active</Table.Cell>
-              <Table.Cell>Active</Table.Cell>
-              <Table.Cell>{null}</Table.Cell>
-            </Table.Row>
-            <Table.Row key="4">
-              <Table.Cell>William Howard</Table.Cell>
-              <Table.Cell>Community Manager</Table.Cell>
-              <Table.Cell>Vacation</Table.Cell>
-              <Table.Cell>Vacation</Table.Cell>
-              <Table.Cell>Vacation</Table.Cell>
-              <Table.Cell>{null}</Table.Cell>
-            </Table.Row>
+          <Table.Body items={vaults}>
+            {(vault) => (
+              <Table.Row>
+                {(columnKey) => renderCell(vault, columnKey)}
+              </Table.Row>
+            )}
           </Table.Body>
         </Table>
       </Wrapper>

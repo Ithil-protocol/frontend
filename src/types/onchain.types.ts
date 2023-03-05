@@ -1,9 +1,6 @@
-export interface TokenDetails {
+export interface LendingToken {
   name: string;
-  symbol: string;
-  decimals: number;
-  address: string;
-  logoURI: string;
+  iconName: string;
 }
 
-export type TokenList = TokenDetails[];
+export type TokenList = LendingToken[];

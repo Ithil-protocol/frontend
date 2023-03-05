@@ -5,6 +5,7 @@ export const uiDark = createTheme({
   theme: {
     colors: {
       text: '#F2F5F6',
+      background: '#151A29',
     }
   }
 })
