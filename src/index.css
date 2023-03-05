@@ -64,7 +64,7 @@ body * {
   --fontsize-heading1: 32px;
   --lineheight-heading1: 51.2px;
 }
-.dark {
+.dark-theme {
   --primary: 7, 11, 15;
   --primary-100: 21, 26, 41;
   --primary-200: 32, 41, 58;
