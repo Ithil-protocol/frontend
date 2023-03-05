@@ -27,38 +27,6 @@ const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
 
 type Columns = 'asset' | 'apy' | 'tvl' | 'borrowed' | 'deposited' | 'info'
 
-const renderCell = (vault: Vaults[number], columnKey: React.Key) => {
-  console.log({ columnKey })
-  const column = columnKey as Columns
-  const loading = (width = 60) => (
-    <Table.Cell>
-      <Skeleton width={width} />
-    </Table.Cell>
-  )
-  if (column === 'asset') {
-    return (
-      <Table.Cell css={{ padding: '$space$8' }}>
-        <div className="flex items-center gap-2">
-          <img
-            src={require(`cryptocurrency-icons/svg/icon/${vault.token.iconName}.svg`)}
-            alt={`${vault.token.name} icon`}
-          />
-          <Txt.Body2Regular className="uppercase">
-            {vault.token.name}
-          </Txt.Body2Regular>
-        </div>
-      </Table.Cell>
-    )
-  }
-
-  if (column === 'apy') return loading()
-  if (column === 'tvl') return loading()
-  if (column === 'borrowed') return loading()
-  if (column === 'deposited') return loading()
-  if (column === 'info') return <Table.Cell>{null}</Table.Cell>
-  return <Table.Cell>{null}</Table.Cell>
-}
-
 const LendPage: FC = () => {
   const sortedTokens: TokenList = []
 
@@ -92,7 +60,44 @@ const LendPage: FC = () => {
     { text: 'Info', key: 'info', hideText: true },
   ]
 
-  const { vaults } = useVaults()
+  const { data: vaultData, isLoading: vaultIsLoading } = useVaults()
+
+  const renderCell = (vault: Vaults[number], columnKey: React.Key) => {
+    const column = columnKey as Columns
+    const loading = (width = 60) => (
+      <Table.Cell>
+        <Skeleton width={width} />
+      </Table.Cell>
+    )
+    if (column === 'asset') {
+      return (
+        <Table.Cell css={{ padding: '$space$8' }}>
+          <div className="flex items-center gap-2">
+            <img
+              src={require(`cryptocurrency-icons/svg/icon/${vault.token.iconName}.svg`)}
+              alt={`${vault.token.name} icon`}
+            />
+            <Txt.Body2Regular className="uppercase">
+              {vault.token.name}
+            </Txt.Body2Regular>
+          </div>
+        </Table.Cell>
+      )
+    }
+
+    if (column === 'apy') return loading()
+    if (column === 'tvl') {
+      if (vaultIsLoading) return loading()
+      return <Table.Cell>{vault.tvl?.toString()}</Table.Cell>
+    }
+    if (column === 'borrowed') {
+      if (vaultIsLoading) return loading()
+      return <Table.Cell>{vault.borrowed?.toString()}</Table.Cell>
+    }
+    if (column === 'deposited') return loading()
+    if (column === 'info') return <Table.Cell>{null}</Table.Cell>
+    return <Table.Cell>{null}</Table.Cell>
+  }
 
   return (
     <Page heading="Lend">
@@ -120,7 +125,7 @@ const LendPage: FC = () => {
               </Table.Column>
             )}
           </Table.Header>
-          <Table.Body items={vaults}>
+          <Table.Body items={vaultData}>
             {(vault) => (
               <Table.Row>
                 {(columnKey) => renderCell(vault, columnKey)}

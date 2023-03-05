@@ -22,6 +22,8 @@ import { publicProvider } from 'wagmi/providers/public'
 import { ithilDarkTheme } from './styles/rainbowkit'
 import { NextUIProvider, defaultTheme as uiLight } from '@nextui-org/react'
 import { uiDark } from './styles/nextui.theme'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const { chains, provider } = configureChains(
   [goerli, localhost],
@@ -37,6 +39,8 @@ const wagmiClient = createClient({
   connectors,
   provider,
 })
+
+const queryClient = new QueryClient()
 
 const App = () => {
   useAnalytics()
@@ -58,43 +62,46 @@ const App = () => {
         }
         showRecentTransactions={true}
       >
-        <NextUIProvider theme={theme === 'dark' ? uiDark : uiLight}>
-          <SkeletonTheme
-            baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
-            highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
-          >
-            <div
-              tw="flex flex-col bg-primary min-h-screen desktop:flex-row"
-              id="first-element"
+        <QueryClientProvider client={queryClient}>
+          <NextUIProvider theme={theme === 'dark' ? uiDark : uiLight}>
+            <SkeletonTheme
+              baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
+              highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
             >
-              <div tw="grow flex flex-col">
-                {!isMaintenanceMode && <Navbar />}
-                <Routes>
-                  {!isMaintenanceMode ? (
-                    APP_ROUTES.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={route.component}
-                      />
-                    ))
-                  ) : (
-                    <Route path="/" element={<MaintenancePage />} />
-                  )}
-                  <Route
-                    path="*"
-                    element={
-                      <Navigate
-                        to={isMaintenanceMode ? '/' : '/trade'}
-                        replace
-                      />
-                    }
-                  />
-                </Routes>
+              <div
+                tw="flex flex-col bg-primary min-h-screen desktop:flex-row"
+                id="first-element"
+              >
+                <div tw="grow flex flex-col">
+                  {!isMaintenanceMode && <Navbar />}
+                  <Routes>
+                    {!isMaintenanceMode ? (
+                      APP_ROUTES.map((route) => (
+                        <Route
+                          key={route.path}
+                          path={route.path}
+                          element={route.component}
+                        />
+                      ))
+                    ) : (
+                      <Route path="/" element={<MaintenancePage />} />
+                    )}
+                    <Route
+                      path="*"
+                      element={
+                        <Navigate
+                          to={isMaintenanceMode ? '/' : '/trade'}
+                          replace
+                        />
+                      }
+                    />
+                  </Routes>
+                </div>
+                <ReactQueryDevtools initialIsOpen={false} />
               </div>
-            </div>
-          </SkeletonTheme>
-        </NextUIProvider>
+            </SkeletonTheme>
+          </NextUIProvider>
+        </QueryClientProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )
