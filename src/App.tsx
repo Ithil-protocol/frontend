@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { ShepherdTour } from 'react-shepherd'
 import { SkeletonTheme } from 'react-loading-skeleton'
 
 import { useTheme } from './state/application/hooks'
@@ -9,7 +8,6 @@ import MaintenancePage from './pages/maintenance/Maintenance'
 
 import Navbar from 'src/components/navigation/Navbar'
 import APP_ROUTES from 'src/config/routes'
-import { steps, options } from 'src/global/tutorial'
 import { useAnalytics } from 'src/hooks/useAnalytics'
 import 'shepherd.js/dist/css/shepherd.css'
 
@@ -22,6 +20,8 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { goerli, localhost } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { ithilDarkTheme } from './styles/rainbowkit'
+import { NextUIProvider, defaultTheme as uiLight } from '@nextui-org/react'
+import { uiDark } from './styles/nextui.theme'
 
 const { chains, provider } = configureChains(
   [goerli, localhost],
@@ -58,7 +58,7 @@ const App = () => {
         }
         showRecentTransactions={true}
       >
-        <ShepherdTour steps={steps} tourOptions={options}>
+        <NextUIProvider theme={theme === 'dark' ? uiDark : uiLight}>
           <SkeletonTheme
             baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
             highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
@@ -94,7 +94,7 @@ const App = () => {
               </div>
             </div>
           </SkeletonTheme>
-        </ShepherdTour>
+        </NextUIProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )
