@@ -89,5 +89,8 @@ export const useVaults = () => {
       if (ErrorCause.isErrorCause(error.cause)) return false
       return true
     },
+
+    // FIXME: handle errors with chakra-ui/toast
+    // onError: (error: Error) => {}
   })
 }
