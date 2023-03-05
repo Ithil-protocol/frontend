@@ -1,16 +1,15 @@
-import type { FC } from 'react'
-
 import { Row, Table } from '@nextui-org/react'
-
-import Page from 'src/components/based/Page'
 import classNames from 'classnames'
-import Txt from 'src/components/based/Txt'
-import Tooltip from 'src/components/based/Tooltip'
-import { PropsWithClassName } from 'src/types/components.types'
-import { TokenList } from 'src/types/onchain.types'
-import { useVaults, Vaults } from './use-vaults.hook'
+import type { FC } from 'react'
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
+
+import Page from 'src/components/based/Page'
+import Tooltip from 'src/components/based/Tooltip'
+import Txt from 'src/components/based/Txt'
+import { PropsWithClassName } from 'src/types/components.types'
+import { Vaults } from 'src/types/onchain.types'
+import { placeHolderVaultData, useVaults } from 'src/pages/lend/use-vaults.hook'
 
 const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
   <div
@@ -28,8 +27,6 @@ const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
 type Columns = 'asset' | 'apy' | 'tvl' | 'borrowed' | 'deposited' | 'info'
 
 const LendPage: FC = () => {
-  const sortedTokens: TokenList = []
-
   const columns: Array<{
     text: string
     key: Columns
@@ -60,7 +57,12 @@ const LendPage: FC = () => {
     { text: 'Info', key: 'info', hideText: true },
   ]
 
-  const { data: vaultData, isLoading: vaultIsLoading } = useVaults()
+  const {
+    data: vaultData,
+    isLoading: vaultIsLoading,
+    isError: vaultIsError,
+  } = useVaults()
+  const vaultDataWithFallback = vaultIsError ? placeHolderVaultData : vaultData
 
   const renderCell = (vault: Vaults[number], columnKey: React.Key) => {
     const column = columnKey as Columns
@@ -87,14 +89,17 @@ const LendPage: FC = () => {
 
     if (column === 'apy') return loading()
     if (column === 'tvl') {
-      if (vaultIsLoading) return loading()
+      if (vaultIsLoading || vaultIsError) return loading()
       return <Table.Cell>{vault.tvl?.toString()}</Table.Cell>
     }
     if (column === 'borrowed') {
-      if (vaultIsLoading) return loading()
+      if (vaultIsLoading || vaultIsError) return loading()
       return <Table.Cell>{vault.borrowed?.toString()}</Table.Cell>
     }
-    if (column === 'deposited') return loading()
+    if (column === 'deposited') {
+      if (vaultIsLoading || vaultIsError) return loading()
+      return <Table.Cell>{vault.deposited?.toString()}</Table.Cell>
+    }
     if (column === 'info') return <Table.Cell>{null}</Table.Cell>
     return <Table.Cell>{null}</Table.Cell>
   }
@@ -125,7 +130,7 @@ const LendPage: FC = () => {
               </Table.Column>
             )}
           </Table.Header>
-          <Table.Body items={vaultData}>
+          <Table.Body items={vaultDataWithFallback}>
             {(vault) => (
               <Table.Row>
                 {(columnKey) => renderCell(vault, columnKey)}

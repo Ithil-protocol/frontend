@@ -1,9 +1,13 @@
-import { TokenList } from 'src/types/onchain.types'
-import { multicall , erc4626ABI } from '@wagmi/core'
-import { useQuery } from '@tanstack/react-query'
-import type { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
+import { useQuery } from '@tanstack/react-query'
+import { erc4626ABI, multicall } from '@wagmi/core'
 import numeral from 'numeral'
+
+import lendingTokens from 'src/pages/lend/lend.tokens.json'
+import { ErrorCause } from 'src/state/error-cause'
+import { LendingTokenList, Vaults } from 'src/types/onchain.types'
+import { useAccount } from 'wagmi'
 
 const ithil4626customAbi = [{
   type: 'function',
@@ -12,103 +16,78 @@ const ithil4626customAbi = [{
   stateMutability: 'view',
   payable: false,
   inputs: [],
-  outputs: [
-    {
-      type: 'uint256'
-    }
-  ]
+  outputs: [{ type: 'uint256' }]
 }] as const
 
 const VaultAbi = [...erc4626ABI, ...ithil4626customAbi]
 
-const tokens: TokenList = [
-  {
-    name: 'USDC',
-    iconName: 'usdc',
-    decimals: 6,
-  },
-  {
-    name: 'USDT',
-    iconName: 'usdt',
-    decimals: 6,
-  },
-  {
-    name: 'DAI',
-    iconName: 'dai',
-    decimals: 18,
-  },
-  {
-    name: 'WETH',
-    iconName: 'eth',
-    decimals: 18,
-  },
-  {
-    name: 'WBTC',
-    iconName: 'btc',
-    decimals: 8,
-  }
-]
-
-export type Vaults = Array<{
-  key: string
-  token: TokenList[number]
-  tvl?: string
-  borrowed?: string
-}>
-
-const placeHolderVaultData = [tokens[0], tokens[1]].map(token => ({
+const tokens = lendingTokens as LendingTokenList
+export const placeHolderVaultData = tokens.map(token => ({
   key: token.name,
   token,
 }))
 
 // FIXME: support connected wallet or not
-const getVaultData = async () => {
+const getVaultData = async (address?: string) => {
+  const totalAssetsCalls = tokens.map(token => ({
+    address: token.vaultAddress,
+    abi: VaultAbi,
+    functionName: 'totalAssets',
+  }))
+  const freeLiquidityCalls = tokens.map(token => ({
+    address: token.vaultAddress,
+    abi: VaultAbi,
+    functionName: 'freeLiquidity',
+  }))
+
+  const balanceOfCalls = address != null ? tokens.map(token => ({
+    address: token.vaultAddress,
+    abi: VaultAbi,
+    functionName: 'balanceOf',
+    args: [address],
+  })): []
+
   const multicallData = await multicall({
-    contracts: [
-      {
-        address: '0xd43757C1ce83AfE6a71B2DF5086C2c9BBEBA86a2',
-        abi: VaultAbi,
-        functionName: 'totalAssets',
-      },
-      {
-        address: '0x5ebB6f5DdEB85358A4d93BFfA257A81cA7c22785',
-        abi: VaultAbi,
-        functionName: 'totalAssets',
-      },
-      // freeLiquidity
-      {
-        address: '0xd43757C1ce83AfE6a71B2DF5086C2c9BBEBA86a2',
-        abi: VaultAbi,
-        functionName: 'freeLiquidity',
-      },
-      {
-        address: '0x5ebB6f5DdEB85358A4d93BFfA257A81cA7c22785',
-        abi: VaultAbi,
-        functionName: 'freeLiquidity',
-      },
-    ]
+    contracts: [...totalAssetsCalls, ...freeLiquidityCalls, ...balanceOfCalls]
   })
 
-  console.log({
-    multicallData,
-  })
+  if (multicallData.some(data => data == null)) {
+    throw new Error('Error fetching vault data', {
+      cause: new ErrorCause('In localhost a wallet has to be connected for the UI to function')
+    })
+  }
 
-  const data = placeHolderVaultData.map((vault, idx, arr) => {
+  const data: Vaults = placeHolderVaultData.map((vault, idx, arr) => {
     // tvl informations are available at index 0...length
     const tvl = multicallData[idx] as BigNumber
     // freeLiquidity informations are available at index length...length*2
     const freeLiquidity = multicallData[arr.length + idx] as BigNumber
     const borrowed = tvl.sub(freeLiquidity)
+    // deposited informations are available at index length*2...length*3
+    const deposited = address != null ? multicallData[arr.length * 2 + idx] as BigNumber : BigNumber.from(0)
     return {
       key: vault.key,
       token: vault.token,
       tvl: numeral(formatUnits(tvl, vault.token.decimals)).format('0.00 a'),
       borrowed: numeral(formatUnits(borrowed, vault.token.decimals)).format('0.00 a'),
+      deposited: numeral(formatUnits(deposited, vault.token.decimals)).format('0.00 a'),
     }
   })
   return data
 }
 
 export const useVaults = () => {
-  return useQuery({ queryKey: ['vaults'], queryFn: getVaultData, placeholderData: placeHolderVaultData })
+  const { address } = useAccount()
+
+  return useQuery({
+    queryKey: ['vaults', address],
+    queryFn: async () => await getVaultData(address),
+    placeholderData: placeHolderVaultData,
+    keepPreviousData: true,
+
+    retry: (failureCount, error: Error): boolean => { // avoid retrying if the error is handled
+      if (ErrorCause.isErrorCause(error.cause)) return false
+      return true
+    },
+  })
 }
