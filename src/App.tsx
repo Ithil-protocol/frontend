@@ -20,10 +20,10 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { goerli, localhost } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { ithilDarkTheme } from './styles/rainbowkit'
-import { NextUIProvider, defaultTheme as uiLight } from '@nextui-org/react'
-import { uiDark } from './styles/nextui.theme'
+import { theme as chakraTheme } from './styles/chakra.theme'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ChakraBaseProvider, ColorModeScript } from '@chakra-ui/react'
 
 const { chains, provider } = configureChains(
   [goerli, localhost],
@@ -50,6 +50,7 @@ const App = () => {
 
   return (
     <WagmiConfig client={wagmiClient}>
+      <ColorModeScript initialColorMode={theme === 'dark' ? 'dark' : 'light'} />
       <RainbowKitProvider
         chains={chains}
         theme={
@@ -63,7 +64,7 @@ const App = () => {
         showRecentTransactions={true}
       >
         <QueryClientProvider client={queryClient}>
-          <NextUIProvider theme={theme === 'dark' ? uiDark : uiLight}>
+          <ChakraBaseProvider theme={chakraTheme}>
             <SkeletonTheme
               baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
               highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
@@ -100,7 +101,7 @@ const App = () => {
                 <ReactQueryDevtools initialIsOpen={false} />
               </div>
             </SkeletonTheme>
-          </NextUIProvider>
+          </ChakraBaseProvider>
         </QueryClientProvider>
       </RainbowKitProvider>
     </WagmiConfig>

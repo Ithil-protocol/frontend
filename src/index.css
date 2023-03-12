@@ -64,7 +64,7 @@ body * {
   --fontsize-heading1: 32px;
   --lineheight-heading1: 51.2px;
 }
-.dark-theme {
+.dark {
   --primary: 7, 11, 15;
   --primary-100: 21, 26, 41;
   --primary-200: 32, 41, 58;
@@ -83,6 +83,26 @@ body * {
   --primary-error: 243, 89, 89;
   --primary-warning: 233, 207, 74;
   --primary-warning-light: 243, 231, 168;
+
+  /* simplified colors without alpha that is actually not used ever */
+  --aprimary: rgba(7, 11, 15);
+  --aprimary-100: rgba(21, 26, 41);
+  --aprimary-200: rgba(32, 41, 58);
+  --aprimary-300: rgba(54, 65, 83);
+  --aprimary-400: rgba(78, 95, 113);
+  --asecondary: rgba(255, 255, 255);
+  --asecondary-100: rgba(242, 245, 246);
+  --asecondary-200: rgba(231, 234, 235);
+  --asecondary-300: rgba(226, 229, 229);
+  --asecondary-400: rgba(206, 209, 209);
+  --afont: rgba(242, 245, 246);
+  --afont-100: rgba(164, 177, 190);
+  --afont-200: rgba(164, 177, 190);
+  --aprimary-action: rgba(7, 124, 224);
+  --aprimary-success: rgba(21, 172, 137);
+  --aprimary-error: rgba(243, 89, 89);
+  --aprimary-warning: rgba(233, 207, 74);
+  --aprimary-warning-light: rgba(243, 231, 168);
 }
 
 @media screen and (min-width: 100px) {

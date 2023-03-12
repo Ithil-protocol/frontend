@@ -19,7 +19,8 @@
     "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:react/recommended"
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -32,6 +33,7 @@
     "react/no-unknown-property": "off",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "react/jsx-key": 2,
     "quotes": ["warn", "single"],
     "semi": ["warn", "never"]
   }

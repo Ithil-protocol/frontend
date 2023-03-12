@@ -6,6 +6,10 @@ export const uiDark = createTheme({
     colors: {
       text: '#F2F5F6',
       background: '#151A29',
-    }
+      selection: '$gray900',
+      primaryLight: 'var(--aprimary-200)',
+      primaryLightContrast: 'var(--asecondary-200)',
+      border: 'var(--asecondary-400)',
+    },
   }
 })

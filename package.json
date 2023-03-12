@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^2.5.1",
+    "@emotion/styled": "^11.10.6",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/constants": "^5.7.0",
@@ -23,6 +25,7 @@
     "classnames": "^2.3.2",
     "cryptocurrency-icons": "^0.18.1",
     "ethers": "^5",
+    "framer-motion": "^10.2.4",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
     "phosphor-react": "^1.4.1",

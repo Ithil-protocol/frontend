@@ -68,9 +68,9 @@ const getVaultData = async (address?: string) => {
     return {
       key: vault.key,
       token: vault.token,
-      tvl: numeral(formatUnits(tvl, vault.token.decimals)).format('0.00 a'),
-      borrowed: numeral(formatUnits(borrowed, vault.token.decimals)).format('0.00 a'),
-      deposited: numeral(formatUnits(deposited, vault.token.decimals)).format('0.00 a'),
+      tvl: numeral(formatUnits(tvl, vault.token.decimals)).format('0.00a'),
+      borrowed: numeral(formatUnits(borrowed, vault.token.decimals)).format('0.00a'),
+      deposited: numeral(formatUnits(deposited, vault.token.decimals)).format('0.00a'),
     }
   })
   return data
