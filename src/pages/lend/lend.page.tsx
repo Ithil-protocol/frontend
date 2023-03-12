@@ -89,8 +89,10 @@ const LendPage: FC = () => {
   return (
     <Page heading="Lend">
       <Wrapper>
-        <TableContainer>
-          <Table size="md">
+        <TableContainer
+          className={classNames(['rounded-xl bg-primary-100 p-6'])}
+        >
+          <Table size="md" variant={'ithil'}>
             <Thead>
               <Tr>
                 {columns.map((column) => (
@@ -113,6 +115,7 @@ const LendPage: FC = () => {
                     className={classNames([
                       'cursor-pointer',
                       'hover:bg-primary-200',
+                      selectedRow === idx && 'border-none',
                     ])}
                   >
                     <Td>
