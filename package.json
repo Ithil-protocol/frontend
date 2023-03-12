@@ -12,7 +12,6 @@
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/units": "^5.7.0",
     "@ithil-protocol/deployed": "https://github.com/Ithil-protocol/deployed",
-    "@nextui-org/react": "^1.0.0-beta.12",
     "@popperjs/core": "^2.11.6",
     "@rainbow-me/rainbowkit": "^0.11.0",
     "@reduxjs/toolkit": "^1.9.2",
