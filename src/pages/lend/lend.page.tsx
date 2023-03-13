@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { FC, Fragment } from 'react'
+import { FC, Fragment, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 
 import Page from 'src/components/based/Page'
@@ -17,6 +17,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { Deposit } from './deposit'
 
 const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
   <div
@@ -75,7 +76,7 @@ const LendPage: FC = () => {
   } = useVaults()
   const vaultDataWithFallback = vaultIsError ? placeHolderVaultData : vaultData
 
-  const [selectedRow, setSelectedRow] = React.useState<number | null>(null)
+  const [selectedRow, setSelectedRow] = useState<number | null>(null)
 
   const onSelectedChange = (idx: number) => {
     // not sure this check is necessary
@@ -148,7 +149,9 @@ const LendPage: FC = () => {
                   </Tr>
                   {selectedRow === idx && (
                     <Tr>
-                      <Td colSpan={columns.length}>Deposit Interface -HERE-</Td>
+                      <Td colSpan={columns.length}>
+                        <Deposit token={vaultData![idx].token} />
+                      </Td>
                     </Tr>
                   )}
                 </Fragment>
