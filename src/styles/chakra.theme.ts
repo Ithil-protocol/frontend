@@ -43,9 +43,12 @@ const IthilButton = defineStyleConfig(merge(Button, ithilButtonStyle))
 const IthilInput = defineStyleConfig(merge(Input, ithilInputStyle))
 
 export const theme = extendBaseTheme({
+  fonts: {
+    body: 'Raleway, serif',
+  },
   colors: {
     ithil: {
-      500: 'var(--aprimary-action)',
+      500: 'var(--aprimary-action)', // used in button
     },
   },
   components: {
