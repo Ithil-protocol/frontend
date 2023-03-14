@@ -11,7 +11,7 @@ import Skeleton from 'react-loading-skeleton'
 import TabsSwitch from 'src/components/composed/trade/TabsSwitch'
 import { LendingToken } from 'src/types/onchain.types'
 import { useAccount, useBalance, useContractWrite } from 'wagmi'
-import { stringInputToBigNumber } from './input.util'
+import { bigNumberPercentage, stringInputToBigNumber } from './input.util'
 import { useToken } from './use-token.hook'
 import { useVault } from './use-vault.hook'
 
@@ -135,7 +135,10 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
       <TabsSwitch
         activeIndex={'0'}
         onChange={(value: string) => {
-          console.log({ value })
+          const percent = Number(value)
+          setInputAmount(
+            bigNumberPercentage(balance?.value, percent, token.decimals)
+          )
         }}
         items={[...Array(4)].map((_, idx) => ({
           title: `${(idx + 1) * 25}%`,
