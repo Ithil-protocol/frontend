@@ -57,12 +57,12 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
   // deposit
   const { config: depositConfig, isError: isPrDepositError } =
     usePrepareDeposit(inputBigNumber)
-  const { isLoading: isDepositLoading, write: deposit } =
+  const { isLoading: isDepositLoading, writeAsync: deposit } =
     useContractWrite(depositConfig)
   // withdraw
   const { config: withdrawConfig, isError: isPrWithdrawError } =
     usePrepareWithdraw(inputBigNumber)
-  const { isLoading: isWithdrawLoading, write: withdraw } =
+  const { isLoading: isWithdrawLoading, writeAsync: withdraw } =
     useContractWrite(withdrawConfig)
 
   // computed properties
@@ -96,10 +96,11 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
         await refetchAllowance()
         return
       }
-      deposit?.()
+      await deposit?.()
     } else {
-      withdraw?.()
+      await withdraw?.()
     }
+    setInputAmount('0')
   }
 
   return (
