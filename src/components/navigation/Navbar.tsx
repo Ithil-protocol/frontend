@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 import WalletConnectionModal from './WalletConnectionModal'
 import AccountModal from './AccountModal'
-import NetworkAlertBar from './NetworkAlertBar'
 import MobileMenu from './MobileMenu'
 
 import { useTheme } from 'src/state/application/hooks'
@@ -16,23 +15,14 @@ import { ReactComponent as LogoFullDark } from 'src/assets/images/logoFullDark.s
 import { ReactComponent as LogoSymbolLight } from 'src/assets/images/logoSymbolLight.svg'
 import { ReactComponent as LogoSymbolDark } from 'src/assets/images/logoSymbolDark.svg'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount, useNetwork } from 'wagmi'
-import { goerli } from 'wagmi/chains'
 
 const Navbar = () => {
-  const { address } = useAccount()
-  const { chain } = useNetwork()
   const theme = useTheme()
   const [walletModalOpened, setWalletModalOpened] = useState(false)
   const [accountModalOpened, setAccountModalOpened] = useState(false)
 
-  const wrongNetwork = chain != undefined && chain.id !== goerli.id
-
   return (
     <div tw="flex flex-col">
-      {address && wrongNetwork && (
-        <NetworkAlertBar content="Wrong network - Support only Goerli testnet." />
-      )}
       <div tw="w-full px-5 desktop:w-[calc(100% - 9rem)] my-6 tablet:mx-auto flex flex-row items-center justify-between">
         <span tw="flex flex-row items-center mobile:flex-grow">
           <a href="/">
@@ -59,7 +49,7 @@ const Navbar = () => {
           </span>
         </span>
         <span tw="flex flex-row items-center gap-2" id="connector">
-          <ConnectButton />
+          <ConnectButton chainStatus={'full'} />
           <KebabMenu />
         </span>
         <WalletConnectionModal

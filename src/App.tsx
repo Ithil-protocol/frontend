@@ -1,32 +1,33 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import 'shepherd.js/dist/css/shepherd.css'
+
 import { SkeletonTheme } from 'react-loading-skeleton'
-
-import { useTheme } from './state/application/hooks'
-import MaintenancePage from './pages/maintenance/Maintenance'
-
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from 'src/components/navigation/Navbar'
 import APP_ROUTES from 'src/config/routes'
 import { useAnalytics } from 'src/hooks/useAnalytics'
-import 'shepherd.js/dist/css/shepherd.css'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 
+import { ChakraBaseProvider, ColorModeScript } from '@chakra-ui/react'
 import {
-  lightTheme,
   getDefaultWallets,
+  lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { goerli, localhost } from 'wagmi/chains'
-import { publicProvider } from 'wagmi/providers/public'
-import { ithilDarkTheme } from './styles/rainbowkit'
-import { theme as chakraTheme } from './styles/chakra.theme'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { ChakraBaseProvider, ColorModeScript } from '@chakra-ui/react'
+
+import { anvilNetwork } from './config/chains'
+import MaintenancePage from './pages/maintenance/Maintenance'
+import { useTheme } from './state/application/hooks'
+import { theme as chakraTheme } from './styles/chakra.theme'
+import { ithilDarkTheme } from './styles/rainbowkit'
+import { localhost } from 'wagmi/chains'
 
 const { chains, provider } = configureChains(
-  [goerli, localhost],
+  [anvilNetwork, localhost],
   [publicProvider()]
 )
 const { connectors } = getDefaultWallets({
@@ -53,6 +54,7 @@ const App = () => {
       <ColorModeScript initialColorMode={theme === 'dark' ? 'dark' : 'light'} />
       <RainbowKitProvider
         chains={chains}
+        initialChain={anvilNetwork}
         theme={
           theme === 'dark'
             ? ithilDarkTheme
