@@ -1,5 +1,9 @@
 {
-  "tabWidth": 2,
+  "$schema": "https://json.schemastore.org/prettierrc.json",
+  "editorconfig": true,
   "singleQuote": true,
-  "semi": false
+  "semi": false,
+  "importOrder": ["^src/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
