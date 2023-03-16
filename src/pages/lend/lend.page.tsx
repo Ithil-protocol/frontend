@@ -1,3 +1,4 @@
+import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import classNames from 'classnames'
 import { FC, Fragment, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
@@ -5,18 +6,10 @@ import Skeleton from 'react-loading-skeleton'
 import Page from 'src/components/based/Page'
 import Tooltip from 'src/components/based/Tooltip'
 import Txt from 'src/components/based/Txt'
+import { placeHolderVaultData, useVaults } from 'src/pages/lend/use-vaults.hook'
 import { PropsWithClassName } from 'src/types/components.types'
 import { Vaults } from 'src/types/onchain.types'
-import { placeHolderVaultData, useVaults } from 'src/pages/lend/use-vaults.hook'
-import {
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react'
+
 import { Deposit } from './deposit'
 
 const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
@@ -34,46 +27,44 @@ const Wrapper: FC<PropsWithClassName> = ({ children, className }) => (
 
 type Columns = 'asset' | 'apy' | 'tvl' | 'borrowed' | 'deposited' | 'info'
 
-const Loading: FC<{ width?: number }> = ({ width = 60 }) => (
-  <Skeleton width={width} />
-)
+const Loading: FC<{ width?: number }> = ({ width = 60 }) => <Skeleton width={width} />
+
+const mobileHiddenColumnClass = 'hidden sm:table-cell'
+const columns: Array<{
+  text: string
+  key: Columns
+  tooltip?: string
+  hideText?: boolean
+  className?: string
+}> = [
+  { text: 'Asset', key: 'asset' },
+  {
+    text: 'APY',
+    key: 'apy',
+    tooltip: 'Annual Percentage Yield, your ROI on the deposit',
+  },
+  {
+    text: 'TVL',
+    key: 'tvl',
+    tooltip: 'Total value locked, how many tokens have been deposited',
+  },
+  {
+    text: 'Borrowed',
+    key: 'borrowed',
+    tooltip: 'How many tokens are currently lent to risk-takers',
+    className: mobileHiddenColumnClass,
+  },
+  {
+    text: 'Deposited',
+    key: 'deposited',
+    tooltip: 'How many tokens are currently deposited',
+    className: mobileHiddenColumnClass,
+  },
+  { text: 'Info', key: 'info', hideText: true, className: 'hidden md:table-cell' },
+]
 
 const LendPage: FC = () => {
-  const columns: Array<{
-    text: string
-    key: Columns
-    tooltip?: string
-    hideText?: boolean
-  }> = [
-    { text: 'Asset', key: 'asset' },
-    {
-      text: 'APY',
-      key: 'apy',
-      tooltip: 'Annual Percentage Yield, your ROI on the deposit',
-    },
-    {
-      text: 'TVL',
-      key: 'tvl',
-      tooltip: 'Total value locked, how many tokens have been deposited',
-    },
-    {
-      text: 'Borrowed',
-      key: 'borrowed',
-      tooltip: 'How many tokens are currently lent to risk-takers',
-    },
-    {
-      text: 'Deposited',
-      key: 'deposited',
-      tooltip: 'How many tokens are currently deposited',
-    },
-    { text: 'Info', key: 'info', hideText: true },
-  ]
-
-  const {
-    data: vaultData,
-    isLoading: vaultIsLoading,
-    isError: vaultIsError,
-  } = useVaults()
+  const { data: vaultData, isLoading: vaultIsLoading, isError: vaultIsError } = useVaults()
   const vaultDataWithFallback = vaultIsError ? placeHolderVaultData : vaultData
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null)
@@ -90,14 +81,12 @@ const LendPage: FC = () => {
   return (
     <Page heading="Lend">
       <Wrapper>
-        <TableContainer
-          className={classNames(['rounded-xl bg-primary-100 p-6'])}
-        >
+        <TableContainer className={classNames(['rounded-xl bg-primary-100 lg:p-6'])}>
           <Table size="md" variant={'ithil'}>
             <Thead>
               <Tr>
                 {columns.map((column) => (
-                  <Th key={column.key} className="normal-case">
+                  <Th key={column.key} className={classNames(['normal-case', column.className])}>
                     <div className="flex items-center gap-2">
                       <Txt.Body2Regular className="text-font-100">
                         {column.hideText != true && column.text}
@@ -125,9 +114,7 @@ const LendPage: FC = () => {
                           src={require(`cryptocurrency-icons/svg/icon/${vault.token.iconName}.svg`)}
                           alt={`${vault.token.name} icon`}
                         />
-                        <Txt.Body2Regular className="uppercase">
-                          {vault.token.name}
-                        </Txt.Body2Regular>
+                        <Txt.Body2Regular className="uppercase">{vault.token.name}</Txt.Body2Regular>
                       </div>
                     </Td>
                     <Td>
@@ -137,15 +124,15 @@ const LendPage: FC = () => {
                       {(vaultIsLoading || vaultIsError) && <Loading />}
                       {vault.tvl?.toString()}
                     </Td>
-                    <Td>
+                    <Td className={mobileHiddenColumnClass}>
                       {(vaultIsLoading || vaultIsError) && <Loading />}
                       {vault.borrowed?.toString()}
                     </Td>
-                    <Td>
+                    <Td className={mobileHiddenColumnClass}>
                       {(vaultIsLoading || vaultIsError) && <Loading />}
                       {vault.deposited?.toString()}
                     </Td>
-                    <Td>{null}</Td>
+                    <Td className="hidden md:table-cell">{null}</Td>
                   </Tr>
                   {selectedRow === idx && (
                     <Tr>
