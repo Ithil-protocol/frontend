@@ -1,30 +1,33 @@
 /** @jsxImportSource @emotion/react */
 import 'twin.macro'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { ShepherdTour } from 'react-shepherd'
-import { SkeletonTheme } from 'react-loading-skeleton'
-
-import { useTheme } from './state/application/hooks'
-import MaintenancePage from './pages/maintenance/Maintenance'
-
-import Navbar from 'src/components/navigation/Navbar'
-import APP_ROUTES from 'src/config/routes'
-import { steps, options } from 'src/global/tutorial'
-import { useAnalytics } from 'src/hooks/useAnalytics'
 import 'shepherd.js/dist/css/shepherd.css'
 
+import { SkeletonTheme } from 'react-loading-skeleton'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Navbar from 'src/components/navigation/Navbar'
+import APP_ROUTES from 'src/config/routes'
+import { useAnalytics } from 'src/hooks/useAnalytics'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
+
+import { ChakraBaseProvider, ColorModeScript } from '@chakra-ui/react'
 import {
-  lightTheme,
   getDefaultWallets,
+  lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { goerli, localhost } from 'wagmi/chains'
-import { publicProvider } from 'wagmi/providers/public'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+import { anvilNetwork } from './config/chains'
+import MaintenancePage from './pages/maintenance/Maintenance'
+import { useTheme } from './state/application/hooks'
+import { theme as chakraTheme } from './styles/chakra.theme'
 import { ithilDarkTheme } from './styles/rainbowkit'
+import { localhost } from 'wagmi/chains'
 
 const { chains, provider } = configureChains(
-  [goerli, localhost],
+  [anvilNetwork, localhost],
   [publicProvider()]
 )
 const { connectors } = getDefaultWallets({
@@ -38,6 +41,8 @@ const wagmiClient = createClient({
   provider,
 })
 
+const queryClient = new QueryClient()
+
 const App = () => {
   useAnalytics()
   const theme = useTheme()
@@ -46,8 +51,10 @@ const App = () => {
 
   return (
     <WagmiConfig client={wagmiClient}>
+      <ColorModeScript initialColorMode={theme === 'dark' ? 'dark' : 'light'} />
       <RainbowKitProvider
         chains={chains}
+        initialChain={anvilNetwork}
         theme={
           theme === 'dark'
             ? ithilDarkTheme
@@ -58,43 +65,46 @@ const App = () => {
         }
         showRecentTransactions={true}
       >
-        <ShepherdTour steps={steps} tourOptions={options}>
-          <SkeletonTheme
-            baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
-            highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
-          >
-            <div
-              tw="flex flex-col bg-primary min-h-screen desktop:flex-row"
-              id="first-element"
+        <QueryClientProvider client={queryClient}>
+          <ChakraBaseProvider theme={chakraTheme}>
+            <SkeletonTheme
+              baseColor={theme === 'dark' ? '#262e45' : '#e2e3e3'}
+              highlightColor={theme === 'dark' ? '#48516d' : '#f5f5f5'}
             >
-              <div tw="grow flex flex-col">
-                {!isMaintenanceMode && <Navbar />}
-                <Routes>
-                  {!isMaintenanceMode ? (
-                    APP_ROUTES.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={route.component}
-                      />
-                    ))
-                  ) : (
-                    <Route path="/" element={<MaintenancePage />} />
-                  )}
-                  <Route
-                    path="*"
-                    element={
-                      <Navigate
-                        to={isMaintenanceMode ? '/' : '/trade'}
-                        replace
-                      />
-                    }
-                  />
-                </Routes>
+              <div
+                tw="flex flex-col bg-primary min-h-screen desktop:flex-row"
+                id="first-element"
+              >
+                <div tw="grow flex flex-col">
+                  {!isMaintenanceMode && <Navbar />}
+                  <Routes>
+                    {!isMaintenanceMode ? (
+                      APP_ROUTES.map((route) => (
+                        <Route
+                          key={route.path}
+                          path={route.path}
+                          element={route.component}
+                        />
+                      ))
+                    ) : (
+                      <Route path="/" element={<MaintenancePage />} />
+                    )}
+                    <Route
+                      path="*"
+                      element={
+                        <Navigate
+                          to={isMaintenanceMode ? '/' : '/trade'}
+                          replace
+                        />
+                      }
+                    />
+                  </Routes>
+                </div>
+                <ReactQueryDevtools initialIsOpen={false} />
               </div>
-            </div>
-          </SkeletonTheme>
-        </ShepherdTour>
+            </SkeletonTheme>
+          </ChakraBaseProvider>
+        </QueryClientProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )

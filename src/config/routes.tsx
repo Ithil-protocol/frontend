@@ -1,15 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import { RouteType } from 'src/global/types';
-import StakePage from 'src/pages/stake/Stake';
-import TradePage from 'src/pages/trade/Trade';
-import DashboardPage from 'src/pages/dashboard/Dashboard';
-import MarginTradingPage from 'src/pages/trade/MarginTrading';
-import YearnStrategyPage from 'src/pages/trade/YearnStrategy';
-import PositionDetails from 'src/pages/dashboard/PositionDetails';
-import FaucetsPage from 'src/pages/faucets/Faucets';
-import VaultDetails from 'src/pages/stake/VaultDetails';
-import BalancerAuraStrategyPage from 'src/pages/trade/BalancerAuraStrategy';
+import { RouteType } from 'src/global/types'
+import StakePage from 'src/pages/stake/Stake'
+import TradePage from 'src/pages/trade/Trade'
+import DashboardPage from 'src/pages/dashboard/Dashboard'
+import MarginTradingPage from 'src/pages/trade/MarginTrading'
+import YearnStrategyPage from 'src/pages/trade/YearnStrategy'
+import PositionDetails from 'src/pages/dashboard/PositionDetails'
+import FaucetsPage from 'src/pages/faucets/Faucets'
+import VaultDetails from 'src/pages/stake/VaultDetails'
+import BalancerAuraStrategyPage from 'src/pages/trade/BalancerAuraStrategy'
+import LendPage from 'src/pages/lend/lend.page'
 
 const APP_ROUTES: RouteType[] = [
   {
@@ -43,6 +44,12 @@ const APP_ROUTES: RouteType[] = [
     isNavLinked: true,
   },
   {
+    path: '/lend',
+    component: <LendPage />,
+    title: 'Lend',
+    isNavLinked: true,
+  },
+  {
     path: '/stake/details',
     component: <VaultDetails />,
     title: 'Vault Details',
@@ -66,6 +73,6 @@ const APP_ROUTES: RouteType[] = [
     title: 'Faucets',
     isNavLinked: true,
   },
-];
+]
 
-export default APP_ROUTES;
+export default APP_ROUTES

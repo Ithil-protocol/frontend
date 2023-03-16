@@ -43,6 +43,32 @@ body * {
   --button-disabled-dark: 21, 26, 41;
   --button-disabled-action: 164, 177, 190;
 
+  /* simplified colors without alpha that is actually not used ever */
+  --aprimary: rgba(255, 255, 255);
+  --aprimary-100: rgba(242, 245, 246);
+  --aprimary-200: rgba(231, 234, 235);
+  --aprimary-300: rgba(226, 229, 229);
+  --aprimary-400: rgba(206, 209, 209);
+  --asecondary: rgba(7, 11, 15);
+  --asecondary-100: rgba(21, 26, 41);
+  --asecondary-200: rgba(164, 177, 190);
+  --asecondary-300: rgba(32, 41, 58);
+  --asecondary-400: rgba(78, 95, 113);
+  --afont: rgba(7, 11, 15);
+  --afont-100: rgba(78, 95, 113);
+  --afont-200: rgba(164, 177, 190);
+  --aprimary-action: rgba(7, 124, 224);
+  --aprimary-success: rgba(21, 172, 137);
+  --aprimary-error: rgba(243, 89, 89);
+  --aprimary-warning: rgba(233, 207, 74);
+  --aprimary-warning-light: rgba(243, 231, 168);
+  --abutton-hover-action: rgba(6, 107, 194);
+  --abutton-hover-light: rgba(226, 229, 229);
+  --abutton-hover-dark: rgba(21, 26, 41);
+  --abutton-disabled-light: rgba(206, 209, 209);
+  --abutton-disabled-dark: rgba(21, 26, 41);
+  --abutton-disabled-action: rgba(164, 177, 190);
+
   --fontsize-mobile-medium: 10px;
   --lineheight-mobile-medium: 16px;
   --fontsize-caption-medium: 12px;
@@ -83,6 +109,26 @@ body * {
   --primary-error: 243, 89, 89;
   --primary-warning: 233, 207, 74;
   --primary-warning-light: 243, 231, 168;
+
+  /* simplified colors without alpha that is actually not used ever */
+  --aprimary: rgba(7, 11, 15);
+  --aprimary-100: rgba(21, 26, 41);
+  --aprimary-200: rgba(32, 41, 58);
+  --aprimary-300: rgba(54, 65, 83);
+  --aprimary-400: rgba(78, 95, 113);
+  --asecondary: rgba(255, 255, 255);
+  --asecondary-100: rgba(242, 245, 246);
+  --asecondary-200: rgba(231, 234, 235);
+  --asecondary-300: rgba(226, 229, 229);
+  --asecondary-400: rgba(206, 209, 209);
+  --afont: rgba(242, 245, 246);
+  --afont-100: rgba(164, 177, 190);
+  --afont-200: rgba(164, 177, 190);
+  --aprimary-action: rgba(7, 124, 224);
+  --aprimary-success: rgba(21, 172, 137);
+  --aprimary-error: rgba(243, 89, 89);
+  --aprimary-warning: rgba(233, 207, 74);
+  --aprimary-warning-light: rgba(243, 231, 168);
 }
 
 @media screen and (min-width: 100px) {
