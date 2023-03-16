@@ -1,16 +1,12 @@
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
 import classNames from 'classnames'
 import { FC, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
+import { useAccount, useBalance, useContractWrite } from 'wagmi'
+
 import TabsSwitch from 'src/components/composed/trade/TabsSwitch'
 import { LendingToken } from 'src/types/onchain.types'
-import { useAccount, useBalance, useContractWrite } from 'wagmi'
+
 import { bigNumberPercentage, stringInputToBigNumber } from './input.util'
 import { useToken } from './use-token.hook'
 import { useVault } from './use-vault.hook'
@@ -27,10 +23,7 @@ interface DepositWidgetProps {
 }
 
 const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
-  const operatingToken =
-    direction === WidgetDirection.DEPOSIT
-      ? token.tokenAddress
-      : token.vaultAddress
+  const operatingToken = direction === WidgetDirection.DEPOSIT ? token.tokenAddress : token.vaultAddress
   // state
   const [inputAmount, setInputAmount] = useState<string>('0')
   const { address } = useAccount()
@@ -46,40 +39,21 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
   const { useAllowance, useApprove } = useToken(operatingToken)
   const { usePrepareDeposit, usePrepareWithdraw } = useVault(token, address)
 
-  const { data: allowance, refetch: refetchAllowance } = useAllowance(
-    address,
-    token.vaultAddress
-  )
-  const { isLoading: isApproveLoading, writeAsync: doApprove } = useApprove(
-    token.vaultAddress,
-    inputBigNumber
-  )
+  const { data: allowance, refetch: refetchAllowance } = useAllowance(address, token.vaultAddress)
+  const { isLoading: isApproveLoading, writeAsync: doApprove } = useApprove(token.vaultAddress, inputBigNumber)
   // deposit
-  const { config: depositConfig, isError: isPrDepositError } =
-    usePrepareDeposit(inputBigNumber)
-  const { isLoading: isDepositLoading, writeAsync: deposit } =
-    useContractWrite(depositConfig)
+  const { config: depositConfig, isError: isPrDepositError } = usePrepareDeposit(inputBigNumber)
+  const { isLoading: isDepositLoading, writeAsync: deposit } = useContractWrite(depositConfig)
   // withdraw
-  const { config: withdrawConfig, isError: isPrWithdrawError } =
-    usePrepareWithdraw(inputBigNumber)
-  const { isLoading: isWithdrawLoading, writeAsync: withdraw } =
-    useContractWrite(withdrawConfig)
+  const { config: withdrawConfig, isError: isPrWithdrawError } = usePrepareWithdraw(inputBigNumber)
+  const { isLoading: isWithdrawLoading, writeAsync: withdraw } = useContractWrite(withdrawConfig)
 
   // computed properties
-  const isApproved =
-    direction === WidgetDirection.WITHDRAW
-      ? true
-      : allowance?.gte(inputBigNumber) ?? false
-  const isButtonLoading =
-    isApproveLoading || isDepositLoading || isWithdrawLoading
-  const isPrepareError =
-    direction === WidgetDirection.DEPOSIT ? isPrDepositError : isPrWithdrawError
+  const isApproved = direction === WidgetDirection.WITHDRAW ? true : allowance?.gte(inputBigNumber) ?? false
+  const isButtonLoading = isApproveLoading || isDepositLoading || isWithdrawLoading
+  const isPrepareError = direction === WidgetDirection.DEPOSIT ? isPrDepositError : isPrWithdrawError
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
-  const isButtonDisabled =
-    isButtonLoading ||
-    isPrepareError ||
-    isInconsistent ||
-    inputBigNumber.isZero()
+  const isButtonDisabled = isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
 
   const title = direction === WidgetDirection.DEPOSIT ? 'Deposit' : 'Withdraw'
 
@@ -120,11 +94,7 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
       </div>
 
       <InputGroup size="md">
-        <Input
-          type="number"
-          value={inputAmount}
-          onChange={(event) => setInputAmount(event.target.value)}
-        />
+        <Input type="number" value={inputAmount} onChange={(event) => setInputAmount(event.target.value)} />
         <InputRightElement width="4.5rem">
           <Button h="1.75rem" size="sm" onClick={handleMaxClick}>
             Max
@@ -136,9 +106,7 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
         activeIndex={'0'}
         onChange={(value: string) => {
           const percent = Number(value)
-          setInputAmount(
-            bigNumberPercentage(balance?.value, percent, token.decimals)
-          )
+          setInputAmount(bigNumberPercentage(balance?.value, percent, token.decimals))
         }}
         items={[...Array(4)].map((_, idx) => ({
           title: `${(idx + 1) * 25}%`,
@@ -165,12 +133,7 @@ interface Props {
 
 export const Deposit: FC<Props> = ({ token }) => {
   return (
-    <div
-      className={classNames([
-        'flex flex-col items-center justify-center gap-4',
-        'md:flex-row',
-      ])}
-    >
+    <div className={classNames(['flex flex-col items-center justify-center gap-4', 'md:flex-row'])}>
       <DepositWidget direction={WidgetDirection.DEPOSIT} token={token} />
       <DepositWidget direction={WidgetDirection.WITHDRAW} token={token} />
     </div>
