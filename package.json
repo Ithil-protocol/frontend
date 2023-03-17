@@ -109,5 +109,5 @@
     "redux-logger": "^3.0.6",
     "tailwindcss": "^3.2.7"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.5.0"
 }
