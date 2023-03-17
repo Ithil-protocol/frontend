@@ -1,14 +1,13 @@
 import type { BigNumber } from '@ethersproject/bignumber'
-import { LendingToken } from 'src/types/onchain.types'
 import { Address, erc4626ABI, useBalance, usePrepareContractWrite } from 'wagmi'
+
+import { LendingToken } from 'src/types/onchain.types'
+
 import { useToken } from './use-token.hook'
 
 export const useVault = (token: LendingToken, userAddress: Address | undefined) => {
   const { useAllowance } = useToken(token.tokenAddress)
-  const { data: allowance } = useAllowance(
-    userAddress,
-    token.vaultAddress
-  )
+  const { data: allowance } = useAllowance(userAddress, token.vaultAddress)
   const { data: sharesBalance } = useBalance({
     address: userAddress,
     token: token.vaultAddress,
@@ -24,7 +23,7 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
       abi: erc4626ABI,
       functionName: 'deposit',
       args: [amount, userAddress!],
-      enabled: userAddress != null && isApproved(amount)
+      enabled: userAddress != null && isApproved(amount),
     })
   }
 
@@ -34,7 +33,7 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
       abi: erc4626ABI,
       functionName: 'withdraw',
       args: [amount, userAddress!, userAddress!],
-      enabled: userAddress != null && sharesBalance?.value.gt(amount)
+      enabled: userAddress != null && sharesBalance?.value.gt(amount),
     })
   }
 

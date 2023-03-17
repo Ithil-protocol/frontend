@@ -23,6 +23,17 @@ const ithilButtonStyle = {
   defaultProps: {
     colorScheme: 'ithil',
   },
+  variants: {
+    insideInput: {
+      backgroundColor: 'var(--aprimary-300)',
+      borderColor: 'var(--aprimary-300)',
+      borderWidth: '1px',
+      _disabled: {
+        backgroundColor: 'transparent',
+        borderColor: 'var(--aprimary-400)',
+      },
+    },
+  },
 }
 
 const ithilInputStyle = {

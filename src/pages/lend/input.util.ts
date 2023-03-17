@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits, parseUnits } from '@ethersproject/units'
+import numeral from 'numeral'
 
 export const stringInputToBigNumber = (input: string, decimals: number) => {
   if (input === '') {
@@ -16,4 +17,9 @@ export const stringInputToBigNumber = (input: string, decimals: number) => {
 export const bigNumberPercentage = (available: BigNumber | undefined, percentage: number, decimals: number): string => {
   const value = available ?? BigNumber.from(0)
   return formatUnits(value.mul(percentage).div(100), decimals)
+}
+
+export const abbreviateBigNumber = (value: BigNumber | undefined, decimals: number): string => {
+  const v = value ?? BigNumber.from(0)
+  return numeral(formatUnits(v, decimals)).format('0.00a')
 }

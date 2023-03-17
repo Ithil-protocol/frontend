@@ -1,5 +1,4 @@
 import { Button, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
-import classNames from 'classnames'
 import { FC, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { useAccount, useBalance, useContractWrite } from 'wagmi'
@@ -7,7 +6,7 @@ import { useAccount, useBalance, useContractWrite } from 'wagmi'
 import TabsSwitch from 'src/components/composed/trade/TabsSwitch'
 import { LendingToken } from 'src/types/onchain.types'
 
-import { bigNumberPercentage, stringInputToBigNumber } from './input.util'
+import { abbreviateBigNumber, bigNumberPercentage, stringInputToBigNumber } from './input.util'
 import { useToken } from './use-token.hook'
 import { useVault } from './use-vault.hook'
 
@@ -54,6 +53,12 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
   const isPrepareError = direction === WidgetDirection.DEPOSIT ? isPrDepositError : isPrWithdrawError
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
   const isButtonDisabled = isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
+  const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
+  console.log({
+    isMaxDisabled,
+    inputBigNumber: inputBigNumber.toString(),
+    balanceValue: balance?.value.toString(),
+  })
 
   const title = direction === WidgetDirection.DEPOSIT ? 'Deposit' : 'Withdraw'
 
@@ -78,16 +83,16 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
   }
 
   return (
-    <div className="my-3 flex flex-col items-center justify-between gap-2 rounded-xl border-1 border-font-200 bg-primary-100 p-6 dark:border-primary-400">
-      <div className="flex w-full flex-row justify-between">
+    <div className="flex flex-col items-center w-full gap-2 p-3 md:p-6 rounded-xl border-1 border-font-200 dark:border-primary-300">
+      <div className="flex flex-row justify-between w-full">
         <Text>{title}</Text>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-row items-end justify-end gap-2">
           {isBalanceLoading ? (
             <Skeleton width={80} />
           ) : (
             <>
-              <Text>{balance?.formatted}</Text>
-              <Text>($ {balance?.formatted})</Text>
+              <Text>{abbreviateBigNumber(balance?.value, token.decimals)}</Text>
+              <Text>($ {abbreviateBigNumber(balance?.value, token.decimals)})</Text>
             </>
           )}
         </div>
@@ -96,7 +101,7 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
       <InputGroup size="md">
         <Input type="number" value={inputAmount} onChange={(event) => setInputAmount(event.target.value)} />
         <InputRightElement width="4.5rem">
-          <Button h="1.75rem" size="sm" onClick={handleMaxClick}>
+          <Button h="1.75rem" size="sm" onClick={handleMaxClick} isDisabled={isMaxDisabled} variant="insideInput">
             Max
           </Button>
         </InputRightElement>
@@ -133,7 +138,7 @@ interface Props {
 
 export const Deposit: FC<Props> = ({ token }) => {
   return (
-    <div className={classNames(['flex flex-col items-center justify-center gap-4', 'md:flex-row'])}>
+    <div className="flex flex-col items-center justify-center w-full gap-4 sm:px-8 lg:px-16 xl:px-24 md:flex-row">
       <DepositWidget direction={WidgetDirection.DEPOSIT} token={token} />
       <DepositWidget direction={WidgetDirection.WITHDRAW} token={token} />
     </div>
