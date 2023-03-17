@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { ChakraBaseProvider, ColorModeScript } from '@chakra-ui/react'
 import { RainbowKitProvider, getDefaultWallets, lightTheme } from '@rainbow-me/rainbowkit'
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { persistQueryClient, removeOldestQuery } from '@tanstack/react-query-persist-client'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import 'shepherd.js/dist/css/shepherd.css'
@@ -33,7 +35,22 @@ const wagmiClient = createClient({
   provider,
 })
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+})
+const localStoragePersister = createSyncStoragePersister({
+  storage: window.localStorage,
+  retry: removeOldestQuery,
+})
+
+persistQueryClient({
+  queryClient,
+  persister: localStoragePersister,
+})
 
 const App = () => {
   useAnalytics()

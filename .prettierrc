@@ -3,6 +3,7 @@
   "editorconfig": true,
   "singleQuote": true,
   "semi": false,
+  "trailingComma": "all",
   "importOrder": ["^src/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

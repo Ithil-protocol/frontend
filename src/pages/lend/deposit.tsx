@@ -1,12 +1,13 @@
 import { Button, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
 import { FC, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { useAccount, useBalance, useContractWrite } from 'wagmi'
+import { Address, useAccount, useBalance, useContractWrite } from 'wagmi'
 
 import TabsSwitch from 'src/components/composed/trade/TabsSwitch'
 import { LendingToken } from 'src/types/onchain.types'
 
-import { abbreviateBigNumber, bigNumberPercentage, stringInputToBigNumber } from './input.util'
+import { abbreviateBigNumber, bigNumberPercentage, estimateTokenValue, stringInputToBigNumber } from './input.util'
+import { useTokenData } from './use-token-data.hook'
 import { useToken } from './use-token.hook'
 import { useVault } from './use-vault.hook'
 
@@ -37,6 +38,7 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
   })
   const { useAllowance, useApprove } = useToken(operatingToken)
   const { usePrepareDeposit, usePrepareWithdraw } = useVault(token, address)
+  const { data: tokenData } = useTokenData()
 
   const { data: allowance, refetch: refetchAllowance } = useAllowance(address, token.vaultAddress)
   const { isLoading: isApproveLoading, writeAsync: doApprove } = useApprove(token.vaultAddress, inputBigNumber)
@@ -54,13 +56,15 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
   const isButtonDisabled = isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
   const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
-  console.log({
-    isMaxDisabled,
-    inputBigNumber: inputBigNumber.toString(),
-    balanceValue: balance?.value.toString(),
-  })
-
   const title = direction === WidgetDirection.DEPOSIT ? 'Deposit' : 'Withdraw'
+  const tokenValue = tokenData?.[token.tokenAddress.toLowerCase() as Address].usd
+
+  /**
+   * withdraw logic
+   * inputBigNumber will contain the amount of Shares to withdraw
+   * if the user clicks Max or 100%, set the inputAmount to the balance
+   * otherwise, convert the string input via convertToShares
+   */
 
   // handlers
   const handleMaxClick = () => {
@@ -92,7 +96,7 @@ const DepositWidget: FC<DepositWidgetProps> = ({ direction, token }) => {
           ) : (
             <>
               <Text>{abbreviateBigNumber(balance?.value, token.decimals)}</Text>
-              <Text>($ {abbreviateBigNumber(balance?.value, token.decimals)})</Text>
+              <Text>($ {estimateTokenValue(balance?.value, token.decimals, tokenValue)})</Text>
             </>
           )}
         </div>

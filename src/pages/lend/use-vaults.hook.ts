@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query'
 import { erc4626ABI, multicall } from '@wagmi/core'
 import { useAccount } from 'wagmi'
 
-import lendingTokens from 'src/pages/lend/lend.tokens.json'
 import { ErrorCause } from 'src/state/error-cause'
-import { LendingTokenList, Vaults } from 'src/types/onchain.types'
+import { Vaults } from 'src/types/onchain.types'
 
 import { abbreviateBigNumber } from './input.util'
+import { lendingTokens } from './use-token-data.hook'
 
 const ithil4626customAbi = [
   {
@@ -23,20 +23,18 @@ const ithil4626customAbi = [
 
 const VaultAbi = [...erc4626ABI, ...ithil4626customAbi]
 
-const tokens = lendingTokens as LendingTokenList
-export const placeHolderVaultData = tokens.map((token) => ({
+export const placeHolderVaultData = lendingTokens.map((token) => ({
   key: token.name,
   token,
 }))
 
-// FIXME: support connected wallet or not
 const getVaultData = async (address?: string) => {
-  const totalAssetsCalls = tokens.map((token) => ({
+  const totalAssetsCalls = lendingTokens.map((token) => ({
     address: token.vaultAddress,
     abi: VaultAbi,
     functionName: 'totalAssets',
   }))
-  const freeLiquidityCalls = tokens.map((token) => ({
+  const freeLiquidityCalls = lendingTokens.map((token) => ({
     address: token.vaultAddress,
     abi: VaultAbi,
     functionName: 'freeLiquidity',
@@ -44,7 +42,7 @@ const getVaultData = async (address?: string) => {
 
   const balanceOfCalls =
     address != null
-      ? tokens.map((token) => ({
+      ? lendingTokens.map((token) => ({
           address: token.vaultAddress,
           abi: VaultAbi,
           functionName: 'balanceOf',

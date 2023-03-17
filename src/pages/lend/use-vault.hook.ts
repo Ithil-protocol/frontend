@@ -1,5 +1,5 @@
 import type { BigNumber } from '@ethersproject/bignumber'
-import { Address, erc4626ABI, useBalance, usePrepareContractWrite } from 'wagmi'
+import { Address, erc4626ABI, useBalance, useContractRead, usePrepareContractWrite } from 'wagmi'
 
 import { LendingToken } from 'src/types/onchain.types'
 
@@ -37,8 +37,30 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
     })
   }
 
+  const useConvertToAssets = (amount?: BigNumber) => {
+    return useContractRead({
+      address: token.vaultAddress,
+      abi: erc4626ABI,
+      functionName: 'convertToAssets',
+      args: [amount!],
+      enabled: amount != null,
+    })
+  }
+
+  const useConvertToShares = (amount?: BigNumber) => {
+    return useContractRead({
+      address: token.vaultAddress,
+      abi: erc4626ABI,
+      functionName: 'convertToShares',
+      args: [amount!],
+      enabled: amount != null,
+    })
+  }
+
   return {
     usePrepareDeposit,
     usePrepareWithdraw,
+    useConvertToAssets,
+    useConvertToShares,
   }
 }
