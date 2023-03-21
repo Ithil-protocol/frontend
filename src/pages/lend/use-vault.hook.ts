@@ -1,8 +1,9 @@
-import type { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Address, erc4626ABI, useBalance, useContractRead, usePrepareContractWrite } from 'wagmi'
 
 import { LendingToken } from 'src/types/onchain.types'
 
+import { oneUnitWithDecimals } from './input.util'
 import { useToken } from './use-token.hook'
 
 export const useVault = (token: LendingToken, userAddress: Address | undefined) => {
@@ -27,17 +28,17 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
     })
   }
 
-  const usePrepareWithdraw = (amount: BigNumber) => {
+  const usePrepareRedeem = (amount: BigNumber) => {
     return usePrepareContractWrite({
       address: token.vaultAddress,
       abi: erc4626ABI,
-      functionName: 'withdraw',
+      functionName: 'redeem',
       args: [amount, userAddress!, userAddress!],
-      enabled: userAddress != null && sharesBalance?.value.gt(amount),
+      enabled: userAddress != null && sharesBalance?.value.gte(amount),
     })
   }
 
-  const useConvertToAssets = (amount?: BigNumber) => {
+  const useConvertToAssets = (amount = oneUnitWithDecimals(token.decimals)) => {
     return useContractRead({
       address: token.vaultAddress,
       abi: erc4626ABI,
@@ -47,7 +48,7 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
     })
   }
 
-  const useConvertToShares = (amount?: BigNumber) => {
+  const useConvertToShares = (amount = oneUnitWithDecimals(token.decimals)) => {
     return useContractRead({
       address: token.vaultAddress,
       abi: erc4626ABI,
@@ -57,10 +58,22 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
     })
   }
 
+  const useMaxRedeem = () => {
+    return useContractRead({
+      address: token.vaultAddress,
+      abi: erc4626ABI,
+      functionName: 'maxRedeem',
+      args: [userAddress!],
+      enabled: userAddress != null,
+      watch: true,
+    })
+  }
+
   return {
     usePrepareDeposit,
-    usePrepareWithdraw,
+    usePrepareRedeem,
     useConvertToAssets,
     useConvertToShares,
+    useMaxRedeem,
   }
 }

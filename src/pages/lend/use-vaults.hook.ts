@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi'
 import { ErrorCause } from 'src/state/error-cause'
 import { Vaults } from 'src/types/onchain.types'
 
-import { abbreviateBigNumber } from './input.util'
+import { abbreviateBigNumber, multiplyBigNumbers, oneUnitWithDecimals } from './input.util'
 import { lendingTokens } from './use-token-data.hook'
 
 const ithil4626customAbi = [
@@ -50,8 +50,15 @@ const getVaultData = async (address?: string) => {
         }))
       : []
 
+  const convertToAssetCalls = lendingTokens.map((token) => ({
+    address: token.vaultAddress,
+    abi: VaultAbi,
+    functionName: 'convertToAssets',
+    args: [oneUnitWithDecimals(token.decimals)],
+  }))
+
   const multicallData = await multicall({
-    contracts: [...totalAssetsCalls, ...freeLiquidityCalls, ...balanceOfCalls],
+    contracts: [...totalAssetsCalls, ...freeLiquidityCalls, ...balanceOfCalls, ...convertToAssetCalls],
   })
 
   if (multicallData.some((data) => data == null)) {
@@ -67,13 +74,17 @@ const getVaultData = async (address?: string) => {
     const freeLiquidity = multicallData[arr.length + idx] as BigNumber
     const borrowed = tvl.sub(freeLiquidity)
     // deposited informations are available at index length*2...length*3
-    const deposited = address != null ? (multicallData[arr.length * 2 + idx] as BigNumber) : BigNumber.from(0)
+    const depositedShares = address != null ? (multicallData[arr.length * 2 + idx] as BigNumber) : BigNumber.from(0)
+    // sharesToAsset informations are available at index length*3...length*4
+    const sharesToAsset = multicallData[arr.length * 3 + idx] as BigNumber
+    const depositedAssets = multiplyBigNumbers(depositedShares, sharesToAsset, vault.token.decimals)
+
     return {
       key: vault.key,
       token: vault.token,
       tvl: abbreviateBigNumber(tvl, vault.token.decimals),
       borrowed: abbreviateBigNumber(borrowed, vault.token.decimals),
-      deposited: abbreviateBigNumber(deposited, vault.token.decimals),
+      deposited: abbreviateBigNumber(depositedAssets, vault.token.decimals),
     }
   })
   return data
