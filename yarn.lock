@@ -5431,13 +5431,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/numeral@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@types/numeral@npm:2.0.2"
-  checksum: d8b778ef5d1b20cb5919fb2cf41108b324ccfaeccb0238caaf54bd9d4bffbbd57d7b860844f05831fb356a5dc0115b477891531325180a670076036ee1b4a8ca
-  languageName: node
-  linkType: hard
-
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -12327,7 +12320,6 @@ __metadata:
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
     "@types/lodash": ^4.14.191
     "@types/node": ^18.14.0
-    "@types/numeral": ^2.0.2
     "@types/rc-slider": ^9.3.1
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11
@@ -12353,7 +12345,7 @@ __metadata:
     ethers: ^5
     framer-motion: ^10.2.4
     lodash: ^4.17.21
-    numeral: ^2.0.6
+    numerable: ^0.3.15
     phosphor-react: ^1.4.1
     postcss: ^8.4.21
     prettier: ^2.8.4
@@ -14251,10 +14243,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"numeral@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "numeral@npm:2.0.6"
-  checksum: 89f011116539692bf53fde380adeb0579623d00f782703c71c0062d4a8686770c404a041ff4eef454de53925a9f75bba1fa52726057b13d40473f707730b07c2
+"numerable@npm:^0.3.15":
+  version: 0.3.15
+  resolution: "numerable@npm:0.3.15"
+  checksum: 09313891a73097175bcac082ac57031b294ede9aebb469a43a985a2642f4db14e35234c82da68fc8c04bc93873c342e72c459e26996d027aecd5d978837cdca3
   languageName: node
   linkType: hard
 

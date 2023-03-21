@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { formatUnits, parseUnits } from '@ethersproject/units'
-import numeral from 'numeral'
+import { format, parse } from 'numerable'
 
 export const stringInputToBigNumber = (input: string, decimals: number) => {
   if (input === '') {
@@ -21,7 +21,7 @@ export const bigNumberPercentage = (available: BigNumber | undefined, percentage
 
 export const abbreviateBigNumber = (value: BigNumberish | undefined, decimals: number): string => {
   const v = value ?? BigNumber.from(0)
-  return numeral(formatUnits(v, decimals)).format('0.00a')
+  return format(parse(formatUnits(v, decimals)), '0.00a')
 }
 
 export const estimateTokenValue = (
