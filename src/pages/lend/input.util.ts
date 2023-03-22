@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { formatUnits, parseUnits } from '@ethersproject/units'
-import numeral from 'numeral'
+import { format, parse } from 'numerable'
 
 export const stringInputToBigNumber = (input: string, decimals: number) => {
   if (input === '') {
@@ -14,14 +14,14 @@ export const stringInputToBigNumber = (input: string, decimals: number) => {
 /**
  * @param percentage between 0 and 100
  */
-export const bigNumberPercentage = (available: BigNumber | undefined, percentage: number, decimals: number): string => {
+export const bigNumberPercentage = (available: BigNumber | undefined, percentage: number): BigNumber => {
   const value = available ?? BigNumber.from(0)
-  return formatUnits(value.mul(percentage).div(100), decimals)
+  return value.mul(percentage).div(100)
 }
 
 export const abbreviateBigNumber = (value: BigNumberish | undefined, decimals: number): string => {
   const v = value ?? BigNumber.from(0)
-  return numeral(formatUnits(v, decimals)).format('0.00a')
+  return format(parse(formatUnits(v, decimals)), '0.00a')
 }
 
 export const estimateTokenValue = (
@@ -41,4 +41,12 @@ export const estimateTokenValue = (
 
   const value = (amountBigInt * priceBigInt) / BigInt(Math.pow(10, priceDecimals))
   return abbreviateBigNumber(value, decimals)
+}
+
+export const oneUnitWithDecimals = (decimals: number): BigNumber => BigNumber.from('1' + '0'.repeat(decimals))
+export const multiplyBigNumbers = (a: BigNumber | undefined, b: BigNumber | undefined, decimals: number): BigNumber => {
+  const aBN = a ?? BigNumber.from(0)
+  const bBN = b ?? BigNumber.from(0)
+  const one = oneUnitWithDecimals(decimals)
+  return aBN.mul(bBN).div(one)
 }
