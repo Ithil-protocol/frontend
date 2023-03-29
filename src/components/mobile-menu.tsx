@@ -5,7 +5,7 @@ import { useState } from 'react'
 // import MobileMenuModal from './MobileMenuModal'
 
 export default function MobileMenu() {
-  const [modalOpened, setModalOpened] = useState(false)
+  const [, setModalOpened] = useState(false)
 
   return (
     <>
