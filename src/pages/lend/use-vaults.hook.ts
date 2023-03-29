@@ -3,11 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 import { erc4626ABI, multicall } from '@wagmi/core'
 import { useAccount } from 'wagmi'
 
-import { ErrorCause } from 'src/state/error-cause'
-import { Vaults } from 'src/types/onchain.types'
-
-import { abbreviateBigNumber, multiplyBigNumbers, oneUnitWithDecimals } from './input.util'
-import { lendingTokens } from './use-token-data.hook'
+import { lendingTokens } from '@/pages/lend/use-price-data.hook'
+import { type Vaults } from '@/types/onchain.types'
+import { ErrorCause } from '@/utils/error-cause'
+import { multiplyBigNumbers, oneUnitWithDecimals } from '@/utils/input.utils'
 
 const ithil4626customAbi = [
   {
@@ -82,9 +81,9 @@ const getVaultData = async (address?: string) => {
     return {
       key: vault.key,
       token: vault.token,
-      tvl: abbreviateBigNumber(tvl, vault.token.decimals),
-      borrowed: abbreviateBigNumber(borrowed, vault.token.decimals),
-      deposited: abbreviateBigNumber(depositedAssets, vault.token.decimals),
+      tvl,
+      borrowed,
+      deposited: depositedAssets,
     }
   })
   return data
@@ -96,7 +95,6 @@ export const useVaults = () => {
   return useQuery({
     queryKey: ['vaults', address],
     queryFn: async () => await getVaultData(address),
-    placeholderData: placeHolderVaultData,
     keepPreviousData: true,
 
     retry: (failureCount, error: Error): boolean => {

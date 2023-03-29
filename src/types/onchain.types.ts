@@ -1,3 +1,5 @@
+import { type BigNumber } from '@ethersproject/bignumber'
+
 // used in Lend page
 export interface LendingToken {
   name: string
@@ -11,7 +13,7 @@ export type LendingTokenList = LendingToken[]
 export type Vaults = Array<{
   key: string
   token: LendingTokenList[number]
-  tvl?: string
-  borrowed?: string
-  deposited?: string
+  tvl?: BigNumber
+  borrowed?: BigNumber
+  deposited?: BigNumber
 }>

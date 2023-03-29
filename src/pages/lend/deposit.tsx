@@ -1,21 +1,20 @@
 import { Button, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import { FC, useState } from 'react'
-import Skeleton from 'react-loading-skeleton'
-import { Address, useAccount, useBalance, useContractWrite } from 'wagmi'
+import { type FC, useState } from 'react'
+import { useAccount, useBalance, useContractWrite, useWaitForTransaction } from 'wagmi'
 
-import TabsSwitch from 'src/components/composed/trade/TabsSwitch'
-import { LendingToken } from 'src/types/onchain.types'
-
+import { EstimatedValue } from '@/components/estimated-value'
+import { Loading } from '@/components/loading'
+import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
+import { type LendingToken } from '@/types/onchain.types'
 import {
   abbreviateBigNumber,
   bigNumberPercentage,
-  estimateTokenValue,
   multiplyBigNumbers,
   stringInputToBigNumber,
-} from './input.util'
-import { useTokenData } from './use-token-data.hook'
+} from '@/utils/input.utils'
+
 import { useToken } from './use-token.hook'
 import { useVault } from './use-vault.hook'
 
@@ -24,9 +23,7 @@ interface WidgetComponentProps {
   title: string
   balance: BigNumber | undefined
 
-  tokenName: string
-  tokenDecimals: number
-  tokenValue: number | undefined
+  token: LendingToken
 
   inputAmount: string
   onInputChange: (value: string) => void
@@ -41,13 +38,26 @@ interface WidgetComponentProps {
   isMaxDisabled: boolean
 }
 
-export const WidgetComponent: React.FC<WidgetComponentProps> = ({
+interface TabSwitchProps {
+  values: Array<{ title: string; value: string }>
+  onChange: (value: string) => void
+}
+
+const TabSwitch: FC<TabSwitchProps> = ({ values, onChange }) => (
+  <div className="flex flex-row gap-4">
+    {values.map(({ title, value }) => (
+      <Button key={value} onClick={() => onChange(value)} variant="outline">
+        {title}
+      </Button>
+    ))}
+  </div>
+)
+
+const WidgetComponent: React.FC<WidgetComponentProps> = ({
   title,
   balance,
 
-  tokenName,
-  tokenDecimals,
-  tokenValue,
+  token,
 
   inputAmount,
   onInputChange,
@@ -62,23 +72,25 @@ export const WidgetComponent: React.FC<WidgetComponentProps> = ({
   isApproved,
 }) => {
   return (
-    <div className="flex flex-col items-center w-full gap-2 p-3 md:p-6 rounded-xl border-1 border-font-200 dark:border-primary-300">
+    <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300">
       <div className="flex flex-row justify-between w-full">
         <Text>{title}</Text>
         <div className="flex flex-row items-end justify-end gap-2">
           {isBalanceLoading ? (
-            <Skeleton width={80} />
+            <Loading />
           ) : (
             <>
-              <Text>{abbreviateBigNumber(balance, tokenDecimals)}</Text>
-              <Text>($ {estimateTokenValue(balance, tokenDecimals, tokenValue)})</Text>
+              <Text>{abbreviateBigNumber(balance, token.decimals)}</Text>
+              <Text>
+                (<EstimatedValue value={balance} token={token} />)
+              </Text>
             </>
           )}
         </div>
       </div>
 
       <InputGroup size="md">
-        <Input type="number" value={inputAmount} onChange={(event) => onInputChange(event.target.value)} />
+        <Input type="number" step="0.1" value={inputAmount} onChange={(event) => onInputChange(event.target.value)} />
         <InputRightElement width="4.5rem">
           <Button h="1.75rem" size="sm" onClick={onMaxClick} isDisabled={isMaxDisabled} variant="insideInput">
             Max
@@ -86,17 +98,15 @@ export const WidgetComponent: React.FC<WidgetComponentProps> = ({
         </InputRightElement>
       </InputGroup>
 
-      <TabsSwitch
-        activeIndex={'0'}
+      <TabSwitch
         onChange={(value: string) => {
           const percent = Number(value)
           onPercentageClick(percent)
         }}
-        items={[...Array(4)].map((_, idx) => ({
+        values={[...Array(4)].map((_, idx) => ({
           title: `${(idx + 1) * 25}%`,
           value: `${(idx + 1) * 25}`,
         }))}
-        theme="secondary"
       />
 
       <Button
@@ -105,7 +115,7 @@ export const WidgetComponent: React.FC<WidgetComponentProps> = ({
         isLoading={isButtonLoading}
         loadingText={isButtonLoading ? 'Awaiting' : undefined}
       >
-        {isApproved ? `${title} ${tokenName}` : `Approve ${tokenName}`}
+        {isApproved ? `${title} ${token.name}` : `Approve ${token.name}`}
       </Button>
     </div>
   )
@@ -130,36 +140,43 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   })
   const { useAllowance, useApprove } = useToken(token.tokenAddress)
   const { usePrepareDeposit } = useVault(token, address)
-  const { data: tokenData } = useTokenData()
+  const { trackTransaction } = useTransactionFeedback()
 
   const { data: allowance, refetch: refetchAllowance } = useAllowance(address, token.vaultAddress)
-  const { isLoading: isApproveLoading, writeAsync: doApprove } = useApprove(token.vaultAddress, inputBigNumber)
+  const {
+    data: approveData,
+    isLoading: isApproveLoading,
+    writeAsync: approve,
+  } = useApprove(token.vaultAddress, inputBigNumber)
+  const { isLoading: isApproveWaiting } = useWaitForTransaction({ hash: approveData?.hash })
   // deposit
-  const { config: depositConfig, isError: isPrDepositError } = usePrepareDeposit(inputBigNumber)
-  const { isLoading: isDepositLoading, writeAsync: deposit } = useContractWrite(depositConfig)
+  const { config: depositConfig } = usePrepareDeposit(inputBigNumber)
+  const { data: depositData, isLoading: isDepositLoading, writeAsync: deposit } = useContractWrite(depositConfig)
+  const { isLoading: isDepositWaiting } = useWaitForTransaction({ hash: depositData?.hash })
 
   // computed properties
   const isApproved = allowance?.gte(inputBigNumber) ?? false
-  const isButtonLoading = isApproveLoading || isDepositLoading
-  const isPrepareError = isPrDepositError
+  const isButtonLoading = isApproveLoading || isApproveWaiting || isDepositLoading || isDepositWaiting
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
-  const isButtonDisabled = isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
+  const isButtonDisabled = isButtonLoading || isInconsistent || inputBigNumber.isZero()
   const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
-  const tokenValue = tokenData?.[token.tokenAddress.toLowerCase() as Address].usd
 
   // handlers
   const handleMaxClick = () => {
-    setInputAmount(balance?.formatted || '0')
+    setInputAmount(balance?.formatted ?? '0')
   }
 
   const handleClick = async () => {
     if (!isApproved) {
       // after approval is successful, read again the allowance
-      await doApprove?.()
+      const result = await approve?.()
+      await trackTransaction(result, `Approve ${inputAmount} ${token.name}`)
       await refetchAllowance()
       return
     }
-    await deposit?.()
+    const result = await deposit?.()
+    await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`)
+    await refetchAllowance()
     setInputAmount('0')
   }
 
@@ -167,9 +184,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     <WidgetComponent
       title={'Deposit'}
       balance={balance?.value ?? BigNumber.from(0)}
-      tokenName={token.name}
-      tokenDecimals={token.decimals}
-      tokenValue={tokenValue}
+      token={token}
       inputAmount={inputAmount}
       onInputChange={setInputAmount}
       onMaxClick={handleMaxClick}
@@ -201,7 +216,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     watch: true,
   })
   const { usePrepareRedeem, useMaxRedeem, useConvertToAssets, useConvertToShares } = useVault(token, address)
-  const { data: tokenData } = useTokenData()
+  const { trackTransaction } = useTransactionFeedback()
 
   // withdraw
   const { config: redeemConfig, isError: isPrRedeemError } = usePrepareRedeem(inputBigNumber)
@@ -217,7 +232,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
   const isButtonDisabled = isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
   const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
-  const tokenValue = tokenData?.[token.tokenAddress.toLowerCase() as Address].usd
 
   /**
    * withdraw logic
@@ -231,12 +245,14 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     setInputAmount(formatUnits(assetsBalance, token.decimals))
     // in case the user is the last one in the pool, maxRedeem will be slightly less than its balance
     // in that case, use the maxRedeem value or the tx will fail
-    const maxRedeem = maxRedeemData && balance && balance.value.gt(maxRedeemData) ? maxRedeemData : balance?.value
+    const maxRedeem =
+      maxRedeemData != null && balance != null && balance.value.gt(maxRedeemData) ? maxRedeemData : balance?.value
     setInputBigNumber(maxRedeem ?? BigNumber.from(0))
   }
 
   const handleClick = async () => {
-    await withdraw?.()
+    const result = await withdraw?.()
+    await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`)
     setInputAmount('0')
   }
 
@@ -261,9 +277,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     <WidgetComponent
       title={'Withdraw'}
       balance={assetsBalance}
-      tokenName={token.name}
-      tokenDecimals={token.decimals}
-      tokenValue={tokenValue}
+      token={token}
       inputAmount={inputAmount}
       onInputChange={onInputChange}
       onMaxClick={handleMaxClick}
@@ -284,7 +298,7 @@ interface LendingProps {
 
 export const Deposit: FC<LendingProps> = ({ token }) => {
   return (
-    <div className="flex flex-col items-center justify-center w-full gap-4 sm:px-8 lg:px-16 xl:px-24 md:flex-row">
+    <div className="flex flex-col items-center justify-center w-full gap-4 lg:px-16 xl:px-24 md:flex-row">
       <LendingDeposit token={token} />
       <LendingWithdraw token={token} />
     </div>

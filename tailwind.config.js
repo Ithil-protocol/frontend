@@ -1,21 +1,15 @@
-const generateColorClass = (variable) => {
-  return ({ opacityValue }) => (opacityValue ? `rgba(var(--${variable}), ${opacityValue})` : `rgb(var(--${variable}))`)
-}
-const generateFont = (variable) => {
-  return [`var(--fontsize-${variable})`, `var(--lineheight-${variable})`]
-}
-
 /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
+const generateColorClass = (variable) => `var(--${variable})`
+const generateFont = (variable) => [`var(--fontsize-${variable})`, `var(--lineheight-${variable})`]
+
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  darkMode: 'class',
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   important: true,
   theme: {
     fontFamily: {
-      sans: [
-        'Raleway',
-        'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-      ],
+      sans: ['var(--font-inter)', ...fontFamily.sans],
     },
     fontSize: {
       'mobile-medium': generateFont('caption-medium'),
@@ -89,23 +83,7 @@ module.exports = {
         400: '#4E5F71',
       },
     },
-    extend: {
-      maxWidth: {
-        1920: '1920px',
-      },
-      borderWidth: {
-        1: '1px',
-      },
-      animation: {
-        'spin-slow': 'spin 3s linear infinite',
-      },
-      screens: {
-        mobile: '100px',
-        tablet: '700px',
-        laptop: '1080px',
-        desktop: '1300px',
-      },
-    },
+    extend: {},
   },
   plugins: [],
 }

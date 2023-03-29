@@ -1,5 +1,5 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Address, erc20ABI, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { type BigNumber } from '@ethersproject/bignumber'
+import { type Address, erc20ABI, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 export const useToken = (tokenAddress: Address) => {
   const useAllowance = (userAddress: Address | undefined, spender: Address) =>

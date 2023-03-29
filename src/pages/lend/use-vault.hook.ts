@@ -1,9 +1,9 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Address, erc4626ABI, useBalance, useContractRead, usePrepareContractWrite } from 'wagmi'
+import { type BigNumber } from '@ethersproject/bignumber'
+import { type Address, erc4626ABI, useBalance, useContractRead, usePrepareContractWrite } from 'wagmi'
 
-import { LendingToken } from 'src/types/onchain.types'
+import { type LendingToken } from '@/types/onchain.types'
+import { oneUnitWithDecimals } from '@/utils/input.utils'
 
-import { oneUnitWithDecimals } from './input.util'
 import { useToken } from './use-token.hook'
 
 export const useVault = (token: LendingToken, userAddress: Address | undefined) => {
@@ -43,7 +43,7 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
       address: token.vaultAddress,
       abi: erc4626ABI,
       functionName: 'convertToAssets',
-      args: [amount!],
+      args: [amount],
       enabled: amount != null,
     })
   }
@@ -53,7 +53,7 @@ export const useVault = (token: LendingToken, userAddress: Address | undefined) 
       address: token.vaultAddress,
       abi: erc4626ABI,
       functionName: 'convertToShares',
-      args: [amount!],
+      args: [amount],
       enabled: amount != null,
     })
   }
