@@ -56,7 +56,7 @@ const Lend: FC = () => {
 
   const onSelectedChange = (idx: number) => {
     // not sure this check is necessary
-    const vault = vaultData?.[idx]
+    const vault = vaultDataWithFallback?.[idx]
     if (vault == null) return
     // clicking on selected row will unselect it
     if (selectedRow === idx) return setSelectedRow(null)
@@ -131,7 +131,7 @@ const Lend: FC = () => {
                   {selectedRow === idx && (
                     <Tr>
                       <Td colSpan={columns.length}>
-                        <Deposit token={vaultData![idx].token} />
+                        <Deposit token={vaultDataWithFallback[idx].token} />
                       </Td>
                     </Tr>
                   )}

@@ -227,10 +227,12 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
 
   // computed properties
   const assetsBalance = multiplyBigNumbers(balance?.value, assetsRatioData, token.decimals)
-  const isButtonLoading = isWithdrawLoading || isAssetsRatioLoading || isSharesRatioLoading || isMaxRedeemLoading
+  const isButtonLoading = isWithdrawLoading || isMaxRedeemLoading
+  const isRequiredInfoLoading = isAssetsRatioLoading || isSharesRatioLoading
   const isPrepareError = isPrRedeemError
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
-  const isButtonDisabled = isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
+  const isButtonDisabled =
+    isRequiredInfoLoading || isButtonLoading || isPrepareError || isInconsistent || inputBigNumber.isZero()
   const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
 
   /**
