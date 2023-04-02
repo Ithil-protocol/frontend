@@ -6,19 +6,23 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { persistQueryClient, removeOldestQuery } from '@tanstack/react-query-persist-client'
 import type { AppProps } from 'next/app'
+import { useEffect } from 'react'
 import { WagmiConfig, configureChains, createClient } from 'wagmi'
-import { localhost } from 'wagmi/chains'
-import { publicProvider } from 'wagmi/providers/public'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 import Navbar from '@/components/navbar'
-import { anvilNetwork } from '@/config/chains'
+import { addTestNetworks, firstNetwork } from '@/config/chains'
 import { theme as chakraTheme } from '@/styles/chakra.theme'
 import '@/styles/globals.css'
 import { ithilDarkTheme } from '@/styles/rainbowkit'
 
-const { chains, provider } = configureChains([anvilNetwork, localhost], [publicProvider()])
+const network = firstNetwork()
+const { chains, provider } = configureChains(
+  [network],
+  [jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }) })],
+)
 const { connectors } = getDefaultWallets({
-  appName: 'Ithil',
+  appName: 'Ithil Core',
   chains,
 })
 
@@ -49,11 +53,15 @@ persistQueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const { colorMode } = useColorMode()
+
+  // effect only for private and testnet mode
+  useEffect(() => addTestNetworks(), [])
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         chains={chains}
-        initialChain={anvilNetwork}
+        initialChain={network}
         theme={
           colorMode === 'dark'
             ? ithilDarkTheme
