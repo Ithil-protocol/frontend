@@ -104,7 +104,7 @@ const Lend: FC = () => {
                     <Td>
                       <div className="flex items-center gap-2">
                         <Image
-                          src={`/assets/svg-icons/${vault.token.iconName}.svg`}
+                          src={`/assets/tokens/${vault.token.iconName}.svg`}
                           alt={`${vault.token.name} icon`}
                           height={32}
                           width={32}
