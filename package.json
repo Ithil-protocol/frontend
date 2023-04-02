@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prebuild": "rm public/assets/svg-icons && cp -r node_modules/cryptocurrency-icons/svg/icon/ public/assets/svg-icons"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.3",
