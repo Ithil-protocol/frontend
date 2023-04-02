@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "rm public/assets/tokens && ln -s ../../node_modules/cryptocurrency-icons/svg/color public/assets/tokens"
+    "prebuild": "rm public/assets/tokens && ln -s $(pwd)/node_modules/cryptocurrency-icons/svg/color public/assets/tokens"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.3",
