@@ -28,7 +28,7 @@ const Navbar: FC = () => {
           <a href="/">
             <div className="hidden sm:block">
               <Image
-                src={`/assets/images/logoFull${colorMode === 'dark' ? 'Dark' : 'Light'}.svg`}
+                src={`/assets/ithil/logoFull${colorMode === 'dark' ? 'Dark' : 'Light'}.svg`}
                 height={32}
                 width={120}
                 alt="Ithil logo"
@@ -37,7 +37,7 @@ const Navbar: FC = () => {
             </div>
             <div className="block sm:hidden gap-x-2">
               <Image
-                src={`/assets/images/logoSymbol${colorMode === 'dark' ? 'Dark' : 'Light'}.svg`}
+                src={`/assets/ithil/logoSymbol${colorMode === 'dark' ? 'Dark' : 'Light'}.svg`}
                 height={32}
                 width={32}
                 alt="Ithil logo"
