@@ -9,6 +9,8 @@
   --primary-200: #e7eaeb;
   --primary-300: #e2e5e5;
   --primary-400: #ced1d1;
+  /* used to contrast on --primary-200 */
+  --primary-contrast: var(--primary);
   --secondary: #070b0f;
   --secondary-100: #151a29;
   --secondary-200: #a4b1be;
@@ -18,6 +20,7 @@
   --font: var(--secondary);
   --font-100: var(--secondary-400);
   --font-200: var(--secondary-200);
+  --font-button: var(--primary-100);
 
   --primary-action: #077ce0;
   --primary-disabled: var(--primary-300);
@@ -28,11 +31,6 @@
   --primary-warning-light: #f3e7a8;
 
   --button-hover-action: #066bc2;
-  --button-hover-light: var(--primary-300);
-  --button-hover-dark: var(--secondary-100);
-  --button-disabled-light: var(--primary-400);
-  --button-disabled-dark: var(--secondary-100);
-  --button-disabled-action: var(--secondary-200);
 
   --skeleton-base-color: #e2e3e3;
   --skeleton-highlight-color: #f5f5f5;
@@ -44,15 +42,21 @@
   --primary-200: #20293a;
   --primary-300: #364153;
   --primary-400: #4e5f71;
+  --primary-contrast: var(--primary-100);
   --secondary: #ffffff;
   --secondary-100: #f2f5f6;
   --secondary-200: #e7eaeb;
   --secondary-300: #e2e5e5;
   --secondary-400: #ced1d1;
+
+
   --font: var(--secondary-100);
   --font-100: #a4b1be;
   --font-200: var(--font-100);
+  --font-button: var(--secondary);
+
   --primary-action: #077ce0;
+  --primary-disabled: var(--primary-100);
   --primary-success: #15ac89;
   --primary-error: #f35959;
   --primary-warning: #e9cf4a;
@@ -60,4 +64,13 @@
 
   --skeleton-base-color: #262e45;
   --skeleton-highlight-color: #48516d;
+}
+
+/* fixup for numeric input fields showing spin arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }

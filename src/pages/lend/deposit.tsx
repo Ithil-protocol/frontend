@@ -72,16 +72,16 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
   isApproved,
 }) => {
   return (
-    <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300">
+    <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300 bg-primary-contrast">
       <div className="flex flex-row justify-between w-full">
-        <Text>{title}</Text>
+        <Text textStyle={'md'}>{title}</Text>
         <div className="flex flex-row items-end justify-end gap-2">
           {isBalanceLoading ? (
             <Loading />
           ) : (
             <>
-              <Text>{abbreviateBigNumber(balance, token.decimals)}</Text>
-              <Text>
+              <Text textStyle={'md'}>{abbreviateBigNumber(balance, token.decimals)}</Text>
+              <Text textStyle={'md'}>
                 (<EstimatedValue value={balance} token={token} />)
               </Text>
             </>
@@ -90,7 +90,13 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
       </div>
 
       <InputGroup size="md">
-        <Input type="number" step="0.1" value={inputAmount} onChange={(event) => onInputChange(event.target.value)} />
+        <Input
+          type="number"
+          step="0.1"
+          variant="filled"
+          value={inputAmount}
+          onChange={(event) => onInputChange(event.target.value)}
+        />
         <InputRightElement width="4.5rem">
           <Button h="1.75rem" size="sm" onClick={onMaxClick} isDisabled={isMaxDisabled} variant="insideInput">
             Max

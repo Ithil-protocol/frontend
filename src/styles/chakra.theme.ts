@@ -1,6 +1,6 @@
-import { type ThemeConfig, extendTheme, withDefaultVariant } from '@chakra-ui/react'
+import { type StyleConfig, type ThemeConfig, extendTheme, withDefaultVariant } from '@chakra-ui/react'
 
-const ithilTableStyle = {
+const ithilTableStyle: StyleConfig = {
   variants: {
     ithil: () => ({
       table: {
@@ -19,7 +19,7 @@ const ithilTableStyle = {
   },
 }
 
-const ithilButtonStyle = {
+const ithilButtonStyle: StyleConfig = {
   variants: {
     insideInput: {
       backgroundColor: 'var(--primary-300)',
@@ -32,7 +32,7 @@ const ithilButtonStyle = {
     },
     ithil: {
       backgroundColor: 'var(--primary-action)',
-      color: 'var(--primary-100)',
+      color: 'var(--font-button)',
       display: 'block',
       width: '100%',
       fontSize: '18px',
@@ -45,6 +45,7 @@ const ithilButtonStyle = {
         backgroundColor: 'var(--primary-disabled)',
         border: '1px solid var(--primary-border)',
         color: 'var(--secondary)',
+        opacity: 1,
       },
     },
   },
@@ -53,20 +54,19 @@ const ithilButtonStyle = {
   },
 }
 
-const ithilInputStyle = {
-  variants: {
-    filled: {
-      field: {
-        bg: 'var(--primary-200)',
-      },
+const ithilInputStyle: StyleConfig = {
+  baseStyle: {
+    field: {
+      fontSize: ['20px'],
+      fontWeight: 'normal',
+      lineHeight: '115%',
+      bg: 'var(--primary-200)',
+      background: 'var(--primary-200)',
     },
-  },
-  defaultProps: {
-    variant: 'filled',
   },
 }
 
-const ithilTooltipStyle = {
+const ithilTooltipStyle: StyleConfig = {
   baseStyle: {
     borderRadius: 'var(--chakra-radii-lg)',
     px: 'var(--chakra-space-2)',
@@ -75,21 +75,23 @@ const ithilTooltipStyle = {
   },
 }
 
-const ithilSkeletonStyle = {
+const ithilSkeletonStyle: StyleConfig = {
   baseStyle: {
     '--skeleton-start-color': 'var(--skeleton-base-color)',
     '--skeleton-end-color': 'var(--skeleton-highlight-color)',
   },
-  defaultProps: {
-    height: '24px',
-  },
 }
 
-const ithilHeadingStyle = {
+const ithilHeadingStyle: StyleConfig = {
   sizes: {
     h1: {
-      fontSize: '32px',
-      lineHeight: '51.2px',
+      fontSize: ['24px', '32px'],
+      lineHeight: ['38.4px', '51.2px'],
+      fontWeight: 'normal',
+    },
+    h2: {
+      fontSize: ['16px', '18px'],
+      lineHeight: ['25.6px', '28.8px'],
       fontWeight: 'normal',
     },
   },
@@ -115,11 +117,16 @@ export const theme: ThemeConfig = extendTheme(
       global: {
         body: {
           background: 'var(--primary)',
+          color: 'var(--font)',
         },
       },
     },
-    colors: {
-      bodyText: 'var(--font)',
+    textStyles: {
+      md: {
+        fontSize: ['20px'],
+        fontWeight: '600',
+        lineHeight: '160%',
+      },
     },
   },
   withDefaultVariant({

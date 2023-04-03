@@ -30,6 +30,7 @@ module.exports = {
         200: generateColorClass('primary-200'),
         300: generateColorClass('primary-300'),
         400: generateColorClass('primary-400'),
+        contrast: generateColorClass('primary-contrast'),
       },
       secondary: {
         DEFAULT: generateColorClass('secondary'),

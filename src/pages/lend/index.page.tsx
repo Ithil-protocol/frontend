@@ -98,7 +98,7 @@ const Lend: FC = () => {
                     className={classNames([
                       'cursor-pointer',
                       'hover:bg-primary-200',
-                      selectedRow === idx && 'border-none bg-primary-300',
+                      selectedRow === idx && 'border-none bg-primary-200',
                     ])}
                   >
                     <Td>
