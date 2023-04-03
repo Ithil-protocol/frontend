@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 /** Variables */
 :root {
   --primary: #ffffff;
@@ -20,14 +14,19 @@
   --secondary-200: #a4b1be;
   --secondary-300: #20293a;
   --secondary-400: #4e5f71;
+
   --font: var(--secondary);
   --font-100: var(--secondary-400);
   --font-200: var(--secondary-200);
+
   --primary-action: #077ce0;
+  --primary-disabled: var(--primary-300);
   --primary-success: #15ac89;
+  --primary-border: var(--secondary-200);
   --primary-error: #f35959;
   --primary-warning: #e9cf4a;
   --primary-warning-light: #f3e7a8;
+
   --button-hover-action: #066bc2;
   --button-hover-light: var(--primary-300);
   --button-hover-dark: var(--secondary-100);
@@ -39,28 +38,26 @@
   --skeleton-highlight-color: #f5f5f5;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary: #070b0f;
-    --primary-100: #151a29;
-    --primary-200: #20293a;
-    --primary-300: #364153;
-    --primary-400: #4e5f71;
-    --secondary: #ffffff;
-    --secondary-100: #f2f5f6;
-    --secondary-200: #e7eaeb;
-    --secondary-300: #e2e5e5;
-    --secondary-400: #ced1d1;
-    --font: var(--secondary-100);
-    --font-100: #a4b1be;
-    --font-200: var(--font-100);
-    --primary-action: #077ce0;
-    --primary-success: #15ac89;
-    --primary-error: #f35959;
-    --primary-warning: #e9cf4a;
-    --primary-warning-light: #f3e7a8;
+[data-theme="dark"] {
+  --primary: #070b0f;
+  --primary-100: #151a29;
+  --primary-200: #20293a;
+  --primary-300: #364153;
+  --primary-400: #4e5f71;
+  --secondary: #ffffff;
+  --secondary-100: #f2f5f6;
+  --secondary-200: #e7eaeb;
+  --secondary-300: #e2e5e5;
+  --secondary-400: #ced1d1;
+  --font: var(--secondary-100);
+  --font-100: #a4b1be;
+  --font-200: var(--font-100);
+  --primary-action: #077ce0;
+  --primary-success: #15ac89;
+  --primary-error: #f35959;
+  --primary-warning: #e9cf4a;
+  --primary-warning-light: #f3e7a8;
 
-    --skeleton-base-color: #262e45;
-    --skeleton-highlight-color: #48516d;
-  }
+  --skeleton-base-color: #262e45;
+  --skeleton-highlight-color: #48516d;
 }

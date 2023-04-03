@@ -1,4 +1,4 @@
-import { ChakraBaseProvider, useColorMode } from '@chakra-ui/react'
+import { ChakraProvider, useColorMode } from '@chakra-ui/react'
 import { RainbowKitProvider, getDefaultWallets, lightTheme } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { persistQueryClient, removeOldestQuery } from '@tanstack/react-query-persist-client'
 import type { AppProps } from 'next/app'
-import { useEffect } from 'react'
+import { type FC, type PropsWithChildren, useEffect } from 'react'
 import { WagmiConfig, configureChains, createClient } from 'wagmi'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
@@ -51,37 +51,49 @@ persistQueryClient({
   persister: localStoragePersister,
 })
 
-export default function App({ Component, pageProps }: AppProps) {
+// this wrapper is necessary, as it must be nested inside the ChakraProvider,
+// in that point can correctly read the colorMode
+const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
   const { colorMode } = useColorMode()
 
+  return (
+    <RainbowKitProvider
+      chains={chains}
+      initialChain={network}
+      theme={
+        colorMode === 'dark'
+          ? ithilDarkTheme
+          : lightTheme({
+              borderRadius: 'small',
+              fontStack: 'system',
+            })
+      }
+      showRecentTransactions={true}
+    >
+      {children}
+    </RainbowKitProvider>
+  )
+}
+
+export default function App({ Component, pageProps }: AppProps) {
   // effect only for private and testnet mode
-  useEffect(() => addTestNetworks(), [])
+  useEffect(() => {
+    void addTestNetworks()
+  }, [])
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider
-        chains={chains}
-        initialChain={network}
-        theme={
-          colorMode === 'dark'
-            ? ithilDarkTheme
-            : lightTheme({
-                borderRadius: 'small',
-                fontStack: 'system',
-              })
-        }
-        showRecentTransactions={true}
-      >
-        <QueryClientProvider client={queryClient}>
-          <ChakraBaseProvider theme={chakraTheme}>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={chakraTheme}>
+          <RainbowWrapper>
             <div>
               <Navbar />
               <Component {...pageProps} />
               <ReactQueryDevtools initialIsOpen={false} />
             </div>
-          </ChakraBaseProvider>
-        </QueryClientProvider>
-      </RainbowKitProvider>
+          </RainbowWrapper>
+        </ChakraProvider>
+      </QueryClientProvider>
     </WagmiConfig>
   )
 }

@@ -32,10 +32,19 @@ const ithilButtonStyle = {
     },
     ithil: {
       backgroundColor: 'var(--primary-action)',
+      color: 'var(--primary-100)',
+      display: 'block',
+      width: '100%',
+      fontSize: '18px',
       _hover: {
         _disabled: {
-          backgroundColor: 'var(--button-hover-action)',
+          backgroundColor: 'var(--button-hover-light)',
         },
+      },
+      _disabled: {
+        backgroundColor: 'var(--primary-disabled)',
+        border: '1px solid var(--primary-border)',
+        color: 'var(--secondary)',
       },
     },
   },
@@ -108,6 +117,9 @@ export const theme: ThemeConfig = extendTheme(
           background: 'var(--primary)',
         },
       },
+    },
+    colors: {
+      bodyText: 'var(--font)',
     },
   },
   withDefaultVariant({

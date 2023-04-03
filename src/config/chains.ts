@@ -56,11 +56,15 @@ export const firstNetwork = () => {
   return anvilNetwork
 }
 
-export const addTestNetworks = () => {
+export const addTestNetworks = async () => {
   if (coreConfig.instance === CoreInstance.PrivateTestnet || coreConfig.instance === CoreInstance.PublicTestnet) {
     try {
       const network = firstNetwork()
-      void window.ethereum?.request({
+      if (window.ethereum == null) return
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' })
+      if (chainId === '0x539') return
+
+      await window.ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [
           {
