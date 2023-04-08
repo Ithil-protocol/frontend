@@ -1,4 +1,5 @@
 import { type BigNumber } from '@ethersproject/bignumber'
+import { type Address } from 'wagmi'
 
 // used in Lend page
 export interface LendingToken {
@@ -17,3 +18,25 @@ export type Vaults = Array<{
   borrowed?: BigNumber
   deposited?: BigNumber
 }>
+
+export type AddressByEnvironment = Record<string, `0x${string}`>
+export interface ServiceAsset {
+  name: string
+  coingeckoId: string
+  iconName: string
+  decimals: number
+  tokenAddress: `0x${string}`
+}
+export interface ServiceByEnvironment {
+  name: string
+  description: string
+  address: AddressByEnvironment
+  assets: ServiceAsset[]
+}
+// the hook should convert ServiceByEnvironment in Service
+export interface Service extends Omit<ServiceByEnvironment, 'address'> {
+  address: Address
+}
+
+export type ServicesByEnvironment = Record<string, ServiceByEnvironment>
+export type Services = Record<string, Service>

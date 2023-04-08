@@ -9,13 +9,16 @@ import { type FC } from 'react'
 // import NavigationMenu from 'src/components/navigation/NavigationMenu'
 import { ThemeSwitch } from './theme-switch'
 
-export type PageNames = 'lend' | 'dashboard' | 'faucets'
+export type PageNames = 'lend' | 'dashboard' | 'faucets' | 'services'
 interface NavigationPage {
   name: PageNames
   url: string
 }
 
-const pages: NavigationPage[] = [{ name: 'lend', url: '/lend' }]
+const pages: NavigationPage[] = [
+  { name: 'lend', url: '/lend' },
+  { name: 'services', url: '/services' },
+]
 
 const Navbar: FC = () => {
   const { pathname } = useRouter()

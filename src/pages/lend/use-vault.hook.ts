@@ -4,7 +4,7 @@ import { type Address, erc4626ABI, useBalance, useContractRead, usePrepareContra
 import { type LendingToken } from '@/types/onchain.types'
 import { oneUnitWithDecimals } from '@/utils/input.utils'
 
-import { useToken } from './use-token.hook'
+import { useToken } from '../../hooks/use-token.hook'
 
 export const useVault = (token: LendingToken, userAddress: Address | undefined) => {
   const { useAllowance } = useToken(token.tokenAddress)
