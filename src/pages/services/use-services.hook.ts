@@ -8,7 +8,7 @@ const servicesByEnv = servicesJson as ServicesByEnvironment
 export const useServices = () => {
   const serviceNames = Object.keys(servicesByEnv)
   const assetsByService = serviceNames.reduce<Record<string, string[]>>((acc, name) => {
-    const assets = services[name].assets.map((asset) => asset.name)
+    const assets = servicesByEnv[name].assets.map((asset) => asset.name)
     return { ...acc, [name]: assets }
   }, {})
 

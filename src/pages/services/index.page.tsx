@@ -5,6 +5,7 @@ import { type Address } from 'wagmi'
 
 import PageWrapper from '@/components/page-wrapper'
 import { useToken } from '@/hooks/use-token.hook'
+import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
 import { type ServiceAsset } from '@/types/onchain.types'
 import { stringInputToBigNumber } from '@/utils/input.utils'
 
@@ -26,16 +27,23 @@ const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress }) => {
     isLoading: isApproveLoading,
     writeAsync: approve,
   } = useApprove(serviceAddress, inputBigNumber)
+  const { trackTransaction } = useTransactionFeedback()
 
   const isButtonDisabled = false
   const isButtonLoading = false
-  const isApproved = false
+  const isApproved = allowance?.gte(inputBigNumber) ?? false
   const isMaxDisabled = false
 
   const onInputChange = (amount: string) => {
     setInputAmount(amount)
   }
-  const onActionClick = () => {}
+  const onActionClick = async () => {
+    if (!isApproved) {
+      const result = await approve?.()
+      await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`)
+      await refetchAllowance()
+    }
+  }
   const onMaxClick = () => {}
 
   return (
@@ -55,7 +63,9 @@ const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress }) => {
         </InputRightElement>
       </InputGroup>
       <Button
-        onClick={onActionClick}
+        onClick={() => {
+          void onActionClick()
+        }}
         isDisabled={isButtonDisabled}
         isLoading={isButtonLoading}
         loadingText={isButtonLoading ? 'Awaiting' : undefined}

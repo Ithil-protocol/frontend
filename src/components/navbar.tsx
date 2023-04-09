@@ -52,7 +52,7 @@ const Navbar: FC = () => {
             <ThemeSwitch />
           </div>
           <div className="flex-grow hidden sm:flex">
-            <div className="justify-items-start">
+            <div className="flex gap-2 justify-items-start">
               {pages.map(({ name, url }) => (
                 <Link key={name} href={url} className="relative flex flex-col items-center">
                   <Text casing="capitalize">{name}</Text>
