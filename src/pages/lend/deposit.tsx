@@ -1,6 +1,7 @@
 import { Button, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { type FC, useState } from 'react'
 import { useAccount, useBalance, useContractWrite, useWaitForTransaction } from 'wagmi'
 
@@ -71,6 +72,8 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
   isButtonLoading,
   isApproved,
 }) => {
+  const { isConnected } = useAccount()
+  const { openConnectModal } = useConnectModal()
   return (
     <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300 bg-primary-contrast">
       <div className="flex flex-row justify-between w-full">
@@ -115,14 +118,18 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
         }))}
       />
 
-      <Button
-        onClick={onActionClick}
-        isDisabled={isButtonDisabled}
-        isLoading={isButtonLoading}
-        loadingText={isButtonLoading ? 'Awaiting' : undefined}
-      >
-        {isApproved ? `${title} ${token.name}` : `Approve ${token.name}`}
-      </Button>
+      {isConnected ? (
+        <Button
+          onClick={onActionClick}
+          isDisabled={isButtonDisabled}
+          isLoading={isButtonLoading}
+          loadingText={isButtonLoading ? 'Awaiting' : undefined}
+        >
+          {isApproved ? `${title} ${token.name}` : `Approve ${token.name}`}
+        </Button>
+      ) : (
+        <Button onClick={openConnectModal}>Connect Wallet</Button>
+      )}
     </div>
   )
 }
