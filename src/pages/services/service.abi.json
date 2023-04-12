@@ -1,0 +1,182 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "struct IService.Order",
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "internalType": "struct IService.Agreement",
+            "name": "agreement",
+            "type": "tuple",
+            "components": [
+              {
+                "internalType": "struct IService.Loan[]",
+                "name": "loans",
+                "type": "tuple[]",
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "margin",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "interestAndSpread",
+                    "type": "uint256"
+                  }
+                ]
+              },
+              {
+                "internalType": "struct IService.Collateral[]",
+                "name": "collaterals",
+                "type": "tuple[]",
+                "components": [
+                  {
+                    "internalType": "enum IService.ItemType",
+                    "name": "itemType",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "identifier",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ]
+              },
+              {
+                "internalType": "uint256",
+                "name": "createdAt",
+                "type": "uint256"
+              },
+              {
+                "internalType": "enum IService.Status",
+                "name": "status",
+                "type": "uint8"
+              }
+            ]
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "open"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "margin",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "interestAndSpread",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IService.Loan[]",
+            "name": "loans",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "enum IService.ItemType",
+                "name": "itemType",
+                "type": "uint8"
+              },
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "identifier",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IService.Collateral[]",
+            "name": "collaterals",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum IService.Status",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct IService.Agreement",
+        "name": "agreement",
+        "type": "tuple"
+      }
+    ],
+    "name": "quote",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

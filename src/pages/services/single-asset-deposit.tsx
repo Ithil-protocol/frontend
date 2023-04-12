@@ -1,12 +1,15 @@
 import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import dynamic from 'next/dynamic'
 import { type FC, useState } from 'react'
-import { type Address, useAccount } from 'wagmi'
+import { type Address, useAccount, useContract, useSigner } from 'wagmi'
 
 import { useToken } from '@/hooks/use-token.hook'
 import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
 import { type ServiceAsset } from '@/types/onchain.types'
-import { abbreviateBigNumber, stringInputToBigNumber } from '@/utils/input.utils'
+import { stringInputToBigNumber } from '@/utils/input.utils'
+
+import serviceAbi from './service.abi.json'
+import { prepareOrder } from './service.contract'
 
 interface WidgetSingleAssetDepositProps {
   inputAmount: string
@@ -68,6 +71,7 @@ interface ServiceDepositProps {
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress }) => {
   const { address } = useAccount()
+  const { data: signer } = useSigner()
   const [inputAmount, setInputAmount] = useState<string>('0')
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals)
 
@@ -80,6 +84,15 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
     isLoading: isApproveLoading,
     writeAsync: approve,
   } = useApprove(serviceAddress, inputBigNumber)
+
+  // const order = prepareOrder(asset.tokenAddress, inputBigNumber, 2)
+  // const { config: openConfig } = usePrepareContractWrite({
+  //   address: serviceAddress,
+  //   abi: serviceAbi,
+  //   functionName: 'open',
+  //   args: [order],
+  // })
+  const serviceContract = useContract({ address: serviceAddress, abi: serviceAbi, signerOrProvider: signer })
 
   // const { config: depositConfig } = usePrepareDeposit(inputBigNumber)
   // const { data: depositData, isLoading: isDepositLoading, writeAsync: deposit } = useContractWrite(depositConfig)
@@ -98,6 +111,13 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
       await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`)
       await refetchAllowance()
     }
+    const order = prepareOrder(asset.tokenAddress, inputBigNumber, 2)
+    console.log({ order: JSON.parse(JSON.stringify(order)) })
+
+    const unsignedTx = await serviceContract?.populateTransaction.open(order)
+    console.log({ unsignedTx })
+    const response = await serviceContract?.open(order)
+    console.log({ response })
   }
   const onMaxClick = () => {}
 
