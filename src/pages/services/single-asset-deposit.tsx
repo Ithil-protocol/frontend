@@ -1,7 +1,7 @@
 import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import dynamic from 'next/dynamic'
 import { type FC, useState } from 'react'
-import { type Address } from 'wagmi'
+import { type Address, useAccount } from 'wagmi'
 
 import { useToken } from '@/hooks/use-token.hook'
 import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
@@ -67,17 +67,22 @@ interface ServiceDepositProps {
 }
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress }) => {
+  const { address } = useAccount()
   const [inputAmount, setInputAmount] = useState<string>('0')
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals)
 
+  const { trackTransaction } = useTransactionFeedback()
+
   const { useAllowance, useApprove } = useToken(asset.tokenAddress)
-  const { data: allowance, refetch: refetchAllowance } = useAllowance(asset.tokenAddress, serviceAddress)
+  const { data: allowance, refetch: refetchAllowance } = useAllowance(address, serviceAddress)
   const {
     data: approveData,
     isLoading: isApproveLoading,
     writeAsync: approve,
   } = useApprove(serviceAddress, inputBigNumber)
-  const { trackTransaction } = useTransactionFeedback()
+
+  // const { config: depositConfig } = usePrepareDeposit(inputBigNumber)
+  // const { data: depositData, isLoading: isDepositLoading, writeAsync: deposit } = useContractWrite(depositConfig)
 
   const isButtonDisabled = inputBigNumber.isZero()
   const isButtonLoading = false
@@ -95,8 +100,6 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
     }
   }
   const onMaxClick = () => {}
-
-  console.log({ inputBigNumber: abbreviateBigNumber(inputBigNumber, asset.decimals), isApproved })
 
   return (
     <WidgetSingleAssetDeposit

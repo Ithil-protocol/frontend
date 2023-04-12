@@ -4,10 +4,11 @@ import { type Address, erc20ABI, useContractRead, useContractWrite, usePrepareCo
 export const useToken = (tokenAddress: Address) => {
   const useAllowance = (userAddress: Address | undefined, spender: Address) =>
     useContractRead({
-      address: userAddress == null ? undefined : tokenAddress, // if user is not provided, don't read the contract
+      address: tokenAddress,
       abi: erc20ABI,
       functionName: 'allowance',
       args: [userAddress!, spender],
+      enabled: userAddress != null,
     })
 
   const useApprove = (spender: Address, amount: BigNumber) => {
