@@ -3,7 +3,7 @@
     "name": "AAVE",
     "description": "The vault deposits the user's BNBx-BNB vLP in a Thena farm, earning the platform's governance token.",
     "address": {
-      "private": "0x27378f476181a0101261a922E10bC61dfD239Bcf",
+      "private": "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
       "dev": "0xD1d01555b5DC60ba330414be2266f4FAC195a32B"
     },
     "assets": [

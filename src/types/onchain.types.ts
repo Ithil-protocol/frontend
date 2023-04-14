@@ -1,6 +1,10 @@
 import { type BigNumber } from '@ethersproject/bignumber'
 import { type Address } from 'wagmi'
 
+/**
+ * This
+ */
+
 // used in Lend page
 export interface LendingToken {
   name: string
@@ -19,6 +23,7 @@ export type Vaults = Array<{
   deposited?: BigNumber
 }>
 
+// used in services page
 export type AddressByEnvironment = Record<string, `0x${string}`>
 export interface ServiceAsset {
   name: string
