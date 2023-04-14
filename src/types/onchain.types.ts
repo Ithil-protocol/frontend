@@ -27,6 +27,7 @@ export interface ServiceAsset {
   decimals: number
   tokenAddress: `0x${string}`
 }
+export type ServiceAssetHash = Record<Lowercase<string>, ServiceAsset>
 export interface ServiceByEnvironment {
   name: string
   description: string
@@ -34,9 +35,10 @@ export interface ServiceByEnvironment {
   assets: ServiceAsset[]
 }
 // the hook should convert ServiceByEnvironment in Service
-export interface Service extends Omit<ServiceByEnvironment, 'address'> {
+export interface Service extends Omit<ServiceByEnvironment, 'address' | 'assets'> {
   address: Address
+  assets: ServiceAssetHash
 }
 
 export type ServicesByEnvironment = Record<string, ServiceByEnvironment>
-export type Services = Record<string, Service>
+export type Services = Record<Lowercase<string>, Service>

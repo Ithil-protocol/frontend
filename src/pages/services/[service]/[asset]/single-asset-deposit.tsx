@@ -8,8 +8,8 @@ import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
 import { type ServiceAsset } from '@/types/onchain.types'
 import { stringInputToBigNumber } from '@/utils/input.utils'
 
-import serviceAbi from './service.abi.json'
-import { prepareOrder } from './service.contract'
+import serviceAbi from '../../service.abi.json'
+import { prepareOrder } from '../../service.contract'
 
 interface WidgetSingleAssetDepositProps {
   inputAmount: string
@@ -137,7 +137,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
 }
 
 export const DynamicServiceDeposit = dynamic(
-  async () => await import('@/pages/services/single-asset-deposit').then((mod) => mod.ServiceDeposit),
+  async () => await import('@/pages/services/[service]/[asset]/single-asset-deposit').then((mod) => mod.ServiceDeposit),
   {
     ssr: false,
     loading: () => (

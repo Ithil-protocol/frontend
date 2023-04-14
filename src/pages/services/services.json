@@ -1,5 +1,5 @@
 {
-  "AAVE": {
+  "aave": {
     "name": "AAVE",
     "description": "The vault deposits the user's BNBx-BNB vLP in a Thena farm, earning the platform's governance token.",
     "address": {
