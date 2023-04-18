@@ -80,8 +80,8 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
   const { useAllowance, useApprove } = useToken(asset.tokenAddress)
   const { data: allowance, refetch: refetchAllowance } = useAllowance(address, serviceAddress)
   const {
-    data: approveData,
-    isLoading: isApproveLoading,
+    // data: approveData,
+    // isLoading: isApproveLoading,
     writeAsync: approve,
   } = useApprove(serviceAddress, inputBigNumber)
 
