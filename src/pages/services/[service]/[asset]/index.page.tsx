@@ -13,7 +13,7 @@ interface Props {
   asset: ServiceAsset
 }
 
-const Services: FC<Props> = ({ serviceName, asset }) => {
+const ServicePage: FC<Props> = ({ serviceName, asset }) => {
   const { services } = useServices()
   const assetsAvailable = Object.keys(services.aave.assets)
 
@@ -79,4 +79,4 @@ export const getStaticProps: GetStaticProps = (context: GetStaticPropsContext) =
   }
 }
 
-export default Services
+export default ServicePage

@@ -2086,6 +2086,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify/react@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@iconify/react@npm:4.1.0"
+  dependencies:
+    "@iconify/types": ^2.0.0
+  peerDependencies:
+    react: ">=16"
+  checksum: 50de9d5bf191bc4a002c1a6763c7a8294fb88d5509cf347e8f037bf903ec344dded6ed0c50a190d18ca7c6b5293d4b7d950f636f3e1471115feffc3845b585f9
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@iconify/types@npm:2.0.0"
+  checksum: 029f58542c160e9d4a746869cf2e475b603424d3adf3994c5cc8d0406c47e6e04a3b898b2707840c1c5b9bd5563a1660a34b110d89fce43923baca5222f4e597
+  languageName: node
+  linkType: hard
+
 "@jridgewell/gen-mapping@npm:^0.3.2":
   version: 0.3.2
   resolution: "@jridgewell/gen-mapping@npm:0.3.2"
@@ -6808,6 +6826,7 @@ __metadata:
     "@chakra-ui/react": ^2.5.3
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
+    "@iconify/react": ^4.1.0
     "@rainbow-me/rainbowkit": ^0.12.4
     "@tanstack/react-query": ^4.28.0
     "@tanstack/react-query-devtools": ^4.28.0

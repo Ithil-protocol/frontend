@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "next dev",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "serve": "next start",
     "lint": "next lint",
     "prebuild": "rm -rf public/assets/tokens && cp -r $(pwd)/node_modules/cryptocurrency-icons/svg/color public/assets/tokens"
   },
@@ -13,6 +14,7 @@
     "@chakra-ui/react": "^2.5.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@iconify/react": "^4.1.0",
     "@rainbow-me/rainbowkit": "^0.12.4",
     "@tanstack/react-query": "^4.28.0",
     "@tanstack/react-query-devtools": "^4.28.0",

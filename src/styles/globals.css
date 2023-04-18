@@ -42,6 +42,9 @@
   --primary-200: #20293a;
   --primary-300: #364153;
   --primary-400: #4e5f71;
+  --primary-500: #3d547b;
+  --primary-600: #1c2236;
+  --primary-700: #9badcc;
   --primary-contrast: var(--primary-100);
   --secondary: #ffffff;
   --secondary-100: #f2f5f6;

@@ -94,6 +94,11 @@ const ithilHeadingStyle: StyleConfig = {
       lineHeight: ['25.6px', '28.8px'],
       fontWeight: 'normal',
     },
+    h3: {
+      fontSize: ['18px', '20px'],
+      lineHeight: ['24px', '28px'],
+      fontWeight: '700',
+    },
   },
 }
 
@@ -122,10 +127,38 @@ export const theme: ThemeConfig = extendTheme(
       },
     },
     textStyles: {
+      'slender-sm': {
+        fontSize: ['14px'],
+        fontWeight: '700',
+        lineHeight: '160%',
+        fontFamily: 'system-ui',
+      },
+      'slender-sm2': {
+        fontSize: ['14px'],
+        fontWeight: '500',
+        lineHeight: '24px',
+        fontFamily: 'system-ui',
+      },
+      'slender-md': {
+        fontSize: ['18px'],
+        fontWeight: '600',
+        lineHeight: '160%',
+        fontFamily: 'system-ui',
+      },
+      sm: {
+        fontSize: ['14px'],
+        fontWeight: 'normal',
+        lineHeight: '24px',
+      },
       md: {
         fontSize: ['20px'],
         fontWeight: '600',
         lineHeight: '160%',
+      },
+      md2: {
+        fontSize: ['18px'],
+        fontWeight: 'normal',
+        lineHeight: '32px',
       },
     },
   },
