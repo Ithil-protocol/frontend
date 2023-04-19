@@ -24,7 +24,9 @@ export const getServices = () => {
     return hash
   }, {})
 
-  return { names: serviceNames, services }
+  const servicesList = serviceNames.map((id) => ({ name: services[id].name, id }))
+
+  return { names: serviceNames, services, servicesList }
 }
 
 export const useServices = () => {
