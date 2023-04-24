@@ -41,6 +41,7 @@ module.exports = {
         200: generateColorClass('secondary-200'),
         300: generateColorClass('secondary-300'),
         400: generateColorClass('secondary-400'),
+        500: generateColorClass('secondary-500'),
       },
       font: {
         DEFAULT: generateColorClass('font'),

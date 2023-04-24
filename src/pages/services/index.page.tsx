@@ -1,13 +1,12 @@
 import { Button, Heading, Select, Text, useColorMode } from '@chakra-ui/react'
 import { Icon } from '@iconify/react'
-import classNames from 'classnames'
 import { type GetStaticProps, type GetStaticPropsContext } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'numerable'
 import { type FC, useMemo, useState } from 'react'
 
+import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
 import { type Services } from '@/types/onchain.types'
 
@@ -44,30 +43,6 @@ const ServiceToken: FC<{ token: string }> = ({ token }) => (
     </Text>
   </div>
 )
-
-// supports maximum of 5 assets
-const MultiAssetsIcons: FC<{ assets: string[] }> = ({ assets }) => {
-  // tailwind needs extractable classes to be in the same file
-  const offsets = ['', 'right-2', 'right-4', 'right-6', 'right-8']
-  const zIndexes = ['z-0', 'z-1', 'z-2', 'z-3', 'z-4']
-
-  return (
-    <div className="relative flex">
-      {assets.map((asset, idx) => (
-        <Image
-          src={`/assets/tokens/${asset}.svg`}
-          alt={`${asset} icon`}
-          height={32}
-          width={32}
-          key={asset}
-          className={classNames('relative', zIndexes[idx], offsets[idx], {
-            'rounded-full ring-offset-2 ring-offset-primary-100 ring-2 ring-primary-100': idx > 0,
-          })}
-        />
-      ))}
-    </div>
-  )
-}
 
 interface ServiceCardProps {
   assets: string[]
