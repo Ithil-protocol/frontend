@@ -18,7 +18,7 @@ import { ithilDarkTheme } from '@/styles/rainbowkit'
 
 const network = firstNetwork()
 const { chains, provider } = configureChains(
-  [network],
+  [network], // until Ithil is not a multi-chain app, we can use only one network
   [jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }) })],
 )
 const { connectors } = getDefaultWallets({

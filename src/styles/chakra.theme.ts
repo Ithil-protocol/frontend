@@ -86,18 +86,27 @@ const ithilHeadingStyle: StyleConfig = {
   sizes: {
     h1: {
       fontSize: ['24px', '32px'],
-      lineHeight: ['38.4px', '51.2px'],
+      lineHeight: '150%',
       fontWeight: 'normal',
     },
     h2: {
       fontSize: ['16px', '18px'],
-      lineHeight: ['25.6px', '28.8px'],
+      lineHeight: '150%',
       fontWeight: 'normal',
     },
     h3: {
       fontSize: ['18px', '20px'],
-      lineHeight: ['24px', '28px'],
+      lineHeight: '150%',
       fontWeight: '700',
+    },
+    h4: {
+      fontSize: '14px',
+      lineHeight: '150%',
+      fontWeight: '500',
+    },
+    h5: {
+      fontSize: '12px',
+      lineHeight: '150%',
     },
   },
 }

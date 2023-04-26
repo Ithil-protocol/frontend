@@ -9,6 +9,8 @@ import { type FC, useMemo, useState } from 'react'
 import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
 import { type Services } from '@/types/onchain.types'
+import { fakeApy, fakeTvl } from '@/utils/fake-data.utils'
+import { aprToApy } from '@/utils/math.utils'
 
 import { getServices, useServices } from './use-services.hook'
 
@@ -71,7 +73,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ assets, assetsId, serviceName, serv
       </Heading>
       <div className="flex py-3 mb-4 rounded-md bg-primary-600">
         <div className="flex items-center gap-2 mx-auto">
-          <Text textStyle="slender-md">{apy} %</Text>
+          <Text textStyle="slender-md">{apy.toFixed(2)} %</Text>
           <Text textStyle="md2">APY</Text>
         </div>
       </div>
@@ -112,9 +114,13 @@ const ServicesGrid: FC<{ services: Services }> = ({ services }) => {
       // assets and assetsId will be reworked a little bit when including services with multiple tokens
       const iconName = assets[asset as Lowercase<string>].iconName
       const assetsId = asset as Lowercase<string>
-      const fakeApy = Math.ceil(Math.random() * 1000) / 10 // 0.1 - 100%
-      const fakeTvl = Math.ceil(Math.random() * 1000) * 10000 // 0.1 - 10M
-      cards.push({ assets: [iconName], assetsId, serviceName, serviceId, apy: fakeApy, tvl: fakeTvl, description })
+
+      const vaultApr = fakeApy([serviceName, iconName, 'vault'])
+      const boostApr = fakeApy([serviceName, iconName, 'boost'], 1)
+      const apy = aprToApy(vaultApr + boostApr)
+
+      const tvl = fakeTvl([serviceName, iconName, 'tvl'])
+      cards.push({ assets: [iconName], assetsId, serviceName, serviceId, apy, tvl, description })
     })
   })
 

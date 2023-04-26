@@ -6851,6 +6851,7 @@ __metadata:
     phosphor-react: ^1.4.1
     postcss: ^8.4.21
     prettier: ^2.8.7
+    rand-seed: ^1.0.2
     react: 18.2.0
     react-dom: 18.2.0
     react-switch: ^7.0.0
@@ -8286,6 +8287,13 @@ __metadata:
   version: 5.1.1
   resolution: "quick-lru@npm:5.1.1"
   checksum: a516faa25574be7947969883e6068dbe4aa19e8ef8e8e0fd96cddd6d36485e9106d85c0041a27153286b0770b381328f4072aa40d3b18a19f5f7d2b78b94b5ed
+  languageName: node
+  linkType: hard
+
+"rand-seed@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "rand-seed@npm:1.0.2"
+  checksum: aff7db47e44efb2d1daa6fbb33d9283dd75683d23c313f4fa3db0442b314ea1defe3bac9975261e88769d10beb387e71992ca4acce929f3b21a6d5eeb314f0c4
   languageName: node
   linkType: hard
 

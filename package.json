@@ -29,6 +29,7 @@
     "next": "13.2.4",
     "numerable": "^0.3.15",
     "phosphor-react": "^1.4.1",
+    "rand-seed": "^1.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-switch": "^7.0.0",

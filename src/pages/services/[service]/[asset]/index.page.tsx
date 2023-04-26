@@ -1,13 +1,89 @@
+import { Heading, Text } from '@chakra-ui/react'
+import { Icon } from '@iconify/react'
+import classNames from 'classnames'
 import { type GetStaticPaths, type GetStaticProps, type GetStaticPropsContext } from 'next'
 import Head from 'next/head'
 import { type FC } from 'react'
+import { type Address, useNetwork } from 'wagmi'
 
 import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
+import { type PropsWithClassName } from '@/types/components.types'
 import { type Service, type ServiceAsset } from '@/types/onchain.types'
+import { fakeApy } from '@/utils/fake-data.utils'
+import { aprToApy } from '@/utils/math.utils'
 
 import { getServices } from '../../use-services.hook'
 import { DynamicServiceDeposit } from './single-asset-deposit'
+
+interface StrategyDescriptionProps extends PropsWithClassName {
+  description: string
+  address: Address
+  totalApy: number
+  vaultApr: number
+  boostApr: number
+}
+
+const StrategyDescription: FC<StrategyDescriptionProps> = ({
+  description,
+  address,
+  totalApy,
+  vaultApr,
+  boostApr,
+  className,
+}) => {
+  const { chain } = useNetwork()
+  const explorerBaseUrl = chain?.blockExplorers?.default.url
+  const containerClasses = 'p-5 rounded-xl bg-primary-100'
+
+  return (
+    <div className={classNames(containerClasses, className)}>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-row justify-between">
+          <Heading size="h3">Strategy</Heading>
+          {explorerBaseUrl != null && (
+            <a
+              href={`${explorerBaseUrl}/address/${address}`}
+              target="_blank"
+              className="flex flex-row items-center gap-2"
+            >
+              <Icon icon="mdi:link" width="20px" height="20px" color="var(--primary-action)"></Icon>
+              <Heading size="h2">Address on explorer</Heading>
+            </a>
+          )}
+        </div>
+
+        <Text textStyle="sm">{description}</Text>
+
+        <div className="flex flex-col gap-2 p-5 rounded-xl bg-primary-200">
+          <Heading size="h4">APY Breakdown</Heading>
+          <div className="flex flex-row justify-between w-full">
+            <div className="flex flex-row items-center flex-grow gap-4">
+              <Heading size="h5" color="var(--primary-800)" textTransform="uppercase">
+                Total APY
+              </Heading>
+              <Text textStyle="slender-sm2">{totalApy.toFixed(2)} %</Text>
+            </div>
+
+            <div className="flex flex-row items-center justify-center flex-grow gap-4 border-l border-secondary-500">
+              <Heading size="h5" color="var(--primary-800)" textTransform="uppercase">
+                Vault APR
+              </Heading>
+              <Text textStyle="slender-sm2">{vaultApr.toFixed(2)} %</Text>
+            </div>
+
+            <div className="flex flex-row items-center justify-center flex-grow gap-4 border-l border-secondary-500">
+              <Heading size="h5" color="var(--primary-800)" textTransform="uppercase">
+                Boost APR
+              </Heading>
+              <Text textStyle="slender-sm2">{boostApr.toFixed(2)} %</Text>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 interface Props {
   service: Service
@@ -15,6 +91,9 @@ interface Props {
 }
 
 const ServicePage: FC<Props> = ({ service, asset }) => {
+  const vaultApr = fakeApy([service.name, asset.iconName, 'vault'])
+  const boostApr = fakeApy([service.name, asset.iconName, 'boost'], 1)
+  const totalApy = aprToApy(vaultApr + boostApr)
   return (
     <>
       <Head>
@@ -39,37 +118,13 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
 
             <div className="p-5 rounded-xl bg-primary-100">Graph here</div>
 
-            <div className="p-5 rounded-xl bg-primary-100">
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-row justify-between">
-                  <div>Strategy</div>
-                  <div>Address on explorer</div>
-                </div>
-
-                <div>Description very long, lorem ipsum & so on</div>
-
-                <div className="p-5 rounded-xl bg-primary-200">
-                  <div>APY Breakdown</div>
-                  <div className="flex flex-row justify-between w-full">
-                    <div className="flex flex-row flex-grow gap-4">
-                      <div>Total APY</div>
-                      <div>22.42%</div>
-                    </div>
-
-                    <div className="flex flex-row justify-center flex-grow gap-4 border-l border-secondary-500">
-                      <div>Vault APR</div>
-                      <div>18.23%</div>
-                    </div>
-
-                    <div className="flex flex-row justify-center flex-grow gap-4 border-l border-secondary-500">
-                      <div>Boost APR</div>
-                      <div>10.21%</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <StrategyDescription
+              description="Description very long, lorem ipsum & so on"
+              address={service.address}
+              totalApy={totalApy}
+              vaultApr={vaultApr}
+              boostApr={boostApr}
+            />
             <div className="p-5 rounded-xl bg-primary-100"></div>
           </div>
           <div>
