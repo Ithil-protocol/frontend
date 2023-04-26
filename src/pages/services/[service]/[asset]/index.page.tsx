@@ -1,4 +1,13 @@
-import { Heading, Text, Tooltip } from '@chakra-ui/react'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Heading,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react'
 import { Icon } from '@iconify/react'
 import classNames from 'classnames'
 import { type GetStaticPaths, type GetStaticProps, type GetStaticPropsContext } from 'next'
@@ -141,13 +150,20 @@ const SafetyScore: FC<SafetyScoreProps> = ({ score, features, description }) => 
       </div>
 
       {description != null && (
-        <div className="p-5 rounded-md cursor-pointer bg-primary-200">
-          <div className="flex flex-row items-center justify-between">
-            <Text textStyle="md" fontWeight={500}>
-              How it works
-            </Text>
-            <Icon icon="ic:baseline-plus" width="20px" height="20px" />
-          </div>
+        <div className="p-2 rounded-md cursor-pointer bg-primary-200">
+          <Accordion className="w-full" allowToggle>
+            <AccordionItem className="border-0">
+              <AccordionButton className="flex flex-row justify-between">
+                <Text textStyle="md" fontWeight={500}>
+                  How it works
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <Text textStyle="sm">{description}</Text>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </div>
       )}
     </div>
@@ -183,6 +199,9 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
     },
   ]
 
+  const safetyScoreDescription =
+    'Lorem ipsum is a placeholder text commonly used in the graphic, print, and web design industries. It consists of random Latin words and has no actual meaning, allowing designers to focus on the visual aspects of their work without being distracted by the content.'
+
   return (
     <>
       <Head>
@@ -217,9 +236,11 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
               boostApr={boostApr}
             />
 
-            <SafetyScore score={9.3} features={features} />
+            <SafetyScore score={9.3} features={features} description={safetyScoreDescription} />
           </div>
-          <DynamicServiceDeposit asset={asset} serviceAddress={service.address} />
+          <div className="flex flex-shrink-0">
+            <DynamicServiceDeposit asset={asset} serviceAddress={service.address} />
+          </div>
         </div>
       </PageWrapper>
     </>
