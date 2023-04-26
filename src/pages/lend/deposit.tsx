@@ -77,14 +77,14 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
   return (
     <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300 bg-primary-contrast">
       <div className="flex flex-row justify-between w-full">
-        <Text textStyle={'md'}>{title}</Text>
+        <Text textStyle="lg">{title}</Text>
         <div className="flex flex-row items-end justify-end gap-2">
           {isBalanceLoading ? (
             <Loading />
           ) : (
             <>
-              <Text textStyle={'md'}>{abbreviateBigNumber(balance, token.decimals)}</Text>
-              <Text textStyle={'md'}>
+              <Text textStyle="lg">{abbreviateBigNumber(balance, token.decimals)}</Text>
+              <Text textStyle="lg">
                 (<EstimatedValue value={balance} token={token} />)
               </Text>
             </>

@@ -34,6 +34,10 @@
 
   --skeleton-base-color: #e2e3e3;
   --skeleton-highlight-color: #f5f5f5;
+
+  --safety-green: #47dcb0;
+  --safety-red: #ff7a8a;
+  --safety-neutral: var(--secondary);
 }
 
 [data-theme="dark"] {
@@ -69,6 +73,8 @@
 
   --skeleton-base-color: #262e45;
   --skeleton-highlight-color: #48516d;
+
+  --safety-neutral: var(--secondary);
 }
 
 /* fixup for numeric input fields showing spin arrows */

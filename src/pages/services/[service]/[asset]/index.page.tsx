@@ -1,4 +1,4 @@
-import { Heading, Text } from '@chakra-ui/react'
+import { Heading, Text, Tooltip } from '@chakra-ui/react'
 import { Icon } from '@iconify/react'
 import classNames from 'classnames'
 import { type GetStaticPaths, type GetStaticProps, type GetStaticPropsContext } from 'next'
@@ -58,21 +58,21 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
         <div className="flex flex-col gap-2 p-5 rounded-xl bg-primary-200">
           <Heading size="h4">APY Breakdown</Heading>
           <div className="flex flex-row justify-between w-full">
-            <div className="flex flex-row items-center flex-grow gap-4">
+            <div className="flex flex-row items-baseline flex-grow gap-4">
               <Heading size="h5" color="var(--primary-800)" textTransform="uppercase">
                 Total APY
               </Heading>
               <Text textStyle="slender-sm2">{totalApy.toFixed(2)} %</Text>
             </div>
 
-            <div className="flex flex-row items-center justify-center flex-grow gap-4 border-l border-secondary-500">
+            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
               <Heading size="h5" color="var(--primary-800)" textTransform="uppercase">
                 Vault APR
               </Heading>
               <Text textStyle="slender-sm2">{vaultApr.toFixed(2)} %</Text>
             </div>
 
-            <div className="flex flex-row items-center justify-center flex-grow gap-4 border-l border-secondary-500">
+            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
               <Heading size="h5" color="var(--primary-800)" textTransform="uppercase">
                 Boost APR
               </Heading>
@@ -81,6 +81,75 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+enum SafetyScoreValue {
+  positive = 'positive',
+  neutral = 'neutral',
+  negative = 'negative',
+}
+
+interface SafetyScoreProps extends PropsWithClassName {
+  score: number
+  features: Array<{ value: SafetyScoreValue; text: string; extendedDescription?: string }>
+  description?: string
+}
+
+const SafetyScore: FC<SafetyScoreProps> = ({ score, features, description }) => {
+  const safetyScoreToIcon: Record<SafetyScoreValue, string> = {
+    [SafetyScoreValue.positive]: 'tabler:arrow-badge-up',
+    [SafetyScoreValue.neutral]: 'codicon:dash',
+    [SafetyScoreValue.negative]: 'tabler:arrow-badge-down',
+  }
+
+  const safetyScoreToColor: Record<SafetyScoreValue, string> = {
+    [SafetyScoreValue.positive]: 'var(--safety-green)',
+    [SafetyScoreValue.neutral]: 'var(--safety-neutral)',
+    [SafetyScoreValue.negative]: 'var(--safety-red)',
+  }
+
+  return (
+    <div className="flex flex-col gap-4 p-5 rounded-xl bg-primary-100">
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row gap-2">
+          <Heading size="h3">Safety Score</Heading>
+          <Text textStyle="slender-md" fontWeight={700} color="var(--safety-green)">
+            {score}
+          </Text>
+          {score > 9 && <Icon icon="ph:crown-duotone" width="28px" height="28px" color="var(--safety-green)" />}
+        </div>
+        <div className="flex flex-row items-center gap-2">
+          <Icon icon="tabler:exclamation-circle" width="20px" height="20px" color="var(--primary-action)" />
+          <span>Details</span>
+        </div>
+      </div>
+
+      <div className="flex flex-col">
+        {features.map(({ value, text, extendedDescription }) => (
+          <div className="flex flex-row items-center gap-2" key={text}>
+            <Icon icon={safetyScoreToIcon[value]} width="20px" height="20px" color={safetyScoreToColor[value]} />
+            <Text textStyle="md">{text}</Text>
+            {extendedDescription != null && (
+              <Tooltip label={extendedDescription} closeDelay={500}>
+                <Icon icon="tabler:exclamation-circle" width="20px" height="20px" />
+              </Tooltip>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {description != null && (
+        <div className="p-5 rounded-md cursor-pointer bg-primary-200">
+          <div className="flex flex-row items-center justify-between">
+            <Text textStyle="md" fontWeight={500}>
+              How it works
+            </Text>
+            <Icon icon="ic:baseline-plus" width="20px" height="20px" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -94,6 +163,26 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
   const vaultApr = fakeApy([service.name, asset.iconName, 'vault'])
   const boostApr = fakeApy([service.name, asset.iconName, 'boost'], 1)
   const totalApy = aprToApy(vaultApr + boostApr)
+  const name = 'Yearn Finance Strat'
+  const description =
+    'The strategies deployed include providing assets for lending, earning project tokens with yield farming, providing liquidity, or a combination of these and other investment strategies.'
+
+  const features: SafetyScoreProps['features'] = [
+    { value: SafetyScoreValue.positive, text: 'Strategy is battle-tested' },
+    { value: SafetyScoreValue.neutral, text: 'Average volatility asset' },
+    {
+      value: SafetyScoreValue.neutral,
+      text: 'Medium capitalized asset',
+      extendedDescription: 'Assets with Market Cap between 1M and 10M fall in this category',
+    },
+    {
+      value: SafetyScoreValue.negative,
+      text: 'High expected IL',
+      extendedDescription:
+        'Impermanent Loss is a potential loss of value experienced by liquidity providers when the price of an asset in a liquidity pool diverges from its price in external markets.',
+    },
+  ]
+
   return (
     <>
       <Head>
@@ -105,14 +194,16 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
       <PageWrapper>
         <div className="flex flex-row w-full gap-6">
           <div className="flex flex-col flex-grow gap-6">
-            <div className="flex flex-row gap-4 p-5 rounded-xl bg-primary-100">
-              <div className="flex flex-col">
-                <MultiAssetsIcons assets={[asset.iconName]} />
-                <div>goback</div>
-              </div>
-              <div className="flex flex-col">
-                <div>Yearn Finance Strat</div>
-                <div>Details about strat</div>
+            {/* Strategy Introduction */}
+            <div className="flex flex-row gap-2 p-5 rounded-xl bg-primary-100">
+              <div className="flex flex-col w-full gap-3">
+                <div className="flex flex-row justify-between">
+                  <Heading size="h1b" lineHeight="32px">
+                    {name}
+                  </Heading>
+                  <MultiAssetsIcons assets={[asset.iconName]} />
+                </div>
+                <Text textStyle="sm">{description}</Text>
               </div>
             </div>
 
@@ -125,11 +216,10 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
               vaultApr={vaultApr}
               boostApr={boostApr}
             />
-            <div className="p-5 rounded-xl bg-primary-100"></div>
+
+            <SafetyScore score={9.3} features={features} />
           </div>
-          <div>
-            <DynamicServiceDeposit asset={asset} serviceAddress={service.address} />
-          </div>
+          <DynamicServiceDeposit asset={asset} serviceAddress={service.address} />
         </div>
       </PageWrapper>
     </>

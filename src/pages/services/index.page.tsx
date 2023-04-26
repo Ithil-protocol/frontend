@@ -61,7 +61,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ assets, assetsId, serviceName, serv
   return (
     <Link href={`/services/${serviceId}/${assetsId}`} className="flex flex-col p-7 rounded-xl bg-primary-100">
       <div className="flex justify-between mb-6">
-        <MultiAssetsIcons assets={assets} />
+        <MultiAssetsIcons assets={[...assets]} />
         {/* 1 - 10% multiplier */}
         <div className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
           <Icon icon="ph:lightning-fill" color={colorMode === 'dark' ? 'white' : 'black'}></Icon>
