@@ -13,16 +13,19 @@ import classNames from 'classnames'
 import { type GetStaticPaths, type GetStaticProps, type GetStaticPropsContext } from 'next'
 import Head from 'next/head'
 import { type FC } from 'react'
+import { Line, LineChart, XAxis, YAxis } from 'recharts'
 import { type Address, useNetwork } from 'wagmi'
 
 import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
 import { type PropsWithClassName } from '@/types/components.types'
 import { type Service, type ServiceAsset } from '@/types/onchain.types'
+import { formatDate } from '@/utils/date.utils'
 import { fakeApy } from '@/utils/fake-data.utils'
 import { aprToApy } from '@/utils/math.utils'
 
 import { getServices } from '../../use-services.hook'
+import fakeChartData from './fakedata.json'
 import { DynamicServiceDeposit } from './single-asset-deposit'
 
 interface StrategyDescriptionProps extends PropsWithClassName {
@@ -202,6 +205,8 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
   const safetyScoreDescription =
     'Lorem ipsum is a placeholder text commonly used in the graphic, print, and web design industries. It consists of random Latin words and has no actual meaning, allowing designers to focus on the visual aspects of their work without being distracted by the content.'
 
+  const data = fakeChartData.map(({ t, v }) => ({ time: formatDate(new Date(t * 1000)), value: v * 100 }))
+
   return (
     <>
       <Head>
@@ -226,7 +231,28 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
               </div>
             </div>
 
-            <div className="p-5 rounded-xl bg-primary-100">Graph here</div>
+            <div className="p-5 rounded-xl bg-primary-100">
+              <div className="flex flex-row items-center justify-between gap-4">
+                <Heading size="h2">Historical Rate</Heading>
+                <div className="flex flex-row gap-4 px-4 py-3v rounded-xl bg-primary-200">
+                  <div>3m</div>
+                  <div>1m</div>
+                  <div>1w</div>
+                </div>
+                <div className="flex flex-row gap-4 overflow-hidden rounded-xl bg-primary-200">
+                  <div className="px-3 py-2">TVL</div>
+                  <div className="px-3 py-2">Price</div>
+                  <div className="px-3 py-2 bg-primary-300">APY</div>
+                </div>
+              </div>
+              <div className="pt-4">
+                <LineChart width={700} height={400} data={data}>
+                  <Line type="monotone" dataKey="value" stroke="var(--primary-action)" />
+                  <XAxis dataKey="time" tickMargin={10} minTickGap={20} />
+                  <YAxis dataKey="value" />
+                </LineChart>
+              </div>
+            </div>
 
             <StrategyDescription
               description="Description very long, lorem ipsum & so on"
