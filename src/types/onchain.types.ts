@@ -1,9 +1,14 @@
 import { type BigNumber } from '@ethersproject/bignumber'
 import { type Address } from 'wagmi'
 
-/**
- * This
- */
+// the minimal intersection of LendingToken and ServiceAsset
+export interface MinimalToken {
+  name: string
+  coingeckoId: string
+  iconName: string
+  decimals: number
+  tokenAddress: `0x${string}`
+}
 
 // used in Lend page
 export interface LendingToken {

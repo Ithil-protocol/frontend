@@ -239,7 +239,7 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
 
             <SafetyScore score={9.3} features={features} description={safetyScoreDescription} />
           </div>
-          <div className="flex flex-shrink-0">
+          <div className="flex-shrink-0">
             <DynamicServiceDeposit asset={asset} serviceAddress={service.address} />
           </div>
         </div>

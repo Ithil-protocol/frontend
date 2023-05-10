@@ -4,12 +4,12 @@ import { type FC } from 'react'
 import { type Address } from 'wagmi'
 
 import { usePriceData } from '@/pages/lend/use-price-data.hook'
-import { type LendingToken } from '@/types/onchain.types'
+import { type MinimalToken } from '@/types/onchain.types'
 import { estimateTokenValue } from '@/utils/input.utils'
 
 interface EstimatedValueProps {
   value: BigNumber | undefined
-  token: LendingToken
+  token: MinimalToken
 }
 
 export const EstimatedValue: FC<EstimatedValueProps> = ({ value, token }) => {

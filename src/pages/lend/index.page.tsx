@@ -108,7 +108,7 @@ const Lend: FC = () => {
                           alt={`${vault.token.name} icon`}
                           height={32}
                           width={32}
-                        ></Image>
+                        />
                         <Text className="uppercase">{vault.token.name}</Text>
                       </div>
                     </Td>
