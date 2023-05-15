@@ -26,5 +26,6 @@
     "semi": ["warn", "never"],
     "comma-dangle": ["warn", "always-multiline"]
   },
+  "ignorePatterns": ["generated.ts"],
   "root": true
 }

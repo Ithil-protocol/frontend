@@ -4,14 +4,17 @@ import { useConnectModal } from '@rainbow-me/rainbowkit'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { type FC, useState } from 'react'
-import { type Address, useAccount, useBalance, useWaitForTransaction } from 'wagmi'
+import { useAccount, useBalance, useChainId, useContractWrite, useWaitForTransaction } from 'wagmi'
 
 import { EstimatedValue } from '@/components/estimated-value'
 import { Loading } from '@/components/loading'
+import { serviceAddress, usePrepareServiceOpen } from '@/generated'
 import { useToken } from '@/hooks/use-token.hook'
 import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
 import { type ServiceAsset } from '@/types/onchain.types'
 import { abbreviateBigNumber, stringInputToBigNumber } from '@/utils/input.utils'
+
+import { prepareOrder } from '../../service.contract'
 
 interface WidgetSingleAssetDepositProps {
   // data
@@ -111,7 +114,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           }}
           isDisabled={isButtonDisabled}
           isLoading={isButtonLoading}
-          loadingText={isButtonLoading ? 'Awaiting' : undefined}
+          loadingText={isButtonLoading ? 'Waiting' : undefined}
         >
           {asset == null ? 'Loading...' : isApproved ? 'Open position' : `Approve ${asset.name}`}
         </Button>
@@ -124,11 +127,11 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 
 interface ServiceDepositProps {
   asset: ServiceAsset
-  serviceAddress: Address
 }
 
-export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress }) => {
+export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const { address, isConnected } = useAccount()
+  const chainId = useChainId() as 1337
   // const { data: signer } = useSigner()
   const [inputAmount, setInputAmount] = useState<string>('0')
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals)
@@ -143,30 +146,22 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
     watch: true,
   })
   const { useAllowance, useApprove } = useToken(asset.tokenAddress)
-  const { data: allowance, refetch: refetchAllowance } = useAllowance(address, serviceAddress)
+  const { data: allowance, refetch: refetchAllowance } = useAllowance(address, serviceAddress[chainId])
   const {
     data: approveData,
     isLoading: isApproveLoading,
     writeAsync: approve,
-  } = useApprove(serviceAddress, inputBigNumber)
+  } = useApprove(serviceAddress[chainId], inputBigNumber)
   const { isLoading: isApproveWaiting } = useWaitForTransaction({ hash: approveData?.hash })
 
-  // const order = prepareOrder(asset.tokenAddress, inputBigNumber, 2)
-  // const { config: openConfig } = usePrepareContractWrite({
-  //   address: serviceAddress,
-  //   abi: serviceAbi,
-  //   functionName: 'open',
-  //   args: [order],
-  // })
-
-  // const serviceContract = useContract({ address: serviceAddress, abi: serviceAbi, signerOrProvider: signer })
-
-  // const { config: depositConfig } = usePrepareDeposit(inputBigNumber)
-  // const { data: depositData, isLoading: isDepositLoading, writeAsync: deposit } = useContractWrite(depositConfig)
+  const order = prepareOrder(asset.tokenAddress, inputBigNumber, 2)
+  const { config: openConfig } = usePrepareServiceOpen({ args: [order] })
+  const { data: openData, isLoading: isOpenLoading, writeAsync: open } = useContractWrite(openConfig)
+  const { isLoading: isOpenWaiting } = useWaitForTransaction({ hash: openData?.hash })
 
   // computed properties
   const isApproved = allowance?.gte(inputBigNumber) ?? false
-  const isButtonLoading = isApproveLoading || isApproveWaiting
+  const isButtonLoading = isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
   const isButtonDisabled = isButtonLoading || isInconsistent || inputBigNumber.isZero()
   const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
@@ -179,15 +174,12 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset, serviceAddress 
       const result = await approve?.()
       await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`)
       await refetchAllowance()
+      return
     }
-    // FIXME: rewrite this
-    // const order = prepareOrder(asset.tokenAddress, inputBigNumber, 2)
-    // console.log({ order: JSON.parse(JSON.stringify(order)) })
-
-    // const unsignedTx = await serviceContract?.populateTransaction.open(order)
-    // console.log({ unsignedTx })
-    // const response = await serviceContract?.open(order)
-    // console.log({ response })
+    const result = await open?.()
+    await trackTransaction(result, `Deposit ${inputAmount} ${asset.name}`)
+    await refetchAllowance()
+    setInputAmount('0')
   }
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? '0')

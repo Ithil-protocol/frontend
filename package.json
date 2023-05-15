@@ -8,7 +8,8 @@
     "build": "next build",
     "serve": "next start",
     "lint": "next lint",
-    "prebuild": "rm -rf public/assets/tokens && cp -r $(pwd)/node_modules/cryptocurrency-icons/svg/color public/assets/tokens"
+    "prebuild": "rm -rf public/assets/tokens && cp -r $(pwd)/node_modules/cryptocurrency-icons/svg/color public/assets/tokens",
+    "wagmi": "wagmi generate"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.3",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@wagmi/cli": "^1.0.1",
     "autoprefixer": "^10.4.14",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "latest",

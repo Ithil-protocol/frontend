@@ -1,5 +1,5 @@
 import { type JsonFragmentType, ParamType, defaultAbiCoder } from '@ethersproject/abi'
-import { type BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from '@ethersproject/bignumber'
 import { hexlify } from '@ethersproject/bytes'
 import { type Address } from 'wagmi'
 
@@ -14,7 +14,7 @@ interface ServiceLoan {
   token: Address
   amount: BigNumber
   margin: BigNumber
-  interestAndSpread: number
+  interestAndSpread: BigNumber
 }
 
 const ServiceCollateralComponents = [
@@ -27,7 +27,7 @@ const ServiceCollateralComponents = [
 interface ServiceCollateral {
   itemType: number
   token: Address
-  identifier: number
+  identifier: BigNumber
   amount: BigNumber
 }
 
@@ -50,7 +50,7 @@ const ServiceAgreementComponents: JsonFragmentType[] = [
 interface ServiceAgreement {
   loans: ServiceLoan[]
   collaterals: ServiceCollateral[]
-  createdAt: number
+  createdAt: BigNumber
   status: number
 }
 
@@ -61,7 +61,7 @@ const ServiceOrderComponents = [
 
 interface IServiceOrder {
   agreement: ServiceAgreement
-  data: string
+  data: Address
 }
 
 const ServiceOrderInput = [
@@ -98,25 +98,25 @@ export const prepareOrder = (token: Address, amount: BigNumber, leverage: number
   const collateral: ServiceCollateral = {
     itemType: 0,
     token: '0x625E7708f30cA75bfd92586e17077590C60eb4cD', // FIXME: this is Token address, but should be aToken address
-    identifier: 0,
+    identifier: BigNumber.from(0),
     amount: amount.add(amountInLeverage),
   }
   const loan: ServiceLoan = {
     token,
     amount: amountInLeverage,
     margin: amount,
-    interestAndSpread: 0,
+    interestAndSpread: BigNumber.from(0),
   }
   const agreement: ServiceAgreement = {
     loans: [loan],
     collaterals: [collateral],
-    createdAt: 0,
+    createdAt: BigNumber.from(0),
     status: 0,
   }
 
   const order: IServiceOrder = {
     agreement,
-    data: hexlify([]),
+    data: hexlify([]) as `0x${string}`,
   }
 
   return order
