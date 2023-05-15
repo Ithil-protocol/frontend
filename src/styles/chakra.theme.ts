@@ -141,6 +141,7 @@ export const theme: ThemeConfig = extendTheme(
       },
     },
     textStyles: {
+      // "slender" is Poppins
       'slender-sm': {
         fontSize: ['14px'],
         fontWeight: '700',
