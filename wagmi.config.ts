@@ -19,5 +19,10 @@ export default defineConfig({
       abi: ServiceAbi,
     },
   ],
-  plugins: [react()],
+  plugins: [
+    react({
+      useContractWrite: false,
+      useContractFunctionWrite: false,
+    }),
+  ],
 })
