@@ -7,7 +7,7 @@ export interface MinimalToken {
   coingeckoId: string
   iconName: string
   decimals: number
-  tokenAddress: `0x${string}`
+  tokenAddress: Address
 }
 
 // used in Lend page
@@ -16,8 +16,8 @@ export interface LendingToken {
   coingeckoId: string
   iconName: string
   decimals: number
-  tokenAddress: `0x${string}`
-  vaultAddress: `0x${string}`
+  tokenAddress: Address
+  vaultAddress: Address
 }
 export type LendingTokenList = LendingToken[]
 export type Vaults = Array<{
@@ -29,13 +29,14 @@ export type Vaults = Array<{
 }>
 
 // used in services page
-export type AddressByEnvironment = Record<string, `0x${string}`>
+export type AddressByEnvironment = Record<string, Address>
 export interface ServiceAsset {
   name: string
   coingeckoId: string
   iconName: string
   decimals: number
-  tokenAddress: `0x${string}`
+  tokenAddress: Address
+  aTokenAddress: Address
 }
 export type ServiceAssetHash = Record<Lowercase<string>, ServiceAsset>
 export interface ServiceByEnvironment {

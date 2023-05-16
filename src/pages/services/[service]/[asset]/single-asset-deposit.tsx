@@ -132,12 +132,11 @@ interface ServiceDepositProps {
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const { address, isConnected } = useAccount()
   const chainId = useChainId() as 1337
-  // const { data: signer } = useSigner()
   const [inputAmount, setInputAmount] = useState<string>('0')
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals)
 
   // web3 hooks
-  const { trackTransaction } = useTransactionFeedback()
+  const { trackTransaction, reportException } = useTransactionFeedback()
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address,
@@ -154,14 +153,19 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   } = useApprove(serviceAddress[chainId], inputBigNumber)
   const { isLoading: isApproveWaiting } = useWaitForTransaction({ hash: approveData?.hash })
 
-  const order = prepareOrder(asset.tokenAddress, inputBigNumber, 2)
-  const { config: openConfig } = usePrepareServiceOpen({ args: [order] })
+  const order = prepareOrder(asset.tokenAddress, asset.aTokenAddress, inputBigNumber, 2)
+  const {
+    config: openConfig,
+    isLoading: isOpenPrepareLoading,
+    isError: isOpenPrepareError,
+    error: openPrepareError,
+  } = usePrepareServiceOpen({ args: [order] })
   const { data: openData, isLoading: isOpenLoading, writeAsync: open } = useContractWrite(openConfig)
   const { isLoading: isOpenWaiting } = useWaitForTransaction({ hash: openData?.hash })
 
   // computed properties
   const isApproved = allowance?.gte(inputBigNumber) ?? false
-  const isButtonLoading = isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting
+  const isButtonLoading = isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting || isOpenPrepareLoading
   const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
   const isButtonDisabled = isButtonLoading || isInconsistent || inputBigNumber.isZero()
   const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
@@ -176,6 +180,9 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
       await refetchAllowance()
       return
     }
+
+    if (isOpenPrepareError) return reportException(openPrepareError)
+
     const result = await open?.()
     await trackTransaction(result, `Deposit ${inputAmount} ${asset.name}`)
     await refetchAllowance()
