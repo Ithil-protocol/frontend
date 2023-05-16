@@ -8,7 +8,7 @@
     "build": "next build",
     "serve": "next start",
     "lint": "next lint",
-    "prebuild": "rm -rf public/assets/tokens && cp -r $(pwd)/node_modules/cryptocurrency-icons/svg/color public/assets/tokens",
+    "prebuild": "rm -rf public/assets/tokens && cp -r $(pwd)/node_modules/cryptocurrency-icons/svg/color public/assets/tokens && yarn wagmi",
     "wagmi": "wagmi generate"
   },
   "dependencies": {
