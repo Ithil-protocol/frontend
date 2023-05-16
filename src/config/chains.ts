@@ -27,7 +27,7 @@ const carlinoNetwork: Chain = {
 
 // is the default network, either 127.0.0.1 or carlino or Arbitrum
 // it varies depending on the environment
-export const firstNetwork = () => {
+export const firstNetwork = (): Chain => {
   if (coreConfig.instance === 'dev') {
     return anvilNetwork
   }

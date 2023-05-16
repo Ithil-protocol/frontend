@@ -33,7 +33,6 @@ const ithilButtonStyle: StyleConfig = {
     ithil: {
       backgroundColor: 'var(--primary-action)',
       color: 'var(--font-button)',
-      display: 'block',
       width: '100%',
       fontSize: '18px',
       _hover: {

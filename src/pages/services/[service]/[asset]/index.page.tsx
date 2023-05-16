@@ -13,10 +13,11 @@ import classNames from 'classnames'
 import { type GetStaticPaths, type GetStaticProps, type GetStaticPropsContext } from 'next'
 import Head from 'next/head'
 import { type FC } from 'react'
-import { type Address, useNetwork } from 'wagmi'
+import { type Address } from 'wagmi'
 
 import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
+import { firstNetwork } from '@/config/chains'
 import { type PropsWithClassName } from '@/types/components.types'
 import { type Service, type ServiceAsset } from '@/types/onchain.types'
 import { fakeApy } from '@/utils/fake-data.utils'
@@ -42,8 +43,8 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
   boostApr,
   className,
 }) => {
-  const { chain } = useNetwork()
-  const explorerBaseUrl = chain?.blockExplorers?.default.url
+  const network = firstNetwork()
+  const explorerBaseUrl = network.blockExplorers?.default.url
   const containerClasses = 'p-5 rounded-xl bg-primary-100'
 
   return (
