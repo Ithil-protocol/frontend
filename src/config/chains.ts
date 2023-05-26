@@ -16,12 +16,11 @@ const anvilNetwork: Chain = {
 
 const carlinoNetwork: Chain = {
   ...arbitrum,
-  id: 1337,
-  name: 'carlino',
-  network: 'carlino',
+  name: 'arbitrum-ithil',
+  network: 'arbitrum-ithil',
   rpcUrls: {
-    default: { http: ['https://anvil.presso.coltre.lol'] },
-    public: { http: ['https://anvil.presso.coltre.lol'] },
+    default: { http: ['https://rpc.vnet.tenderly.co/devnet/hardhat01/6e2d300f-b8d0-4d61-8fec-893e332a1d8a'] },
+    public: { http: ['https://rpc.vnet.tenderly.co/devnet/hardhat01/6e2d300f-b8d0-4d61-8fec-893e332a1d8a'] },
   },
 }
 
@@ -38,18 +37,19 @@ export const firstNetwork = (): Chain => {
 }
 
 export const addTestNetworks = async () => {
-  if (coreConfig.instance === CoreInstance.PrivateTestnet || coreConfig.instance === CoreInstance.PublicTestnet) {
+  const network = firstNetwork()
+  const hexChainId = '0x' + (42161).toString(16)
+  if (coreConfig.instance === CoreInstance.PrivateTestnet) {
     try {
-      const network = firstNetwork()
       if (window.ethereum == null) return
       const chainId = await window.ethereum.request({ method: 'eth_chainId' })
-      if (chainId === '0x539') return
+      if (chainId === hexChainId) return
 
       await window.ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [
           {
-            chainId: '0x539',
+            chainId: hexChainId,
             rpcUrls: [network.rpcUrls.default.http[0]],
             chainName: network.name,
             nativeCurrency: network.nativeCurrency,
