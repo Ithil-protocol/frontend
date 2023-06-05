@@ -8,27 +8,27 @@ import { type FC, useMemo, useState } from 'react'
 
 import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
-import { type Services } from '@/types/onchain.types'
+import { type Services, type SupportedServiceName } from '@/types/onchain.types'
 import { fakeApy, fakeTvl } from '@/utils/fake-data.utils'
 import { aprToApy } from '@/utils/math.utils'
 
 import { getServices, useServices } from './use-services.hook'
 
 interface FilterAndSearchBarProps {
-  selectedId?: string
+  selectedId: string | null
   onChange: (id: Lowercase<string>) => void
 }
 
 const FilterAndSearchBar: FC<FilterAndSearchBarProps> = ({ selectedId, onChange }) => {
-  const { servicesList } = useServices()
+  const { serviceList } = useServices()
   return (
     <div className="flex w-full gap-16 p-5 shadow md:w-1/2 rounded-xl bg-primary-100">
       <Select
         placeholder={selectedId !== '' ? 'All' : 'Filter by protocol'}
-        value={selectedId}
+        value={selectedId ?? undefined}
         onChange={(event) => onChange(event.target.value as Lowercase<string>)}
       >
-        {servicesList.map(({ name, id }) => (
+        {serviceList.map(({ name, id }) => (
           <option value={id} key={id}>
             {name}
           </option>
@@ -107,8 +107,9 @@ const ServicesGrid: FC<{ services: Services }> = ({ services }) => {
     tvl: number
     description: string
   }> = []
+
   Object.keys(services).forEach((id) => {
-    const { assets, description, name: serviceName } = services[id as Lowercase<string>]
+    const { assets, description, name: serviceName } = services[id as SupportedServiceName]
     const serviceId = id as Lowercase<string>
     Object.keys(assets).forEach((asset) => {
       // assets and assetsId will be reworked a little bit when including services with multiple tokens
@@ -147,13 +148,18 @@ interface Props {
 }
 
 const ServicesPage: FC<Props> = ({ services }) => {
-  const [filteredService, setFilteredService] = useState<Lowercase<string>>('')
+  const [filteredService, setFilteredService] = useState<SupportedServiceName | null>(null)
 
   const filteredServices: Services = useMemo(() => {
-    if (filteredService === '') return services
+    if (filteredService === null) return services
     const whitelistService = services[filteredService]
     return { [filteredService]: whitelistService }
   }, [services, filteredService])
+
+  const handleFilterChange = (value: Lowercase<string>) => {
+    if (value === '') return setFilteredService(null)
+    setFilteredService(value as SupportedServiceName)
+  }
 
   return (
     <>
@@ -165,7 +171,7 @@ const ServicesPage: FC<Props> = ({ services }) => {
       </Head>
       <PageWrapper heading="Services" textAlign="left">
         <div className="flex flex-col w-full gap-6">
-          <FilterAndSearchBar onChange={setFilteredService} selectedId={filteredService} />
+          <FilterAndSearchBar onChange={handleFilterChange} selectedId={filteredService} />
           <ServicesGrid services={filteredServices} />
         </div>
       </PageWrapper>

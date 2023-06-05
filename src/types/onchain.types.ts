@@ -11,12 +11,7 @@ export interface MinimalToken {
 }
 
 // used in Lend page
-export interface LendingToken {
-  name: string
-  coingeckoId: string
-  iconName: string
-  decimals: number
-  tokenAddress: Address
+export interface LendingToken extends MinimalToken {
   vaultAddress: Address
 }
 export type LendingTokenList = LendingToken[]
@@ -29,8 +24,7 @@ export type Vaults = Array<{
 }>
 
 // used in services page
-export type AddressByEnvironment = Record<string, Address>
-export interface ServiceAsset {
+export interface AaveAsset {
   name: string
   coingeckoId: string
   iconName: string
@@ -38,18 +32,25 @@ export interface ServiceAsset {
   tokenAddress: Address
   aTokenAddress: Address
 }
-export type ServiceAssetHash = Record<Lowercase<string>, ServiceAsset>
-export interface ServiceByEnvironment {
+export type AaveAssetHash = Record<Lowercase<string>, AaveAsset>
+
+// JSON source data is in this format
+export interface AaveJson {
   name: string
   description: string
-  address: AddressByEnvironment
-  assets: ServiceAsset[]
+  assets: AaveAsset[]
 }
-// the hook should convert ServiceByEnvironment in Service
-export interface Service extends Omit<ServiceByEnvironment, 'address' | 'assets'> {
+// will get converted in this (more convenient) format
+export interface AaveService extends Omit<AaveJson, 'assets'> {
+  assets: AaveAssetHash
   address: Address
-  assets: ServiceAssetHash
 }
 
-export type ServicesByEnvironment = Record<string, ServiceByEnvironment>
-export type Services = Record<Lowercase<string>, Service>
+export interface Services {
+  aave: AaveService
+  [key: Lowercase<string>]: unknown
+}
+
+// add 'gmx' here
+type ServicesAvailable = 'aave'
+export type SupportedServiceName = Lowercase<ServicesAvailable>

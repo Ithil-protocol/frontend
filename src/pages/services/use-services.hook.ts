@@ -1,32 +1,30 @@
 import { useMemo } from 'react'
+import { type Address } from 'wagmi'
 
-import { coreConfig } from '@/config/env'
-import { type ServiceAssetHash, type Services, type ServicesByEnvironment } from '@/types/onchain.types'
+import contracts from '@/deploy/contracts.json'
+import { type AaveAssetHash, type AaveJson, type Services, type SupportedServiceName } from '@/types/onchain.types'
 
-import servicesJson from './services.json'
-
-const servicesByEnv = servicesJson as ServicesByEnvironment
+import aave from './aave.json'
 
 export const getServices = () => {
-  const serviceNames = Object.keys(servicesByEnv).map((name) => name.toLowerCase()) as Array<Lowercase<string>>
-
   // Example result: { 'aave': { 'usdt': { name: 'usdt', address: '0x...'}, 'usdc': {...} } }
-  const services = serviceNames.reduce<Services>((hash, name) => {
-    const { address: _, assets, ...rest } = servicesByEnv[name]
-    const address = servicesByEnv[name].address[coreConfig.instance]
+  const { assets, ...rest } = aave as AaveJson
 
-    const assetsHash = assets.reduce<ServiceAssetHash>((assetHash, asset) => {
-      assetHash[asset.name.toLowerCase() as Lowercase<string>] = asset
-      return assetHash
-    }, {})
-
-    hash[name.toLowerCase() as Lowercase<string>] = { ...rest, address, assets: assetsHash }
-    return hash
+  const assetsHash = assets.reduce<AaveAssetHash>((assetHash, asset) => {
+    assetHash[asset.name.toLowerCase() as Lowercase<string>] = asset
+    return assetHash
   }, {})
 
-  const servicesList = serviceNames.map((id) => ({ name: services[id].name, id }))
-
-  return { names: serviceNames, services, servicesList }
+  const names: SupportedServiceName[] = ['aave']
+  const services: Services = {
+    aave: {
+      assets: assetsHash,
+      address: contracts.aaveService as Address,
+      ...rest,
+    },
+  }
+  const serviceList = [{ name: services.aave.name, id: 'aave' }]
+  return { names, services, serviceList }
 }
 
 export const useServices = () => {

@@ -19,7 +19,7 @@ import { MultiAssetsIcons } from '@/components/multi-assets-icon'
 import PageWrapper from '@/components/page-wrapper'
 import { firstNetwork } from '@/config/chains'
 import { type PropsWithClassName } from '@/types/components.types'
-import { type Service, type ServiceAsset } from '@/types/onchain.types'
+import { type AaveAsset, type AaveService, type SupportedServiceName } from '@/types/onchain.types'
 import { fakeApy } from '@/utils/fake-data.utils'
 import { aprToApy } from '@/utils/math.utils'
 
@@ -173,8 +173,8 @@ const SafetyScore: FC<SafetyScoreProps> = ({ score, features, description }) => 
 }
 
 interface Props {
-  service: Service
-  asset: ServiceAsset
+  service: AaveService
+  asset: AaveAsset
 }
 
 const ServicePage: FC<Props> = ({ service, asset }) => {
@@ -273,14 +273,13 @@ export const getStaticProps: GetStaticProps = (context: GetStaticPropsContext) =
   if (context.params == null) return { redirect: '/services', props: {} }
   if (typeof context.params?.service !== 'string' || typeof context.params?.asset !== 'string')
     return { redirect: '/services', props: {} }
-  const serviceParam = context.params.service.toLowerCase() as Lowercase<string>
+  const serviceParam = context.params.service.toLowerCase() as SupportedServiceName
   const assetParam = context.params.asset.toLowerCase() as Lowercase<string>
   if (!names.includes(serviceParam)) return { redirect: '/services', props: {} }
   // param validation done
 
   const service = services[serviceParam]
   const asset = service.assets[assetParam]
-  console.log({ service, asset })
   if (asset == null) return { redirect: '/services', props: {} }
 
   return {

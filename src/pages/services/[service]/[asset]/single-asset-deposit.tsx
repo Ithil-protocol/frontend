@@ -11,14 +11,14 @@ import { Loading } from '@/components/loading'
 import { serviceAddress, usePrepareServiceOpen } from '@/generated'
 import { useToken } from '@/hooks/use-token.hook'
 import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
-import { type ServiceAsset } from '@/types/onchain.types'
+import { type AaveAsset } from '@/types/onchain.types'
 import { abbreviateBigNumber, stringInputToBigNumber } from '@/utils/input.utils'
 
 import { prepareOrder } from '../../service.contract'
 
 interface WidgetSingleAssetDepositProps {
   // data
-  asset?: ServiceAsset
+  asset?: AaveAsset
   balance?: BigNumber
 
   // actions
@@ -126,7 +126,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 }
 
 interface ServiceDepositProps {
-  asset: ServiceAsset
+  asset: AaveAsset
 }
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {

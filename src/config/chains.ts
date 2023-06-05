@@ -2,38 +2,22 @@ import type { Chain } from 'wagmi'
 import { arbitrum } from 'wagmi/chains'
 
 import { CoreInstance, coreConfig } from '@/config/env'
+import contracts from '@/deploy/contracts.json'
 
-const anvilNetwork: Chain = {
-  ...arbitrum,
-  id: 1337,
-  name: 'Localhost',
-  network: 'localhost',
-  rpcUrls: {
-    default: { http: ['http://127.0.0.1:8545'] },
-    public: { http: ['http://127.0.0.1:8545'] },
-  },
-} as const
-
-const carlinoNetwork: Chain = {
+const testNetwork: Chain = {
   ...arbitrum,
   name: 'arbitrum-ithil',
   network: 'arbitrum-ithil',
   rpcUrls: {
-    default: { http: ['https://rpc.vnet.tenderly.co/devnet/hardhat01/6e2d300f-b8d0-4d61-8fec-893e332a1d8a'] },
-    public: { http: ['https://rpc.vnet.tenderly.co/devnet/hardhat01/6e2d300f-b8d0-4d61-8fec-893e332a1d8a'] },
+    default: { http: [contracts.networkUrl] },
+    public: { http: [contracts.networkUrl] },
   },
 }
 
 // is the default network, either 127.0.0.1 or carlino or Arbitrum
 // it varies depending on the environment
 export const firstNetwork = (): Chain => {
-  if (coreConfig.instance === 'dev') {
-    return anvilNetwork
-  }
-  if (coreConfig.instance === 'private') {
-    return carlinoNetwork
-  }
-  return anvilNetwork
+  return testNetwork
 }
 
 export const addTestNetworks = async () => {
