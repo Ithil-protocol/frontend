@@ -1,0 +1,42 @@
+[
+  {
+    "name": "USDC",
+    "coingeckoId": "usd-coin",
+    "iconName": "usdc",
+    "decimals": 6,
+    "tokenAddress": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+    "vaultAddress": "0x60BcFbb5a5Fa33EFa488C3943c1B62E42EaFCF67"
+  },
+  {
+    "name": "USDT",
+    "coingeckoId": "tether",
+    "iconName": "usdt",
+    "decimals": 6,
+    "tokenAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+    "vaultAddress": "0xcdfb1fB26777B45E86be7F3417FC6E0F61D42e5B"
+  },
+  {
+    "name": "DAI",
+    "coingeckoId": "dai",
+    "iconName": "dai",
+    "decimals": 18,
+    "tokenAddress": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    "vaultAddress": "0xd1fF2ea140a35Bd379a65611f22a2d0971d3c808"
+  },
+  {
+    "name": "WETH",
+    "coingeckoId": "ethereum",
+    "iconName": "eth",
+    "decimals": 18,
+    "tokenAddress": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+    "vaultAddress": "0xd273eb91d9b1E0945934Cd7dA7Fc1E87fb5de320"
+  },
+  {
+    "name": "WBTC",
+    "coingeckoId": "btc",
+    "iconName": "btc",
+    "decimals": 8,
+    "tokenAddress": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+    "vaultAddress": "0x070e7e64CdFAEd80C4C9A3f34F9daC6dB03bF6A1"
+  }
+]
