@@ -1,0 +1,39 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [],
+  "ignoreRegExpList": [
+    "0x(.*)?",
+    "id:(.*)?",
+    "apiKey:(.*)?"
+  ],
+  "import": [],
+  "ignoreWords": [
+    "BigNumberish",
+    "Neue",
+    "Noto",
+    "Parens",
+    "Raleway",
+    "Roboto",
+    "Segoe",
+    "arbitrum",
+    "carlino",
+    "chakra",
+    "codicon",
+    "flowtype",
+    "iconify",
+    "ithil",
+    "lineheight",
+    "multicall",
+    "rainbowkit",
+    "rushstack",
+    "svgr",
+    "tabler",
+    "tailwindcss",
+    "tanstack",
+    "trivago",
+    "wagmi"
+  ]
+}

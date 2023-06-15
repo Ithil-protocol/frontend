@@ -23,7 +23,6 @@ node_modules
 # misc
 .DS_Store
 *.pem
-src/generated.ts
 
 # debug
 npm-debug.log*
