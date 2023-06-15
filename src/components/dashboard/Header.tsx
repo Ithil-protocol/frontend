@@ -1,4 +1,4 @@
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, Link, Text, useColorMode } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { ArrowLeft } from "@/assets/svgs";
@@ -12,6 +12,8 @@ interface Props {
 }
 
 const Header: FC<Props> = ({ currentView, setActiveView }) => {
+  const { colorMode } = useColorMode();
+
   return (
     <Box
       display="flex"
@@ -22,7 +24,9 @@ const Header: FC<Props> = ({ currentView, setActiveView }) => {
     >
       <Box display="flex" alignItems="center" gap="15">
         <Link href="/">
-          <ArrowLeft />
+          <ArrowLeft
+            className={`${colorMode === "light" && "fill-[#070b0f]"}`}
+          />
         </Link>
         <Text fontWeight="bold" fontSize="24px">
           Open Positions
