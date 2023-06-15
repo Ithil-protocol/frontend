@@ -7,6 +7,7 @@ import {
   Heading,
   Text,
   Tooltip,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import classNames from "classnames";
@@ -22,6 +23,7 @@ import { type Address } from "wagmi";
 import { MultiAssetsIcons } from "@/components/multi-assets-icon";
 import PageWrapper from "@/components/page-wrapper";
 import { firstNetwork } from "@/config/chains";
+import { palette } from "@/styles/theme/palette";
 import { type PropsWithClassName } from "@/types/components.types";
 import {
   type AaveAsset,
@@ -30,6 +32,7 @@ import {
 } from "@/types/onchain.types";
 import { fakeApy } from "@/utils/fake-data.utils";
 import { aprToApy } from "@/utils/math.utils";
+import { pickColor } from "@/utils/theme";
 
 import { getServices } from "../../use-services.hook";
 import { Graph } from "./graph";
@@ -51,6 +54,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
   boostApr,
   className,
 }) => {
+  const { colorMode } = useColorMode();
   const network = firstNetwork();
   const explorerBaseUrl = network.blockExplorers?.default.url;
   const containerClasses = "p-5 rounded-xl bg-primary-100";
@@ -70,7 +74,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
                 icon="mdi:link"
                 width="20px"
                 height="20px"
-                color="var(--primary-action)"
+                color={pickColor(colorMode, palette.variants.ithil, "action")}
               ></Icon>
               <Heading size="h2">Address on explorer</Heading>
             </a>
@@ -85,7 +89,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
             <div className="flex flex-row items-baseline flex-grow gap-4">
               <Heading
                 size="h5"
-                color="var(--primary-800)"
+                color={pickColor(colorMode, palette.primary, "800")}
                 textTransform="uppercase"
               >
                 Total APY
@@ -96,7 +100,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
             <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
               <Heading
                 size="h5"
-                color="var(--primary-800)"
+                color={pickColor(colorMode, palette.primary, "800")}
                 textTransform="uppercase"
               >
                 Vault APR
@@ -107,7 +111,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
             <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
               <Heading
                 size="h5"
-                color="var(--primary-800)"
+                color={pickColor(colorMode, palette.primary, "800")}
                 textTransform="uppercase"
               >
                 Boost APR
@@ -142,6 +146,8 @@ const SafetyScore: FC<SafetyScoreProps> = ({
   features,
   description,
 }) => {
+  const { colorMode } = useColorMode();
+
   const safetyScoreToIcon: Record<SafetyScoreValue, string> = {
     [SafetyScoreValue.positive]: "tabler:arrow-badge-up",
     [SafetyScoreValue.neutral]: "codicon:dash",
@@ -149,9 +155,9 @@ const SafetyScore: FC<SafetyScoreProps> = ({
   };
 
   const safetyScoreToColor: Record<SafetyScoreValue, string> = {
-    [SafetyScoreValue.positive]: "var(--safety-green)",
-    [SafetyScoreValue.neutral]: "var(--safety-neutral)",
-    [SafetyScoreValue.negative]: "var(--safety-red)",
+    [SafetyScoreValue.positive]: pickColor(colorMode, palette.safety, "green"),
+    [SafetyScoreValue.neutral]: pickColor(colorMode, palette.safety, "neutral"),
+    [SafetyScoreValue.negative]: pickColor(colorMode, palette.safety, "red"),
   };
 
   return (
@@ -162,7 +168,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
           <Text
             textStyle="slender-md"
             fontWeight={700}
-            color="var(--safety-green)"
+            color={pickColor(colorMode, palette.safety, "green")}
           >
             {score}
           </Text>
@@ -171,7 +177,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
               icon="ph:crown-duotone"
               width="28px"
               height="28px"
-              color="var(--safety-green)"
+              color={pickColor(colorMode, palette.safety, "green")}
             />
           )}
         </div>
@@ -180,7 +186,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
             icon="tabler:exclamation-circle"
             width="20px"
             height="20px"
-            color="var(--primary-action)"
+            color={pickColor(colorMode, palette.variants.ithil, "action")}
           />
           <span>Details</span>
         </div>

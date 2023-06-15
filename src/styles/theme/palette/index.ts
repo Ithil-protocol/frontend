@@ -62,6 +62,8 @@ const safety = {
   red: "#ff7a8a",
   neutral: secondary.main,
 
+  "green.dark": "#47dcb0",
+  "red.dark": "#ff7a8a",
   "neutral.dark": secondary["main.dark"],
 };
 

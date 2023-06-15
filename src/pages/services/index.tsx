@@ -8,12 +8,14 @@ import { type FC, useMemo, useState } from "react";
 
 import { MultiAssetsIcons } from "@/components/multi-assets-icon";
 import PageWrapper from "@/components/page-wrapper";
+import { palette } from "@/styles/theme/palette";
 import {
   type Services,
   type SupportedServiceName,
 } from "@/types/onchain.types";
 import { fakeApy, fakeTvl } from "@/utils/fake-data.utils";
 import { aprToApy } from "@/utils/math.utils";
+import { pickColor } from "@/utils/theme";
 
 import { getServices, useServices } from "./use-services.hook";
 
@@ -101,7 +103,10 @@ const ServiceCard: FC<ServiceCardProps> = ({
         {typeof description === "string" ? description : description(assets)}
       </Text>
       <div className="flex gap-2 mb-4">
-        <Text textStyle="sm" color="var(--primary-700);">
+        <Text
+          textStyle="sm"
+          color={pickColor(colorMode, palette.primary, "700")}
+        >
           TVL:
         </Text>
         <Text textStyle="slender-sm2">$ {format(tvl, "0.00 a")}</Text>

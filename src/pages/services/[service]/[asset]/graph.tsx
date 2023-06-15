@@ -1,4 +1,4 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, Text, useColorMode } from "@chakra-ui/react";
 import classNames from "classnames";
 import { type FC, useState } from "react";
 import {
@@ -12,7 +12,9 @@ import {
   YAxis,
 } from "recharts";
 
+import { palette } from "@/styles/theme/palette";
 import { formatDate } from "@/utils/date.utils";
+import { pickColor } from "@/utils/theme";
 
 import fakeChartData from "./fakedata.json";
 
@@ -60,6 +62,7 @@ type graphWindows = "3m" | "1m" | "1w";
 type graphSections = "TVL" | "Price" | "APY";
 
 export const Graph = () => {
+  const { colorMode } = useColorMode();
   const [graphWindow, setGraphWindow] = useState<graphWindows>("3m");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
@@ -108,7 +111,7 @@ export const Graph = () => {
             <Line
               type="monotone"
               dataKey="value"
-              stroke="var(--primary-action)"
+              stroke={pickColor(colorMode, palette.variants.ithil, "action")}
               dot={false}
             />
             <XAxis dataKey="date" tickMargin={10} minTickGap={20} />
