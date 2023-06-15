@@ -239,7 +239,7 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
   const vaultApr = fakeApy([service.name, asset.iconName, "vault"]);
   const boostApr = fakeApy([service.name, asset.iconName, "boost"], 1);
   const totalApy = aprToApy(vaultApr + boostApr);
-  const name = "Yearn Finance Strat";
+  const name = "Yearn Finance Start";
   const description =
     "The strategies deployed include providing assets for lending, earning project tokens with yield farming, providing liquidity, or a combination of these and other investment strategies.";
 
