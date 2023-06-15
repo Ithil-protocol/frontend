@@ -1,4 +1,5 @@
 import {
+  Button,
   Table,
   TableContainer,
   Tbody,
@@ -178,6 +179,18 @@ const Lend: FC = () => {
             </Tbody>
           </Table>
         </TableContainer>
+
+        {/* <div>
+          <Button disabled onClick={console.log} variant="ithil">
+            ithil
+          </Button>
+          <Button onClick={console.log} variant="primary">
+            primary
+          </Button>
+          <Button onClick={console.log} variant="secondary">
+            secondary
+          </Button>
+        </div> */}
       </PageWrapper>
     </>
   );

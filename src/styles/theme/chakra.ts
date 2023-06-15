@@ -4,6 +4,8 @@ import {
   withDefaultVariant,
 } from "@chakra-ui/react";
 
+import { mode } from "@/utils/theme";
+
 import {
   ithilButtonStyle,
   ithilHeadingStyle,
@@ -34,12 +36,20 @@ export const theme: ThemeConfig = extendTheme(
     },
     initialColorMode: "dark",
     styles: {
-      global: {
+      global: ({ colorMode }: any) => ({
         body: {
-          background: palette.primary.main,
-          color: palette.font.main,
+          background: mode(
+            colorMode,
+            palette.primary["main"],
+            palette.primary["main.dark"]
+          ),
+          color: mode(
+            colorMode,
+            palette.font["main"],
+            palette.font["main.dark"]
+          ),
         },
-      },
+      }),
     },
     textStyles: {
       lg: {

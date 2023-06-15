@@ -1,12 +1,21 @@
 import { StyleConfig } from "@chakra-ui/react";
 
+import { mode } from "@/utils/theme";
+
 import { palette } from "../palette";
 
 export const ithilTableStyle: StyleConfig = {
+  defaultProps: {
+    variant: "ithil",
+  },
   variants: {
-    ithil: () => ({
+    ithil: ({ colorMode }) => ({
       table: {
-        backgroundColor: palette.primary[100],
+        backgroundColor: mode(
+          colorMode,
+          palette.primary["100"],
+          palette.primary["100.dark"]
+        ),
         borderRadius: "12px",
         paddingTop: "20px",
       },
@@ -15,7 +24,11 @@ export const ithilTableStyle: StyleConfig = {
         fontSize: "16px",
       },
       tr: {
-        borderBottom: `1px solid ${palette.primary[200]}`,
+        borderBottom: `1px solid ${mode(
+          colorMode,
+          palette.primary["200"],
+          palette.primary["200.dark"]
+        )}`,
       },
     }),
   },

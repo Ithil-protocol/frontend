@@ -37,8 +37,8 @@ const secondary = {
   "500.dark": "#505668",
 };
 
-const variant = {
-  primary: {
+const variants = {
+  ithil: {
     action: "#077ce0",
     disabled: primary["300"],
     success: "#15ac89",
@@ -53,7 +53,7 @@ const variant = {
     "error.dark": "#f35959",
     "warning.dark": "#e9cf4a",
     "warningLight.dark": "#f3e7a8",
-    // "border.dark": secondary["200.dark"],
+    "border.dark": secondary["200"],
   },
 };
 
@@ -84,5 +84,5 @@ export const palette = {
   primary,
   safety,
   secondary,
-  variant,
+  variants,
 };
