@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 // import { List } from 'phosphor-react'
-import { useState } from 'react'
+import { useState } from "react";
 
 // import MobileMenuModal from './MobileMenuModal'
 
 export default function MobileMenu() {
-  const [, setModalOpened] = useState(false)
+  const [, setModalOpened] = useState(false);
 
   return (
     <>
@@ -18,5 +18,5 @@ export default function MobileMenu() {
         {/* <List tw="text-secondary" size={24} /> */}
       </div>
     </>
-  )
+  );
 }

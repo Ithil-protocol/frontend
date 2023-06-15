@@ -1,29 +1,29 @@
-const mockStorage = new Map()
+const mockStorage = new Map();
 
 const delay = async () => {
-  return await new Promise((resolve) => setTimeout(resolve, 0))
-}
+  return await new Promise((resolve) => setTimeout(resolve, 0));
+};
 
 export const ClientLocalStorageCache = {
   setItem: async (key: string, value: string) => {
-    if (typeof window === 'undefined') {
-      return await Promise.resolve(mockStorage.set(key, value))
+    if (typeof window === "undefined") {
+      return await Promise.resolve(mockStorage.set(key, value));
     }
-    return await delay().then(() => localStorage.setItem(key, value))
+    return await delay().then(() => localStorage.setItem(key, value));
   },
 
   getItem: async (key: string) => {
-    if (typeof window === 'undefined') {
-      return await Promise.resolve(mockStorage.get(key))
+    if (typeof window === "undefined") {
+      return await Promise.resolve(mockStorage.get(key));
     }
-    return await delay().then(() => localStorage.getItem(key))
+    return await delay().then(() => localStorage.getItem(key));
   },
 
   removeItem: async (key: string) => {
-    if (typeof window === 'undefined') {
-      mockStorage.delete(key)
-      return await Promise.resolve()
+    if (typeof window === "undefined") {
+      mockStorage.delete(key);
+      return await Promise.resolve();
     }
-    return await delay().then(() => localStorage.removeItem(key))
+    return await delay().then(() => localStorage.removeItem(key));
   },
-}
+};

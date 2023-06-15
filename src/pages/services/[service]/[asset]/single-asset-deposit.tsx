@@ -8,7 +8,6 @@ import {
 import { BigNumber } from "@ethersproject/bignumber";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { type FC, useState } from "react";
 import {
   useAccount,
@@ -269,9 +268,9 @@ export const DynamicServiceDeposit = dynamic(
     loading: () => (
       <WidgetSingleAssetDeposit
         inputAmount="0"
-        onInputChange={() => {}}
-        onActionClick={() => {}}
-        onMaxClick={() => {}}
+        onInputChange={() => console.log}
+        onActionClick={() => console.log}
+        onMaxClick={() => console.log}
         isConnected={false}
         isBalanceLoading={true}
         isButtonDisabled={true}

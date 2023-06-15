@@ -1,7 +1,7 @@
-import Rand from 'rand-seed'
+import Rand from "rand-seed";
 
 const utcNowDate = (): Date => {
-  const now = new Date()
+  const now = new Date();
   return new Date(
     Date.UTC(
       now.getFullYear(),
@@ -10,10 +10,10 @@ const utcNowDate = (): Date => {
       now.getHours(),
       now.getMinutes(),
       now.getSeconds(),
-      now.getMilliseconds(),
-    ),
-  )
-}
+      now.getMilliseconds()
+    )
+  );
+};
 
 /**
  *
@@ -22,14 +22,14 @@ const utcNowDate = (): Date => {
  * @returns {number}
  */
 export const fakeApy = (seeds: string[], maxIntegerLength = 2): number => {
-  const utcDate = utcNowDate()
-  const todayUtcString = utcDate.toISOString().slice(0, 10)
-  const rand = new Rand(seeds.join('') + todayUtcString)
-  const value = rand.next()
+  const utcDate = utcNowDate();
+  const todayUtcString = utcDate.toISOString().slice(0, 10);
+  const rand = new Rand(seeds.join("") + todayUtcString);
+  const value = rand.next();
 
-  const maxValue = 10 ** (maxIntegerLength + 2) // plus 2 because we want to have 2 decimals
-  return Math.floor(value * maxValue) / 100 // 0.1 - 99.99%
-}
+  const maxValue = 10 ** (maxIntegerLength + 2); // plus 2 because we want to have 2 decimals
+  return Math.floor(value * maxValue) / 100; // 0.1 - 99.99%
+};
 
 /**
  *
@@ -38,13 +38,13 @@ export const fakeApy = (seeds: string[], maxIntegerLength = 2): number => {
  * @returns
  */
 export const fakeTvl = (seeds: string[], maxTvlThousands?: number): number => {
-  const utcDate = utcNowDate()
-  const todayUtcString = utcDate.toISOString().slice(0, 10)
-  const rand = new Rand(seeds.join('') + todayUtcString)
-  const value = rand.next()
+  const utcDate = utcNowDate();
+  const todayUtcString = utcDate.toISOString().slice(0, 10);
+  const rand = new Rand(seeds.join("") + todayUtcString);
+  const value = rand.next();
 
-  const maxTvl = maxTvlThousands ?? 4 // 1M maximum
-  const maxValue = 10 ** (maxTvl + 2) // 1_000_000 maximum
+  const maxTvl = maxTvlThousands ?? 4; // 1M maximum
+  const maxValue = 10 ** (maxTvl + 2); // 1_000_000 maximum
   // returns a value multiplied between 1k and 1M
-  return Math.floor(value * maxValue)
-}
+  return Math.floor(value * maxValue);
+};

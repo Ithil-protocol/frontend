@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import Image from "next/image";
 import { type FC } from "react";
 
 import { type PropsWithClassName } from "@/types/components.types";

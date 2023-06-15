@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import classNames from "classnames";
 import Head from "next/head";
-import Image from "next/image";
 import { type FC, Fragment, useState } from "react";
 
 import TokenIcon from "@/components/TokenIcon";

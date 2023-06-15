@@ -4,11 +4,7 @@
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "words": [],
-  "ignoreRegExpList": [
-    "0x(.*)?",
-    "id:(.*)?",
-    "apiKey:(.*)?"
-  ],
+  "ignoreRegExpList": ["0x(.*)?", "id:(.*)?", "apiKey:(.*)?"],
   "import": [],
   "ignoreWords": [
     "BigNumberish",
