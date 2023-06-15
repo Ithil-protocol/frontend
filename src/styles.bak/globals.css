@@ -51,13 +51,13 @@
   --primary-700: #9badcc;
   --primary-800: #6b7696;
   --primary-contrast: var(--primary-100);
-
   --secondary: #ffffff;
   --secondary-100: #f2f5f6;
   --secondary-200: #e7eaeb;
   --secondary-300: #e2e5e5;
   --secondary-400: #ced1d1;
   --secondary-500: #505668;
+
 
   --font: var(--secondary-100);
   --font-100: #a4b1be;
