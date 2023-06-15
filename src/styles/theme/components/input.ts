@@ -14,11 +14,15 @@ export const ithilInputStyle: StyleConfig = {
   },
   variants: {
     ithil: ({ colorMode }) => ({
-      bg: mode(colorMode, palette.primary[200], palette.primary["200.dark"]),
+      bg: mode(
+        colorMode,
+        palette.colors.primary[200],
+        palette.colors.primary["200.dark"]
+      ),
       background: mode(
         colorMode,
-        palette.primary[200],
-        palette.primary["200.dark"]
+        palette.colors.primary[200],
+        palette.colors.primary["200.dark"]
       ),
     }),
   },

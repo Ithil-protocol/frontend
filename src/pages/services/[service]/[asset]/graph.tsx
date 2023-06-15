@@ -16,7 +16,7 @@ import { palette } from "@/styles/theme/palette";
 import { formatDate } from "@/utils/date.utils";
 import { pickColor } from "@/utils/theme";
 
-import fakeChartData from "./fakedata.json";
+import fakeChartData from "./fakeData.json";
 
 interface GraphDataPoint {
   time: number;
@@ -111,7 +111,7 @@ export const Graph = () => {
             <Line
               type="monotone"
               dataKey="value"
-              stroke={pickColor(colorMode, palette.variants.ithil, "action")}
+              stroke={pickColor(colorMode, palette.variants.primary, "action")}
               dot={false}
             />
             <XAxis dataKey="date" tickMargin={10} minTickGap={20} />

@@ -74,7 +74,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
                 icon="mdi:link"
                 width="20px"
                 height="20px"
-                color={pickColor(colorMode, palette.variants.ithil, "action")}
+                color={pickColor(colorMode, palette.variants.primary, "action")}
               ></Icon>
               <Heading size="h2">Address on explorer</Heading>
             </a>
@@ -89,7 +89,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
             <div className="flex flex-row items-baseline flex-grow gap-4">
               <Heading
                 size="h5"
-                color={pickColor(colorMode, palette.primary, "800")}
+                color={pickColor(colorMode, palette.colors.primary, "800")}
                 textTransform="uppercase"
               >
                 Total APY
@@ -100,7 +100,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
             <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
               <Heading
                 size="h5"
-                color={pickColor(colorMode, palette.primary, "800")}
+                color={pickColor(colorMode, palette.colors.primary, "800")}
                 textTransform="uppercase"
               >
                 Vault APR
@@ -111,7 +111,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
             <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
               <Heading
                 size="h5"
-                color={pickColor(colorMode, palette.primary, "800")}
+                color={pickColor(colorMode, palette.colors.primary, "800")}
                 textTransform="uppercase"
               >
                 Boost APR
@@ -186,7 +186,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
             icon="tabler:exclamation-circle"
             width="20px"
             height="20px"
-            color={pickColor(colorMode, palette.variants.ithil, "action")}
+            color={pickColor(colorMode, palette.variants.primary, "action")}
           />
           <span>Details</span>
         </div>

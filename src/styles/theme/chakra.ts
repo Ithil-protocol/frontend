@@ -18,10 +18,7 @@ import { palette } from "./palette";
 
 export const theme: ThemeConfig = extendTheme(
   {
-    colors: {
-      primary: palette.primary,
-      secondary: palette.secondary,
-    },
+    colors: palette.colors,
     components: {
       Button: ithilButtonStyle,
       Heading: ithilHeadingStyle,
@@ -40,8 +37,8 @@ export const theme: ThemeConfig = extendTheme(
         body: {
           background: mode(
             colorMode,
-            palette.primary["main"],
-            palette.primary["main.dark"]
+            palette.colors.primary["main"],
+            palette.colors.primary["main.dark"]
           ),
           color: mode(
             colorMode,

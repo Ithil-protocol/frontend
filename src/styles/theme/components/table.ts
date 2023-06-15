@@ -13,8 +13,8 @@ export const ithilTableStyle: StyleConfig = {
       table: {
         backgroundColor: mode(
           colorMode,
-          palette.primary["100"],
-          palette.primary["100.dark"]
+          palette.colors.primary["100"],
+          palette.colors.primary["100.dark"]
         ),
         borderRadius: "12px",
         paddingTop: "20px",
@@ -26,8 +26,8 @@ export const ithilTableStyle: StyleConfig = {
       tr: {
         borderBottom: `1px solid ${mode(
           colorMode,
-          palette.primary["200"],
-          palette.primary["200.dark"]
+          palette.colors.primary["200"],
+          palette.colors.primary["200.dark"]
         )}`,
       },
     }),

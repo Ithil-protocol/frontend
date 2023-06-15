@@ -12,29 +12,29 @@ export const ithilButtonStyle: StyleConfig = {
     insideInput: ({ colorMode }) => ({
       backgroundColor: mode(
         colorMode,
-        palette.primary[300],
-        palette.primary["300.dark"]
+        palette.colors.primary[300],
+        palette.colors.primary["300.dark"]
       ),
       borderColor: mode(
         colorMode,
-        palette.primary[300],
-        palette.primary["300.dark"]
+        palette.colors.primary[300],
+        palette.colors.primary["300.dark"]
       ),
       borderWidth: "1px",
       _disabled: {
         backgroundColor: "transparent",
         borderColor: mode(
           colorMode,
-          palette.primary[300],
-          palette.primary["300.dark"]
+          palette.colors.primary[300],
+          palette.colors.primary["300.dark"]
         ),
       },
     }),
     ithil: ({ colorMode }) => ({
       backgroundColor: mode(
         colorMode,
-        palette.variants.ithil["action"],
-        palette.variants.ithil["action.dark"]
+        palette.variants.primary["action"],
+        palette.variants.primary["action.dark"]
       ),
       color: mode(colorMode, palette.font.button, palette.font["button.dark"]),
       width: "100%",
@@ -48,18 +48,18 @@ export const ithilButtonStyle: StyleConfig = {
       _disabled: {
         backgroundColor: mode(
           colorMode,
-          palette.variants.ithil.disabled,
-          palette.variants.ithil["disabled.dark"]
+          palette.variants.primary.disabled,
+          palette.variants.primary["disabled.dark"]
         ),
         border: `1px solid ${mode(
           colorMode,
-          palette.variants.ithil.border,
-          palette.variants.ithil["border.dark"]
+          palette.variants.primary.border,
+          palette.variants.primary["border.dark"]
         )}`,
         color: mode(
           colorMode,
-          palette.secondary.main,
-          palette.secondary["main.dark"]
+          palette.colors.secondary.main,
+          palette.colors.secondary["main.dark"]
         ),
         opacity: 1,
       },

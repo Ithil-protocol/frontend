@@ -105,7 +105,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
       <div className="flex gap-2 mb-4">
         <Text
           textStyle="sm"
-          color={pickColor(colorMode, palette.primary, "700")}
+          color={pickColor(colorMode, palette.colors.primary, "700")}
         >
           TVL:
         </Text>
