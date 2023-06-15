@@ -12,9 +12,9 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 import Navbar from '@/components/navbar'
 import { addTestNetworks, firstNetwork } from '@/config/chains'
-import { theme as chakraTheme } from '@/styles/chakra.theme'
+import { theme as chakraTheme } from '@/styles.bak/chakra.theme'
 import '@/styles/globals.css'
-import { ithilDarkTheme } from '@/styles/rainbowkit'
+import { ithilDarkTheme } from '@/styles/theme/rainbowkit'
 
 const network = firstNetwork()
 const { chains, provider } = configureChains(
