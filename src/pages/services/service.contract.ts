@@ -32,7 +32,7 @@ export const prepareOrder = (
   token: Address,
   aToken: Address,
   amount: BigNumber,
-  leverage: number
+  _leverage: number
 ) => {
   const amountInLeverage = amount.mul(2);
 

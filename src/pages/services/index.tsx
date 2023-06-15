@@ -231,7 +231,7 @@ const ServicesPage: FC<Props> = ({ services }) => {
 };
 
 export const getStaticProps: GetStaticProps = (
-  context: GetStaticPropsContext
+  _context: GetStaticPropsContext
 ) => {
   const { services } = getServices();
   return {
