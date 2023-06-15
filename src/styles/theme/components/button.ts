@@ -20,7 +20,8 @@ export const ithilButtonStyle: StyleConfig = {
       fontSize: "18px",
       _hover: {
         _disabled: {
-          backgroundColor: "var(--button-hover-light)", //FIXME: Missing in global, where is it?
+          //FIXME: Missing in global, where is it?
+          backgroundColor: "var(--button-hover-light)",
         },
       },
       _disabled: {

@@ -1,39 +1,54 @@
-import { Button, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
-import { BigNumber } from '@ethersproject/bignumber'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
-import { type FC, useState } from 'react'
-import { useAccount, useBalance, useChainId, useContractWrite, useWaitForTransaction } from 'wagmi'
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+} from "@chakra-ui/react";
+import { BigNumber } from "@ethersproject/bignumber";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { type FC, useState } from "react";
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import { EstimatedValue } from '@/components/estimated-value'
-import { Loading } from '@/components/loading'
-import { serviceAddress, usePrepareServiceOpen } from '@/generated'
-import { useToken } from '@/hooks/use-token.hook'
-import { useTransactionFeedback } from '@/hooks/use-transaction.hook'
-import { type AaveAsset } from '@/types/onchain.types'
-import { abbreviateBigNumber, stringInputToBigNumber } from '@/utils/input.utils'
+import { EstimatedValue } from "@/components/estimated-value";
+import { Loading } from "@/components/loading";
+import { serviceAddress, usePrepareServiceOpen } from "@/generated";
+import { useToken } from "@/hooks/use-token.hook";
+import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { type AaveAsset } from "@/types/onchain.types";
+import {
+  abbreviateBigNumber,
+  stringInputToBigNumber,
+} from "@/utils/input.utils";
 
-import { prepareOrder } from '../../service.contract'
+import { prepareOrder } from "../../service.contract";
 
 interface WidgetSingleAssetDepositProps {
   // data
-  asset?: AaveAsset
-  balance?: BigNumber
+  asset?: AaveAsset;
+  balance?: BigNumber;
 
   // actions
-  inputAmount: string
-  onInputChange: (amount: string) => void
-  onActionClick: () => void
-  onMaxClick: () => void
+  inputAmount: string;
+  onInputChange: (amount: string) => void;
+  onActionClick: () => void;
+  onMaxClick: () => void;
 
   // status
-  isConnected: boolean
-  isBalanceLoading: boolean
-  isButtonDisabled: boolean
-  isButtonLoading: boolean
-  isMaxDisabled: boolean
-  isApproved: boolean
+  isConnected: boolean;
+  isBalanceLoading: boolean;
+  isButtonDisabled: boolean;
+  isButtonLoading: boolean;
+  isMaxDisabled: boolean;
+  isApproved: boolean;
 }
 
 export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
@@ -52,7 +67,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   isMaxDisabled,
   isApproved,
 }) => {
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useConnectModal();
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
       <div className="flex flex-row justify-between w-full">
@@ -62,7 +77,9 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             <Loading />
           ) : (
             <>
-              <Text textStyle="slender-sm2">{abbreviateBigNumber(balance, asset!.decimals)}</Text>
+              <Text textStyle="slender-sm2">
+                {abbreviateBigNumber(balance, asset!.decimals)}
+              </Text>
               <Text textStyle="slender-sm2">
                 (<EstimatedValue value={balance} token={asset!} />)
               </Text>
@@ -100,7 +117,13 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             onChange={(event) => onInputChange(event.target.value)}
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={onMaxClick} isDisabled={isMaxDisabled} variant="insideInput">
+            <Button
+              h="1.75rem"
+              size="sm"
+              onClick={onMaxClick}
+              isDisabled={isMaxDisabled}
+              variant="insideInput"
+            >
               Max
             </Button>
           </InputRightElement>
@@ -110,87 +133,113 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
       {isConnected ? (
         <Button
           onClick={() => {
-            void onActionClick()
+            void onActionClick();
           }}
           isDisabled={isButtonDisabled}
           isLoading={isButtonLoading}
-          loadingText={isButtonLoading ? 'Waiting' : undefined}
+          loadingText={isButtonLoading ? "Waiting" : undefined}
         >
-          {asset == null ? 'Loading...' : isApproved ? 'Open position' : `Approve ${asset.name}`}
+          {asset == null
+            ? "Loading..."
+            : isApproved
+            ? "Open position"
+            : `Approve ${asset.name}`}
         </Button>
       ) : (
         <Button onClick={openConnectModal}>Connect Wallet</Button>
       )}
     </div>
-  )
-}
+  );
+};
 
 interface ServiceDepositProps {
-  asset: AaveAsset
+  asset: AaveAsset;
 }
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
-  const { address, isConnected } = useAccount()
-  const chainId = useChainId() as 1337
-  const [inputAmount, setInputAmount] = useState<string>('0')
-  const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals)
+  const { address, isConnected } = useAccount();
+  const chainId = useChainId() as 1337;
+  const [inputAmount, setInputAmount] = useState<string>("0");
+  const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals);
 
   // web3 hooks
-  const { trackTransaction, reportException } = useTransactionFeedback()
+  const { trackTransaction, reportException } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address,
     token: asset.tokenAddress,
     cacheTime: 5_000,
     watch: true,
-  })
-  const { useAllowance, useApprove } = useToken(asset.tokenAddress)
-  const { data: allowance, refetch: refetchAllowance } = useAllowance(address, serviceAddress[chainId])
+  });
+  const { useAllowance, useApprove } = useToken(asset.tokenAddress);
+  const { data: allowance, refetch: refetchAllowance } = useAllowance(
+    address,
+    serviceAddress[chainId]
+  );
   const {
     data: approveData,
     isLoading: isApproveLoading,
     writeAsync: approve,
-  } = useApprove(serviceAddress[chainId], inputBigNumber)
-  const { isLoading: isApproveWaiting } = useWaitForTransaction({ hash: approveData?.hash })
+  } = useApprove(serviceAddress[chainId], inputBigNumber);
+  const { isLoading: isApproveWaiting } = useWaitForTransaction({
+    hash: approveData?.hash,
+  });
 
-  const order = prepareOrder(asset.tokenAddress, asset.aTokenAddress, inputBigNumber, 2)
+  const order = prepareOrder(
+    asset.tokenAddress,
+    asset.aTokenAddress,
+    inputBigNumber,
+    2
+  );
   const {
     config: openConfig,
     isLoading: isOpenPrepareLoading,
     isError: isOpenPrepareError,
     error: openPrepareError,
-  } = usePrepareServiceOpen({ args: [order] })
-  const { data: openData, isLoading: isOpenLoading, writeAsync: open } = useContractWrite(openConfig)
-  const { isLoading: isOpenWaiting } = useWaitForTransaction({ hash: openData?.hash })
+  } = usePrepareServiceOpen({ args: [order] });
+  const {
+    data: openData,
+    isLoading: isOpenLoading,
+    writeAsync: open,
+  } = useContractWrite(openConfig);
+  const { isLoading: isOpenWaiting } = useWaitForTransaction({
+    hash: openData?.hash,
+  });
 
   // computed properties
-  const isApproved = allowance?.gte(inputBigNumber) ?? false
-  const isButtonLoading = isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting || isOpenPrepareLoading
-  const isInconsistent = inputBigNumber.gt(balance?.value ?? 0)
-  const isButtonDisabled = isButtonLoading || isInconsistent || inputBigNumber.isZero()
-  const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0)
+  const isApproved = allowance?.gte(inputBigNumber) ?? false;
+  const isButtonLoading =
+    isApproveLoading ||
+    isApproveWaiting ||
+    isOpenLoading ||
+    isOpenWaiting ||
+    isOpenPrepareLoading;
+  const isInconsistent = inputBigNumber.gt(balance?.value ?? 0);
+  const isButtonDisabled =
+    isButtonLoading || isInconsistent || inputBigNumber.isZero();
+  const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0);
 
   const onInputChange = (amount: string) => {
-    setInputAmount(amount)
-  }
+    setInputAmount(amount);
+  };
   const onActionClick = async () => {
     if (!isApproved) {
-      const result = await approve?.()
-      await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`)
-      await refetchAllowance()
-      return
+      const result = await approve?.();
+      await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`);
+      await refetchAllowance();
+      return;
     }
 
-    if (isOpenPrepareError) return reportException(openPrepareError)
+    if (isOpenPrepareError) return reportException(openPrepareError);
 
-    const result = await open?.()
-    await trackTransaction(result, `Deposit ${inputAmount} ${asset.name}`)
-    await refetchAllowance()
-    setInputAmount('0')
-  }
+    const result = await open?.();
+    await trackTransaction(result, `Deposit ${inputAmount} ${asset.name}`);
+    await refetchAllowance();
+    setInputAmount("0");
+  };
   const onMaxClick = () => {
-    setInputAmount(balance?.formatted ?? '0')
-  }
+    setInputAmount(balance?.formatted ?? "0");
+  };
 
   return (
     <WidgetSingleAssetDeposit
@@ -207,11 +256,14 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
       isApproved={isApproved}
       asset={asset}
     />
-  )
-}
+  );
+};
 
 export const DynamicServiceDeposit = dynamic(
-  async () => await import('@/pages/services/[service]/[asset]/single-asset-deposit').then((mod) => mod.ServiceDeposit),
+  async () =>
+    await import(
+      "@/pages/services/[service]/[asset]/single-asset-deposit"
+    ).then((mod) => mod.ServiceDeposit),
   {
     ssr: false,
     loading: () => (
@@ -228,5 +280,5 @@ export const DynamicServiceDeposit = dynamic(
         isApproved={false}
       />
     ),
-  },
-)
+  }
+);
