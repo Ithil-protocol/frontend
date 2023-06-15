@@ -1,8 +1,9 @@
 import classNames from "classnames";
-import Image from "next/image";
 import { type FC } from "react";
 
 import { type PropsWithClassName } from "@/types/components.types";
+
+import TokenIcon from "./TokenIcon";
 
 export interface MultiAssetsIconsProps extends PropsWithClassName {
   assets: string[];
@@ -54,11 +55,8 @@ export const MultiAssetsIcons: FC<MultiAssetsIconsProps> = ({
       className={classNames(containerClasses, width[assets.length], className)}
     >
       {assets.map((asset, idx) => (
-        <Image
-          src={`/assets/tokens/${asset}.svg`}
-          alt={`${asset} icon`}
-          height={32}
-          width={32}
+        <TokenIcon
+          name={asset}
           key={`${asset}-${idx}`}
           className={classNames("relative", zIndexes[idx], offsets[idx], {
             "w-[32px] h-[32px]": idx === 0,

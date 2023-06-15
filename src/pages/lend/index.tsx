@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableContainer,
   Tbody,
@@ -12,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import classNames from "classnames";
 import Head from "next/head";
-import Image from "next/image";
 import { type FC, Fragment, useState } from "react";
 
+import TokenIcon from "@/components/TokenIcon";
 import { DynamicEstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import PageWrapper from "@/components/page-wrapper";
@@ -133,9 +132,8 @@ const Lend: FC = () => {
                   >
                     <Td>
                       <div className="flex items-center gap-2">
-                        <Image
-                          src={`/assets/tokens/${vault.token.iconName}.svg`}
-                          alt={`${vault.token.name} icon`}
+                        <TokenIcon
+                          name={vault.token.iconName}
                           height={32}
                           width={32}
                         />
@@ -179,18 +177,6 @@ const Lend: FC = () => {
             </Tbody>
           </Table>
         </TableContainer>
-
-        {/* <div>
-          <Button disabled onClick={console.log} variant="ithil">
-            ithil
-          </Button>
-          <Button onClick={console.log} variant="primary">
-            primary
-          </Button>
-          <Button onClick={console.log} variant="secondary">
-            secondary
-          </Button>
-        </div> */}
       </PageWrapper>
     </>
   );

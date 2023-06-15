@@ -8,7 +8,6 @@ import {
 import { BigNumber } from "@ethersproject/bignumber";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { type FC, useState } from "react";
 import {
   useAccount,
@@ -18,6 +17,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
+import TokenIcon from "@/components/TokenIcon";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { serviceAddress, usePrepareServiceOpen } from "@/generated";
@@ -95,10 +95,9 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           ) : (
             <>
               <div className="w-6 h-6">
-                <Image
+                <TokenIcon
                   className="w-6 h-6"
-                  src={`/assets/tokens/${asset.iconName}.svg`}
-                  alt={`${asset.name} icon`}
+                  name={asset.iconName}
                   height={24}
                   width={24}
                 />
@@ -269,9 +268,9 @@ export const DynamicServiceDeposit = dynamic(
     loading: () => (
       <WidgetSingleAssetDeposit
         inputAmount="0"
-        onInputChange={() => {}}
-        onActionClick={() => {}}
-        onMaxClick={() => {}}
+        onInputChange={() => console.log}
+        onActionClick={() => console.log}
+        onMaxClick={() => console.log}
         isConnected={false}
         isBalanceLoading={true}
         isButtonDisabled={true}

@@ -18,6 +18,7 @@ interface NavigationPage {
 const pages: NavigationPage[] = [
   { name: "lend", url: "/lend" },
   { name: "services", url: "/services" },
+  { name: "dashboard", url: "/dashboard" },
 ];
 
 const Navbar: FC = () => {
@@ -64,7 +65,7 @@ const Navbar: FC = () => {
                   className="relative flex flex-col items-center"
                 >
                   <Text casing="capitalize">{name}</Text>
-                  {pathname === url && (
+                  {pathname.split("/")[1] === url.split("/")[1] && (
                     <Circle className="absolute w-2 h-2 mt-2 rounded-full top-6 bg-secondary" />
                   )}
                 </Link>
