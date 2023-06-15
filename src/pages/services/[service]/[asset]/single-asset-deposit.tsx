@@ -99,7 +99,6 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
                 <TokenIcon
                   className="w-6 h-6"
                   name={asset.iconName}
-                  alt={`${asset.name} icon`}
                   height={24}
                   width={24}
                 />
