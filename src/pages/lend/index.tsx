@@ -1,3 +1,4 @@
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import {
   Table,
   TableContainer,
@@ -111,7 +112,11 @@ const Lend: FC = () => {
                           })}
                         >
                           {column.hideText !== true && column.text}
-                          {column.tooltip != null && "❔"}
+                          {column.tooltip && (
+                            <QuestionOutlineIcon
+                              style={{ margin: "0px 0px 3px 5px" }}
+                            />
+                          )}{" "}
                         </Text>
                       </Tooltip>
                     </div>
