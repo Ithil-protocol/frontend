@@ -65,12 +65,12 @@ const TRow: FC<TRowProps> = ({ data }) => {
                     style={{
                       border:
                         colorMode === "light"
-                          ? "1px solid #f2f5f6"
-                          : "1px solid #151a29",
+                          ? "5px solid #f2f5f6"
+                          : "5px solid #151a29",
                       borderRadius: "100%",
-                      padding: 0,
-                      borderStyle: "none",
                     }}
+                    width={42}
+                    height={42}
                     name="DAI"
                   />
                 </Box>

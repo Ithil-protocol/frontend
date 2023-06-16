@@ -1,5 +1,5 @@
 {
-  "networkUrl": "https://rpc.tenderly.co/fork/b7e6ebc8-2e8f-4585-a641-c87e02e6da21",
-  "manager": "0x75E1Ba86F806111cf9D7b8b105e97d503122614B",
-  "aaveService": "0xC6583DF62F5017D1Ac3AFc04e0dd05b85294d7f1"
+  "networkUrl": "https://rpc.vnet.tenderly.co/devnet/hardhat01/019f7ffe-a0e0-4476-8613-60ed8f95a08f",
+  "manager": "0x07973573d1113C256fee02ccf1b1E1be0EB93aAD",
+  "aaveService": "0x93859ba3c188c92a6a83D77505A416fbC575CE8c"
 }

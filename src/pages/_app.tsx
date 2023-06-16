@@ -15,6 +15,7 @@ import {
 import type { AppProps } from "next/app";
 import { type FC, type PropsWithChildren, useEffect } from "react";
 import { WagmiConfig, configureChains, createClient } from "wagmi";
+import { localhost } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import Navbar from "@/components/navbar";
@@ -25,7 +26,7 @@ import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
 
 const network = firstNetwork();
 const { chains, provider } = configureChains(
-  [network], // until Ithil is not a multi-chain app, we can use only one network
+  [localhost], // until Ithil is not a multi-chain app, we can use only one network
   [
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
@@ -70,7 +71,7 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
     <RainbowKitProvider
       chains={chains}
-      initialChain={network}
+      initialChain={localhost}
       theme={
         colorMode === "dark"
           ? ithilDarkTheme
