@@ -1,6 +1,7 @@
 import {
   Table as DefaultTable,
   TableContainer,
+  Tbody,
   Th,
   Thead,
   Tr,
@@ -10,6 +11,8 @@ import { FC } from "react";
 
 import { ColumnsActive } from "@/containers/DashboardPage";
 import { mode } from "@/utils/theme";
+
+import TRow from "./TRow";
 
 interface Props {
   columns: ColumnsActive[];
@@ -35,6 +38,12 @@ const Table: FC<Props> = ({ columns }) => {
             ))}
           </Tr>
         </Thead>
+        <Tbody>
+          <TRow data="" />
+          <TRow data="" />
+          <TRow data="" />
+          <TRow data="" />
+        </Tbody>
       </DefaultTable>
     </TableContainer>
   );
