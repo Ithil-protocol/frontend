@@ -3,12 +3,16 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  List,
+  ListItem,
   Text,
+  useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BigNumber } from "@ethersproject/bignumber";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
-import { type FC, useState } from "react";
+import React, { type FC, useState } from "react";
 import {
   useAccount,
   useBalance,
@@ -17,17 +21,20 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
+import CommonModal from "@/common/CommonModal";
 import TokenIcon from "@/components/TokenIcon";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { serviceAddress, usePrepareServiceOpen } from "@/generated";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { VoidNoArgs } from "@/types";
 import { type AaveAsset } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
   stringInputToBigNumber,
 } from "@/utils/input.utils";
+import { mode } from "@/utils/theme";
 
 import { prepareOrder } from "../../service.contract";
 
@@ -68,6 +75,12 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   isApproved,
 }) => {
   const { openConnectModal } = useConnectModal();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const openTokenModal = () => {
+    onOpen();
+  };
+
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
       <div className="flex flex-row justify-between w-full">
@@ -88,7 +101,11 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div
+        style={{ cursor: "pointer" }}
+        onClick={openTokenModal}
+        className="flex gap-2"
+      >
         <div className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]">
           {asset == null ? (
             <Loading />
@@ -147,6 +164,8 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
       ) : (
         <Button onClick={openConnectModal}>Connect Wallet</Button>
       )}
+
+      <TokenModal isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
@@ -281,3 +300,102 @@ export const DynamicServiceDeposit = dynamic(
     ),
   }
 );
+
+interface TokenModalProps {
+  onClose: VoidNoArgs;
+  isOpen: boolean;
+}
+const TokenModal: React.FC<TokenModalProps> = ({ onClose, isOpen }) => {
+  const { colorMode } = useColorMode();
+
+  return (
+    <CommonModal
+      title="Select a token"
+      isOpen={isOpen}
+      onClose={onClose}
+      bg={mode(colorMode, "primary.100", "primary.100.dark")}
+      modalBody={
+        <>
+          <List bg="transparent">
+            {[
+              {
+                title: "DAI",
+                description: "DAI Stablecoin",
+                tokenName: "dai",
+              },
+              {
+                description: "USD Coin",
+                tokenName: "usdc",
+                title: "USDC",
+              },
+              {
+                title: "LINK",
+                description: "ChainLink Token",
+                tokenName: "usdt",
+              },
+              {
+                description: "Wrapped BTC",
+                tokenName: "wbtc",
+                title: "WBTC",
+              },
+              {
+                title: "WETH",
+                description: "Wrapped Ether",
+                tokenName: "weth",
+              },
+            ].map((item, key) => (
+              <React.Fragment key={key}>
+                <ListItem>
+                  <Button
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      gap: "15px",
+                      padding: "30px",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <div>
+                      <TokenIcon name={item.tokenName} />
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <Text
+                        fontWeight={"medium"}
+                        color={mode(
+                          colorMode,
+                          "secondary.100",
+                          "secondary.100.dark"
+                        )}
+                      >
+                        {item.title}
+                      </Text>
+                      <Text
+                        fontWeight={"medium"}
+                        fontSize={"md"}
+                        color={mode(
+                          colorMode,
+                          "primary.400.dark",
+                          "primary.400"
+                        )}
+                      >
+                        {item.description}
+                      </Text>
+                    </div>
+                  </Button>
+                </ListItem>
+              </React.Fragment>
+            ))}
+          </List>
+        </>
+      }
+    />
+  );
+};
