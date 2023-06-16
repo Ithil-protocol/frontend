@@ -106,11 +106,24 @@ const Navbar: FC = () => {
               variant="solid"
             />
             <MenuList>
-              <MenuItem icon={<AboutIcon />}>About</MenuItem>
-              <MenuItem icon={<DocsIcon />}>Docs</MenuItem>
-              <MenuItem icon={<SourceIcon />}>Source</MenuItem>
-              <MenuItem icon={<DiscordIcon />}>Discord</MenuItem>
+              <Link href={"https://ithil.fi"} target="_blank">
+                <MenuItem icon={<AboutIcon />}>About</MenuItem>
+              </Link>
+              <Link href={"https://docs.ithil.fi"} target="_blank">
+                <MenuItem icon={<DocsIcon />}>Docs</MenuItem>
+              </Link>
+              <Link href={"https://github.com/Ithil-protocol"} target="_blank">
+                <MenuItem icon={<SourceIcon />}>Source</MenuItem>
+              </Link>
+              <Link
+                href={"https://discord.com/invite/tEaGBcGdQC"}
+                target="_blank"
+              >
+                <MenuItem icon={<DiscordIcon />}>Discord</MenuItem>
+              </Link>
+              {/* <Link href={"https://ithil.fi"} target="_blank"> */}
               <MenuItem icon={<MagicMarkerIcon />}>Tutorial</MenuItem>
+              {/* </Link> */}
             </MenuList>
           </Menu>
         </div>
