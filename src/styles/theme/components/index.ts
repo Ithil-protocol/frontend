@@ -4,3 +4,4 @@ export { ithilInputStyle } from "./input";
 export { ithilSkeletonStyle } from "./skeleton";
 export { ithilTableStyle } from "./table";
 export { ithilTooltipStyle } from "./tooltip";
+export { ithilMenuStyle } from "./menu";
