@@ -65,8 +65,8 @@ const TRow: FC<TRowProps> = ({ data }) => {
                     style={{
                       border:
                         colorMode === "light"
-                          ? "5px solid #f2f5f6"
-                          : "5px solid #151a29",
+                          ? "2.5px solid #f2f5f6"
+                          : "2.5px solid #151a29",
                       borderRadius: "100%",
                     }}
                     width={42}
