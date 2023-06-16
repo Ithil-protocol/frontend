@@ -1,5 +1,7 @@
+import DashboardDetailPage from "@/containers/DashboardDetailPage";
+
 const DashboardDetail = () => {
-  return <div></div>;
+  return <DashboardDetailPage />;
 };
 
 export default DashboardDetail;
