@@ -39,7 +39,8 @@
     ".husky": false,
     "tsconfig.tsbuildinfo": false,
     "next-env.d.ts": false,
-    ".next": false
+    ".next": false,
+    ".trashcan": false
   },
   "prettier.configPath": ".prettierrc.json",
   "prettier.endOfLine": "lf",
