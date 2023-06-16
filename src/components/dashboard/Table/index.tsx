@@ -22,7 +22,10 @@ const Table: FC<Props> = ({ columns }) => {
   const { colorMode } = useColorMode();
   return (
     <TableContainer width="full">
-      <DefaultTable variant="unstyled">
+      <DefaultTable
+        className="border-separate border-spacing-y-3"
+        variant="unstyled"
+      >
         <Thead>
           <Tr>
             {columns.map((col, index) => (

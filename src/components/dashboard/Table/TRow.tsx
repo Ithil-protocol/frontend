@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   HStack,
+  Stack,
   Td,
   Text,
   Tr,
@@ -11,6 +12,7 @@ import {
 import { useRouter } from "next/router";
 import { FC } from "react";
 
+import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
 import { mode, pickColor } from "@/utils/theme";
 
@@ -37,17 +39,48 @@ const TRow: FC<TRowProps> = ({ data }) => {
       sx={{
         "& > td": {
           padding: "40px",
-          margin: "12px",
         },
       }}
     >
-      <Td
-        color={mode(colorMode, "primary.main.dark", "primary.main")}
-        fontSize="22px"
-        lineHeight="22px"
-      >
-        <Box></Box>
-        <Text>ETH / BNB</Text>
+      <Td color={mode(colorMode, "primary.main.dark", "primary.main")}>
+        <HStack spacing="20px" alignItems="center">
+          <Box>
+            <HStack>
+              <Box position="relative" display="inline-block" mr="50px">
+                <Box
+                  position="absolute"
+                  left="0"
+                  top="50%"
+                  transform="translateY(-50%)"
+                >
+                  <TokenIcon name="USDT" />
+                </Box>
+                <Box
+                  position="absolute"
+                  left="15px"
+                  top="50%"
+                  transform="translateY(-50%)"
+                >
+                  <TokenIcon
+                    style={{
+                      border:
+                        colorMode === "light"
+                          ? "1px solid #f2f5f6"
+                          : "1px solid #151a29",
+                      borderRadius: "100%",
+                      padding: 0,
+                      borderStyle: "none",
+                    }}
+                    name="DAI"
+                  />
+                </Box>
+              </Box>
+              <Text fontSize="22px" lineHeight="22px">
+                ETH / BNB
+              </Text>
+            </HStack>
+          </Box>
+        </HStack>
       </Td>
       <Td
         color={mode(colorMode, "primary.700", "primary.700.dark")}
@@ -57,7 +90,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
       >
         ETH - 2x Long
       </Td>
-      <Td gap="10px">
+      <Td>
         <HStack>
           <Text
             fontWeight="medium"
@@ -76,6 +109,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
             textColor={mode(colorMode, "primary.100", "primary.100.dark")}
             paddingX="8px"
             paddingY="4px"
+            fontSize="18px"
           >
             + 12 %
           </Text>
