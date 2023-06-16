@@ -1,5 +1,4 @@
 import {
-  Box,
   Table as DefaultTable,
   TableContainer,
   Tbody,
@@ -44,11 +43,8 @@ const Table: FC<Props> = ({ columns }) => {
         </Thead>
         <Tbody>
           <TRow data="" />
-          <Box as="tr" style={{ marginBottom: "1rem" }} />
           <TRow data="" />
-          <Box as="tr" style={{ marginBottom: "1rem" }} />
           <TRow data="" />
-          <Box as="tr" style={{ marginBottom: "1rem" }} />
           <TRow data="" />
         </Tbody>
       </DefaultTable>
