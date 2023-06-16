@@ -20,9 +20,11 @@ const Header: FC<Props> = ({ currentView, setActiveView }) => {
       alignItems="center"
       justifyContent="space-between"
       width="full"
-      marginTop="135"
+      marginTop={["50px", "50px", "135"]}
+      flexDirection={["column", "column", "row"]}
+      gap={["50px"]}
     >
-      <Box display="flex" alignItems="center" gap="15">
+      <Box display="flex" alignItems={["start", "center"]} gap="15">
         <Link href="/">
           <ArrowLeft
             className={`${colorMode === "light" && "fill-[#070b0f]"}`}

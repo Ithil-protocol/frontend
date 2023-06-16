@@ -25,6 +25,7 @@ const Table: FC<Props> = ({ columns }) => {
       <DefaultTable
         className="border-separate border-spacing-y-3"
         variant="unstyled"
+        width="full"
       >
         <Thead>
           <Tr>

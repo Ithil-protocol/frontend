@@ -38,7 +38,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
       cursor="pointer"
       sx={{
         "& > td": {
-          padding: "40px",
+          padding: ["20px 40px", "30px 40px"],
         },
       }}
     >

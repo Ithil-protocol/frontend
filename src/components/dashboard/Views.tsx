@@ -24,15 +24,15 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
       justifyContent="center"
       gap="71px"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
-      paddingX="30px"
+      paddingX={["10px", "30px"]}
       paddingY="10px"
       borderRadius="12px"
     >
       <Text
         className="font-sans"
-        size="22px"
+        size={["15px", "22px"]}
         fontWeight="bold"
-        lineHeight="24px"
+        lineHeight={["10px", "24px"]}
       >
         View
       </Text>
