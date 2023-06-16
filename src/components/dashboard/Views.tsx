@@ -20,19 +20,21 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
   return (
     <Box
       display="flex"
-      alignItems="center"
+      alignItems={["start", "center"]}
       justifyContent="center"
-      gap="71px"
+      gap={["10px", "71px"]}
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       paddingX={["10px", "30px"]}
-      paddingY="10px"
+      paddingY={["5px", "10px"]}
       borderRadius="12px"
+      flexDirection={["column", "row", "row"]}
     >
       <Text
         className="font-sans"
-        size={["15px", "22px"]}
+        size={["10px", "15px", "22px"]}
         fontWeight="bold"
-        lineHeight={["10px", "24px"]}
+        lineHeight={["10px", "15px", "24px"]}
+        padding={["10px", "0"]}
       >
         View
       </Text>
@@ -48,13 +50,13 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
                 : "transparent"
             }
             fontWeight={currentView === view ? "bold" : "normal"}
-            fontSize={"16px"}
+            fontSize={["12px", "16px"]}
             color={
               currentView === view
                 ? mode(colorMode, "main", "main.dark")
                 : mode(colorMode, "primary.700", "primary.700.dark")
             }
-            paddingX="30"
+            paddingX={["20px", "25px", "30px"]}
             paddingY="4"
           >
             {view}
