@@ -1,4 +1,12 @@
-import { Text, useColorMode } from "@chakra-ui/react";
+import {
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +14,13 @@ import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
 import { type FC } from "react";
 
-// import NavigationMenu from 'src/components/navigation/NavigationMenu'
+import AboutIcon from "@/assets/svgs/About.svg";
+import DiscordIcon from "@/assets/svgs/Discord.svg";
+import DocsIcon from "@/assets/svgs/Docs.svg";
+import MagicMarkerIcon from "@/assets/svgs/MagicMarker.svg";
+import SourceIcon from "@/assets/svgs/Source.svg";
+import ThreeDotIcon from "@/assets/svgs/ThreeDot.svg";
+
 import { ThemeSwitch } from "./theme-switch";
 
 export type PageNames = "lend" | "dashboard" | "faucets" | "services";
@@ -71,13 +85,35 @@ const Navbar: FC = () => {
                 </Link>
               ))}
             </div>
-            {/* <div className="mobile:hidden laptop:[display:initial]"><NavigationMenu /></div> */}
-            {/* <div className="laptop:hidden mobile:[display:initial]">
-              <MobileMenu />
-            </div> */}
+            <div className=""></div>
+            {/* <div className="laptop:hidden mobile:[display:initial]">hallo!</div> */}
           </div>
         </div>
-        <ConnectButton chainStatus={"full"} />
+        <div
+          style={{
+            display: "flex",
+            gap: 5,
+            justifyContent: "space-between",
+          }}
+        >
+          <ConnectButton chainStatus="full" />
+
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<ThreeDotIcon />}
+              variant="solid"
+            />
+            <MenuList>
+              <MenuItem icon={<AboutIcon />}>About</MenuItem>
+              <MenuItem icon={<DocsIcon />}>Docs</MenuItem>
+              <MenuItem icon={<SourceIcon />}>Source</MenuItem>
+              <MenuItem icon={<DiscordIcon />}>Discord</MenuItem>
+              <MenuItem icon={<MagicMarkerIcon />}>Tutorial</MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
       </div>
     </nav>
   );

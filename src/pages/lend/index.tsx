@@ -1,4 +1,3 @@
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import {
   Table,
   TableContainer,
@@ -14,6 +13,7 @@ import classNames from "classnames";
 import Head from "next/head";
 import { type FC, Fragment, useState } from "react";
 
+import ToolTipIcon from "@/assets/svgs/Tooltip.svg";
 import TokenIcon from "@/components/TokenIcon";
 import { DynamicEstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
@@ -113,10 +113,15 @@ const Lend: FC = () => {
                         >
                           {column.hideText !== true && column.text}
                           {column.tooltip && (
-                            <QuestionOutlineIcon
-                              style={{ margin: "0px 0px 3px 5px" }}
+                            <ToolTipIcon
+                              width={20}
+                              height={20}
+                              style={{
+                                margin: "0px 0px 3px 5px",
+                                display: "inline",
+                              }}
                             />
-                          )}{" "}
+                          )}
                         </Text>
                       </Tooltip>
                     </div>
