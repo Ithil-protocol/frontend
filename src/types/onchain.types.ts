@@ -1,4 +1,3 @@
-import { type BigNumber } from "@ethersproject/bignumber";
 import { type Address } from "wagmi";
 
 // the minimal intersection of LendingToken and ServiceAsset

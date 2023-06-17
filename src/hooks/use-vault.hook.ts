@@ -1,4 +1,3 @@
-import { type BigNumber } from "@ethersproject/bignumber";
 import {
   type Address,
   erc4626ABI,
