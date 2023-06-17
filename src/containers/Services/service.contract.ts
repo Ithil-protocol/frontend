@@ -31,7 +31,7 @@ interface IServiceOrder {
 export const prepareOrder = (
   token: Address,
   aToken: Address,
-  amount: BigNumber,
+  amount: bigint,
   _leverage: number
 ) => {
   const amountInLeverage = amount.mul(2);
