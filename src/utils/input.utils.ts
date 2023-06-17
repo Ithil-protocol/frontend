@@ -40,6 +40,8 @@ export const estimateTokenValue = (
   const v = amount ?? BigInt(0);
   const p = price ?? BigInt(1);
 
+  console.log("amount sss", amount);
+
   const amountBigInt = v;
 
   // build a BigInt from the price
