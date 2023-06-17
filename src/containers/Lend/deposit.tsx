@@ -20,6 +20,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useVault } from "@/hooks/use-vault.hook";
 import { type LendingToken } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
@@ -27,8 +28,6 @@ import {
   multiplyBigNumbers,
   stringInputToBigNumber,
 } from "@/utils/input.utils";
-
-import { useVault } from "./use-vault.hook";
 
 // this is the presentational component
 interface WidgetComponentProps {

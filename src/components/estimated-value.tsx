@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { type FC } from "react";
 import { type Address } from "wagmi";
 
-import { usePriceData } from "@/pages/lend/use-price-data.hook";
+import { usePriceData } from "@/hooks/use-price-data.hook";
 import { type MinimalToken } from "@/types/onchain.types";
 import { estimateTokenValue } from "@/utils/input.utils";
 

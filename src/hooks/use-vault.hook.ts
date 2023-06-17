@@ -7,10 +7,9 @@ import {
   usePrepareContractWrite,
 } from "wagmi";
 
+import { useToken } from "@/hooks/use-token.hook";
 import { type LendingToken } from "@/types/onchain.types";
 import { oneUnitWithDecimals } from "@/utils/input.utils";
-
-import { useToken } from "../../hooks/use-token.hook";
 
 export const useVault = (
   token: LendingToken,
