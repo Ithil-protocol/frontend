@@ -14,7 +14,7 @@ import {
 } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
 import { type FC, type PropsWithChildren, useEffect } from "react";
-import { WagmiConfig, configureChains, createClient } from "wagmi";
+import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { localhost } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
@@ -25,7 +25,7 @@ import { theme as chakraTheme } from "@/styles/theme/chakra";
 import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
 
 const network = firstNetwork();
-const { chains, provider } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [localhost], // until Ithil is not a multi-chain app, we can use only one network
   [
     jsonRpcProvider({
@@ -36,12 +36,14 @@ const { chains, provider } = configureChains(
 const { connectors } = getDefaultWallets({
   appName: "Ithil Core",
   chains,
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
 });
 
-const wagmiClient = createClient({
+const wagmiClient = createConfig({
   autoConnect: true,
   connectors,
-  provider,
+  publicClient,
+  webSocketPublicClient,
 });
 
 const queryClient = new QueryClient({
@@ -94,7 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiClient}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={chakraTheme}>
           <RainbowWrapper>
