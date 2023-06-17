@@ -1,4 +1,3 @@
-import { type BigNumber } from "@ethersproject/bignumber";
 import {
   type Address,
   erc20ABI,
@@ -17,7 +16,7 @@ export const useToken = (tokenAddress: Address) => {
       enabled: userAddress != null,
     });
 
-  const useApprove = (spender: Address, amount: BigNumber) => {
+  const useApprove = (spender: Address, amount: bigint) => {
     const { config } = usePrepareContractWrite({
       address: tokenAddress,
       abi: erc20ABI,

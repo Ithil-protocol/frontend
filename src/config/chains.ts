@@ -25,10 +25,14 @@ export const addTestNetworks = async () => {
   const hexChainId = "0x" + (42161).toString(16);
   if (coreConfig.instance === CoreInstance.PrivateTestnet) {
     try {
+
+      // @ts-ignore *** Property 'ethereum' does not exist on type 'Window & typeof globalThis'.ts(2339)
       if (window.ethereum == null) return;
+      // @ts-ignore
       const chainId = await window.ethereum.request({ method: "eth_chainId" });
       if (chainId === hexChainId) return;
 
+      // @ts-ignore
       await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [
