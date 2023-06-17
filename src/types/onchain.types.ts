@@ -18,9 +18,9 @@ export type LendingTokenList = LendingToken[];
 export type Vaults = Array<{
   key: string;
   token: LendingTokenList[number];
-  tvl?: BigNumber;
-  borrowed?: BigNumber;
-  deposited?: BigNumber;
+  tvl?: bigint;
+  borrowed?: bigint;
+  deposited?: bigint;
 }>;
 
 // used in services page
