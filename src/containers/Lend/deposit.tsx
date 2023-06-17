@@ -196,16 +196,16 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   });
 
   // computed properties
-  const isApproved = allowance?.gte(inputBigNumber) ?? false;
+  const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
   const isButtonLoading =
     isApproveLoading ||
     isApproveWaiting ||
     isDepositLoading ||
     isDepositWaiting;
-  const isInconsistent = inputBigNumber.gt(balance?.value ?? 0);
+  const isInconsistent = inputBigNumber>(balance?.value ?? 0);
   const isButtonDisabled =
-    isButtonLoading || isInconsistent || inputBigNumber.isZero();
-  const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0);
+    isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
+  const isMaxDisabled = inputBigNumber === BigInt(balance?.value ?? 0);
 
   // handlers
   const handleMaxClick = () => {
@@ -229,7 +229,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   return (
     <WidgetComponent
       title={"Deposit"}
-      balance={balance?.value ?? BigNumber.from(0)}
+      balance={balance?.value ?? BigInt(0)}
       token={token}
       inputAmount={inputAmount}
       onInputChange={setInputAmount}
@@ -256,8 +256,8 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // state
   const [inputAmount, setInputAmount] = useState<string>("0");
   // in Withdraw, this represents Shares, not Assets
-  const [inputBigNumber, setInputBigNumber] = useState<BigNumber>(
-    BigNumber.from(0)
+  const [inputBigNumber, setInputBigNumber] = useState<bigint>(
+    BigInt(0)
   );
   const { address } = useAccount();
 
@@ -296,14 +296,14 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   const isButtonLoading = isWithdrawLoading || isMaxRedeemLoading;
   const isRequiredInfoLoading = isAssetsRatioLoading || isSharesRatioLoading;
   const isPrepareError = isPrRedeemError;
-  const isInconsistent = inputBigNumber.gt(balance?.value ?? 0);
+  const isInconsistent = inputBigNumber > BigInt(balance?.value ?? 0);
   const isButtonDisabled =
     isRequiredInfoLoading ||
     isButtonLoading ||
     isPrepareError ||
     isInconsistent ||
-    inputBigNumber.isZero();
-  const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0);
+    inputBigNumber===BigInt(0);
+  const isMaxDisabled = inputBigNumber===BigInt(balance?.value ?? 0);
 
   /**
    * withdraw logic
@@ -320,10 +320,10 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     const maxRedeem =
       maxRedeemData != null &&
       balance != null &&
-      balance.value.gt(maxRedeemData)
+      balance.value>maxRedeemData
         ? maxRedeemData
         : balance?.value;
-    setInputBigNumber(maxRedeem ?? BigNumber.from(0));
+    setInputBigNumber(maxRedeem ?? BigInt(0));
   };
 
   const handleClick = async () => {
