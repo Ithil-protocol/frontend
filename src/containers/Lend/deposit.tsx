@@ -309,7 +309,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
 
   /**
    * withdraw logic
-   * inputBigNumber will contain the amount of Shares to withdraw
+   * inputBigNumber will contain the amount of Shares to withdraw.
    * if the user clicks Max or 100%, set the inputAmount to the balance
    * otherwise, convert the string input via convertToShares
    */
