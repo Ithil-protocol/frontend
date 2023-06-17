@@ -102,48 +102,50 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
       </div>
 
       <div
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer", display: "flex", flexDirection: "column" }}
         onClick={openTokenModal}
-        className="flex gap-2"
       >
-        <div className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]">
-          {asset == null ? (
-            <Loading />
-          ) : (
-            <>
-              <div className="w-6 h-6">
-                <TokenIcon
-                  className="w-6 h-6"
-                  name={asset.iconName}
-                  height={24}
-                  width={24}
-                />
-              </div>
-              <Text textStyle="sm">{asset.name}</Text>
-            </>
-          )}
-        </div>
+        <div className="flex gap-2">
+          <div className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]">
+            {asset == null ? (
+              <Loading />
+            ) : (
+              <>
+                <div className="w-6 h-6">
+                  <TokenIcon
+                    className="w-6 h-6"
+                    name={asset.iconName}
+                    height={24}
+                    width={24}
+                  />
+                </div>
+                <Text textStyle="sm">{asset.name}</Text>
+              </>
+            )}
+          </div>
 
-        <InputGroup size="md">
-          <Input
-            type="number"
-            step="0.1"
-            variant="filled"
-            value={inputAmount}
-            onChange={(event) => onInputChange(event.target.value)}
-          />
-          <InputRightElement width="4.5rem">
-            <Button
-              h="1.75rem"
-              size="sm"
-              onClick={onMaxClick}
-              isDisabled={isMaxDisabled}
-              variant="insideInput"
-            >
-              Max
-            </Button>
-          </InputRightElement>
-        </InputGroup>
+          <InputGroup size="md">
+            <Input
+              type="number"
+              step="0.1"
+              variant="filled"
+              value={inputAmount}
+              onChange={(event) => onInputChange(event.target.value)}
+            />
+            <InputRightElement width="4.5rem">
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={onMaxClick}
+                isDisabled={isMaxDisabled}
+                variant="insideInput"
+              >
+                Max
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </div>
+        <input type="text" />
       </div>
 
       {isConnected ? (
