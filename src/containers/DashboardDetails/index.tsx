@@ -1,9 +1,10 @@
 import { Grid } from "@chakra-ui/react";
 
-import Chart from "@/components/dashboard/detail/Chart";
-import Header from "@/components/dashboard/detail/Header";
-import Nav from "@/components/dashboard/detail/Nav";
 import PageWrapper from "@/components/page-wrapper";
+import Chart from "@/containers/DashboardDetails/Chart";
+
+import Header from "./Header";
+import Nav from "./Nav";
 
 const DashboardDetailPage = () => {
   return (
