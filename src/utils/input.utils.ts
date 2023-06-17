@@ -52,7 +52,8 @@ export const estimateTokenValue = (
 };
 
 export const oneUnitWithDecimals = (decimals: number): bigint =>
-BigInt("1" + "0".repeat(decimals));
+BigInt("1" + "0".repeat(decimals) + "n");
+
 export const multiplyBigNumbers = (
   a: bigint | undefined,
   b: bigint | undefined,

@@ -202,10 +202,10 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     isApproveWaiting ||
     isDepositLoading ||
     isDepositWaiting;
-  const isInconsistent = inputBigNumber>(balance?.value ?? 0);
+  const isInconsistent = inputBigNumber>(balance?.value ?? BigInt(0));
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
-  const isMaxDisabled = inputBigNumber === BigInt(balance?.value ?? 0);
+  const isMaxDisabled = balance ? (inputBigNumber === balance.value || balance.value === BigInt(0)) : false;
 
   // handlers
   const handleMaxClick = () => {

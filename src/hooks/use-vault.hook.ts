@@ -23,7 +23,7 @@ export const useVault = (
     watch: true,
   });
 
-  const isApproved = (amount: bigint) => BigInt(allowance??0) > amount;
+  const isApproved = (amount: bigint) => allowance ? allowance > amount : false;
 
   const usePrepareDeposit = (amount: bigint) => {
     return usePrepareContractWrite({
