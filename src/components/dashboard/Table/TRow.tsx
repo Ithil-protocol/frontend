@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Center,
   HStack,
-  Stack,
   Td,
   Text,
   Tr,
@@ -20,7 +18,7 @@ interface TRowProps {
   data: any;
 }
 
-const TRow: FC<TRowProps> = ({ data }) => {
+const TRow: FC<TRowProps> = ({ data: _data }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const handelCancelBtn = (

@@ -1,4 +1,4 @@
-import { Grid, useColorMode } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 
 import Chart from "@/components/dashboard/detail/Chart";
 import Header from "@/components/dashboard/detail/Header";

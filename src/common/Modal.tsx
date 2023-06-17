@@ -19,7 +19,7 @@ interface Props {
   bg: string;
   modalFooter?: JSX.Element;
 }
-const CommonModal: React.FC<Props> = ({
+const Modal: React.FC<Props> = ({
   isOpen,
   modalBody,
   onClose,
@@ -36,7 +36,6 @@ const CommonModal: React.FC<Props> = ({
             style={{
               display: "flex",
               alignItems: "center",
-              backgroundColor: "red",
               justifyContent: "center",
             }}
           >
@@ -51,4 +50,4 @@ const CommonModal: React.FC<Props> = ({
   );
 };
 
-export default CommonModal;
+export default Modal;
