@@ -1,45 +1,45 @@
-import { BigNumber, type BigNumberish } from "@ethersproject/bignumber";
-import { formatUnits, parseUnits } from "@ethersproject/units";
 import { format, parse } from "numerable";
+import {parseUnits, formatUnits} from 'viem'
 
 export const stringInputToBigNumber = (input: string, decimals: number) => {
   if (input === "") {
-    return BigNumber.from(0);
+    return BigInt(0);
   }
   const mantissa = input.split(".")[1];
-  if (mantissa !== undefined && mantissa.length > decimals)
-    return BigNumber.from(0);
-  return parseUnits(input, decimals);
+  if (mantissa !== undefined && mantissa.length > decimals) // wrong calculation
+    return BigInt(0); // wrong calculation
+    const num = Number(input);
+  return parseUnits(`${num}`, decimals);
 };
 
 /**
  * @param percentage between 0 and 100
  */
 export const bigNumberPercentage = (
-  available: BigNumber | undefined,
+  available: bigint | undefined,
   percentage: number
-): BigNumber => {
-  const value = available ?? BigNumber.from(0);
-  return value.mul(percentage).div(100);
+): bigint => {
+  const value = available ?? BigInt(0);
+  return value*BigInt(percentage)/BigInt(100);
 };
 
 export const abbreviateBigNumber = (
-  value: BigNumberish | undefined,
+  value: bigint | undefined,
   decimals: number
 ): string => {
-  const v = value ?? BigNumber.from(0);
+  const v = value ?? BigInt(0);
   return format(parse(formatUnits(v, decimals)), "0.00a");
 };
 
 export const estimateTokenValue = (
-  amount: BigNumber | undefined,
+  amount: bigint | undefined,
   decimals: number,
   price: number | undefined
 ): string => {
-  const v = BigNumber.from(amount ?? 0);
+  const v = BigInt(amount ?? 0);
   const p = price ?? 1;
 
-  const amountBigInt = v.toBigInt();
+  const amountBigInt = v;
 
   // build a BigInt from the price
   const priceDecimals = (p.toString().split(".")[1] ?? "").length;
@@ -51,15 +51,15 @@ export const estimateTokenValue = (
   return abbreviateBigNumber(value, decimals);
 };
 
-export const oneUnitWithDecimals = (decimals: number): BigNumber =>
-  BigNumber.from("1" + "0".repeat(decimals));
+export const oneUnitWithDecimals = (decimals: number): bigint =>
+BigInt("1" + "0".repeat(decimals));
 export const multiplyBigNumbers = (
-  a: BigNumber | undefined,
-  b: BigNumber | undefined,
+  a: bigint | undefined,
+  b: bigint | undefined,
   decimals: number
-): BigNumber => {
-  const aBN = a ?? BigNumber.from(0);
-  const bBN = b ?? BigNumber.from(0);
+): bigint => {
+  const aBN = a ?? BigInt(0);
+  const bBN = b ?? BigInt(0);
   const one = oneUnitWithDecimals(decimals);
-  return aBN.mul(bBN).div(one);
+  return aBN * bBN / one;
 };
