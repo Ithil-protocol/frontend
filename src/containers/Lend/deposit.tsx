@@ -5,9 +5,9 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import { formatUnits } from "viem";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { type FC, useState } from "react";
+import { formatUnits } from "viem";
 import {
   useAccount,
   useBalance,
@@ -202,10 +202,12 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     isApproveWaiting ||
     isDepositLoading ||
     isDepositWaiting;
-  const isInconsistent = inputBigNumber>(balance?.value ?? BigInt(0));
+  const isInconsistent = balance ? inputBigNumber > balance.value : true;
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
-  const isMaxDisabled = balance ? (inputBigNumber === balance.value || balance.value === BigInt(0)) : false;
+  const isMaxDisabled = balance
+    ? inputBigNumber === balance.value || balance.value === BigInt(0)
+    : false;
 
   // handlers
   const handleMaxClick = () => {
@@ -256,9 +258,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // state
   const [inputAmount, setInputAmount] = useState<string>("0");
   // in Withdraw, this represents Shares, not Assets
-  const [inputBigNumber, setInputBigNumber] = useState<bigint>(
-    BigInt(0)
-  );
+  const [inputBigNumber, setInputBigNumber] = useState<bigint>(BigInt(0));
   const { address } = useAccount();
 
   // web3 hooks
@@ -296,14 +296,16 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   const isButtonLoading = isWithdrawLoading || isMaxRedeemLoading;
   const isRequiredInfoLoading = isAssetsRatioLoading || isSharesRatioLoading;
   const isPrepareError = isPrRedeemError;
-  const isInconsistent = inputBigNumber > BigInt(balance?.value ?? 0);
+  const isInconsistent = balance ? inputBigNumber > balance.value : true;
   const isButtonDisabled =
     isRequiredInfoLoading ||
     isButtonLoading ||
     isPrepareError ||
     isInconsistent ||
-    inputBigNumber===BigInt(0);
-  const isMaxDisabled = inputBigNumber===BigInt(balance?.value ?? 0);
+    inputBigNumber === BigInt(0);
+  const isMaxDisabled = balance
+    ? inputBigNumber === balance.value || balance.value === BigInt(0)
+    : false;
 
   /**
    * withdraw logic
@@ -318,9 +320,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     // in case the user is the last one in the pool, maxRedeem will be slightly less than its balance
     // in that case, use the maxRedeem value or the tx will fail
     const maxRedeem =
-      maxRedeemData != null &&
-      balance != null &&
-      balance.value>maxRedeemData
+      maxRedeemData != null && balance != null && balance.value > maxRedeemData
         ? maxRedeemData
         : balance?.value;
     setInputBigNumber(maxRedeem ?? BigInt(0));
