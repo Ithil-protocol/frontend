@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
 import { type FC } from "react";
 
+//CLEANME: Move to icons
 import AboutIcon from "@/assets/svgs/About.svg";
 import DiscordIcon from "@/assets/svgs/Discord.svg";
 import DocsIcon from "@/assets/svgs/Docs.svg";
