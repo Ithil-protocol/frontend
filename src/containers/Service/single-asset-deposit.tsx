@@ -37,6 +37,7 @@ import {
 import { mode } from "@/utils/theme";
 
 import { prepareOrder } from "../Services/service.contract";
+import DepositForm from "./DepositForm";
 
 interface WidgetSingleAssetDepositProps {
   // data
@@ -97,8 +98,8 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div className="flex gap-2">
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <div className="flex  gap-2">
           <div
             style={{
               cursor: "pointer",
@@ -151,7 +152,8 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             </InputRightElement>
           </InputGroup>
         </div>
-        <input type="text" />
+
+        <DepositForm />
       </div>
 
       {isConnected ? (
