@@ -13,7 +13,9 @@ module.exports = {
   important: true,
   theme: {
     fontFamily: {
-      sans: ["var(--font-inter)", ...fontFamily.sans],
+      sans: ["var(--font-body)", ...fontFamily.sans],
+      body: ["var(--font-body)", "sans"],
+      heading: ["var(--font-heading)"],
     },
     fontSize: {
       "mobile-medium": generateFont("caption-medium"),

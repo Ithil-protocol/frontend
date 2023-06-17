@@ -1,16 +1,14 @@
 import { Heading } from "@chakra-ui/react";
 import classNames from "classnames";
-import { Raleway } from "next/font/google";
 import { type FC } from "react";
 
 import { type PropsWithClassName } from "@/types/components.types";
+import { body, heading as headingTypo } from "@/utils/fonts";
 
 interface PageWrapperProps extends PropsWithClassName {
   heading?: string;
   textAlign?: "left" | "center" | "right"; // default is 'center'
 }
-
-const raleway = Raleway({ subsets: ["latin"], variable: "--font-inter" });
 
 const PageWrapper: FC<PageWrapperProps> = ({
   children,
@@ -21,7 +19,8 @@ const PageWrapper: FC<PageWrapperProps> = ({
   <main
     className={classNames([
       "container p-3 sm:p-0 md:p-2 mx-auto font-sans",
-      raleway.variable,
+      body.variable,
+      headingTypo.variable,
       className,
     ])}
   >

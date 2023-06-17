@@ -30,8 +30,8 @@ export const theme: ThemeConfig = extendTheme(
       Tooltip: ithilTooltipStyle,
     },
     fonts: {
-      body: "var(--font-inter)",
-      heading: "var(--font-inter)",
+      body: "var(--font-body)",
+      heading: "var(--font-heading)",
     },
     initialColorMode: "dark",
     styles: {
