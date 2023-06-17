@@ -1,14 +1,15 @@
 import { format, parse } from "numerable";
-import {parseUnits, formatUnits} from 'viem'
+import { formatUnits, parseUnits } from "viem";
 
 export const stringInputToBigNumber = (input: string, decimals: number) => {
   if (input === "") {
     return BigInt(0);
   }
   const mantissa = input.split(".")[1];
-  if (mantissa !== undefined && mantissa.length > decimals) // wrong calculation
+  if (mantissa !== undefined && mantissa.length > decimals)
+    // wrong calculation
     return BigInt(0); // wrong calculation
-    const num = Number(input);
+  const num = Number(input);
   return parseUnits(`${num}`, decimals);
 };
 
@@ -20,7 +21,7 @@ export const bigNumberPercentage = (
   percentage: number
 ): bigint => {
   const value = available ?? BigInt(0);
-  return value*BigInt(percentage)/BigInt(100);
+  return (value * BigInt(percentage)) / BigInt(100);
 };
 
 export const abbreviateBigNumber = (
@@ -36,8 +37,8 @@ export const estimateTokenValue = (
   decimals: number,
   price: number | undefined
 ): string => {
-  const v = BigInt(amount ?? 0);
-  const p = price ?? 1;
+  const v = amount ?? BigInt(0);
+  const p = price ?? BigInt(1);
 
   const amountBigInt = v;
 
@@ -52,7 +53,7 @@ export const estimateTokenValue = (
 };
 
 export const oneUnitWithDecimals = (decimals: number): bigint =>
-BigInt("1" + "0".repeat(decimals) + "n");
+  BigInt("1" + "0".repeat(decimals));
 
 export const multiplyBigNumbers = (
   a: bigint | undefined,
@@ -62,5 +63,5 @@ export const multiplyBigNumbers = (
   const aBN = a ?? BigInt(0);
   const bBN = b ?? BigInt(0);
   const one = oneUnitWithDecimals(decimals);
-  return aBN * bBN / one;
+  return (aBN * bBN) / one;
 };
