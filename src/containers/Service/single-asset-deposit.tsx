@@ -21,7 +21,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-import CommonModal from "@/common/CommonModal";
+import Modal from "@/common/Modal";
 import TokenIcon from "@/components/TokenIcon";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
@@ -75,11 +75,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   isApproved,
 }) => {
   const { openConnectModal } = useConnectModal();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const openTokenModal = () => {
-    onOpen();
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure({});
 
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
@@ -101,26 +97,36 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         </div>
       </div>
 
-      <div
-        style={{ cursor: "pointer", display: "flex", flexDirection: "column" }}
-        onClick={openTokenModal}
-      >
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div className="flex gap-2">
-          <div className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]">
+          <div
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={onOpen}
+            className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
+          >
             {asset == null ? (
               <Loading />
             ) : (
-              <>
-                <div className="w-6 h-6">
+              <div
+                style={{
+                  display: "flex",
+                  gap: 5,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <span>
                   <TokenIcon
                     className="w-6 h-6"
                     name={asset.iconName}
                     height={24}
                     width={24}
                   />
-                </div>
+                </span>
                 <Text textStyle="sm">{asset.name}</Text>
-              </>
+              </div>
             )}
           </div>
 
@@ -311,7 +317,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ onClose, isOpen }) => {
   const { colorMode } = useColorMode();
 
   return (
-    <CommonModal
+    <Modal
       title="Select a token"
       isOpen={isOpen}
       onClose={onClose}
