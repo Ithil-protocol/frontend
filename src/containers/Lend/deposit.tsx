@@ -5,8 +5,7 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import { BigNumber } from "@ethersproject/bignumber";
-import { formatUnits } from "@ethersproject/units";
+import { formatUnits } from "viem";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { type FC, useState } from "react";
 import {
@@ -32,7 +31,7 @@ import {
 // this is the presentational component
 interface WidgetComponentProps {
   title: string;
-  balance: BigNumber | undefined;
+  balance: bigint | undefined;
 
   token: LendingToken;
 
