@@ -1,25 +1,24 @@
-import { BigNumber } from "@ethersproject/bignumber";
-import { hexlify } from "@ethersproject/bytes";
+import { toHex } from "viem";
 import { type Address } from "wagmi";
 
 interface ServiceLoan {
   token: Address;
-  amount: BigNumber;
-  margin: BigNumber;
-  interestAndSpread: BigNumber;
+  amount: bigint;
+  margin: bigint;
+  interestAndSpread: bigint;
 }
 
 interface ServiceCollateral {
   itemType: number;
   token: Address;
-  identifier: BigNumber;
-  amount: BigNumber;
+  identifier: bigint;
+  amount: bigint;
 }
 
 interface ServiceAgreement {
   loans: ServiceLoan[];
   collaterals: ServiceCollateral[];
-  createdAt: BigNumber;
+  createdAt: bigint;
   status: number;
 }
 
@@ -34,30 +33,30 @@ export const prepareOrder = (
   amount: bigint,
   _leverage: number
 ) => {
-  const amountInLeverage = amount.mul(2);
+  const amountInLeverage = amount* BigInt(2);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
     token: aToken,
-    identifier: BigNumber.from(0),
-    amount: amount.add(amountInLeverage),
+    identifier: BigInt(0),
+    amount: amount + amountInLeverage,
   };
   const loan: ServiceLoan = {
     token,
     amount: amountInLeverage,
     margin: amount,
-    interestAndSpread: BigNumber.from(0),
+    interestAndSpread: BigInt(0),
   };
   const agreement: ServiceAgreement = {
     loans: [loan],
     collaterals: [collateral],
-    createdAt: BigNumber.from(0),
+    createdAt: BigInt(0),
     status: 0,
   };
 
   const order: IServiceOrder = {
     agreement,
-    data: hexlify([]) as `0x${string}`,
+    data: toHex("[]")    //[] as `0x${string}`,
   };
 
   return order;
