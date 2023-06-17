@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 
-import { ColumnsActive } from "@/containers/DashboardPage";
+import { ColumnsActive } from "@/containers/Dashboard";
 import { mode } from "@/utils/theme";
 
 import TRow from "./TRow";

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { erc4626ABI, multicall } from "@wagmi/core";
 import { useAccount } from "wagmi";
 
-import { lendingTokens } from "@/pages/lend/use-price-data.hook";
+import { lendingTokens } from "@/hooks/use-price-data.hook";
 import { type Vaults } from "@/types/onchain.types";
 import { ErrorCause } from "@/utils/error-cause";
 import { multiplyBigNumbers, oneUnitWithDecimals } from "@/utils/input.utils";

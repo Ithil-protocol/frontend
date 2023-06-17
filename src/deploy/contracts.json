@@ -1,5 +1,5 @@
 {
   "networkUrl": "https://rpc.vnet.tenderly.co/devnet/hardhat01/019f7ffe-a0e0-4476-8613-60ed8f95a08f",
-  "manager": "0x07973573d1113C256fee02ccf1b1E1be0EB93aAD",
-  "aaveService": "0x93859ba3c188c92a6a83D77505A416fbC575CE8c"
+  "manager": "0x93859ba3c188c92a6a83D77505A416fbC575CE8c",
+  "aaveService": "0xe8359e6C2Ccc319AD2e1042fC91A3335320f76FC"
 }

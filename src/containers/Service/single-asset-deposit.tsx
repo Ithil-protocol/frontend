@@ -29,7 +29,7 @@ import {
   stringInputToBigNumber,
 } from "@/utils/input.utils";
 
-import { prepareOrder } from "../../service.contract";
+import { prepareOrder } from "../Services/service.contract";
 
 interface WidgetSingleAssetDepositProps {
   // data
@@ -260,9 +260,9 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
 
 export const DynamicServiceDeposit = dynamic(
   async () =>
-    await import(
-      "@/pages/services/[service]/[asset]/single-asset-deposit"
-    ).then((mod) => mod.ServiceDeposit),
+    await import("@/containers/Service/single-asset-deposit").then(
+      (mod) => mod.ServiceDeposit
+    ),
   {
     ssr: false,
     loading: () => (

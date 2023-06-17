@@ -12,11 +12,10 @@ import {
   YAxis,
 } from "recharts";
 
+import fakeChartData from "@/data/fakeData.json";
 import { palette } from "@/styles/theme/palette";
 import { formatDate } from "@/utils/date.utils";
 import { pickColor } from "@/utils/theme";
-
-import fakeChartData from "./fakeData.json";
 
 interface GraphDataPoint {
   time: number;

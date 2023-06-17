@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { type Address } from "wagmi";
 
+import aave from "@/data/aave.json";
 import contracts from "@/deploy/contracts.json";
 import {
   type AaveAssetHash,
@@ -8,8 +9,6 @@ import {
   type Services,
   type SupportedServiceName,
 } from "@/types/onchain.types";
-
-import aave from "./aave.json";
 
 export const getServices = () => {
   // Example result: { 'aave': { 'usdt': { name: 'usdt', address: '0x...'}, 'usdc': {...} } }
