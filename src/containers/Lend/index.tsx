@@ -1,4 +1,5 @@
 import {
+  Button,
   Table,
   TableContainer,
   Tbody,
@@ -173,6 +174,22 @@ const Lend: FC = () => {
                         value={vault.deposited}
                         token={vault.token}
                       />
+                    </Td>
+                    <Td className={mobileHiddenColumnClass}>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        fontSize="sm"
+                        fontWeight="normal"
+                        style={{
+                          borderRadius: "10px",
+                          padding: "0px 10px",
+                        }}
+                        variant="outline"
+                      >
+                        Info
+                      </Button>
                     </Td>
                   </Tr>
                   {selectedRow === idx && (
