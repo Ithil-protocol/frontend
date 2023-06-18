@@ -1,3 +1,4 @@
+import CHAIN_LINK from "cryptocurrency-icons/svg/color/chain.svg";
 import DAI from "cryptocurrency-icons/svg/color/dai.svg";
 import ETH from "cryptocurrency-icons/svg/color/eth.svg";
 import USDC from "cryptocurrency-icons/svg/color/usdc.svg";
@@ -12,10 +13,11 @@ import WBTC from "cryptocurrency-icons/svg/color/wbtc.svg";
 // TokenX: any-SVG-icon-file
 
 export const icons = {
-  WETH: ETH,
-  USDC,
+  CHAIN_LINK,
   DAI,
-  WBTC,
+  USDC,
   // ARB,
   USDT,
+  WBTC,
+  WETH: ETH,
 };
