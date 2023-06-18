@@ -10,15 +10,15 @@ type graphWindows = "3m" | "1m" | "1w";
 type graphSections = "TVL" | "APY";
 
 interface GraphDataPoint {
-  time: number;
   date: string;
-  value: number;
+  tvl: number | string;
+  apy: number | string;
 }
 
-const graphData = fakeChartData.map<GraphDataPoint>(({ t, v }) => ({
-  date: formatDate(new Date(t * 10)),
-  value: v * 1000,
-  time: t,
+const graphData = fakeChartData.data.map<GraphDataPoint>((item, key) => ({
+  date: formatDate(new Date(item.timestamp)),
+  tvl: item.tvlUsd,
+  apy: item.apy,
 }));
 export const Graph = () => {
   const [graphWindow, setGraphWindow] = useState<graphWindows>("3m");
@@ -63,7 +63,12 @@ export const Graph = () => {
       </div>
 
       <div className="pt-4 h-96">
-        <Chart data={graphData} xKey="date" yKey="value" />
+        <Chart
+          data={graphData}
+          xKey="date"
+          yKey={graphSection === "APY" ? "apy" : "tvl"}
+          dataKey={graphSection === "APY" ? "apy" : "tvl"}
+        />
       </div>
     </div>
   );

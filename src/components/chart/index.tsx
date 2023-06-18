@@ -19,9 +19,10 @@ interface Props {
   data: any[];
   xKey: string;
   yKey: string;
+  dataKey: string;
 }
 
-const Chart: FC<Props> = ({ data, xKey, yKey }) => {
+const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
   const { colorMode } = useColorMode();
 
   return (
@@ -31,7 +32,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey }) => {
         syncId="anyId"
         margin={{
           left: 30,
-          right: 30,
+          right: 70,
         }}
       >
         <defs>
@@ -42,7 +43,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey }) => {
         </defs>
         <Area
           type="basis"
-          dataKey="value"
+          dataKey={dataKey}
           stroke={pickColor(colorMode, palette.variants.primary, "action")}
           fill="url(#chartFill)"
           activeDot={{ fill: "#077ce0", r: 4 }}
@@ -50,7 +51,6 @@ const Chart: FC<Props> = ({ data, xKey, yKey }) => {
         />
         <XAxis
           dataKey={xKey}
-          minTickGap={50}
           tickLine={false}
           axisLine={false}
           tickMargin={10}
@@ -68,7 +68,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey }) => {
           horizontal={false}
           strokeWidth={2.5}
           repeatCount={30}
-          strokeOpacity={0.2}
+          strokeOpacity={0.04}
         />
 
         <Tooltip content={<ToolTip />} cursor={false} />

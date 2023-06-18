@@ -12,10 +12,9 @@ const ToolTip: FC<TooltipProps<ValueType, NameType>> = ({
   label,
 }) => {
   if (active) {
-    const value = payload?.[0].value?.toString().split(".") || "";
     return (
       <Tooltip>
-        <Text>{`${value[0]}.${value[1].slice(0, 6)}`}</Text>
+        <Text>{`${payload?.[0].value?.toString()}`}</Text>
       </Tooltip>
     );
   }
