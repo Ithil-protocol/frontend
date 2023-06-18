@@ -1,21 +1,13 @@
-import { Heading, Text, useColorMode } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 import classNames from "classnames";
-import { type FC, useState } from "react";
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  type TooltipProps,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { useState } from "react";
 
+import Chart from "@/components/chart";
 import fakeChartData from "@/data/fakeData.json";
-import { palette } from "@/styles/theme/palette";
 import { formatDate } from "@/utils/date.utils";
-import { pickColor } from "@/utils/theme";
+
+type graphWindows = "3m" | "1m" | "1w";
+type graphSections = "TVL" | "APY";
 
 interface GraphDataPoint {
   time: number;
@@ -23,45 +15,12 @@ interface GraphDataPoint {
   value: number;
 }
 
-interface GraphTooltipProps extends TooltipProps<number, string> {
-  section: graphSections;
-}
-
-const GraphTooltip: FC<GraphTooltipProps> = ({ payload, section }) => {
-  if (payload == null) return null;
-  if (payload.length !== 1) return null;
-
-  const graphPoint = payload[0];
-  const point = graphPoint.payload as GraphDataPoint;
-
-  // FIXME: formatting is subject to the type of value, refer to 'section'
-  const valueString = `${(graphPoint.value as number).toFixed(2)} %`;
-
-  return (
-    <div className="flex flex-col px-6 py-4 border rounded-xl border-1 border-secondary-100 bg-primary-200">
-      <div className="flex flex-row items-center gap-2">
-        <Text textStyle="sm">Date:</Text>
-        <Text textStyle="slender-sm2">{point.date}</Text>
-      </div>
-      <div className="flex flex-row items-center gap-2">
-        <Text textStyle="sm">{section}:</Text>
-        <Text textStyle="slender-sm2">{valueString}</Text>
-      </div>
-    </div>
-  );
-};
-
 const graphData = fakeChartData.map<GraphDataPoint>(({ t, v }) => ({
-  date: formatDate(new Date(t * 1000)),
-  value: v * 100,
+  date: formatDate(new Date(t * 10)),
+  value: v * 1000,
   time: t,
 }));
-
-type graphWindows = "3m" | "1m" | "1w";
-type graphSections = "TVL" | "Price" | "APY";
-
 export const Graph = () => {
-  const { colorMode } = useColorMode();
   const [graphWindow, setGraphWindow] = useState<graphWindows>("3m");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
@@ -69,7 +28,7 @@ export const Graph = () => {
   const windowChoices: graphWindows[] = ["3m", "1m", "1w"];
 
   const sectionClassnames = "px-3 py-1 rounded-xl cursor-pointer";
-  const sectionChoices: graphSections[] = ["TVL", "Price", "APY"];
+  const sectionChoices: graphSections[] = ["TVL", "APY"];
 
   return (
     <div className="p-5 rounded-xl bg-primary-100">
@@ -103,21 +62,8 @@ export const Graph = () => {
         </div>
       </div>
 
-      <div className="pt-4">
-        <ResponsiveContainer height={400}>
-          <LineChart data={graphData}>
-            <CartesianGrid strokeDasharray="2 2" stroke="#363B63" />
-            <Line
-              type="monotone"
-              dataKey="value"
-              stroke={pickColor(colorMode, palette.variants.primary, "action")}
-              dot={false}
-            />
-            <XAxis dataKey="date" tickMargin={10} minTickGap={20} />
-            <YAxis dataKey="value" scale="sqrt" />
-            <Tooltip content={<GraphTooltip section={graphSection} />} />
-          </LineChart>
-        </ResponsiveContainer>
+      <div className="pt-4 h-96">
+        <Chart data={graphData} xKey="date" yKey="value" />
       </div>
     </div>
   );
