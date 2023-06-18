@@ -32,7 +32,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
         syncId="anyId"
         margin={{
           left: 30,
-          right: 70,
+          right: 50,
         }}
       >
         <defs>
