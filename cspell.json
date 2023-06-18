@@ -9,6 +9,7 @@
   "ignoreWords": [
     "Aave",
     "BigNumberish",
+    "Borrowable",
     "CLEANME",
     "Neue",
     "Noto",
@@ -16,6 +17,7 @@
     "Raleway",
     "Roboto",
     "Segoe",
+    "Utilisation",
     "arbitrum",
     "bignumber",
     "carlino",
