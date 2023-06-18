@@ -271,8 +271,8 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <PageWrapper>
-        <div className="flex flex-row w-full gap-6">
-          <div className="flex flex-col flex-grow gap-6">
+        <div className="grid w-full grid-cols-10 gap-6">
+          <div className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-8">
             {/* Strategy Introduction */}
             <div className="flex flex-row gap-2 p-5 rounded-xl bg-primary-100">
               <div className="flex flex-col w-full gap-3">
@@ -302,7 +302,7 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
               description={safetyScoreDescription}
             />
           </div>
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 col-span-full lg:col-span-2">
             <DynamicServiceDeposit asset={asset} />
           </div>
         </div>
