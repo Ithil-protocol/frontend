@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import classNames from "classnames";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { type FC, Fragment, useState } from "react";
 
 import ToolTipIcon from "@/assets/svgs/Tooltip.svg";
@@ -60,6 +61,7 @@ const columns: Array<{
 ];
 
 const Lend: FC = () => {
+  const router = useRouter();
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const {
     data: vaultData,
@@ -179,6 +181,9 @@ const Lend: FC = () => {
                       <Button
                         onClick={(e) => {
                           e.stopPropagation();
+                          router.push(
+                            `/lend/details?tokenName=${vault.token.name.toLowerCase()}`
+                          );
                         }}
                         fontSize="sm"
                         fontWeight="normal"
