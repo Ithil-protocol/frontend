@@ -1,6 +1,6 @@
 import { StyleConfig } from "@chakra-ui/react";
 
-export const ithilTooltipStyle: StyleConfig = {
+export const tooltipStyle: StyleConfig = {
   baseStyle: {
     borderRadius: "var(--chakra-radii-lg)",
     px: "var(--chakra-space-2)",

@@ -4,7 +4,7 @@ import { mode } from "@/utils/theme";
 
 import { palette } from "../palette";
 
-export const ithilInputStyle: StyleConfig = {
+export const inputStyle: StyleConfig = {
   baseStyle: {
     field: {
       fontSize: ["20px"],

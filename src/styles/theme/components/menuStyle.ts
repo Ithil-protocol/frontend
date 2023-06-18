@@ -53,4 +53,4 @@ const baseStyle = definePartsStyle(({ colorMode }) => ({
   },
 }));
 
-export const ithilMenuStyle = defineMultiStyleConfig({ baseStyle });
+export const menuStyle = defineMultiStyleConfig({ baseStyle });

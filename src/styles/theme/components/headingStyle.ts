@@ -1,6 +1,6 @@
 import { StyleConfig } from "@chakra-ui/react";
 
-export const ithilHeadingStyle: StyleConfig = {
+export const headingStyle: StyleConfig = {
   sizes: {
     h1: {
       fontSize: ["24px", "32px"],

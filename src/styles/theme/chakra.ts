@@ -7,13 +7,13 @@ import {
 import { mode } from "@/utils/theme";
 
 import {
-  ithilButtonStyle,
-  ithilHeadingStyle,
-  ithilInputStyle,
-  ithilMenuStyle,
-  ithilSkeletonStyle,
-  ithilTableStyle,
-  ithilTooltipStyle,
+  buttonStyle,
+  headingStyle,
+  inputStyle,
+  menuStyle,
+  skeletonStyle,
+  tableStyle,
+  tooltipStyle,
 } from "./components";
 import { palette } from "./palette";
 
@@ -21,13 +21,13 @@ export const theme: ThemeConfig = extendTheme(
   {
     colors: palette.colors,
     components: {
-      Button: ithilButtonStyle,
-      Heading: ithilHeadingStyle,
-      Input: ithilInputStyle,
-      Menu: ithilMenuStyle,
-      Skeleton: ithilSkeletonStyle,
-      Table: ithilTableStyle,
-      Tooltip: ithilTooltipStyle,
+      Button: buttonStyle,
+      Heading: headingStyle,
+      Input: inputStyle,
+      Menu: menuStyle,
+      Skeleton: skeletonStyle,
+      Table: tableStyle,
+      Tooltip: tooltipStyle,
     },
     fonts: {
       body: "var(--font-body)",
@@ -94,7 +94,7 @@ export const theme: ThemeConfig = extendTheme(
     useSystemColorMode: false,
   },
   withDefaultVariant({
-    variant: "ithil",
+    variant: "",
     components: ["Table"],
   })
 );

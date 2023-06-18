@@ -4,7 +4,7 @@ import { mode } from "@/utils/theme";
 
 import { palette } from "../palette";
 
-export const ithilButtonStyle: StyleConfig = {
+export const buttonStyle: StyleConfig = {
   defaultProps: {
     variant: "ithil",
   },
