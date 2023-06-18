@@ -6,3 +6,5 @@ export interface PositionsDetailItemType {
   value: string;
   unit?: string;
 }
+
+export type Address = `0x${string}`;
