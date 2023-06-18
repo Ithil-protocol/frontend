@@ -9,7 +9,7 @@ import {
 const ToolTip: FC<TooltipProps<ValueType, NameType>> = ({
   active,
   payload,
-  label,
+  label: _label,
 }) => {
   if (active) {
     return (

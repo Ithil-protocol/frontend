@@ -11,7 +11,7 @@ interface GraphDataPoint {
   tvl: number | string;
 }
 
-const graphData = fakeChartData.data.map<GraphDataPoint>((item, key) => ({
+const graphData = fakeChartData.data.map<GraphDataPoint>((item, _key) => ({
   date: formatDate(new Date(item.timestamp)),
   tvl: item.tvlUsd,
 }));
