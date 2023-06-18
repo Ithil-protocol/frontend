@@ -97,23 +97,30 @@ const DepositForm = () => {
             color={mode(colorMode, "primary.100.dark", "primary.100")}
             bg={mode(colorMode, "primary.400", "primary.500.dark")}
           >
-            ۰Advanced Option
+            <span style={{ fontSize: "14px", padding: "5px" }}>+</span>
+            <span>Advanced Option</span>
           </Button>
         )}
 
         {isAdvancedOptionsOpen && (
           <>
             <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
-            <InputGroup>
-              <Input bg={mode(colorMode, "primary.200", "primary.200.dark")} />
+            <InputGroup size="md">
+              <Input type="number" step="0.1" variant="filled" />
               <InputRightElement>%</InputRightElement>
             </InputGroup>
 
             <AdvancedFormLabel label="Deadline" tooltip="Not implemented" />
-            <InputGroup>
-              <Input bg={mode(colorMode, "primary.200", "primary.200.dark")} />
-              <InputRightElement>min</InputRightElement>
+
+            <InputGroup size="md">
+              <Input type="number" step="0.1" variant="filled" />
+              <InputRightElement width="4.5rem">
+                <Button isDisabled h="1.75rem" size="sm" variant="insideInput">
+                  Min
+                </Button>
+              </InputRightElement>
             </InputGroup>
+
             <Button
               bg={pickColor(colorMode, palette.variants.primary, "success")}
             >
