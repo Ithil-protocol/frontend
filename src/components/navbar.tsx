@@ -15,12 +15,14 @@ import { Circle } from "phosphor-react";
 import { type FC } from "react";
 
 //CLEANME: Move to icons
-import AboutIcon from "@/assets/svgs/About.svg";
-import DiscordIcon from "@/assets/svgs/Discord.svg";
-import DocsIcon from "@/assets/svgs/Docs.svg";
-import MagicMarkerIcon from "@/assets/svgs/MagicMarker.svg";
-import SourceIcon from "@/assets/svgs/Source.svg";
-import ThreeDotIcon from "@/assets/svgs/ThreeDot.svg";
+import {
+  About as AboutIcon,
+  Discord as DiscordIcon,
+  Docs as DocsIcon,
+  MagicMarker as MagicMarkerIcon,
+  Source as SourceIcon,
+  ThreeDot as ThreeDotIcon,
+} from "@/assets/svgs";
 
 import { ThemeSwitch } from "./theme-switch";
 
@@ -108,23 +110,46 @@ const Navbar: FC = () => {
             />
             <MenuList>
               <Link href={"https://ithil.fi"} target="_blank">
-                <MenuItem icon={<AboutIcon />}>About</MenuItem>
+                <MenuItem gap={2}>
+                  <span>
+                    <AboutIcon width={24} height={24} />
+                  </span>
+                  <span>About</span>
+                </MenuItem>
               </Link>
               <Link href={"https://docs.ithil.fi"} target="_blank">
-                <MenuItem icon={<DocsIcon />}>Docs</MenuItem>
+                <MenuItem gap={2}>
+                  <span>
+                    <DocsIcon width={24} height={24} />
+                  </span>
+                  <span>Docs</span>
+                </MenuItem>
               </Link>
               <Link href={"https://github.com/Ithil-protocol"} target="_blank">
-                <MenuItem icon={<SourceIcon />}>Source</MenuItem>
+                <MenuItem gap={2}>
+                  <span>
+                    <SourceIcon width={24} height={24} />
+                  </span>
+                  <span>Source</span>
+                </MenuItem>
               </Link>
               <Link
                 href={"https://discord.com/invite/tEaGBcGdQC"}
                 target="_blank"
               >
-                <MenuItem icon={<DiscordIcon />}>Discord</MenuItem>
+                <MenuItem gap={2}>
+                  <span>
+                    <DiscordIcon width={24} height={24} />
+                  </span>
+                  <span>Discord</span>
+                </MenuItem>
               </Link>
-              {/* <Link href={"https://ithil.fi"} target="_blank"> */}
-              <MenuItem icon={<MagicMarkerIcon />}>Tutorial</MenuItem>
-              {/* </Link> */}
+              <MenuItem gap={2}>
+                <span>
+                  <MagicMarkerIcon width={24} height={24} />
+                </span>
+                <span>Tutorial</span>
+              </MenuItem>
             </MenuList>
           </Menu>
         </div>

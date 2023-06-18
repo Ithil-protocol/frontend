@@ -4,7 +4,7 @@ import { mode } from "@/utils/theme";
 
 import { palette } from "../palette";
 
-export const ithilTableStyle: StyleConfig = {
+export const tableStyle: StyleConfig = {
   defaultProps: {
     variant: "ithil",
   },

@@ -1,7 +1,7 @@
-export { ithilButtonStyle } from "./button";
-export { ithilHeadingStyle } from "./heading";
-export { ithilInputStyle } from "./input";
-export { ithilSkeletonStyle } from "./skeleton";
-export { ithilTableStyle } from "./table";
-export { ithilTooltipStyle } from "./tooltip";
-export { ithilMenuStyle } from "./menu";
+export { buttonStyle } from "./buttonStyle";
+export { headingStyle } from "./headingStyle";
+export { inputStyle } from "./inputStyle";
+export { skeletonStyle } from "./skeletonStyle";
+export { tableStyle } from "./tableStyle";
+export { tooltipStyle } from "./tooltipStyle";
+export { menuStyle } from "./menuStyle";

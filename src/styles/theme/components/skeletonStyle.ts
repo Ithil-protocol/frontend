@@ -23,6 +23,6 @@ const baseStyle = defineStyle({
   borderRadius: "sm",
 });
 
-export const ithilSkeletonStyle = defineStyleConfig({
+export const skeletonStyle = defineStyleConfig({
   baseStyle,
 });
