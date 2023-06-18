@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { CloseButton } from "@/assets/svgs";
+import { CloseButtonWithCircle } from "@/assets/svgs";
 import { palette } from "@/styles/theme/palette";
 import { mode, pickColor } from "@/utils/theme";
 
@@ -88,7 +88,7 @@ const DepositForm = () => {
               onClick={handleAdvancedOptionClick(false)}
               style={{ width: "24px", height: "24px", cursor: "pointer" }}
             >
-              <CloseButton />
+              <CloseButtonWithCircle />
             </span>
           </div>
         ) : (

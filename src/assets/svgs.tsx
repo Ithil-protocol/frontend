@@ -1,6 +1,7 @@
 import About from "./svgs/About.svg";
 import ArrowLeft from "./svgs/ArrowLeft.svg";
 import CloseButton from "./svgs/CloseButton.svg";
+import CloseButtonWithCircle from "./svgs/CloseButtonWithCircle.svg";
 import Discord from "./svgs/Discord.svg";
 import Docs from "./svgs/Docs.svg";
 import MagicMarker from "./svgs/MagicMarker.svg";
@@ -12,6 +13,7 @@ export {
   About,
   ArrowLeft,
   CloseButton,
+  CloseButtonWithCircle,
   Discord,
   Docs,
   MagicMarker,
