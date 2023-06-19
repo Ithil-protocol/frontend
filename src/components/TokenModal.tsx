@@ -24,8 +24,14 @@ interface Props {
   isOpen: boolean;
   onClose: VoidNoArgs;
   modalFooter?: JSX.Element;
+  onSelectToken: (tokenName: string) => void;
 }
-const TokenModal: React.FC<Props> = ({ isOpen, modalFooter, onClose }) => {
+const TokenModal: React.FC<Props> = ({
+  isOpen,
+  modalFooter,
+  onClose,
+  onSelectToken,
+}) => {
   const { colorMode } = useColorMode();
 
   return (
@@ -63,11 +69,11 @@ const TokenModal: React.FC<Props> = ({ isOpen, modalFooter, onClose }) => {
 
           <ModalBody
             style={{
-              paddingLeft: "0px",
+              padding: "0px",
               paddingBottom: "0px",
             }}
           >
-            <List bg="transparent">
+            <List p={"10px"} bg="transparent">
               {[
                 {
                   title: "DAI",
@@ -98,13 +104,16 @@ const TokenModal: React.FC<Props> = ({ isOpen, modalFooter, onClose }) => {
                 <React.Fragment key={key}>
                   <ListItem>
                     <Button
+                      onClick={() => onSelectToken(item.tokenName)}
                       style={{
                         display: "flex",
                         justifyContent: "flex-start",
                         gap: "15px",
                         padding: "30px",
-                        backgroundColor: "transparent",
+                        width: "100%",
+                        border: "0px",
                       }}
+                      variant="outline"
                     >
                       <div>
                         <TokenIcon

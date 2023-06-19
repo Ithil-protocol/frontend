@@ -27,11 +27,15 @@ export default function LendDetails() {
   const { colorMode } = useColorMode();
   const [graphSection] = useState<graphSections>("APY");
 
-  const token = router.query.token as string;
+  const token = (router.query.token || "") as string;
 
   return (
     <>
-      <div style={{ padding: "80px" }}>
+      <div
+        style={{
+          padding: "80px",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -50,7 +54,7 @@ export default function LendDetails() {
               <TokenIcon name={token} width={38} height={38} />
             </span>
             <Text fontWeight="light" fontSize="3xl">
-              {token} Vault Details
+              {token.toUpperCase()} Vault Details
             </Text>
           </div>
           <span></span>
@@ -77,7 +81,10 @@ export default function LendDetails() {
                 title: "Borrowable Balance",
                 value: `0 ${token}`,
               },
-              { title: "Utilisation Rate", value: "0.00%" },
+              {
+                title: "Utilisation Rate",
+                value: "0.00%",
+              },
               {
                 title: "Revenues",
                 value: `0 ${token}`,
