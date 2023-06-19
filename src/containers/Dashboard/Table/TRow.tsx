@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Fade,
   HStack,
   Td,
   Text,
@@ -40,6 +41,8 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
         "& > td": {
           padding: ["20px 40px", "30px 40px"],
         },
+        minWidth: "100px",
+        minHeight: "200px",
       }}
     >
       <Td color={mode(colorMode, "primary.main.dark", "primary.main")}>
@@ -94,13 +97,18 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
         <HStack>
           <Text
             fontWeight="medium"
-            color="#15ac89"
+            color={
+              activeView === "Active"
+                ? "#15ac89"
+                : mode(colorMode, "primary.700", "primary.700.dark")
+            }
             fontSize="22px"
             lineHeight="22px"
           >
             $ 1200
           </Text>
           <Text
+            opacity={activeView === "Active" ? "100%" : "0%"}
             bg="#15ac89"
             borderRadius="8px"
             fontWeight="bold"
@@ -115,13 +123,13 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
           </Text>
         </HStack>
       </Td>
-      {activeView === "Active" && (
-        <Td textAlign="end">
+      <Td textAlign="end" width={200} height={"108px"}>
+        {activeView === "Active" && (
           <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
             Cancel
           </Button>
-        </Td>
-      )}
+        )}
+      </Td>
     </Tr>
   );
 };
