@@ -182,7 +182,7 @@ const Lend: FC = () => {
                         onClick={(e) => {
                           e.stopPropagation();
                           router.push(
-                            `/lend/details?tokenName=${vault.token.name.toLowerCase()}`
+                            `/lend/details/${vault.token.name.toLowerCase()}`
                           );
                         }}
                         fontSize="sm"
