@@ -10,15 +10,17 @@ import {
 import { FC } from "react";
 
 import { ColumnsActive } from "@/containers/Dashboard";
+import { viewTypes } from "@/types";
 import { mode } from "@/utils/theme";
 
 import TRow from "./TRow";
 
 interface Props {
-  columns: ColumnsActive[];
+  columns: any[];
+  activeView: viewTypes;
 }
 
-const Table: FC<Props> = ({ columns }) => {
+const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
   return (
     <TableContainer width="full">
@@ -43,10 +45,11 @@ const Table: FC<Props> = ({ columns }) => {
           </Tr>
         </Thead>
         <Tbody>
-          <TRow data="" />
-          <TRow data="" />
-          <TRow data="" />
-          <TRow data="" />
+          <TRow data="" activeView={activeView} />
+          <TRow data="" activeView={activeView} />
+          <TRow data="" activeView={activeView} />
+          <TRow data="" activeView={activeView} />
+          <TRow data="" activeView={activeView} />
         </Tbody>
       </DefaultTable>
     </TableContainer>
