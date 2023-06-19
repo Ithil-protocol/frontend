@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import React, { type FC, useState } from "react";
 import {
   useAccount,
@@ -74,6 +75,18 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
+  const router = useRouter();
+
+  const handleSelectToken = (tokenName: string) => {
+    onClose();
+    const serviceName = history.state.as.split("/").at(-2);
+    if (serviceName) {
+      router.push(`/services/${serviceName}/${tokenName}`);
+    } else {
+      console.error("INVALID_SERVICE_NAME:", serviceName);
+      console.debug("history state:", history.state);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
@@ -172,7 +185,11 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         <Button onClick={openConnectModal}>Connect Wallet</Button>
       )}
 
-      <TokenModal isOpen={isOpen} onClose={onClose} />
+      <TokenModal
+        onSelectToken={handleSelectToken}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </div>
   );
 };
