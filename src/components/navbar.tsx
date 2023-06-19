@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
 import { type FC } from "react";
 
-//CLEANME: Move to icons
 import {
   About as AboutIcon,
   Discord as DiscordIcon,
@@ -23,6 +22,7 @@ import {
   Source as SourceIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
+import { mode } from "@/utils/theme";
 
 import { ThemeSwitch } from "./theme-switch";
 
@@ -88,8 +88,6 @@ const Navbar: FC = () => {
                 </Link>
               ))}
             </div>
-            <div className=""></div>
-            {/* <div className="laptop:hidden mobile:[display:initial]">hallo!</div> */}
           </div>
         </div>
         <div
@@ -108,47 +106,97 @@ const Navbar: FC = () => {
               icon={<ThreeDotIcon />}
               variant="solid"
             />
-            <MenuList>
-              <Link href={"https://ithil.fi"} target="_blank">
-                <MenuItem gap={2}>
-                  <span>
-                    <AboutIcon width={24} height={24} />
-                  </span>
-                  <span>About</span>
-                </MenuItem>
-              </Link>
-              <Link href={"https://docs.ithil.fi"} target="_blank">
-                <MenuItem gap={2}>
-                  <span>
-                    <DocsIcon width={24} height={24} />
-                  </span>
-                  <span>Docs</span>
-                </MenuItem>
-              </Link>
-              <Link href={"https://github.com/Ithil-protocol"} target="_blank">
-                <MenuItem gap={2}>
-                  <span>
-                    <SourceIcon width={24} height={24} />
-                  </span>
-                  <span>Source</span>
-                </MenuItem>
-              </Link>
-              <Link
-                href={"https://discord.com/invite/tEaGBcGdQC"}
-                target="_blank"
+            <MenuList
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {[
+                {
+                  Icon: AboutIcon,
+                  link: "https://ithil.fi",
+                  title: "About",
+                },
+                {
+                  link: "https://docs.ithil.fi",
+                  title: "Docs",
+                  Icon: DocsIcon,
+                },
+                {
+                  link: "https://github.com/Ithil-protocol",
+                  title: "Source",
+                  Icon: SourceIcon,
+                },
+                {
+                  Icon: DiscordIcon,
+                  link: "https://discord.com/invite/tEaGBcGdQC",
+                  title: "Discord",
+                },
+              ].map((item) => (
+                <>
+                  <MenuItem
+                    style={{
+                      width: "95%",
+                      border: "transparent",
+                      padding: "5px",
+                      borderRadius: "5px",
+                    }}
+                    _hover={{
+                      backgroundColor: mode(
+                        colorMode,
+                        "primary.200",
+                        "primary.200.dark"
+                      ),
+                    }}
+                  >
+                    <Link href={item.link} target="_blank">
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span style={{ padding: "5px" }}>
+                          <item.Icon width={24} height={24} />
+                        </span>
+                        <span>{item.title}</span>
+                      </div>
+                    </Link>
+                  </MenuItem>
+                </>
+              ))}
+
+              <MenuItem
+                style={{
+                  width: "95%",
+                  border: "transparent",
+                  padding: "5px",
+                  borderRadius: "5px",
+                }}
+                _hover={{
+                  backgroundColor: mode(
+                    colorMode,
+                    "primary.200",
+                    "primary.200.dark"
+                  ),
+                }}
               >
-                <MenuItem gap={2}>
-                  <span>
-                    <DiscordIcon width={24} height={24} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ padding: "5px" }}>
+                    <MagicMarkerIcon width={24} height={24} />
                   </span>
-                  <span>Discord</span>
-                </MenuItem>
-              </Link>
-              <MenuItem gap={2}>
-                <span>
-                  <MagicMarkerIcon width={24} height={24} />
-                </span>
-                <span>Tutorial</span>
+                  <span>Tutorial</span>
+                </div>
               </MenuItem>
             </MenuList>
           </Menu>

@@ -1,6 +1,7 @@
 import { Box, Text, useColorMode } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
@@ -42,12 +43,9 @@ export default function LendDetails() {
             justifyContent: "space-between",
           }}
         >
-          <span
-            onClick={() => router.push("/lend")}
-            style={{ cursor: "pointer" }}
-          >
+          <Link href="/lend" style={{ cursor: "pointer" }}>
             <ArrowLeft width={32} height={32} />
-          </span>
+          </Link>
 
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <span>
@@ -93,9 +91,9 @@ export default function LendDetails() {
                 title: "Insurance Reserve",
                 value: `0 ${token}`,
               },
-            ].map((item) => {
+            ].map((item, index) => {
               return (
-                <>
+                <Fragment key={index}>
                   <Box
                     bg={mode(colorMode, "primary.100", "primary.100.dark")}
                     style={{
@@ -113,7 +111,7 @@ export default function LendDetails() {
                       {item.value}
                     </Text>
                   </Box>
-                </>
+                </Fragment>
               );
             })}
           </div>

@@ -24,8 +24,9 @@ const DepositForm = () => {
   };
 
   return (
-    <>
+    <Box style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
       <Box
+        mt={"32px"}
         style={{ borderRadius: "10px", border: "1px solid transparent" }}
         bg={mode(colorMode, "primary.200", "primary.200.dark")}
       >
@@ -121,15 +122,15 @@ const DepositForm = () => {
               </InputRightElement>
             </InputGroup>
 
-            <Button
+            {/* <Button
               bg={pickColor(colorMode, palette.variants.primary, "success")}
             >
               Open
-            </Button>
+            </Button> */}
           </>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 
