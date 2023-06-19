@@ -58,6 +58,7 @@ const columns: Array<{
     tooltip: "How many tokens are currently deposited",
     className: mobileHiddenColumnClass,
   },
+  { text: "", key: "info" },
 ];
 
 const Lend: FC = () => {
