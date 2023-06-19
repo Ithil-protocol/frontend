@@ -54,6 +54,9 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           tickLine={false}
           axisLine={false}
           tickMargin={10}
+          style={{
+            fontFamily: "var(--font-heading)",
+          }}
         />
         <YAxis
           dataKey={yKey}
@@ -61,7 +64,9 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           axisLine={false}
           orientation="right"
           tickMargin={40}
-          tickFormatter={(value) => `%${value / 100}`}
+          style={{
+            fontFamily: "var(--font-heading)",
+          }}
         />
         <CartesianGrid
           strokeDasharray="10"
