@@ -56,6 +56,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           tickMargin={10}
           style={{
             fontFamily: "var(--font-heading)",
+            fontSize: "8px",
           }}
         />
         <YAxis
@@ -66,6 +67,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           tickMargin={40}
           style={{
             fontFamily: "var(--font-heading)",
+            fontSize: "12px",
           }}
         />
         <CartesianGrid
