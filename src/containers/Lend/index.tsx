@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import classNames from "classnames";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { type FC, Fragment, useState } from "react";
 
 import ToolTipIcon from "@/assets/svgs/Tooltip.svg";
@@ -61,7 +61,6 @@ const columns: Array<{
 ];
 
 const Lend: FC = () => {
-  const router = useRouter();
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const {
     data: vaultData,
@@ -178,23 +177,24 @@ const Lend: FC = () => {
                       />
                     </Td>
                     <Td className={mobileHiddenColumnClass}>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(
-                            `/lend/details/${vault.token.name.toLowerCase()}`
-                          );
-                        }}
-                        fontSize="sm"
-                        fontWeight="normal"
-                        style={{
-                          borderRadius: "10px",
-                          padding: "0px 10px",
-                        }}
-                        variant="outline"
+                      <Link
+                        href={`/lend/details/${vault.token.name.toLowerCase()}`}
                       >
-                        Info
-                      </Button>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          fontSize="sm"
+                          fontWeight="normal"
+                          style={{
+                            borderRadius: "10px",
+                            padding: "0px 10px",
+                          }}
+                          variant="outline"
+                        >
+                          Info
+                        </Button>
+                      </Link>
                     </Td>
                   </Tr>
                   {selectedRow === idx && (
