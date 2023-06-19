@@ -33,7 +33,6 @@ export const theme: ThemeConfig = extendTheme(
       body: "var(--font-body)",
       heading: "var(--font-heading)",
     },
-    initialColorMode: "dark",
     styles: {
       global: ({ colorMode }: any) => ({
         body: {
