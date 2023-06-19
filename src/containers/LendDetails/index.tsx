@@ -1,4 +1,5 @@
 import { Box, Text, useColorMode } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -42,12 +43,9 @@ export default function LendDetails() {
             justifyContent: "space-between",
           }}
         >
-          <span
-            onClick={() => router.push("/lend")}
-            style={{ cursor: "pointer" }}
-          >
+          <Link href="/lend" style={{ cursor: "pointer" }}>
             <ArrowLeft width={32} height={32} />
-          </span>
+          </Link>
 
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <span>
