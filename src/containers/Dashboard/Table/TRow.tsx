@@ -105,7 +105,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
             fontSize="22px"
             lineHeight="22px"
           >
-            $ 1200
+            {activeView === "Active" ? "$ 1200" : "2023/01/01"}
           </Text>
           <Text
             opacity={activeView === "Active" ? "100%" : "0%"}
