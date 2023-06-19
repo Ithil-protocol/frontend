@@ -24,7 +24,14 @@ const DepositForm = () => {
   };
 
   return (
-    <Box style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
+    <Box
+      style={{
+        display: "flex",
+        gap: "30px",
+        flexDirection: "column",
+        maxWidth: "449px",
+      }}
+    >
       <Box
         mt={"32px"}
         style={{ borderRadius: "10px", border: "1px solid transparent" }}
@@ -94,11 +101,23 @@ const DepositForm = () => {
           </div>
         ) : (
           <Button
+            style={{
+              padding: "10px",
+            }}
             onClick={handleAdvancedOptionClick(true)}
             color={mode(colorMode, "primary.100.dark", "primary.100")}
             bg={mode(colorMode, "primary.400", "primary.500.dark")}
           >
-            <span style={{ fontSize: "14px", padding: "5px" }}>+</span>
+            <span
+              style={{
+                fontSize: "16px",
+                padding: "5px",
+                fontWeight: "700",
+                lineHeight: "27.63px",
+              }}
+            >
+              +
+            </span>
             <span>Advanced Option</span>
           </Button>
         )}

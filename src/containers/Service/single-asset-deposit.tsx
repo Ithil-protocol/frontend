@@ -60,18 +60,16 @@ interface WidgetSingleAssetDepositProps {
 export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   asset,
   balance,
-
   inputAmount,
-  onInputChange,
-  onActionClick,
-  onMaxClick,
-
-  isConnected,
+  isApproved,
   isBalanceLoading,
   isButtonDisabled,
   isButtonLoading,
+  isConnected,
   isMaxDisabled,
-  isApproved,
+  onActionClick,
+  onInputChange,
+  onMaxClick,
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
@@ -108,7 +106,13 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+        }}
+      >
         <div className="flex  gap-2">
           <div
             style={{
