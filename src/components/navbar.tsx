@@ -23,6 +23,7 @@ import {
   Source as SourceIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
+import { mode } from "@/utils/theme";
 
 import { ThemeSwitch } from "./theme-switch";
 
@@ -110,7 +111,8 @@ const Navbar: FC = () => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-start",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               {[
@@ -136,50 +138,66 @@ const Navbar: FC = () => {
                 },
               ].map((item) => (
                 <>
-                  <MenuItem>
-                    <Link
-                      style={{ width: "100%" }}
-                      href={item.link}
-                      target="_blank"
-                    >
-                      <Button
+                  <MenuItem
+                    style={{
+                      width: "95%",
+                      border: "transparent",
+                      padding: "5px",
+                      borderRadius: "5px",
+                    }}
+                    _hover={{
+                      backgroundColor: mode(
+                        colorMode,
+                        "primary.200",
+                        "primary.200.dark"
+                      ),
+                    }}
+                  >
+                    <Link href={item.link} target="_blank">
+                      <div
                         style={{
-                          width: "100%",
-                          border: "transparent",
                           display: "flex",
                           justifyContent: "flex-start",
+                          alignItems: "center",
                         }}
-                        variant={"outline"}
-                        p={"10px"}
-                        gap={2}
                       >
                         <span style={{ padding: "5px" }}>
                           <item.Icon width={24} height={24} />
                         </span>
                         <span>{item.title}</span>
-                      </Button>
+                      </div>
                     </Link>
                   </MenuItem>
                 </>
               ))}
 
-              <MenuItem gap={2}>
-                <Button
+              <MenuItem
+                style={{
+                  width: "95%",
+                  border: "transparent",
+                  padding: "5px",
+                  borderRadius: "5px",
+                }}
+                _hover={{
+                  backgroundColor: mode(
+                    colorMode,
+                    "primary.200",
+                    "primary.200.dark"
+                  ),
+                }}
+              >
+                <div
                   style={{
-                    width: "100%",
-                    border: "transparent",
                     display: "flex",
                     justifyContent: "flex-start",
+                    alignItems: "center",
                   }}
-                  variant={"outline"}
-                  p={"10px"}
-                  gap={2}
                 >
-                  <span>
+                  <span style={{ padding: "5px" }}>
                     <MagicMarkerIcon width={24} height={24} />
                   </span>
                   <span>Tutorial</span>
-                </Button>
+                </div>
               </MenuItem>
             </MenuList>
           </Menu>
