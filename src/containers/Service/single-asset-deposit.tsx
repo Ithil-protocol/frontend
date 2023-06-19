@@ -21,7 +21,10 @@ import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { serviceAddress, usePrepareServiceOpen } from "@/generated";
+import {
+  serviceAddress,
+  usePrepareServiceOpen,
+} from "@/hooks/generated/service";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { type AaveAsset } from "@/types/onchain.types";
