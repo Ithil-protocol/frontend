@@ -8,3 +8,9 @@ export interface PositionsDetailItemType {
 }
 
 export type Address = `0x${string}`;
+
+export interface ChartDataPoint {
+  date: Date;
+  tvl: number;
+  apy: number;
+}

@@ -16,7 +16,7 @@ import { pickColor } from "@/utils/theme";
 import ToolTip from "./ToolTip";
 
 interface Props {
-  data: any[];
+  data: any[] | undefined;
   xKey: string;
   yKey: string;
   dataKey: string;

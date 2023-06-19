@@ -1,26 +1,34 @@
 import { Heading } from "@chakra-ui/react";
 import classNames from "classnames";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Chart from "@/components/chart";
 import fakeChartData from "@/data/fakeData.json";
+import { useChartAave } from "@/hooks/defillama";
 import { formatDate } from "@/utils/date.utils";
 
 type graphWindows = "3m" | "1m" | "1w";
 type graphSections = "TVL" | "APY";
 
-interface GraphDataPoint {
-  date: string;
-  tvl: number | string;
-  apy: number | string;
-}
+// interface GraphDataPoint {
+//   date: string;
+//   tvl: number | string;
+//   apy: number | string;
+// }
 
-const graphData = fakeChartData.data.map<GraphDataPoint>((item, _key) => ({
-  date: formatDate(new Date(item.timestamp)),
-  tvl: item.tvlUsd,
-  apy: item.apy,
-}));
+// const graphData = fakeChartData.data.map<GraphDataPoint>((item, _key) => ({
+//   date: formatDate(new Date(item.timestamp)),
+//   tvl: item.tvlUsd,
+//   apy: item.apy,
+// }));
 export const Graph = () => {
+  const {
+    query: { asset },
+  } = useRouter();
+
+  const { data, isLoading } = useChartAave(asset as string);
+
   const [graphWindow, setGraphWindow] = useState<graphWindows>("3m");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
@@ -64,7 +72,7 @@ export const Graph = () => {
 
       <div className="pt-4 h-96">
         <Chart
-          data={graphData}
+          data={data}
           xKey="date"
           yKey={graphSection === "APY" ? "apy" : "tvl"}
           dataKey={graphSection === "APY" ? "apy" : "tvl"}
