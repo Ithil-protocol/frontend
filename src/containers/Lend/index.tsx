@@ -178,12 +178,12 @@ const Lend: FC = () => {
                     </Td>
                     <Td className={mobileHiddenColumnClass}>
                       <Link
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                         href={`/lend/details/${vault.token.name.toLowerCase()}`}
                       >
                         <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
                           fontSize="sm"
                           fontWeight="normal"
                           style={{
