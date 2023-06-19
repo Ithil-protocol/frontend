@@ -5,9 +5,10 @@ import { useState } from "react";
 
 import Chart from "@/components/chart";
 import { useChartAave } from "@/hooks/defillama";
-import { filterDatesWithinPastWeek, filterOneDayPastData } from "@/utils";
+import { isWithinIntervalDaysAgo } from "@/utils";
+import { formatDate } from "@/utils/date.utils";
 
-type graphWindows = "All" | "1W" | "1D";
+type graphWindows = "All" | "1M" | "1W";
 type graphSections = "TVL" | "APY";
 
 export const Graph = () => {
@@ -21,16 +22,16 @@ export const Graph = () => {
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
   const windowClassnames = "px-3 py-2 rounded-xl cursor-pointer";
-  const windowChoices: graphWindows[] = ["All", "1W", "1D"];
+  const windowChoices: graphWindows[] = ["All", "1M", "1W"];
 
   const sectionClassnames = "px-3 py-1 rounded-xl cursor-pointer";
   const sectionChoices: graphSections[] = ["TVL", "APY"];
 
   const filteredData =
-    graphWindow === "1D"
-      ? filterOneDayPastData(data)
-      : graphWindow === "1W"
-      ? filterDatesWithinPastWeek(data)
+    graphWindow === "1W"
+      ? isWithinIntervalDaysAgo(data, 7)
+      : graphWindow === "1M"
+      ? isWithinIntervalDaysAgo(data, 30)
       : data;
 
   console.log(filteredData);
@@ -73,6 +74,7 @@ export const Graph = () => {
           xKey="date"
           yKey={graphSection === "APY" ? "apy" : "tvl"}
           dataKey={graphSection === "APY" ? "apy" : "tvl"}
+          xTickFormatter={(date: Date) => formatDate(new Date(date))}
         />
       </div>
     </div>

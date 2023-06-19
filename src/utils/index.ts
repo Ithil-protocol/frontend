@@ -4,8 +4,11 @@ import {
   isAfter,
   isBefore,
   isSameDay,
+  isWithinInterval,
   parse,
+  parseISO,
   startOfToday,
+  subDays,
   subWeeks,
 } from "date-fns";
 
@@ -37,4 +40,19 @@ export const filterOneDayPastData = (data: any) => {
   });
 
   return filteredData;
+};
+
+export const isWithinIntervalDaysAgo = (
+  array: { date: Date }[] | undefined,
+  days: number
+) => {
+  if (!array) return;
+
+  const today = new Date();
+  const daysAgo = subDays(today, days);
+
+  return array.filter((item) => {
+    const itemDate = new Date(item.date);
+    return isWithinInterval(itemDate, { start: daysAgo, end: today });
+  });
 };
