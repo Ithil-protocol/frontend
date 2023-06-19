@@ -12,13 +12,15 @@ import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
+import { viewTypes } from "@/types";
 import { mode, pickColor } from "@/utils/theme";
 
 interface TRowProps {
   data: any;
+  activeView: viewTypes;
 }
 
-const TRow: FC<TRowProps> = ({ data: _data }) => {
+const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const handelCancelBtn = (
@@ -113,11 +115,13 @@ const TRow: FC<TRowProps> = ({ data: _data }) => {
           </Text>
         </HStack>
       </Td>
-      <Td textAlign="end">
-        <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
-          Cancel
-        </Button>
-      </Td>
+      {activeView === "Active" && (
+        <Td textAlign="end">
+          <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
+            Cancel
+          </Button>
+        </Td>
+      )}
     </Tr>
   );
 };
