@@ -20,6 +20,7 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import Navbar from "@/components/navbar";
 import { addTestNetworks, firstNetwork } from "@/config/chains";
+import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import { theme as chakraTheme } from "@/styles/theme/chakra";
 import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
@@ -98,7 +99,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiClient}>
       <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={chakraTheme}>
+        <Chakra>
           <RainbowWrapper>
             <div>
               <Navbar />
@@ -106,8 +107,10 @@ export default function App({ Component, pageProps }: AppProps) {
               <ReactQueryDevtools initialIsOpen={false} />
             </div>
           </RainbowWrapper>
-        </ChakraProvider>
+        </Chakra>
       </QueryClientProvider>
     </WagmiConfig>
   );
 }
+
+export { getServerSideProps } from "@/styles/ChakraCustomProvider";
