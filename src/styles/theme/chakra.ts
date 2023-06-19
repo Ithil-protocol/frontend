@@ -17,8 +17,13 @@ import {
 } from "./components";
 import { palette } from "./palette";
 
-export const theme: ThemeConfig = extendTheme(
+const config: ThemeConfig = {
+  initialColorMode: "dark",
+};
+
+export const theme = extendTheme(
   {
+    config,
     colors: palette.colors,
     components: {
       Button: buttonStyle,
@@ -90,7 +95,6 @@ export const theme: ThemeConfig = extendTheme(
         lineHeight: "150%",
       },
     },
-    useSystemColorMode: false,
   },
   withDefaultVariant({
     variant: "",
