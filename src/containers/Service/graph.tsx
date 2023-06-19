@@ -4,24 +4,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Chart from "@/components/chart";
-import fakeChartData from "@/data/fakeData.json";
 import { useChartAave } from "@/hooks/defillama";
-import { formatDate } from "@/utils/date.utils";
+import { filterDatesWithinPastWeek, filterOneDayPastData } from "@/utils";
 
-type graphWindows = "3m" | "1m" | "1w";
+type graphWindows = "All" | "1W" | "1D";
 type graphSections = "TVL" | "APY";
 
-// interface GraphDataPoint {
-//   date: string;
-//   tvl: number | string;
-//   apy: number | string;
-// }
-
-// const graphData = fakeChartData.data.map<GraphDataPoint>((item, _key) => ({
-//   date: formatDate(new Date(item.timestamp)),
-//   tvl: item.tvlUsd,
-//   apy: item.apy,
-// }));
 export const Graph = () => {
   const {
     query: { asset },
@@ -29,14 +17,23 @@ export const Graph = () => {
 
   const { data, isLoading } = useChartAave(asset as string);
 
-  const [graphWindow, setGraphWindow] = useState<graphWindows>("3m");
+  const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
   const windowClassnames = "px-3 py-2 rounded-xl cursor-pointer";
-  const windowChoices: graphWindows[] = ["3m", "1m", "1w"];
+  const windowChoices: graphWindows[] = ["All", "1W", "1D"];
 
   const sectionClassnames = "px-3 py-1 rounded-xl cursor-pointer";
   const sectionChoices: graphSections[] = ["TVL", "APY"];
+
+  const filteredData =
+    graphWindow === "1D"
+      ? filterOneDayPastData(data)
+      : graphWindow === "1W"
+      ? filterDatesWithinPastWeek(data)
+      : data;
+
+  console.log(filteredData);
 
   return (
     <div className="p-5 rounded-xl bg-primary-100">
@@ -72,7 +69,7 @@ export const Graph = () => {
 
       <div className="pt-4 h-96">
         <Chart
-          data={data}
+          data={filteredData}
           xKey="date"
           yKey={graphSection === "APY" ? "apy" : "tvl"}
           dataKey={graphSection === "APY" ? "apy" : "tvl"}
