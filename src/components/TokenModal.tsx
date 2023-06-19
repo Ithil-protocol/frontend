@@ -62,7 +62,7 @@ const TokenModal: React.FC<Props> = ({
 
           <Divider
             style={{
-              width: "90%",
+              width: "95%",
               alignSelf: "center",
             }}
           />
