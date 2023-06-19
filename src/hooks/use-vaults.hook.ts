@@ -1,4 +1,3 @@
-import { BigNumber } from "@ethersproject/bignumber";
 import { useQuery } from "@tanstack/react-query";
 import { erc4626ABI, multicall } from "@wagmi/core";
 import { useAccount } from "wagmi";
@@ -75,17 +74,17 @@ const getVaultData = async (address?: string) => {
 
   const data: Vaults = placeHolderVaultData.map((vault, idx, arr) => {
     // tvl informations are available at index 0...length
-    const tvl = multicallData[idx] as BigNumber;
+    const tvl = multicallData[idx].result as bigint;
     // freeLiquidity informations are available at index length...length*2
-    const freeLiquidity = multicallData[arr.length + idx] as BigNumber;
-    const borrowed = tvl.sub(freeLiquidity);
+    const freeLiquidity = multicallData[arr.length + idx].result as bigint;
+    const borrowed = tvl / freeLiquidity;
     // deposited informations are available at index length*2...length*3
     const depositedShares =
       address != null
-        ? (multicallData[arr.length * 2 + idx] as BigNumber)
-        : BigNumber.from(0);
+        ? (multicallData[arr.length * 2 + idx].result as bigint)
+        : BigInt(0);
     // sharesToAsset informations are available at index length*3...length*4
-    const sharesToAsset = multicallData[arr.length * 3 + idx] as BigNumber;
+    const sharesToAsset = multicallData[arr.length * 3 + idx].result as bigint;
     const depositedAssets = multiplyBigNumbers(
       depositedShares,
       sharesToAsset,

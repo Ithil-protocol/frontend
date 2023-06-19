@@ -6,7 +6,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { BigNumber } from "@ethersproject/bignumber";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
 import React, { type FC, useState } from "react";
@@ -37,7 +36,7 @@ import DepositForm from "./DepositForm";
 interface WidgetSingleAssetDepositProps {
   // data
   asset?: AaveAsset;
-  balance?: BigNumber;
+  balance?: bigint;
 
   // actions
   inputAmount: string;
@@ -230,17 +229,17 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   });
 
   // computed properties
-  const isApproved = allowance?.gte(inputBigNumber) ?? false;
+  const isApproved = allowance ? allowance >= inputBigNumber : false;
   const isButtonLoading =
     isApproveLoading ||
     isApproveWaiting ||
     isOpenLoading ||
     isOpenWaiting ||
     isOpenPrepareLoading;
-  const isInconsistent = inputBigNumber.gt(balance?.value ?? 0);
+  const isInconsistent = inputBigNumber > (balance?.value ?? 0);
   const isButtonDisabled =
-    isButtonLoading || isInconsistent || inputBigNumber.isZero();
-  const isMaxDisabled = inputBigNumber.eq(balance?.value ?? 0);
+    isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
+  const isMaxDisabled = inputBigNumber === (balance?.value ?? 0);
 
   const onInputChange = (amount: string) => {
     setInputAmount(amount);
@@ -267,7 +266,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   return (
     <WidgetSingleAssetDeposit
       inputAmount={inputAmount}
-      balance={balance?.value ?? BigNumber.from(0)}
+      balance={balance?.value ?? BigInt(0)}
       onInputChange={onInputChange}
       onActionClick={onActionClick}
       onMaxClick={onMaxClick}

@@ -1,4 +1,3 @@
-import { type BigNumber } from "@ethersproject/bignumber";
 import {
   type Address,
   erc4626ABI,
@@ -24,9 +23,10 @@ export const useVault = (
     watch: true,
   });
 
-  const isApproved = (amount: BigNumber) => allowance?.gte(amount) ?? false;
+  const isApproved = (amount: bigint) =>
+    allowance ? allowance > amount : false;
 
-  const usePrepareDeposit = (amount: BigNumber) => {
+  const usePrepareDeposit = (amount: bigint) => {
     return usePrepareContractWrite({
       address: token.vaultAddress,
       abi: erc4626ABI,
@@ -36,13 +36,14 @@ export const useVault = (
     });
   };
 
-  const usePrepareRedeem = (amount: BigNumber) => {
+  const usePrepareRedeem = (amount: bigint) => {
     return usePrepareContractWrite({
       address: token.vaultAddress,
       abi: erc4626ABI,
       functionName: "redeem",
       args: [amount, userAddress!, userAddress!],
-      enabled: userAddress != null && sharesBalance?.value.gte(amount),
+      enabled:
+        userAddress != null && sharesBalance && sharesBalance.value > amount,
     });
   };
 

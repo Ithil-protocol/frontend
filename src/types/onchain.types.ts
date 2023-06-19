@@ -1,4 +1,3 @@
-import { type BigNumber } from "@ethersproject/bignumber";
 import { type Address } from "wagmi";
 
 // the minimal intersection of LendingToken and ServiceAsset
@@ -18,9 +17,9 @@ export type LendingTokenList = LendingToken[];
 export type Vaults = Array<{
   key: string;
   token: LendingTokenList[number];
-  tvl?: BigNumber;
-  borrowed?: BigNumber;
-  deposited?: BigNumber;
+  tvl?: bigint;
+  borrowed?: bigint;
+  deposited?: bigint;
 }>;
 
 // used in services page

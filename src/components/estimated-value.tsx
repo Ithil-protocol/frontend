@@ -1,4 +1,3 @@
-import { type BigNumber } from "@ethersproject/bignumber";
 import dynamic from "next/dynamic";
 import { type FC } from "react";
 import { type Address } from "wagmi";
@@ -8,7 +7,7 @@ import { type MinimalToken } from "@/types/onchain.types";
 import { estimateTokenValue } from "@/utils/input.utils";
 
 interface EstimatedValueProps {
-  value: BigNumber | undefined;
+  value: bigint | undefined;
   token: MinimalToken;
 }
 
