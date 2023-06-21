@@ -34,6 +34,7 @@ const Chart = () => {
       }}
       bg={pickColor(colorMode, palette.colors.primary, "100")}
       area="main"
+      className="w-[99.5%] md:w-full h-full"
     >
       <CustomChart data={graphData} xKey="date" yKey="tvl" dataKey="tvl" />
     </GridItem>
