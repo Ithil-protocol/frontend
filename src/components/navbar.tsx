@@ -70,23 +70,25 @@ const Navbar: FC = () => {
               />
             </div>
           </a>
-          <div className="hidden sm:block">
-            <ThemeSwitch />
-          </div>
-          <div className="flex-grow hidden sm:flex">
-            <div className="flex gap-2 justify-items-start">
-              {pages.map(({ name, url }) => (
-                <Link
-                  key={name}
-                  href={url}
-                  className="relative flex flex-col items-center"
-                >
-                  <Text casing="capitalize">{name}</Text>
-                  {pathname.split("/")[1] === url.split("/")[1] && (
-                    <Circle className="absolute w-2 h-2 mt-2 rounded-full top-6 bg-secondary" />
-                  )}
-                </Link>
-              ))}
+          <div className="flex items-center gap-2">
+            <div className="flex-grow hidden sm:flex">
+              <div className="flex gap-2 justify-items-start">
+                {pages.map(({ name, url }) => (
+                  <Link
+                    key={name}
+                    href={url}
+                    className="relative flex flex-col items-center"
+                  >
+                    <Text casing="capitalize">{name}</Text>
+                    {pathname.split("/")[1] === url.split("/")[1] && (
+                      <Circle className="absolute w-2 h-2 mt-2 rounded-full top-6 bg-secondary" />
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="hidden sm:block">
+              <ThemeSwitch />
             </div>
           </div>
         </div>
