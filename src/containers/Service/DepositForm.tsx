@@ -24,14 +24,7 @@ const DepositForm = () => {
   };
 
   return (
-    <Box
-      style={{
-        display: "flex",
-        gap: "30px",
-        flexDirection: "column",
-        maxWidth: "449px",
-      }}
-    >
+    <Box width="full" gap="30px">
       <Box
         mt={"32px"}
         style={{ borderRadius: "10px", border: "1px solid transparent" }}
