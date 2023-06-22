@@ -24,7 +24,8 @@ import "@/styles/globals.css";
 import { theme as chakraTheme } from "@/styles/theme/chakra";
 import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
 
-const network = firstNetwork();
+// const network =
+firstNetwork();
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [localhost], // until Ithil is not a multi-chain app, we can use only one network
   [

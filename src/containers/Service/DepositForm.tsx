@@ -26,7 +26,7 @@ const DepositForm = () => {
   return (
     <Box width="full" gap="30px">
       <Box
-        mt={"32px"}
+        mt="32px"
         style={{ borderRadius: "10px", border: "1px solid transparent" }}
         bg={mode(colorMode, "primary.200", "primary.200.dark")}
       >
@@ -75,7 +75,7 @@ const DepositForm = () => {
         />
       </Box>
 
-      <Box gap={5} display={"flex"} flexDirection={"column"} marginTop={5}>
+      <Box gap={5} display="flex" flexDirection="column" marginTop={5}>
         {isAdvancedOptionsOpen ? (
           <div
             style={{

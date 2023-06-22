@@ -107,7 +107,7 @@ export default function LendDetails() {
                     }}
                   >
                     <Text fontWeight="bold">{item.title}</Text>
-                    <Text mt={"20px"} fontWeight="medium">
+                    <Text mt="20px" fontWeight="medium">
                       {item.value}
                     </Text>
                   </Box>

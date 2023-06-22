@@ -12,7 +12,7 @@ const Header = () => {
     <GridItem
       bg={pickColor(colorMode, palette.colors.primary, "100")}
       area="header"
-      borderRadius={"12px"}
+      borderRadius="12px"
       paddingX={{
         base: "20px",
         md: "30px",

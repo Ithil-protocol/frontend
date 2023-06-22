@@ -230,7 +230,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
 
   return (
     <WidgetComponent
-      title={"Deposit"}
+      title="Deposit"
       balance={balance?.value ?? BigInt(0)}
       token={token}
       inputAmount={inputAmount}
@@ -355,7 +355,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
 
   return (
     <WidgetComponent
-      title={"Withdraw"}
+      title="Withdraw"
       balance={assetsBalance}
       token={token}
       inputAmount={inputAmount}

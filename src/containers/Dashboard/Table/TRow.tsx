@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Fade,
   HStack,
   Td,
   Text,
@@ -123,7 +122,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
           </Text>
         </HStack>
       </Td>
-      <Td textAlign="end" width={200} height={"108px"}>
+      <Td textAlign="end" width={200} height="108px">
         {activeView === "Active" && (
           <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
             Cancel
