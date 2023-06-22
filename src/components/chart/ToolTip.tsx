@@ -1,4 +1,4 @@
-import { Box, HStack, Text, Tooltip, useColorMode } from "@chakra-ui/react";
+import { Box, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { FC } from "react";
 import { TooltipProps } from "recharts";
 import {

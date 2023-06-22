@@ -16,7 +16,7 @@ export const Graph = () => {
     query: { asset },
   } = useRouter();
 
-  const { data, isLoading } = useChartAave(asset as string);
+  const { data } = useChartAave(asset as string);
 
   const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
