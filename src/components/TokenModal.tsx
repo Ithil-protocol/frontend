@@ -73,7 +73,7 @@ const TokenModal: React.FC<Props> = ({
               paddingBottom: "0px",
             }}
           >
-            <List p={"10px"} bg="transparent">
+            <List p="10px" bg="transparent">
               {[
                 {
                   title: "DAI",
@@ -132,7 +132,7 @@ const TokenModal: React.FC<Props> = ({
                         }}
                       >
                         <Text
-                          fontWeight={"medium"}
+                          fontWeight="medium"
                           color={mode(
                             colorMode,
                             "secondary.100",
@@ -142,8 +142,8 @@ const TokenModal: React.FC<Props> = ({
                           {item.title}
                         </Text>
                         <Text
-                          fontWeight={"medium"}
-                          fontSize={"md"}
+                          fontWeight="medium"
+                          fontSize="md"
                           color={mode(
                             colorMode,
                             "primary.400.dark",

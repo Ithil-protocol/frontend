@@ -172,7 +172,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 
       {isConnected ? (
         <Button
-          mt={"20px"}
+          mt="20px"
           onClick={() => {
             void onActionClick();
           }}
@@ -187,7 +187,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             : `Approve ${asset.name}`}
         </Button>
       ) : (
-        <Button mt={"20px"} onClick={openConnectModal}>
+        <Button mt="20px" onClick={openConnectModal}>
           Connect Wallet
         </Button>
       )}
