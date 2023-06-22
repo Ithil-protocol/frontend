@@ -1,12 +1,8 @@
 import Generic from "cryptocurrency-icons/svg/icon/generic.svg";
 import {
-  addDays,
-  isAfter,
-  isBefore,
   isSameDay,
   isWithinInterval,
   parse,
-  parseISO,
   startOfToday,
   subDays,
   subWeeks,

@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Fade,
   HStack,
   Td,
   Text,

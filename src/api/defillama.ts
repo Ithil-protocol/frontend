@@ -1,5 +1,4 @@
 import { aaveChartPools } from "@/data/defillama";
-import { formatDate } from "@/utils/date.utils";
 
 interface Response {
   timestamp: Date;

@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 
-import { ColumnsActive } from "@/containers/Dashboard";
 import { viewTypes } from "@/types";
 import { mode } from "@/utils/theme";
 
