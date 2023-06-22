@@ -20,54 +20,21 @@ import TokenIcon from "@/components/TokenIcon";
 import { DynamicEstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import PageWrapper from "@/components/page-wrapper";
+import { lendContent } from "@/content/lend";
 import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
 import { type Vaults } from "@/types/onchain.types";
 
 import { Deposit } from "./deposit";
 
-type Columns = "asset" | "apy" | "tvl" | "borrowed" | "deposited" | "info";
-
 const mobileHiddenColumnClass = "hidden md:table-cell";
-const columns: Array<{
-  text: string;
-  key: Columns;
-  tooltip?: string;
-  hideText?: boolean;
-  className?: string;
-}> = [
-  { text: "Asset", key: "asset" },
-  {
-    text: "APY",
-    key: "apy",
-    tooltip: "Annual Percentage Yield, your ROI on the deposit",
-  },
-  {
-    text: "TVL",
-    key: "tvl",
-    tooltip: "Total value locked, how many tokens have been deposited",
-  },
-  {
-    text: "Borrowed",
-    key: "borrowed",
-    tooltip: "How many tokens are currently lent to risk-takers",
-    className: mobileHiddenColumnClass,
-  },
-  {
-    text: "Deposited",
-    key: "deposited",
-    tooltip: "How many tokens are currently deposited",
-    className: mobileHiddenColumnClass,
-  },
-  { text: "", key: "info" },
-];
 
 const Lend: FC = () => {
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const {
     data: vaultData,
     isError: isVaultsError,
-    isLoadingError,
     isLoading,
+    isLoadingError,
   } = useVaults();
   // computed values
   const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
@@ -85,20 +52,17 @@ const Lend: FC = () => {
   return (
     <>
       <Head>
-        <title>Ithil - Lending</title>
-        <meta
-          name="description"
-          content="Official frontend for Ithil strategies"
-        />
+        <title>{lendContent.pageTitle}</title>
+        <meta name="description" content={lendContent.metaDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <PageWrapper heading="Lend">
+      <PageWrapper heading={lendContent.pageWrapperHeading}>
         <TableContainer className="w-full rounded-xl bg-primary-100 lg:p-6">
           <Table size="md">
             <Thead>
               <Tr>
-                {columns.map((column) => (
+                {lendContent.tableColumns.map((column) => (
                   <Th
                     key={column.key}
                     className={classNames(["normal-case", column.className])}
@@ -200,7 +164,7 @@ const Lend: FC = () => {
                   </Tr>
                   {selectedRow === idx && (
                     <Tr>
-                      <Td colSpan={columns.length}>
+                      <Td colSpan={lendContent.tableColumns.length}>
                         <Deposit token={vaultDataWithFallback[idx].token} />
                       </Td>
                     </Tr>
