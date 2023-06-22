@@ -23,6 +23,7 @@
     "carlino",
     "chakra",
     "codicon",
+    "defillama",
     "ethersproject",
     "flowtype",
     "hexlify",
@@ -40,6 +41,7 @@
     "tailwindcss",
     "tanstack",
     "trivago",
+    "viem",
     "wagmi"
   ]
 }
