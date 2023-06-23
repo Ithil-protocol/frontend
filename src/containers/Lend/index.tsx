@@ -27,7 +27,7 @@ import { Deposit } from "./deposit";
 
 type Columns = "asset" | "apy" | "tvl" | "borrowed" | "deposited" | "info";
 
-const mobileHiddenColumnClass = "hidden md:table-cell";
+// const mobileHiddenColumnClass = "hidden md:table-cell";
 const columns: Array<{
   text: string;
   key: Columns;
@@ -50,13 +50,13 @@ const columns: Array<{
     text: "Borrowed",
     key: "borrowed",
     tooltip: "How many tokens are currently lent to risk-takers",
-    className: mobileHiddenColumnClass,
+    // className: mobileHiddenColumnClass,
   },
   {
     text: "Deposited",
     key: "deposited",
     tooltip: "How many tokens are currently deposited",
-    className: mobileHiddenColumnClass,
+    // className: mobileHiddenColumnClass,
   },
   { text: "", key: "info" },
 ];
@@ -163,21 +163,21 @@ const Lend: FC = () => {
                         token={vault.token}
                       />
                     </Td>
-                    <Td className={mobileHiddenColumnClass}>
+                    <Td>
                       {isVaultsLoading || (isVaultsError && <Loading />)}
                       <DynamicEstimatedValue
                         value={vault.borrowed}
                         token={vault.token}
                       />
                     </Td>
-                    <Td className={mobileHiddenColumnClass}>
+                    <Td>
                       {isVaultsLoading || (isVaultsError && <Loading />)}
                       <DynamicEstimatedValue
                         value={vault.deposited}
                         token={vault.token}
                       />
                     </Td>
-                    <Td className={mobileHiddenColumnClass}>
+                    <Td>
                       <Link
                         onClick={(e) => {
                           e.stopPropagation();
