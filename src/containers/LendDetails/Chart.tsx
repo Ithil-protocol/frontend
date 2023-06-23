@@ -10,7 +10,10 @@ interface Props {
 
 const Chart: FC<Props> = ({ data, graphSection }) => {
   return (
-    <Box className="flex-1 p-5 rounded-xl bg-primary-100">
+    <Box
+      width={{ md: "100%", lg: "80%" }}
+      className="flex-1 p-5 rounded-xl bg-primary-100"
+    >
       <div className="h-full pt-4">
         <CustomChart
           data={data}

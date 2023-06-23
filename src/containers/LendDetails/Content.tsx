@@ -1,6 +1,5 @@
 import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { Fragment } from "react";
 
 import { mode } from "@/utils/theme";
 
@@ -11,7 +10,14 @@ const Content = () => {
   const token = (router.query.token || "") as string;
 
   return (
-    <Box className="flex-1 w-full lg:flex-[0.4] h-full">
+    <Box
+      width={{
+        md: "100%",
+        lg: "20%",
+      }}
+      className="flex flex-col flex-1 w-full lg:flex-[0.4] h-full "
+      gap="10px"
+    >
       {[
         {
           title: "Borrowable Balance",
@@ -33,7 +39,6 @@ const Content = () => {
         return (
           <Box
             key={item.title + index}
-            mt={5}
             bg={mode(colorMode, "primary.100", "primary.100.dark")}
             style={{
               alignItems: "center",
@@ -43,10 +48,13 @@ const Content = () => {
               justifyContent: "space-between",
               padding: "30px 10px",
               width: "100%",
+              height: "100%",
             }}
           >
-            <Text fontWeight="bold">{item.title}</Text>
-            <Text mt="20px" fontWeight="medium">
+            <Text textAlign="center" fontWeight="bold">
+              {item.title}
+            </Text>
+            <Text mt="20px" textAlign="center" fontWeight="medium">
               {item.value}
             </Text>
           </Box>
