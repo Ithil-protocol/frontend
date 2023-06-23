@@ -1,6 +1,7 @@
 import { ChakraProvider, useColorMode } from "@chakra-ui/react";
 import {
   RainbowKitProvider,
+  darkTheme,
   getDefaultWallets,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
@@ -22,7 +23,10 @@ import Navbar from "@/components/navbar";
 import { addTestNetworks, firstNetwork } from "@/config/chains";
 import "@/styles/globals.css";
 import { theme as chakraTheme } from "@/styles/theme/chakra";
-import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
+import {
+  rainbowkitDarkTheme,
+  rainbowkitLightTheme,
+} from "@/styles/theme/rainbowkit";
 
 // const network =
 firstNetwork();
@@ -75,14 +79,7 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
     <RainbowKitProvider
       chains={chains}
       initialChain={localhost}
-      theme={
-        colorMode === "dark"
-          ? ithilDarkTheme
-          : lightTheme({
-              borderRadius: "small",
-              fontStack: "system",
-            })
-      }
+      theme={colorMode === "dark" ? rainbowkitDarkTheme : rainbowkitLightTheme}
       showRecentTransactions={true}
     >
       {children}
