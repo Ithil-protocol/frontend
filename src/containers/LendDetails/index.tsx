@@ -1,21 +1,23 @@
-import { Box, Text, useColorMode } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 
 import { ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
-import Chart from "@/components/chart";
+import PageWrapper from "@/components/page-wrapper";
 import fakeChartData from "@/data/fakeData.json";
 import { formatDate } from "@/utils/date.utils";
-import { mode } from "@/utils/theme";
+
+import Chart from "./Chart";
+import Content from "./Content";
 
 interface GraphDataPoint {
   date: string;
   tvl: number | string;
   apy: number | string;
 }
-type graphSections = "TVL" | "APY";
+type GraphSection = "TVL" | "APY";
 
 const graphData = fakeChartData.data.map<GraphDataPoint>((item) => ({
   date: formatDate(new Date(item.timestamp)),
@@ -24,112 +26,53 @@ const graphData = fakeChartData.data.map<GraphDataPoint>((item) => ({
 }));
 
 export default function LendDetails() {
+  const [graphSection] = useState<GraphSection>("APY");
   const router = useRouter();
-  const { colorMode } = useColorMode();
-  const [graphSection] = useState<graphSections>("APY");
-
   const token = (router.query.token || "") as string;
 
   return (
     <>
-      <div
-        style={{
-          padding: "80px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Link href="/lend" style={{ cursor: "pointer" }}>
-            <ArrowLeft width={32} height={32} />
-          </Link>
-
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <span>
-              <TokenIcon name={token} width={38} height={38} />
-            </span>
-            <Text fontWeight="light" fontSize="3xl">
-              {token.toUpperCase()} Vault Details
-            </Text>
-          </div>
-          <span></span>
-        </div>
-
-        <div
-          style={{
-            marginTop: "100px",
-            display: "flex",
-            gap: "20px",
-            width: "100%",
-          }}
-        >
-          <div
+      <PageWrapper>
+        <Box width="full">
+          <HStack
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              width: "20%",
+              marginTop: "20px",
             }}
+            justifyContent="space-between"
+            width="full"
           >
-            {[
-              {
-                title: "Borrowable Balance",
-                value: `0 ${token}`,
-              },
-              {
-                title: "Utilisation Rate",
-                value: "0.00%",
-              },
-              {
-                title: "Revenues",
-                value: `0 ${token}`,
-              },
-              {
-                title: "Insurance Reserve",
-                value: `0 ${token}`,
-              },
-            ].map((item, index) => {
-              return (
-                <Fragment key={index}>
-                  <Box
-                    bg={mode(colorMode, "primary.100", "primary.100.dark")}
-                    style={{
-                      alignItems: "center",
-                      borderRadius: "10px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      padding: "30px 10px",
-                      width: "100%",
-                    }}
-                  >
-                    <Text fontWeight="bold">{item.title}</Text>
-                    <Text mt="20px" fontWeight="medium">
-                      {item.value}
-                    </Text>
-                  </Box>
-                </Fragment>
-              );
-            })}
-          </div>
-          <div
-            style={{ width: "80%" }}
-            className="p-5 rounded-xl bg-primary-100"
-          >
-            <div style={{ height: "100%" }} className="pt-4 h-96">
-              <Chart
-                data={graphData}
-                xKey="date"
-                yKey={graphSection === "APY" ? "apy" : "tvl"}
-                dataKey={graphSection === "APY" ? "apy" : "tvl"}
-              />
+            <Link href="/lend" style={{ cursor: "pointer" }}>
+              <ArrowLeft width={32} height={32} />
+            </Link>
+
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <span>
+                <TokenIcon name={token} width={38} height={38} />
+              </span>
+              <Text fontWeight="light" fontSize="3xl">
+                {token.toUpperCase()} Vault Details
+              </Text>
             </div>
-          </div>
-        </div>
-      </div>
+            <span></span>
+          </HStack>
+          <Box
+            mt={{
+              base: "20px",
+              md: "10px",
+              sm: "10px",
+            }}
+            display="flex"
+            gap="20px"
+            flexDirection={{ base: "column", lg: "row" }}
+            flex={1}
+          >
+            <Box>
+              <Content />
+            </Box>
+            <Chart data={graphData} graphSection={graphSection} />
+          </Box>
+        </Box>
+      </PageWrapper>
     </>
   );
 }

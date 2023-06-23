@@ -1,7 +1,7 @@
 import { type Theme, midnightTheme } from "@rainbow-me/rainbowkit";
 import merge from "lodash/merge";
 
-export const ithilDarkTheme: Theme = merge(midnightTheme(), {
+export const rainbowkitDarkTheme: Theme = merge(midnightTheme(), {
   colors: {
     connectButtonBackground: "#20293A",
     connectButtonInnerBackground: "#151A29",

@@ -1,4 +1,5 @@
 import {
+  Box,
   IconButton,
   Menu,
   MenuButton,
@@ -18,6 +19,7 @@ import {
   About as AboutIcon,
   Discord as DiscordIcon,
   Docs as DocsIcon,
+  HamburgerMenu,
   MagicMarker as MagicMarkerIcon,
   Source as SourceIcon,
   ThreeDot as ThreeDotIcon,
@@ -26,9 +28,9 @@ import { mode } from "@/utils/theme";
 
 import { ThemeSwitch } from "./theme-switch";
 
-export type PageNames = "lend" | "dashboard" | "faucets" | "services";
+export type PageName = "lend" | "dashboard" | "faucets" | "services";
 interface NavigationPage {
-  name: PageNames;
+  name: PageName;
   url: string;
 }
 
@@ -93,6 +95,7 @@ const Navbar: FC = () => {
           </div>
         </div>
         <div
+          className="hidden sm:flex"
           style={{
             display: "flex",
             gap: 5,
@@ -203,6 +206,17 @@ const Navbar: FC = () => {
             </MenuList>
           </Menu>
         </div>
+
+        <Box
+          bg={mode(colorMode, "primary.200", "primary.200.dark")}
+          style={{
+            padding: "5px",
+            borderRadius: "50%",
+          }}
+          className="sm:hidden"
+        >
+          <HamburgerMenu width={32} height={32} />
+        </Box>
       </div>
     </nav>
   );

@@ -1,4 +1,4 @@
-import { Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -38,35 +38,43 @@ export const Graph = () => {
 
   return (
     <div className="p-5 rounded-xl bg-primary-100">
-      <div className="flex flex-row items-center justify-between gap-4">
+      <Box
+        flexDirection={{
+          base: "column",
+          sm: "row",
+        }}
+        className="flex items-center justify-between gap-4"
+      >
         <Heading size="h2">Historical Rate</Heading>
-        <div className="flex flex-row gap-4 py-1 overflow-hidden rounded-xl bg-primary-200">
-          {windowChoices.map((choice) => (
-            <div
-              className={classNames(windowClassnames, {
-                "bg-primary-300": graphWindow === choice,
-              })}
-              onClick={() => setGraphWindow(choice)}
-              key={choice}
-            >
-              {choice}
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-row gap-4 py-2 overflow-hidden rounded-xl bg-primary-200">
-          {sectionChoices.map((choice) => (
-            <div
-              className={classNames(sectionClassnames, {
-                "bg-primary-300": graphSection === choice,
-              })}
-              onClick={() => setGraphSection(choice)}
-              key={choice}
-            >
-              {choice}
-            </div>
-          ))}
-        </div>
-      </div>
+        <Box gap="10px" className="flex flex-row gap-4 py-1 overflow-hidden">
+          <div className="rounded-xl p-2 bg-primary-200">
+            {windowChoices.map((choice) => (
+              <span
+                className={classNames(windowClassnames, {
+                  "bg-primary-300": graphWindow === choice,
+                })}
+                onClick={() => setGraphWindow(choice)}
+                key={choice}
+              >
+                {choice}
+              </span>
+            ))}
+          </div>
+          <div className="rounded-xl p-2 bg-primary-200">
+            {sectionChoices.map((choice) => (
+              <span
+                className={classNames(sectionClassnames, {
+                  "bg-primary-300": graphSection === choice,
+                })}
+                onClick={() => setGraphSection(choice)}
+                key={choice}
+              >
+                {choice}
+              </span>
+            ))}
+          </div>
+        </Box>
+      </Box>
 
       <div className="pt-4 h-96">
         <Chart

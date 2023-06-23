@@ -18,7 +18,7 @@ const PageWrapper: FC<PageWrapperProps> = ({
 }) => (
   <main
     className={classNames([
-      "container p-3 sm:p-0 md:p-2 mx-auto font-sans",
+      "container p-3 sm:p-0 md:p-1 mx-auto font-sans",
       body.variable,
       headingTypo.variable,
       className,
