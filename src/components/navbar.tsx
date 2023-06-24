@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
 import { type FC, useEffect, useState } from "react";
-import { useConnect, useNetwork } from "wagmi";
+import { useConnect, useNetwork, useSwitchNetwork } from "wagmi";
 
 import {
   About as AboutIcon,
@@ -48,10 +48,8 @@ const Navbar: FC = () => {
   // remove this block of code for production. this is only for having chains with same id that can not happen in production
   const { chains: ithilChain, chain } = useNetwork();
   const [shouldChangeNetwork, setShouldChangeNetwork] = useState(false);
-  const { connectors } = useConnect();
   useEffect(() => {
     if (chain) {
-      console.log(chain);
       if (chain.rpcUrls.default !== ithilChain[0].rpcUrls.default) {
         setShouldChangeNetwork(true);
       }
@@ -60,8 +58,6 @@ const Navbar: FC = () => {
   const switchToTestNetwork = async () => {
     // @ts-ignore
     if (window?.ethereum) {
-      // @ts-ignore
-      console.log("hhhh", window?.ethereum);
       try {
         // @ts-ignore
         await ethereum.request({
@@ -72,13 +68,14 @@ const Navbar: FC = () => {
               chainName: "ithil test network",
               rpcUrls: firstNetwork().rpcUrls.default.http,
               nativeCurrency: {
-                name: "ITHIL ETH",
+                name: "ETH",
                 symbol: "ETH",
                 decimals: 18,
               },
             },
           ],
         });
+        setShouldChangeNetwork(false);
       } catch (err) {
         console.log(err);
       }
