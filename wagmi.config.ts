@@ -9,12 +9,15 @@ export default defineConfig({
   contracts: [
     {
       name: "Service",
+      // address: {
+      //   1337:
+      //     // same for now, but it can happen they have different addresses
+      //     coreConfig.instance === CoreInstance.PrivateTestnet
+      //       ? "0xD1d01555b5DC60ba330414be2266f4FAC195a32B"
+      //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
+      // },
       address: {
-        1337:
-          // same for now, but it can happen they have different addresses
-          coreConfig.instance === CoreInstance.PrivateTestnet
-            ? "0xD1d01555b5DC60ba330414be2266f4FAC195a32B"
-            : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
+        42161: "0xBf35a6ec119710ADE3403202eDBF003a2b852AEc",
       },
       abi: ServiceAbi,
     },
