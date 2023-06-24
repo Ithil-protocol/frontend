@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   IconButton,
   Menu,
   MenuButton,
@@ -13,7 +14,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
-import { type FC } from "react";
+import { type FC, useEffect, useState } from "react";
+import { useConnect, useNetwork, useSwitchNetwork } from "wagmi";
 
 import {
   About as AboutIcon,
@@ -24,6 +26,7 @@ import {
   Source as SourceIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
+import { firstNetwork } from "@/config/chains";
 import { mode } from "@/utils/theme";
 
 import { ThemeSwitch } from "./theme-switch";
@@ -43,6 +46,44 @@ const pages: NavigationPage[] = [
 const Navbar: FC = () => {
   const { pathname } = useRouter();
   const { colorMode } = useColorMode();
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // remove this block of code for production. this is only for having chains with same id that can not happen in production
+  const { chains: ithilChain, chain } = useNetwork();
+  const [shouldChangeNetwork, setShouldChangeNetwork] = useState(false);
+  useEffect(() => {
+    if (chain) {
+      if (chain.rpcUrls.default !== ithilChain[0].rpcUrls.default) {
+        setShouldChangeNetwork(true);
+      }
+    }
+  }, []);
+  const switchToTestNetwork = async () => {
+    // @ts-ignore
+    if (window?.ethereum) {
+      try {
+        // @ts-ignore
+        await ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: "0xa4b1",
+              chainName: "ithil test network",
+              rpcUrls: firstNetwork().rpcUrls.default.http,
+              nativeCurrency: {
+                name: "ETH",
+                symbol: "ETH",
+                decimals: 18,
+              },
+            },
+          ],
+        });
+        setShouldChangeNetwork(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   return (
     <nav>
@@ -102,7 +143,13 @@ const Navbar: FC = () => {
             justifyContent: "space-between",
           }}
         >
-          <ConnectButton chainStatus="full" />
+          <div className="w-full">
+            {shouldChangeNetwork ? (
+              <Button onClick={switchToTestNetwork}>change network</Button>
+            ) : (
+              <ConnectButton chainStatus="full" />
+            )}
+          </div>
 
           <Menu>
             <MenuButton

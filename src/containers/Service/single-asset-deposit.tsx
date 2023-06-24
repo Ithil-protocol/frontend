@@ -207,7 +207,7 @@ interface ServiceDepositProps {
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const { address, isConnected } = useAccount();
-  const chainId = useChainId() as 1337;
+  const chainId = useChainId() as 42161;
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals);
 
