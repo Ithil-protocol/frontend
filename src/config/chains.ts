@@ -4,13 +4,32 @@ import { arbitrum } from "wagmi/chains";
 import { CoreInstance, coreConfig } from "@/config/env";
 import contracts from "@/deploy/contracts.json";
 
-const testNetwork: Chain = {
-  ...arbitrum,
-  name: "arbitrum-ithil",
-  network: "arbitrum-ithil",
+export const testNetwork: Chain = {
+  name: "ithil test network",
+  network: "ithil test network",
+  id: 42161,
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  blockExplorers: {
+    etherscan: {
+      name: "Arbiscan",
+      url: "https://arbiscan.io",
+    },
+    default: {
+      name: "Arbiscan",
+      url: "https://arbiscan.io",
+    },
+  },
   rpcUrls: {
-    default: { http: [contracts.networkUrl] },
-    public: { http: [contracts.networkUrl] },
+    default: {
+      http: [
+        "https://rpc.tenderly.co/fork/700ff58f-92ed-40ab-a538-3f97626f91ae",
+      ],
+    },
+    public: {
+      http: [
+        "https://rpc.tenderly.co/fork/700ff58f-92ed-40ab-a538-3f97626f91ae",
+      ],
+    },
   },
 };
 

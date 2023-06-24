@@ -1,4 +1,4 @@
-import { ChakraProvider, useColorMode } from "@chakra-ui/react";
+import { Button, ChakraProvider, useColorMode } from "@chakra-ui/react";
 import {
   RainbowKitProvider,
   getDefaultWallets,
@@ -26,10 +26,10 @@ import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
 
 const network = firstNetwork();
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [localhost], // until Ithil is not a multi-chain app, we can use only one network
+  [network], // until Ithil is not a multi-chain app, we can use only one network
   [
     jsonRpcProvider({
-      rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
+      rpc: (chain) => ({ http: network.rpcUrls.default.http[0] }),
     }),
   ]
 );
