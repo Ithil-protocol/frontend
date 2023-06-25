@@ -23,6 +23,7 @@ import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import {
+  serviceABI,
   serviceAddress,
   usePrepareServiceOpen,
 } from "@/hooks/generated/service";
@@ -33,6 +34,7 @@ import {
   abbreviateBigNumber,
   stringInputToBigNumber,
 } from "@/utils/input.utils";
+import { serviceTest } from "@/wagmiTest/service";
 
 import { prepareOrder } from "../Services/service.contract";
 import DepositForm from "./DepositForm";
@@ -240,17 +242,26 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     inputBigNumber,
     2
   );
-  const {
-    config: openConfig,
-    isLoading: isOpenPrepareLoading,
-    isError: isOpenPrepareError,
-    error: openPrepareError,
-  } = usePrepareServiceOpen({ args: [order] });
+  serviceTest(order);
+  // const {
+  //   config: openConfig,
+  //   isLoading: isOpenPrepareLoading,
+  //   isError: isOpenPrepareError,
+  //   error: openPrepareError,
+  // } = usePrepareServiceOpen({ args: [order] });
+  const isOpenPrepareLoading = false;
+  const isOpenPrepareError = false;
+  const openPrepareError: Error = { name: "a", message: "jklj" };
   const {
     data: openData,
     isLoading: isOpenLoading,
     writeAsync: open,
-  } = useContractWrite(openConfig);
+  } = useContractWrite({
+    abi: serviceABI,
+    address: serviceAddress[42161],
+    functionName: "open",
+    args: [order],
+  });
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
   });
