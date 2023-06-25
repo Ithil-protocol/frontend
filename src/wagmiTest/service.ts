@@ -1,5 +1,6 @@
 import { Account, BaseError, ContractFunctionRevertedError } from "viem";
 
+import { testNetwork } from "@/config/chains";
 import { serviceABI } from "@/hooks/generated/service";
 
 import { account, publicClient } from "./config";
@@ -27,16 +28,17 @@ interface Props {
 export async function serviceTest(order: Props) {
   try {
     console.log("errrr1111");
-    const data = await publicClient.simulateContract({
+    const { result } = await publicClient.simulateContract({
       address: "0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2",
       abi: serviceABI,
       functionName: "open",
       account: account,
       args: [order],
+      chain: testNetwork,
     });
-    console.log("errrr2222222", data);
+    console.log("errrr2222222", result);
   } catch (err) {
-    console.log("errrr3");
+    console.log("errrr3", err);
     if (err instanceof BaseError) {
       console.log("errrr4");
       // Option 1: checking the instance of the error

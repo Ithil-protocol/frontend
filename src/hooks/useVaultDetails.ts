@@ -23,6 +23,10 @@ export const useVaultDetails = (vault: string) => {
         ...vaultContract,
         functionName: "latestRepay",
       },
+      {
+        ...vaultContract,
+        functionName: "freeLiquidity",
+      },
     ],
   });
 };

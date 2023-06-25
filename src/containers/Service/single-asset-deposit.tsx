@@ -242,7 +242,8 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     inputBigNumber,
     2
   );
-  serviceTest(order);
+  // serviceTest(order);
+  console.log(order);
   // const {
   //   config: openConfig,
   //   isLoading: isOpenPrepareLoading,
