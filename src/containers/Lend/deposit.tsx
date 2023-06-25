@@ -18,6 +18,7 @@ import {
 
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
+import { getDecimalRegex } from "@/data/regex";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useVault } from "@/hooks/use-vault.hook";
@@ -65,22 +66,19 @@ const TabSwitch: FC<TabSwitchProps> = ({ values, onChange }) => (
 );
 
 const WidgetComponent: React.FC<WidgetComponentProps> = ({
-  title,
   balance,
-
-  token,
-
   inputAmount,
+  isApproved,
+  isBalanceLoading,
+  isButtonDisabled,
+  isButtonLoading,
+  isMaxDisabled,
+  onActionClick,
   onInputChange,
   onMaxClick,
   onPercentageClick,
-  onActionClick,
-
-  isBalanceLoading,
-  isMaxDisabled,
-  isButtonDisabled,
-  isButtonLoading,
-  isApproved,
+  title,
+  token,
 }) => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -110,7 +108,11 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
           step="0.1"
           variant="filled"
           value={inputAmount}
-          onChange={(event) => onInputChange(event.target.value)}
+          onChange={(event) => {
+            const { value } = event.target;
+            if (getDecimalRegex(6).test(value) || value === "")
+              onInputChange(value);
+          }}
         />
         <InputRightElement width="4.5rem">
           <Button
