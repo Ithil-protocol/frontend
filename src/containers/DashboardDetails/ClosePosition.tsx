@@ -29,7 +29,7 @@ const ClosePosition = () => {
       bg={pickColor(colorMode, palette.colors.primary, "100")}
       className="font-sans"
     >
-      <VStack spacing={"40px"}>
+      <VStack spacing="40px">
         <HStack alignItems="center" justifyContent="space-between" width="full">
           <Text
             fontWeight="light"

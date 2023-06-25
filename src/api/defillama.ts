@@ -1,5 +1,4 @@
 import { aaveChartPools } from "@/data/defillama";
-import { formatDate } from "@/utils/date.utils";
 
 interface Response {
   timestamp: Date;
@@ -21,7 +20,8 @@ export const getChartAave = async (token: string) => {
   const fetchResponse: FetchResponse = await res.json();
 
   const formattedData = fetchResponse.data.map((item) => ({
-    date: formatDate(new Date(item.timestamp)),
+    // date: formatDate(new Date(item.timestamp)),
+    date: item.timestamp,
     tvl: item.tvlUsd,
     apy: item.apyBase,
   }));

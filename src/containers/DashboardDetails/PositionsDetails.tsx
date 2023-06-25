@@ -27,8 +27,8 @@ const PositionsDetails = () => {
         <Heading
           as="h2"
           fontWeight={700}
-          fontSize={"18px"}
-          lineHeight={"24px"}
+          fontSize="18px"
+          lineHeight="24px"
           className="font-sans"
         >
           Positions Details

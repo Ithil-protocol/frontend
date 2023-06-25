@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import classNames from "classnames";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { type FC, Fragment, useState } from "react";
 
 import ToolTipIcon from "@/assets/svgs/Tooltip.svg";
@@ -27,7 +27,7 @@ import { Deposit } from "./deposit";
 
 type Columns = "asset" | "apy" | "tvl" | "borrowed" | "deposited" | "info";
 
-const mobileHiddenColumnClass = "hidden md:table-cell";
+// const mobileHiddenColumnClass = "hidden md:table-cell";
 const columns: Array<{
   text: string;
   key: Columns;
@@ -50,18 +50,18 @@ const columns: Array<{
     text: "Borrowed",
     key: "borrowed",
     tooltip: "How many tokens are currently lent to risk-takers",
-    className: mobileHiddenColumnClass,
+    // className: mobileHiddenColumnClass,
   },
   {
     text: "Deposited",
     key: "deposited",
     tooltip: "How many tokens are currently deposited",
-    className: mobileHiddenColumnClass,
+    // className: mobileHiddenColumnClass,
   },
+  { text: "", key: "info" },
 ];
 
 const Lend: FC = () => {
-  const router = useRouter();
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const {
     data: vaultData,
@@ -163,38 +163,39 @@ const Lend: FC = () => {
                         token={vault.token}
                       />
                     </Td>
-                    <Td className={mobileHiddenColumnClass}>
+                    <Td>
                       {isVaultsLoading || (isVaultsError && <Loading />)}
                       <DynamicEstimatedValue
                         value={vault.borrowed}
                         token={vault.token}
                       />
                     </Td>
-                    <Td className={mobileHiddenColumnClass}>
+                    <Td>
                       {isVaultsLoading || (isVaultsError && <Loading />)}
                       <DynamicEstimatedValue
                         value={vault.deposited}
                         token={vault.token}
                       />
                     </Td>
-                    <Td className={mobileHiddenColumnClass}>
-                      <Button
+                    <Td>
+                      <Link
                         onClick={(e) => {
                           e.stopPropagation();
-                          router.push(
-                            `/lend/details/${vault.token.name.toLowerCase()}`
-                          );
                         }}
-                        fontSize="sm"
-                        fontWeight="normal"
-                        style={{
-                          borderRadius: "10px",
-                          padding: "0px 10px",
-                        }}
-                        variant="outline"
+                        href={`/lend/details/${vault.token.name.toLowerCase()}`}
                       >
-                        Info
-                      </Button>
+                        <Button
+                          fontSize="sm"
+                          fontWeight="normal"
+                          style={{
+                            borderRadius: "10px",
+                            padding: "0px 10px",
+                          }}
+                          variant="outline"
+                        >
+                          Info
+                        </Button>
+                      </Link>
                     </Td>
                   </Tr>
                   {selectedRow === idx && (

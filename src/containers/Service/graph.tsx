@@ -1,81 +1,88 @@
-import { Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Chart from "@/components/chart";
-import fakeChartData from "@/data/fakeData.json";
 import { useChartAave } from "@/hooks/defillama";
+import { isWithinIntervalDaysAgo } from "@/utils";
 import { formatDate } from "@/utils/date.utils";
 
-type graphWindows = "3m" | "1m" | "1w";
+type graphWindows = "All" | "1M" | "1W";
 type graphSections = "TVL" | "APY";
 
-// interface GraphDataPoint {
-//   date: string;
-//   tvl: number | string;
-//   apy: number | string;
-// }
-
-// const graphData = fakeChartData.data.map<GraphDataPoint>((item, _key) => ({
-//   date: formatDate(new Date(item.timestamp)),
-//   tvl: item.tvlUsd,
-//   apy: item.apy,
-// }));
 export const Graph = () => {
   const {
     query: { asset },
   } = useRouter();
 
-  const { data, isLoading } = useChartAave(asset as string);
+  const { data } = useChartAave(asset as string);
 
-  const [graphWindow, setGraphWindow] = useState<graphWindows>("3m");
+  const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
   const windowClassnames = "px-3 py-2 rounded-xl cursor-pointer";
-  const windowChoices: graphWindows[] = ["3m", "1m", "1w"];
+  const windowChoices: graphWindows[] = ["All", "1M", "1W"];
 
   const sectionClassnames = "px-3 py-1 rounded-xl cursor-pointer";
   const sectionChoices: graphSections[] = ["TVL", "APY"];
 
+  const filteredData =
+    graphWindow === "1W"
+      ? isWithinIntervalDaysAgo(data, 7)
+      : graphWindow === "1M"
+      ? isWithinIntervalDaysAgo(data, 30)
+      : data;
+
+  console.log(filteredData);
+
   return (
     <div className="p-5 rounded-xl bg-primary-100">
-      <div className="flex flex-row items-center justify-between gap-4">
+      <Box
+        flexDirection={{
+          base: "column",
+          sm: "row",
+        }}
+        className="flex items-center justify-between gap-4"
+      >
         <Heading size="h2">Historical Rate</Heading>
-        <div className="flex flex-row gap-4 py-1 overflow-hidden rounded-xl bg-primary-200">
-          {windowChoices.map((choice) => (
-            <div
-              className={classNames(windowClassnames, {
-                "bg-primary-300": graphWindow === choice,
-              })}
-              onClick={() => setGraphWindow(choice)}
-              key={choice}
-            >
-              {choice}
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-row gap-4 py-2 overflow-hidden rounded-xl bg-primary-200">
-          {sectionChoices.map((choice) => (
-            <div
-              className={classNames(sectionClassnames, {
-                "bg-primary-300": graphSection === choice,
-              })}
-              onClick={() => setGraphSection(choice)}
-              key={choice}
-            >
-              {choice}
-            </div>
-          ))}
-        </div>
-      </div>
+        <Box gap="10px" className="flex flex-row gap-4 py-1 overflow-hidden">
+          <div className="rounded-xl p-2 bg-primary-200">
+            {windowChoices.map((choice) => (
+              <span
+                className={classNames(windowClassnames, {
+                  "bg-primary-300": graphWindow === choice,
+                })}
+                onClick={() => setGraphWindow(choice)}
+                key={choice}
+              >
+                {choice}
+              </span>
+            ))}
+          </div>
+          <div className="rounded-xl p-2 bg-primary-200">
+            {sectionChoices.map((choice) => (
+              <span
+                className={classNames(sectionClassnames, {
+                  "bg-primary-300": graphSection === choice,
+                })}
+                onClick={() => setGraphSection(choice)}
+                key={choice}
+              >
+                {choice}
+              </span>
+            ))}
+          </div>
+        </Box>
+      </Box>
 
       <div className="pt-4 h-96">
         <Chart
-          data={data}
+          data={filteredData}
           xKey="date"
           yKey={graphSection === "APY" ? "apy" : "tvl"}
           dataKey={graphSection === "APY" ? "apy" : "tvl"}
+          xTickFormatter={(date: Date) => formatDate(new Date(date))}
         />
       </div>
     </div>

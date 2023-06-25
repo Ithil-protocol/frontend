@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import React, { type FC, useState } from "react";
 import {
   useAccount,
@@ -59,21 +60,31 @@ interface WidgetSingleAssetDepositProps {
 export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   asset,
   balance,
-
   inputAmount,
-  onInputChange,
-  onActionClick,
-  onMaxClick,
-
-  isConnected,
+  isApproved,
   isBalanceLoading,
   isButtonDisabled,
   isButtonLoading,
+  isConnected,
   isMaxDisabled,
-  isApproved,
+  onActionClick,
+  onInputChange,
+  onMaxClick,
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
+  const router = useRouter();
+
+  const handleSelectToken = (tokenName: string) => {
+    onClose();
+    const serviceName = history.state.as.split("/").at(-2);
+    if (serviceName) {
+      router.push(`/services/${serviceName}/${tokenName}`);
+    } else {
+      console.error("INVALID_SERVICE_NAME:", serviceName);
+      console.debug("history state:", history.state);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
@@ -95,7 +106,13 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+        }}
+      >
         <div className="flex  gap-2">
           <div
             style={{
@@ -155,6 +172,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 
       {isConnected ? (
         <Button
+          mt="20px"
           onClick={() => {
             void onActionClick();
           }}
@@ -169,10 +187,16 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             : `Approve ${asset.name}`}
         </Button>
       ) : (
-        <Button onClick={openConnectModal}>Connect Wallet</Button>
+        <Button mt="20px" onClick={openConnectModal}>
+          Connect Wallet
+        </Button>
       )}
 
-      <TokenModal isOpen={isOpen} onClose={onClose} />
+      <TokenModal
+        onSelectToken={handleSelectToken}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </div>
   );
 };
@@ -183,7 +207,7 @@ interface ServiceDepositProps {
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const { address, isConnected } = useAccount();
-  const chainId = useChainId() as 1337;
+  const chainId = useChainId() as 42161;
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals);
 

@@ -12,13 +12,15 @@ import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
+import { viewTypes } from "@/types";
 import { mode, pickColor } from "@/utils/theme";
 
 interface TRowProps {
   data: any;
+  activeView: viewTypes;
 }
 
-const TRow: FC<TRowProps> = ({ data: _data }) => {
+const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const handelCancelBtn = (
@@ -38,6 +40,8 @@ const TRow: FC<TRowProps> = ({ data: _data }) => {
         "& > td": {
           padding: ["20px 40px", "30px 40px"],
         },
+        minWidth: "100px",
+        minHeight: "200px",
       }}
     >
       <Td color={mode(colorMode, "primary.main.dark", "primary.main")}>
@@ -92,13 +96,18 @@ const TRow: FC<TRowProps> = ({ data: _data }) => {
         <HStack>
           <Text
             fontWeight="medium"
-            color="#15ac89"
+            color={
+              activeView === "Active"
+                ? "#15ac89"
+                : mode(colorMode, "primary.700", "primary.700.dark")
+            }
             fontSize="22px"
             lineHeight="22px"
           >
-            $ 1200
+            {activeView === "Active" ? "$ 1200" : "2023/01/01"}
           </Text>
           <Text
+            opacity={activeView === "Active" ? "100%" : "0%"}
             bg="#15ac89"
             borderRadius="8px"
             fontWeight="bold"
@@ -113,10 +122,12 @@ const TRow: FC<TRowProps> = ({ data: _data }) => {
           </Text>
         </HStack>
       </Td>
-      <Td textAlign="end">
-        <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
-          Cancel
-        </Button>
+      <Td textAlign="end" width={200} height="108px">
+        {activeView === "Active" && (
+          <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
+            Cancel
+          </Button>
+        )}
       </Td>
     </Tr>
   );

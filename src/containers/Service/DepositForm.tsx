@@ -24,8 +24,9 @@ const DepositForm = () => {
   };
 
   return (
-    <>
+    <Box width="full" gap="30px">
       <Box
+        mt="32px"
         style={{ borderRadius: "10px", border: "1px solid transparent" }}
         bg={mode(colorMode, "primary.200", "primary.200.dark")}
       >
@@ -74,7 +75,7 @@ const DepositForm = () => {
         />
       </Box>
 
-      <Box gap={5} display={"flex"} flexDirection={"column"} marginTop={5}>
+      <Box gap={5} display="flex" flexDirection="column" marginTop={5}>
         {isAdvancedOptionsOpen ? (
           <div
             style={{
@@ -93,11 +94,23 @@ const DepositForm = () => {
           </div>
         ) : (
           <Button
+            style={{
+              padding: "10px",
+            }}
             onClick={handleAdvancedOptionClick(true)}
             color={mode(colorMode, "primary.100.dark", "primary.100")}
             bg={mode(colorMode, "primary.400", "primary.500.dark")}
           >
-            <span style={{ fontSize: "14px", padding: "5px" }}>+</span>
+            <span
+              style={{
+                fontSize: "16px",
+                padding: "5px",
+                fontWeight: "700",
+                lineHeight: "27.63px",
+              }}
+            >
+              +
+            </span>
             <span>Advanced Option</span>
           </Button>
         )}
@@ -121,15 +134,15 @@ const DepositForm = () => {
               </InputRightElement>
             </InputGroup>
 
-            <Button
+            {/* <Button
               bg={pickColor(colorMode, palette.variants.primary, "success")}
             >
               Open
-            </Button>
+            </Button> */}
           </>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 

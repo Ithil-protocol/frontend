@@ -20,9 +20,10 @@ interface Props {
   xKey: string;
   yKey: string;
   dataKey: string;
+  xTickFormatter?: (value: any, index: number) => string;
 }
 
-const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
+const Chart: FC<Props> = ({ data, xKey, yKey, dataKey, xTickFormatter }) => {
   const { colorMode } = useColorMode();
 
   return (
@@ -54,6 +55,11 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           tickLine={false}
           axisLine={false}
           tickMargin={10}
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "8px",
+          }}
+          tickFormatter={xTickFormatter}
         />
         <YAxis
           dataKey={yKey}
@@ -61,7 +67,10 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           axisLine={false}
           orientation="right"
           tickMargin={40}
-          tickFormatter={(value) => `%${value / 100}`}
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "12px",
+          }}
         />
         <CartesianGrid
           strokeDasharray="10"
@@ -71,7 +80,11 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey }) => {
           strokeOpacity={0.04}
         />
 
-        <Tooltip content={<ToolTip />} cursor={false} />
+        <Tooltip
+          content={<ToolTip />}
+          cursor={false}
+          wrapperStyle={{ outline: "none" }}
+        />
       </AreaChart>
     </ResponsiveContainer>
   );

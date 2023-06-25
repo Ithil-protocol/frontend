@@ -4,6 +4,7 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { type FC, useState } from "react";
@@ -161,6 +162,8 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   const { address } = useAccount();
   const inputBigNumber = stringInputToBigNumber(inputAmount, token.decimals);
 
+  const toast = useToast();
+
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address,
@@ -215,22 +218,31 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   };
 
   const handleClick = async () => {
-    if (!isApproved) {
-      // after approval is successful, read again the allowance
-      const result = await approve?.();
-      await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
+    try {
+      if (!isApproved) {
+        // after approval is successful, read again the allowance
+        const result = await approve?.();
+        await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
+        await refetchAllowance();
+        return;
+      }
+      const result = await deposit?.();
+      await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
       await refetchAllowance();
-      return;
+      setInputAmount("0");
+    } catch (error) {
+      toast({
+        title: (error as { shortMessage: string }).shortMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-    const result = await deposit?.();
-    await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
-    await refetchAllowance();
-    setInputAmount("0");
   };
 
   return (
     <WidgetComponent
-      title={"Deposit"}
+      title="Deposit"
       balance={balance?.value ?? BigInt(0)}
       token={token}
       inputAmount={inputAmount}
@@ -260,6 +272,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // in Withdraw, this represents Shares, not Assets
   const [inputBigNumber, setInputBigNumber] = useState<bigint>(BigInt(0));
   const { address } = useAccount();
+  const toast = useToast();
 
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -327,9 +340,18 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   };
 
   const handleClick = async () => {
-    const result = await withdraw?.();
-    await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
-    setInputAmount("0");
+    try {
+      const result = await withdraw?.();
+      await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
+      setInputAmount("0");
+    } catch (error) {
+      toast({
+        title: (error as { shortMessage: string }).shortMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   const onInputChange = (amount: string) => {
@@ -355,7 +377,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
 
   return (
     <WidgetComponent
-      title={"Withdraw"}
+      title="Withdraw"
       balance={assetsBalance}
       token={token}
       inputAmount={inputAmount}

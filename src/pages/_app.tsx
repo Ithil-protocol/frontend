@@ -1,6 +1,7 @@
-import { ChakraProvider, useColorMode } from "@chakra-ui/react";
+import { Button, ChakraProvider, useColorMode } from "@chakra-ui/react";
 import {
   RainbowKitProvider,
+  darkTheme,
   getDefaultWallets,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
@@ -23,14 +24,17 @@ import { addTestNetworks, firstNetwork } from "@/config/chains";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import { theme as chakraTheme } from "@/styles/theme/chakra";
-import { ithilDarkTheme } from "@/styles/theme/rainbowkit";
+import {
+  rainbowkitDarkTheme,
+  rainbowkitLightTheme,
+} from "@/styles/theme/rainbowkit";
 
 const network = firstNetwork();
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [localhost], // until Ithil is not a multi-chain app, we can use only one network
+  [network], // until Ithil is not a multi-chain app, we can use only one network
   [
     jsonRpcProvider({
-      rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
+      rpc: (chain) => ({ http: network.rpcUrls.default.http[0] }),
     }),
   ]
 );
@@ -75,14 +79,7 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
     <RainbowKitProvider
       chains={chains}
       initialChain={localhost}
-      theme={
-        colorMode === "dark"
-          ? ithilDarkTheme
-          : lightTheme({
-              borderRadius: "small",
-              fontStack: "system",
-            })
-      }
+      theme={colorMode === "dark" ? rainbowkitDarkTheme : rainbowkitLightTheme}
       showRecentTransactions={true}
     >
       {children}
