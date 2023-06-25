@@ -4,6 +4,7 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { type FC, useState } from "react";
@@ -271,6 +272,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // in Withdraw, this represents Shares, not Assets
   const [inputBigNumber, setInputBigNumber] = useState<bigint>(BigInt(0));
   const { address } = useAccount();
+  const toast = useToast();
 
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -338,9 +340,18 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   };
 
   const handleClick = async () => {
-    const result = await withdraw?.();
-    await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
-    setInputAmount("0");
+    try {
+      const result = await withdraw?.();
+      await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
+      setInputAmount("0");
+    } catch (error) {
+      toast({
+        title: (error as { shortMessage: string }).shortMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   const onInputChange = (amount: string) => {
