@@ -144,6 +144,176 @@ export default [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "margin",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "interestAndSpread",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Loan[]",
+            name: "loans",
+            type: "tuple[]",
+          },
+          {
+            components: [
+              {
+                internalType: "enum IService.ItemType",
+                name: "itemType",
+                type: "uint8",
+              },
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "identifier",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Collateral[]",
+            name: "collaterals",
+            type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "createdAt",
+            type: "uint256",
+          },
+          {
+            internalType: "enum IService.Status",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct IService.Agreement",
+        name: "agreement",
+        type: "tuple",
+      },
+    ],
+    name: "PositionClosed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "margin",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "interestAndSpread",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Loan[]",
+            name: "loans",
+            type: "tuple[]",
+          },
+          {
+            components: [
+              {
+                internalType: "enum IService.ItemType",
+                name: "itemType",
+                type: "uint8",
+              },
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "identifier",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Collateral[]",
+            name: "collaterals",
+            type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "createdAt",
+            type: "uint256",
+          },
+          {
+            internalType: "enum IService.Status",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct IService.Agreement",
+        name: "agreement",
+        type: "tuple",
+      },
+    ],
+    name: "PositionOpened",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "from",
         type: "address",
@@ -349,25 +519,6 @@ export default [
     name: "edit",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "exposures",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {

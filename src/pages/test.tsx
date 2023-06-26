@@ -1,61 +1,115 @@
 import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Hex } from "viem";
-import { Address, useContractRead, useContractWrite } from "wagmi";
+import { Hex, parseUnits } from "viem";
+import {
+  Address,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  usePublicClient,
+} from "wagmi";
 
 import { vaultABI } from "@/abi";
-import { serviceABI } from "@/hooks/generated/service";
+import { prepareOrder } from "@/containers/Services/service.contract";
+import {
+  serviceABI,
+  serviceAddress,
+  usePrepareServiceOpen,
+} from "@/hooks/generated/service";
 import { useVaultDetails } from "@/hooks/useVaultDetails";
+import { publicClient } from "@/wagmiTest/config";
 import { serviceTest } from "@/wagmiTest/service";
 
 const Test = () => {
   const { data } = useVaultDetails("wbtc");
-  console.log(data);
+  console.log("0000", data);
   const order = {
     agreement: {
       collaterals: [
         {
-          amount: 1400n,
-          identifier: 10n,
+          amount: BigInt(30000000),
+          identifier: BigInt(0),
           itemType: 0,
           token: "0x078f358208685046a11C85e8ad32895DED33A249" as Address,
         },
       ],
-      createdAt: 0n,
+      createdAt: BigInt(0),
       loans: [
         {
-          amount: 100n,
-          interestAndSpread: 0n,
-          margin: 50n,
+          amount: BigInt(20000000),
+          interestAndSpread: BigInt(0),
+          margin: BigInt(100000000),
           token: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f" as Address,
         },
       ],
       status: 0,
     },
-    data: "0x1456575" as Hex,
+    data: "0x" as Hex,
   };
+  serviceTest(order);
   // console.log("data33", data);
-  const { write, error } = useContractWrite({
+
+  // const {config,error:err} = usePrepareServiceOpen({
+
+  // })
+  const xxx = prepareOrder(
+    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+    "0x078f358208685046a11C85e8ad32895DED33A249",
+    parseUnits("1.241", 8),
+    2
+  );
+
+  const { config, error: errr } = usePrepareContractWrite({
     abi: serviceABI,
-    args: [order],
-    address: "0xBf35a6ec119710ADE3403202eDBF003a2b852AEc",
+    address: serviceAddress[42161],
     functionName: "open",
-    gas: 100000000n,
-    gasPrice: 1000000000000000000n,
+    args: [xxx],
+    gas: 2000000n,
   });
-  console.log(error);
+  const { write, error } = useContractWrite(config);
+
+  // const xx = async () => {
+  //   const filter = await publicClient.createContractEventFilter({
+  //     abi: serviceABI,
+  //     address: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
+  //     eventName: 'PositionOpened'
+  //   })
+  //   const logs = await publicClient.getFilterLogs({filter})
+  //   console.log("eventt",logs);
+  // }
+  // useEffect(()=>{
+  //   xx()
+  // },[])
+
+  //   const { write, error } = useContractWrite({
+  //   abi: serviceABI,
+  //   address: serviceAddress[42161],
+  //   functionName: "close",
+  //   args: [parseUnits("0",0),"0x00"],
+  // });
+
+  // console.log("err", err);
+  console.log("0099", error);
+  console.log("0099 errrr", errr);
   //   const [isClient,setIsClient] = useState(false);
 
   //   useEffect(()=>{
   //     setIsClient(true)
   //   })
   // if(!isClient) return null
-  // serviceTest(order)
   // useEffect(()=>{
   //   write();
   // },[])
   // console.log(error);
-  return <Button onClick={() => write()}>jhkhkjh</Button>;
+  return (
+    <Button disabled={!!write} onClick={() => write?.()}>
+      jhkhkjh
+    </Button>
+  );
 };
 
 export default Test;
+
+("0x2e401701000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002f2a2543b76a4166549f7aab2e75bef0aefc5b0f000000000000000000000000000000000000000000000000000000000ecb3b400000000000000000000000000000000000000000000000000000000007659da0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000078f358208685046a11c85e8ad32895ded33a2490000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001630d8e00000000000000000000000000000000000000000000000000000000000000000");
+
+("0x2e401701000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002f2a2543b76a4166549f7aab2e75bef0aefc5b0f0000000000000000000000000000000000000000000000000000000001312d000000000000000000000000000000000000000000000000000000000005f5e100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000078f358208685046a11c85e8ad32895ded33a24900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c9c3800000000000000000000000000000000000000000000000000000000000000000");

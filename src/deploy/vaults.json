@@ -5,7 +5,7 @@
     "iconName": "usdc",
     "decimals": 6,
     "tokenAddress": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
-    "vaultAddress": "0x0000000000000000000000000000000000000000"
+    "vaultAddress": "0xd5a11ff5b5b323bb0314A6A924E8FCA26FD5f74C"
   },
   {
     "name": "USDT",
@@ -13,7 +13,7 @@
     "iconName": "usdt",
     "decimals": 6,
     "tokenAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
-    "vaultAddress": "0x0000000000000000000000000000000000000000"
+    "vaultAddress": "0x94538A109b74B92dF44D32b409b6F0043110e2b2"
   },
   {
     "name": "WETH",
@@ -21,7 +21,7 @@
     "iconName": "eth",
     "decimals": 18,
     "tokenAddress": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
-    "vaultAddress": "0x0000000000000000000000000000000000000000"
+    "vaultAddress": "0x3893220FfB4aeF6626E92fAE3acC38DbEBeF624D"
   },
   {
     "name": "WBTC",
@@ -29,6 +29,6 @@
     "iconName": "btc",
     "decimals": 8,
     "tokenAddress": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-    "vaultAddress": "0x0000000000000000000000000000000000000000"
+    "vaultAddress": "0xdd2F8651D342Ab855dC45C83E2EB32C86b43fCE1"
   }
 ]

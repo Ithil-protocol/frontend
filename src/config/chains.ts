@@ -22,12 +22,12 @@ export const testNetwork: Chain = {
   rpcUrls: {
     default: {
       http: [
-        "https://rpc.tenderly.co/fork/700ff58f-92ed-40ab-a538-3f97626f91ae",
+        "https://rpc.tenderly.co/fork/8e16246a-fb73-48b1-80f6-7f8d777752a9",
       ],
     },
     public: {
       http: [
-        "https://rpc.tenderly.co/fork/700ff58f-92ed-40ab-a538-3f97626f91ae",
+        "https://rpc.tenderly.co/fork/8e16246a-fb73-48b1-80f6-7f8d777752a9",
       ],
     },
   },

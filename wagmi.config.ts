@@ -17,7 +17,7 @@ export default defineConfig({
       //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
       // },
       address: {
-        42161: "0xBf35a6ec119710ADE3403202eDBF003a2b852AEc",
+        42161: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
       },
       abi: ServiceAbi,
     },

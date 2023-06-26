@@ -29,7 +29,7 @@ export async function serviceTest(order: Props) {
   try {
     console.log("errrr1111");
     const { result } = await publicClient.simulateContract({
-      address: "0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2",
+      address: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
       abi: serviceABI,
       functionName: "open",
       account: account,

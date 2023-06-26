@@ -1,4 +1,4 @@
-import { toHex } from "viem";
+import { formatUnits, toHex } from "viem";
 import { type Address } from "wagmi";
 
 interface ServiceLoan {
@@ -56,7 +56,8 @@ export const prepareOrder = (
 
   const order: IServiceOrder = {
     agreement,
-    data: toHex("[]"), //[] as `0x${string}`,
+    // @ts-ignore
+    data: toHex([]), //[] as `0x${string}`,
   };
 
   return order;
