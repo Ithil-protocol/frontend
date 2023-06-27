@@ -25,7 +25,7 @@ const DepositForm = () => {
 
   return (
     <Box width="full" gap="30px">
-      <Box
+      {/* <Box
         mt="32px"
         style={{ borderRadius: "10px", border: "1px solid transparent" }}
         bg={mode(colorMode, "primary.200", "primary.200.dark")}
@@ -41,7 +41,7 @@ const DepositForm = () => {
           leftPart="Price Impact:"
           rightPart="1"
         />
-      </Box>
+      </Box> */}
 
       <Box
         marginTop={5}
