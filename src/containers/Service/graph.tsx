@@ -21,10 +21,10 @@ export const Graph = () => {
   const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
-  const windowClassnames = "px-3 py-2 rounded-xl cursor-pointer";
+  const windowClassnames = "p-2.5 rounded-xl cursor-pointer";
   const windowChoices: graphWindows[] = ["All", "1M", "1W"];
 
-  const sectionClassnames = "px-3 py-1 rounded-xl cursor-pointer";
+  const sectionClassnames = "p-2.5 rounded-xl cursor-pointer";
   const sectionChoices: graphSections[] = ["TVL", "APY"];
 
   const filteredData =
@@ -47,10 +47,10 @@ export const Graph = () => {
       >
         <Heading size="h2">Historical Rate</Heading>
         <Box gap="10px" className="flex flex-row gap-4 py-1 overflow-hidden">
-          <div className="rounded-xl p-2 bg-primary-200">
+          <div className="py-2.5 px-1 rounded-xl bg-primary-200">
             {windowChoices.map((choice) => (
               <span
-                className={classNames(windowClassnames, {
+                className={classNames(sectionClassnames, {
                   "bg-primary-300": graphWindow === choice,
                 })}
                 onClick={() => setGraphWindow(choice)}
@@ -60,7 +60,7 @@ export const Graph = () => {
               </span>
             ))}
           </div>
-          <div className="rounded-xl p-2 bg-primary-200">
+          <div className="py-2.5 px-1 rounded-xl bg-primary-200">
             {sectionChoices.map((choice) => (
               <span
                 className={classNames(sectionClassnames, {
