@@ -1,13 +1,6 @@
-import {
-  Box,
-  Skeleton,
-  SkeletonText,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { useVaultDetails } from "@/hooks/useVaultDetails";
 import { mode } from "@/utils/theme";
 
 const Content = () => {
@@ -15,8 +8,6 @@ const Content = () => {
   const { colorMode } = useColorMode();
 
   const token = (router.query.token || "") as string;
-
-  const { data, isLoading } = useVaultDetails(token);
 
   return (
     <Box
@@ -30,19 +21,19 @@ const Content = () => {
       {[
         {
           title: "Borrowable Balance",
-          value: `${data?.netLoans} ${token}`,
+          value: `0 ${token}`,
         },
         {
           title: "Utilisation Rate",
-          value: `${data?.latestRepay}%`,
+          value: "0.00%",
         },
         {
           title: "Revenues",
-          value: `${data?.currentProfits} ${token}`,
+          value: `0 ${token}`,
         },
         {
           title: "Insurance Reserve",
-          value: `${data?.currentLosses} ${token}`,
+          value: `0 ${token}`,
         },
       ].map((item, index) => {
         return (
@@ -63,13 +54,9 @@ const Content = () => {
             <Text textAlign="center" fontWeight="bold">
               {item.title}
             </Text>
-            {isLoading ? (
-              <SkeletonText width={30} noOfLines={1} />
-            ) : (
-              <Text mt="20px" textAlign="center" fontWeight="medium">
-                {item.value}
-              </Text>
-            )}
+            <Text mt="20px" textAlign="center" fontWeight="medium">
+              {item.value}
+            </Text>
           </Box>
         );
       })}
