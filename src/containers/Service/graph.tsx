@@ -47,7 +47,7 @@ export const Graph = () => {
       >
         <Heading size="h2">Historical Rate</Heading>
         <Box gap="10px" className="flex flex-row gap-4 py-1 overflow-hidden">
-          <div className="py-2.5 px-1 rounded-xl bg-primary-200">
+          <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
             {windowChoices.map((choice) => (
               <span
                 className={classNames(sectionClassnames, {
@@ -60,7 +60,7 @@ export const Graph = () => {
               </span>
             ))}
           </div>
-          <div className="py-2.5 px-1 rounded-xl bg-primary-200">
+          <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
             {sectionChoices.map((choice) => (
               <span
                 className={classNames(sectionClassnames, {
