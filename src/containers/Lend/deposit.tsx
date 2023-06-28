@@ -110,7 +110,7 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
           value={inputAmount}
           onChange={(event) => {
             const { value } = event.target;
-            if (getDecimalRegex(6).test(value) || value === "")
+            if (getDecimalRegex(token.decimals).test(value) || value === "")
               onInputChange(value);
           }}
         />
