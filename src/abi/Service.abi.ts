@@ -1,5 +1,56 @@
 export default [
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_manager",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_aave",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_deadline",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "AboveRiskThreshold",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ImpossibleToQuote",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "IncorrectObtainedToken",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InsufficientAmountOut",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InterestRateOverflow",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidInitParams",
+    type: "error",
+  },
+  {
     inputs: [],
     name: "InvalidStatus",
     type: "error",
@@ -11,12 +62,32 @@ export default [
   },
   {
     inputs: [],
+    name: "MarginTooLow",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "RestrictedAccess",
     type: "error",
   },
   {
     inputs: [],
     name: "RestrictedToOwner",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "UserIsNotWhitelisted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ZeroCollateral",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ZeroMarginLoan",
     type: "error",
   },
   {
@@ -105,6 +176,37 @@ export default [
       },
     ],
     name: "GuardianWasUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "liquidator",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "payoff",
+        type: "uint256",
+      },
+    ],
+    name: "LiquidationTriggered",
     type: "event",
   },
   {
@@ -335,6 +437,57 @@ export default [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [],
+    name: "WhitelistAccessFlagWasToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "status",
+        type: "bool",
+      },
+    ],
+    name: "WhitelistedStatusWasChanged",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "aave",
+    outputs: [
+      {
+        internalType: "contract IPool",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "users",
+        type: "address[]",
+      },
+    ],
+    name: "addToWhitelist",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -412,11 +565,135 @@ export default [
     outputs: [
       {
         internalType: "uint256[]",
-        name: "",
+        name: "amountsOut",
         type: "uint256[]",
       },
     ],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "loan",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "margin",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "freeLiquidity",
+        type: "uint256",
+      },
+    ],
+    name: "computeBaseRateAndSpread",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "margin",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "interestAndSpread",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Loan[]",
+            name: "loans",
+            type: "tuple[]",
+          },
+          {
+            components: [
+              {
+                internalType: "enum IService.ItemType",
+                name: "itemType",
+                type: "uint8",
+              },
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "identifier",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Collateral[]",
+            name: "collaterals",
+            type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "createdAt",
+            type: "uint256",
+          },
+          {
+            internalType: "enum IService.Status",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct IService.Agreement",
+        name: "agreement",
+        type: "tuple",
+      },
+    ],
+    name: "computeDueFees",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -519,6 +796,19 @@ export default [
     name: "edit",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "enabled",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -632,6 +922,25 @@ export default [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "halvingTime",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "id",
     outputs: [
@@ -669,6 +978,44 @@ export default [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "latestAndBase",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "liquidationScore",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "locked",
     outputs: [
@@ -689,6 +1036,25 @@ export default [
         internalType: "contract IManager",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "minMargin",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -831,10 +1197,127 @@ export default [
     type: "function",
   },
   {
+    inputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "margin",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "interestAndSpread",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Loan[]",
+            name: "loans",
+            type: "tuple[]",
+          },
+          {
+            components: [
+              {
+                internalType: "enum IService.ItemType",
+                name: "itemType",
+                type: "uint8",
+              },
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "identifier",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct IService.Collateral[]",
+            name: "collaterals",
+            type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "createdAt",
+            type: "uint256",
+          },
+          {
+            internalType: "enum IService.Status",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct IService.Agreement",
+        name: "agreement",
+        type: "tuple",
+      },
+    ],
+    name: "quote",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "users",
+        type: "address[]",
+      },
+    ],
+    name: "removeFromWhitelist",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "renounceOwnership",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "riskSpreads",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -922,6 +1405,52 @@ export default [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "margin",
+        type: "uint256",
+      },
+    ],
+    name: "setMinMargin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "riskSpread",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "baseRate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "halfTime",
+        type: "uint256",
+      },
+    ],
+    name: "setRiskParams",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -960,6 +1489,13 @@ export default [
       },
     ],
     name: "toggleLock",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "toggleWhitelistFlag",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1028,6 +1564,19 @@ export default [
   },
   {
     inputs: [],
+    name: "totalAllowance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "totalSupply",
     outputs: [
       {
@@ -1073,6 +1622,25 @@ export default [
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "whitelisted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
 ] as const;
