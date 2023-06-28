@@ -4,12 +4,14 @@ import { Hex, parseUnits } from "viem";
 import {
   Address,
   useContractRead,
+  useContractReads,
   useContractWrite,
   usePrepareContractWrite,
   usePublicClient,
 } from "wagmi";
 
 import { vaultABI } from "@/abi";
+import { testNetwork } from "@/config/chains";
 import { prepareOrder } from "@/containers/Services/service.contract";
 import {
   serviceABI,
@@ -55,18 +57,25 @@ const Test = () => {
   const xxx = prepareOrder(
     "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
     "0x078f358208685046a11C85e8ad32895DED33A249",
-    parseUnits("1.241", 8),
+    parseUnits("0.000241", 8),
     2
   );
 
-  const { config, error: errr } = usePrepareContractWrite({
-    abi: serviceABI,
-    address: serviceAddress[42161],
-    functionName: "open",
-    args: [xxx],
-    gas: 2000000n,
-  });
-  const { write, error } = useContractWrite(config);
+  // const { config, error: errr } = usePrepareContractWrite({
+  // mode
+  // });
+  // const { write, error } = useContractWrite({
+  //   mode:"prepared",
+  //   request:{
+  //     abi: serviceABI,
+  //     address: serviceAddress[42161],
+  //     functionName: "open",
+  //     args: [xxx],
+  //     gas: 2000000n,
+  //     account:"0xed7E824e52858de72208c5b9834c18273Ebb9D3b",
+  //     chain:undefined
+  //   }
+  // });
 
   // const xx = async () => {
   //   const filter = await publicClient.createContractEventFilter({
@@ -81,16 +90,24 @@ const Test = () => {
   //   xx()
   // },[])
 
-  //   const { write, error } = useContractWrite({
-  //   abi: serviceABI,
-  //   address: serviceAddress[42161],
-  //   functionName: "close",
-  //   args: [parseUnits("0",0),"0x00"],
-  // });
+  const { write, error } = useContractWrite({
+    mode: "prepared",
+    // @ts-ignore
+    request: {
+      abi: serviceABI,
+      address: serviceAddress[42161],
+      functionName: "close",
+      args: [
+        BigInt(6),
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      ],
+      gas: 20000000n,
+    },
+  });
 
   // console.log("err", err);
   console.log("0099", error);
-  console.log("0099 errrr", errr);
+  // console.log("0099 errrr", errr);
   //   const [isClient,setIsClient] = useState(false);
 
   //   useEffect(()=>{
@@ -101,6 +118,19 @@ const Test = () => {
   //   write();
   // },[])
   // console.log(error);
+
+  const { data: xx } = useContractReads({
+    contracts: [
+      {
+        abi: serviceABI,
+        address: serviceAddress[42161],
+        functionName: "tokenURI",
+        args: [6n],
+      },
+    ],
+  });
+  console.log("777999", xx);
+
   return (
     <Button disabled={!!write} onClick={() => write?.()}>
       jhkhkjh
