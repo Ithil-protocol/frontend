@@ -15,7 +15,7 @@ interface ServiceCollateral {
   amount: bigint;
 }
 
-interface ServiceAgreement {
+export interface ServiceAgreement {
   loans: ServiceLoan[];
   collaterals: ServiceCollateral[];
   createdAt: bigint;
