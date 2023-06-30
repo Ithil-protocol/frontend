@@ -10,13 +10,16 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
 import { type FC, useEffect, useState } from "react";
 import { useConnect, useNetwork, useSwitchNetwork } from "wagmi";
 
+import LogoFullDark from "@/assets/ithil/logoFullDark.svg";
+import LogoFullLight from "@/assets/ithil/logoFullLight.svg";
+import LogoSymbolDark from "@/assets/ithil/logoSymbolDark.svg";
+import LogoSymbolLight from "@/assets/ithil/logoSymbolLight.svg";
 import {
   About as AboutIcon,
   Discord as DiscordIcon,
@@ -89,30 +92,22 @@ const Navbar: FC = () => {
     <nav>
       <div className="flex items-center w-full px-12 my-5">
         <div className="flex flex-grow gap-6">
-          <a href="/">
+          <Link href="/lend">
             <div className="hidden sm:block">
-              <Image
-                src={`/assets/ithil/logoFull${
-                  colorMode === "dark" ? "Dark" : "Light"
-                }.svg`}
-                height={32}
-                width={120}
-                alt="Ithil logo"
-                priority
-              />
+              {colorMode === "dark" ? (
+                <LogoFullDark width={120} />
+              ) : (
+                <LogoFullLight width={120} />
+              )}
             </div>
             <div className="block sm:hidden gap-x-2">
-              <Image
-                src={`/assets/ithil/logoSymbol${
-                  colorMode === "dark" ? "Dark" : "Light"
-                }.svg`}
-                height={32}
-                width={32}
-                alt="Ithil logo"
-                priority
-              />
+              {colorMode === "dark" ? (
+                <LogoSymbolDark width={32} />
+              ) : (
+                <LogoSymbolLight width={32} />
+              )}
             </div>
-          </a>
+          </Link>
           <div className="flex items-center gap-2">
             <div className="flex-grow hidden sm:flex">
               <div className="flex gap-2 justify-items-start">

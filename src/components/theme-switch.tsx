@@ -3,6 +3,8 @@ import Image from "next/image";
 import { type FC } from "react";
 import Switch from "react-switch";
 
+import SwitchDark from "@/assets/ithil/switchDark.svg";
+import SwitchLight from "@/assets/ithil/switchLight.svg";
 import { type PropsWithClassName } from "@/types/components.types";
 
 export const ThemeSwitch: FC<PropsWithClassName> = ({ className }) => {
@@ -14,22 +16,12 @@ export const ThemeSwitch: FC<PropsWithClassName> = ({ className }) => {
       onChange={toggleColorMode}
       uncheckedIcon={
         <div className="flex justify-center items-center [height:100%]">
-          <Image
-            src={"/assets/ithil/switchDark.svg"}
-            alt="Switch dark mode"
-            height={16}
-            width={16}
-          />
+          <SwitchDark width={16} />
         </div>
       }
       checkedIcon={
         <div className="flex justify-center items-center [height:100%]">
-          <Image
-            src={"/assets/ithil/switchLight.svg"}
-            alt="Switch light mode"
-            height={16}
-            width={16}
-          />
+          <SwitchLight width={16} />
         </div>
       }
       checked={colorMode === "light"}
