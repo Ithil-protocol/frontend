@@ -11,13 +11,11 @@
     "check:types": "tsc --noEmit",
     "dev": "npm run start:dev",
     "export": "next export",
-    "prebuild": "npm run wagmi",
     "serve": "next start",
     "setup:git": "husky install",
     "start": "next start",
     "start:dev": "next dev",
     "wagmi": "wagmi generate",
-    "wagmi:generate": "wagmi generate",
     "wagmi:init": "wagmi init"
   },
   "dependencies": {
