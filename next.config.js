@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
@@ -28,23 +29,23 @@ const nextConfig = {
     return config;
   },
 
-  async rewrites() {
-    return [
-      {
-        source: "/",
-        destination: "/lend",
-      },
-    ];
-  },
-  redirects: async () => {
-    return [
-      {
-        source: "/",
-        destination: "/lend",
-        permanent: true,
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/",
+  //       destination: "/lend",
+  //     },
+  //   ];
+  // },
+  // redirects: async () => {
+  //   return [
+  //     {
+  //       source: "/",
+  //       destination: "/lend",
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = nextConfig;
