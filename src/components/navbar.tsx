@@ -121,8 +121,8 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
             </div>
           </div>
         </div>
+
         <div
-          className="hidden sm:flex"
           style={{
             display: "flex",
             gap: 5,
@@ -136,97 +136,100 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
             />
           </div>
 
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={<ThreeDotIcon />}
-              variant="solid"
-            />
-            <MenuList
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {socialMedia.map((item, index) => (
-                <Fragment key={index}>
-                  <MenuItem
-                    style={{
-                      width: "95%",
-                      border: "transparent",
-                      padding: "5px",
-                      borderRadius: "5px",
-                    }}
-                    _hover={{
-                      backgroundColor: mode(
-                        colorMode,
-                        "primary.200",
-                        "primary.200.dark"
-                      ),
-                    }}
-                  >
-                    <Link href={item.link} target="_blank">
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{ padding: "5px" }}>
-                          <item.Icon width={24} height={24} />
-                        </span>
-                        <span>{item.title}</span>
-                      </div>
-                    </Link>
-                  </MenuItem>
-                </Fragment>
-              ))}
-
-              <MenuItem
+          <div className="hidden sm:flex">
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<ThreeDotIcon />}
+                variant="solid"
+              />
+              <MenuList
                 style={{
-                  width: "95%",
-                  border: "transparent",
-                  padding: "5px",
-                  borderRadius: "5px",
-                }}
-                _hover={{
-                  backgroundColor: mode(
-                    colorMode,
-                    "primary.200",
-                    "primary.200.dark"
-                  ),
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <div
+                {socialMedia.map((item, index) => (
+                  <Fragment key={index}>
+                    <MenuItem
+                      style={{
+                        width: "95%",
+                        border: "transparent",
+                        padding: "5px",
+                        borderRadius: "5px",
+                      }}
+                      _hover={{
+                        backgroundColor: mode(
+                          colorMode,
+                          "primary.200",
+                          "primary.200.dark"
+                        ),
+                      }}
+                    >
+                      <Link href={item.link} target="_blank">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                          }}
+                        >
+                          <span style={{ padding: "5px" }}>
+                            <item.Icon width={24} height={24} />
+                          </span>
+                          <span>{item.title}</span>
+                        </div>
+                      </Link>
+                    </MenuItem>
+                  </Fragment>
+                ))}
+
+                <MenuItem
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
+                    width: "95%",
+                    border: "transparent",
+                    padding: "5px",
+                    borderRadius: "5px",
+                  }}
+                  _hover={{
+                    backgroundColor: mode(
+                      colorMode,
+                      "primary.200",
+                      "primary.200.dark"
+                    ),
                   }}
                 >
-                  <span
+                  <div
                     style={{
-                      padding: "5px",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
                     }}
                   >
-                    <MagicMarkerIcon width={24} height={24} />
-                  </span>
-                  <span>Tutorial</span>
-                </div>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+                    <span
+                      style={{
+                        padding: "5px",
+                      }}
+                    >
+                      <MagicMarkerIcon width={24} height={24} />
+                    </span>
+                    <span>Tutorial</span>
+                  </div>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </div>
         </div>
 
         <Box
           bg={mode(colorMode, "primary.200", "primary.200.dark")}
           style={{
-            padding: "5px",
             borderRadius: "50%",
+            marginLeft: "10px",
+            padding: "5px",
           }}
           className="sm:hidden"
           onClick={handleOpenSideBar}
