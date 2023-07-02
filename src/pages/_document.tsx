@@ -9,7 +9,7 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body className="pt-0 mt-0">
-        {false && <Sidebar />}
+        {true && <Sidebar />}
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
 
         <Main />
