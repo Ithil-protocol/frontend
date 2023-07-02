@@ -7,10 +7,12 @@ import { mode } from "@/utils/theme";
 
 const Sidebar = () => {
   const { colorMode } = useColorMode();
-  const closeSidebar = () => {};
+  const closeSidebar = () => console.log;
   return (
     <Box
-      className={` top-0 w-full h-[104vh] bottom-0 right-0 left-0 fixed -translate-y-5  z-[9999999]`}
+      className={
+        " top-0 w-full h-[104vh] bottom-0 right-0 left-0 fixed -translate-y-5  z-[9999999]"
+      }
       backgroundColor={mode(colorMode, "#ffffff", "#070b0f")}
     >
       <HStack justifyContent="end" className="p-14">

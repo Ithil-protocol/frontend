@@ -2,7 +2,6 @@ import { defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
 
 import ServiceAbi from "./src/abi/Service.abi";
-import { CoreInstance, coreConfig } from "./src/config/env";
 
 export default defineConfig({
   out: "src/hooks/generated/service.ts",

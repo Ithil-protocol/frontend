@@ -22,11 +22,7 @@ import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import {
-  serviceABI,
-  serviceAddress,
-  usePrepareServiceOpen,
-} from "@/hooks/generated/service";
+import { serviceABI, serviceAddress } from "@/hooks/generated/service";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { type AaveAsset } from "@/types/onchain.types";
@@ -34,7 +30,6 @@ import {
   abbreviateBigNumber,
   stringInputToBigNumber,
 } from "@/utils/input.utils";
-import { serviceTest } from "@/wagmiTest/service";
 
 import { prepareOrder } from "../Services/service.contract";
 import DepositForm from "./DepositForm";
@@ -252,7 +247,10 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   // } = usePrepareServiceOpen({ args: [order] });
   const isOpenPrepareLoading = false;
   const isOpenPrepareError = false;
-  const openPrepareError: Error = { name: "a", message: "jklj" };
+  const openPrepareError: Error = {
+    name: "a",
+    message: "openPrepareError message",
+  };
   const {
     data: openData,
     isLoading: isOpenLoading,

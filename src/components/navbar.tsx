@@ -14,19 +14,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
 import { type FC, useEffect, useState } from "react";
-import { useConnect, useNetwork, useSwitchNetwork } from "wagmi";
+import { useNetwork } from "wagmi";
 
 import LogoFullDark from "@/assets/ithil/logoFullDark.svg";
 import LogoFullLight from "@/assets/ithil/logoFullLight.svg";
 import LogoSymbolDark from "@/assets/ithil/logoSymbolDark.svg";
 import LogoSymbolLight from "@/assets/ithil/logoSymbolLight.svg";
 import {
-  About as AboutIcon,
-  Discord as DiscordIcon,
-  Docs as DocsIcon,
   HamburgerMenu,
   MagicMarker as MagicMarkerIcon,
-  Source as SourceIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
 import { firstNetwork } from "@/config/chains";
@@ -48,6 +44,7 @@ const Navbar: FC = () => {
         setShouldChangeNetwork(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const switchToTestNetwork = async () => {
     // @ts-ignore

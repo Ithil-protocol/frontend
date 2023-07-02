@@ -1,10 +1,5 @@
-import { Button, ChakraProvider, useColorMode } from "@chakra-ui/react";
-import {
-  RainbowKitProvider,
-  darkTheme,
-  getDefaultWallets,
-  lightTheme,
-} from "@rainbow-me/rainbowkit";
+import { useColorMode } from "@chakra-ui/react";
+import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -24,7 +19,6 @@ import { addTestNetworks, firstNetwork } from "@/config/chains";
 import Sidebar from "@/containers/Sidebar";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
-import { theme as chakraTheme } from "@/styles/theme/chakra";
 import {
   rainbowkitDarkTheme,
   rainbowkitLightTheme,
@@ -35,7 +29,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [network], // until Ithil is not a multi-chain app, we can use only one network
   [
     jsonRpcProvider({
-      rpc: (chain) => ({ http: network.rpcUrls.default.http[0] }),
+      rpc: (_chain) => ({ http: network.rpcUrls.default.http[0] }),
     }),
   ]
 );

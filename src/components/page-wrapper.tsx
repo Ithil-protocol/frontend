@@ -1,5 +1,4 @@
 import { Box, Heading } from "@chakra-ui/react";
-import classNames from "classnames";
 import { type FC } from "react";
 
 import { type PropsWithClassName } from "@/types/components.types";

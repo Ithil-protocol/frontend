@@ -7,7 +7,6 @@ import {
   subDays,
   subWeeks,
 } from "date-fns";
-import { ReactElement, ReactNode } from "react";
 
 import {
   About as AboutIcon,

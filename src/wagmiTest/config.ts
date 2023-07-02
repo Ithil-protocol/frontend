@@ -1,6 +1,4 @@
-import { Account, Address, createPublicClient, http } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { mainnet } from "viem/chains";
+import { Account, createPublicClient, http } from "viem";
 
 import { testNetwork } from "@/config/chains";
 
