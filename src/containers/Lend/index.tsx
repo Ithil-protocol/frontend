@@ -110,6 +110,7 @@ const Lend: FC = () => {
                         closeDelay={500}
                       >
                         <Text
+                          fontSize="18px"
                           className={classNames({
                             "cursor-help": column.tooltip,
                           })}
