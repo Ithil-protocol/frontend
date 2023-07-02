@@ -30,21 +30,10 @@ import {
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
 import { firstNetwork } from "@/config/chains";
+import { routes, socialMedia } from "@/utils";
 import { mode } from "@/utils/theme";
 
 import { ThemeSwitch } from "./theme-switch";
-
-export type PageName = "lend" | "dashboard" | "faucets" | "services";
-interface NavigationPage {
-  name: PageName;
-  url: string;
-}
-
-const pages: NavigationPage[] = [
-  { name: "lend", url: "/lend" },
-  { name: "services", url: "/services" },
-  { name: "dashboard", url: "/dashboard" },
-];
 
 const Navbar: FC = () => {
   const { pathname } = useRouter();
@@ -88,6 +77,10 @@ const Navbar: FC = () => {
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+  const handleSideBar = () => {
+    console.log("Sidebar is opened");
+  };
+
   return (
     <nav>
       <div className="flex items-center w-full px-12 my-5">
@@ -111,7 +104,7 @@ const Navbar: FC = () => {
           <div className="flex items-center gap-7">
             <div className="flex-grow hidden sm:flex">
               <div className="flex gap-7 justify-items-start">
-                {pages.map(({ name, url }) => (
+                {routes.map(({ name, url }) => (
                   <Link
                     key={name}
                     href={url}
@@ -161,28 +154,7 @@ const Navbar: FC = () => {
                 alignItems: "center",
               }}
             >
-              {[
-                {
-                  Icon: AboutIcon,
-                  link: "https://ithil.fi",
-                  title: "About",
-                },
-                {
-                  link: "https://docs.ithil.fi",
-                  title: "Docs",
-                  Icon: DocsIcon,
-                },
-                {
-                  link: "https://github.com/Ithil-protocol",
-                  title: "Source",
-                  Icon: SourceIcon,
-                },
-                {
-                  Icon: DiscordIcon,
-                  link: "https://discord.com/invite/tEaGBcGdQC",
-                  title: "Discord",
-                },
-              ].map((item) => (
+              {socialMedia.map((item) => (
                 <>
                   <MenuItem
                     style={{
@@ -256,6 +228,7 @@ const Navbar: FC = () => {
             borderRadius: "50%",
           }}
           className="sm:hidden"
+          onClick={() => handleSideBar()}
         >
           <HamburgerMenu width={32} height={32} />
         </Box>

@@ -8,6 +8,12 @@ import {
   subWeeks,
 } from "date-fns";
 
+import {
+  About as AboutIcon,
+  Discord as DiscordIcon,
+  Docs as DocsIcon,
+  Source as SourceIcon,
+} from "@/assets/svgs";
 import { icons } from "@/config/icons";
 
 export const getTokenIcon = (key: string) => {
@@ -52,3 +58,38 @@ export const isWithinIntervalDaysAgo = (
     return isWithinInterval(itemDate, { start: daysAgo, end: today });
   });
 };
+
+export type PageName = "lend" | "dashboard" | "faucets" | "services";
+
+interface NavigationPage {
+  name: PageName;
+  url: string;
+}
+export const routes: NavigationPage[] = [
+  { name: "lend", url: "/lend" },
+  { name: "services", url: "/services" },
+  { name: "dashboard", url: "/dashboard" },
+];
+
+export const socialMedia = [
+  {
+    Icon: AboutIcon,
+    link: "https://ithil.fi",
+    title: "About",
+  },
+  {
+    link: "https://docs.ithil.fi",
+    title: "Docs",
+    Icon: DocsIcon,
+  },
+  {
+    link: "https://github.com/Ithil-protocol",
+    title: "Source",
+    Icon: SourceIcon,
+  },
+  {
+    Icon: DiscordIcon,
+    link: "https://discord.com/invite/tEaGBcGdQC",
+    title: "Discord",
+  },
+];
