@@ -100,7 +100,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Chakra>
           <RainbowWrapper>
             <div>
-              {true && <Sidebar />}
+              {false && <Sidebar />}
               <Navbar />
               <Component {...pageProps} />
               <ReactQueryDevtools initialIsOpen={false} />
