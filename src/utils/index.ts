@@ -7,12 +7,16 @@ import {
   subDays,
   subWeeks,
 } from "date-fns";
+import { ReactElement, ReactNode } from "react";
 
 import {
   About as AboutIcon,
+  Dashboard,
   Discord as DiscordIcon,
   Docs as DocsIcon,
+  Services,
   Source as SourceIcon,
+  Star as StarIcon,
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
 
@@ -59,16 +63,10 @@ export const isWithinIntervalDaysAgo = (
   });
 };
 
-export type PageName = "lend" | "dashboard" | "faucets" | "services";
-
-interface NavigationPage {
-  name: PageName;
-  url: string;
-}
-export const routes: NavigationPage[] = [
-  { name: "lend", url: "/lend" },
-  { name: "services", url: "/services" },
-  { name: "dashboard", url: "/dashboard" },
+export const routes = [
+  { name: "lend", url: "/lend", Icon: StarIcon },
+  { name: "services", url: "/services", Icon: Services },
+  { name: "dashboard", url: "/dashboard", Icon: Dashboard },
 ];
 
 export const socialMedia = [

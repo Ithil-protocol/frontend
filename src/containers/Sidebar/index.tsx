@@ -26,9 +26,16 @@ const Sidebar = () => {
         spacing={15}
       >
         <VStack spacing={15} alignItems="start">
-          {routes.map((route, index) => (
-            <Link href={route.url} key={route.url + index}>
-              <Text fontSize="18px">{route.name}</Text>
+          {routes.map((item, index) => (
+            <Link
+              className="flex items-center gap-5"
+              href={item.url}
+              key={item.url + index}
+            >
+              <span style={{ padding: "5px" }}>
+                <item.Icon width={24} height={24} />
+              </span>
+              <Text fontSize="18px">{item.name}</Text>
             </Link>
           ))}
         </VStack>
