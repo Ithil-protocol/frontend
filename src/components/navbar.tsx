@@ -108,9 +108,9 @@ const Navbar: FC = () => {
               )}
             </div>
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-7">
             <div className="flex-grow hidden sm:flex">
-              <div className="flex gap-2 justify-items-start">
+              <div className="flex gap-7 justify-items-start">
                 {pages.map(({ name, url }) => (
                   <Link
                     key={name}
