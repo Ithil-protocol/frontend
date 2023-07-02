@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   IconButton,
   Menu,
   MenuButton,
@@ -9,11 +8,10 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
-import { type FC, useEffect, useState } from "react";
+import { type FC, Fragment, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 
 import LogoFullDark from "@/assets/ithil/logoFullDark.svg";
@@ -29,9 +27,14 @@ import { firstNetwork } from "@/config/chains";
 import { routes, socialMedia } from "@/utils";
 import { mode } from "@/utils/theme";
 
+import ConnectButton from "./connectButton";
 import { ThemeSwitch } from "./theme-switch";
 
-const Navbar: FC = () => {
+interface Props {
+  onSetSidebarOpen: (open: boolean) => void;
+}
+
+const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
   const { pathname } = useRouter();
   const { colorMode } = useColorMode();
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -74,9 +77,7 @@ const Navbar: FC = () => {
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  const handleSideBar = () => {
-    console.log("Sidebar is opened");
-  };
+  const handleOpenSideBar = () => onSetSidebarOpen(true);
 
   return (
     <nav>
@@ -101,9 +102,9 @@ const Navbar: FC = () => {
           <div className="flex items-center gap-7">
             <div className="flex-grow hidden sm:flex">
               <div className="flex gap-7 justify-items-start">
-                {routes.map(({ name, url }) => (
+                {routes.map(({ name, url }, index) => (
                   <Link
-                    key={name}
+                    key={name + index}
                     href={url}
                     className="relative flex flex-col items-center"
                   >
@@ -129,11 +130,10 @@ const Navbar: FC = () => {
           }}
         >
           <div className="w-full">
-            {shouldChangeNetwork ? (
-              <Button onClick={switchToTestNetwork}>change network</Button>
-            ) : (
-              <ConnectButton chainStatus="full" />
-            )}
+            <ConnectButton
+              shouldChangeNetwork={shouldChangeNetwork}
+              switchToTestNetwork={switchToTestNetwork}
+            />
           </div>
 
           <Menu>
@@ -151,8 +151,8 @@ const Navbar: FC = () => {
                 alignItems: "center",
               }}
             >
-              {socialMedia.map((item) => (
-                <>
+              {socialMedia.map((item, index) => (
+                <Fragment key={index}>
                   <MenuItem
                     style={{
                       width: "95%",
@@ -183,7 +183,7 @@ const Navbar: FC = () => {
                       </div>
                     </Link>
                   </MenuItem>
-                </>
+                </Fragment>
               ))}
 
               <MenuItem
@@ -208,7 +208,11 @@ const Navbar: FC = () => {
                     alignItems: "center",
                   }}
                 >
-                  <span style={{ padding: "5px" }}>
+                  <span
+                    style={{
+                      padding: "5px",
+                    }}
+                  >
                     <MagicMarkerIcon width={24} height={24} />
                   </span>
                   <span>Tutorial</span>
@@ -225,7 +229,7 @@ const Navbar: FC = () => {
             borderRadius: "50%",
           }}
           className="sm:hidden"
-          onClick={() => handleSideBar()}
+          onClick={handleOpenSideBar}
         >
           <HamburgerMenu width={32} height={32} />
         </Box>

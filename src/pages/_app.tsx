@@ -14,9 +14,7 @@ import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { localhost } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import Navbar from "@/components/navbar";
 import { addTestNetworks, firstNetwork } from "@/config/chains";
-import Sidebar from "@/containers/Sidebar";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import {
@@ -94,8 +92,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <Chakra>
           <RainbowWrapper>
             <div>
-              {false && <Sidebar />}
-              <Navbar />
               <Component {...pageProps} />
               <ReactQueryDevtools initialIsOpen={false} />
             </div>

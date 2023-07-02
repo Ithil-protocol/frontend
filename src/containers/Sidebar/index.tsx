@@ -5,11 +5,19 @@ import { CloseButton } from "@/assets/svgs";
 import { routes, socialMedia } from "@/utils";
 import { mode } from "@/utils/theme";
 
-const Sidebar = () => {
+interface Props {
+  isSidebarOpen: boolean;
+  onSetSidebarOpen: (open: boolean) => void;
+}
+
+const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
   const { colorMode } = useColorMode();
-  const closeSidebar = () => console.log;
+
+  const closeSidebar = () => onSetSidebarOpen(false);
+
   return (
     <Box
+      hidden={!isSidebarOpen}
       className={
         " top-0 w-full h-[104vh] bottom-0 right-0 left-0 fixed -translate-y-5  z-[9999999]"
       }
