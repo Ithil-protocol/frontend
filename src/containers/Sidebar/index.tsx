@@ -22,19 +22,20 @@ const Sidebar = () => {
       <VStack
         alignItems="start"
         direction="column"
-        className="mx-8 my-4 h-[85%]"
+        className="mx-8 my-4"
+        spacing={15}
       >
-        <VStack spacing={15} alignItems="start" marginBottom={20}>
+        <VStack spacing={15} alignItems="start">
           {routes.map((route, index) => (
             <Link href={route.url} key={route.url + index}>
               <Text fontSize="18px">{route.name}</Text>
             </Link>
           ))}
         </VStack>
-        <Box className="flex flex-row justify-center w-full gap-3">
+        <Box className="flex flex-col justify-start w-full gap-3">
           {socialMedia.map((item, index) => (
             <Link
-              className="flex items-center gap-5 rounded-full hover:bg-primary-100"
+              className="flex items-center gap-5"
               key={item.link + index}
               href={item.link}
               target="_blank"
@@ -42,6 +43,7 @@ const Sidebar = () => {
               <span style={{ padding: "5px" }}>
                 <item.Icon width={24} height={24} />
               </span>
+              <span>{item.title}</span>
             </Link>
           ))}
         </Box>

@@ -21,6 +21,7 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import Navbar from "@/components/navbar";
 import { addTestNetworks, firstNetwork } from "@/config/chains";
+import Sidebar from "@/containers/Sidebar";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import { theme as chakraTheme } from "@/styles/theme/chakra";
@@ -99,6 +100,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Chakra>
           <RainbowWrapper>
             <div>
+              {true && <Sidebar />}
               <Navbar />
               <Component {...pageProps} />
               <ReactQueryDevtools initialIsOpen={false} />
