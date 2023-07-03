@@ -58,7 +58,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
     <div className={classNames(containerClasses, className)}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-row justify-between">
-          <Heading size="h3">Strategy</Heading>
+          <Heading size="h3">Service</Heading>
           {explorerBaseUrl != null && (
             <a
               href={`${explorerBaseUrl}/address/${address}`}
@@ -315,7 +315,7 @@ Aave's reputation for security and reliability is built on its extensive track r
             <Graph />
 
             <StrategyDescription
-              description="Description very long, lorem ipsum & so on"
+              description="This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
               address={service.address}
               baseApy={baseApy}
               boostApy={boostApy}
