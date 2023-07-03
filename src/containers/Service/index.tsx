@@ -228,7 +228,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
             <AccordionItem className="border-0">
               <AccordionButton className="flex flex-row justify-between">
                 <Text textStyle="md" fontWeight={500}>
-                  How it works
+                  Details
                 </Text>
                 <AccordionIcon />
               </AccordionButton>
@@ -277,9 +277,9 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
     },
   ];
 
-  const safetyScoreDescription =
-    "Lorem ipsum is a placeholder text commonly used in the graphic, print, and web design industries. It consists of random Latin words and has no actual meaning, allowing designers to focus on the visual aspects of their work without being distracted by the content.";
-
+  const safetyScoreDescription = `By depositing your tokens on Aave, you contribute to a robust lending pool that serves borrowers across multiple chains, making it one of the most trusted and established DeFi protocols in the industry.
+Aave operates as a decentralized lending and borrowing platform, facilitating the lending of tokens by depositors and providing borrowers with access to these tokens. As a depositor, you earn a fee in return for lending your tokens to borrowers on the platform. This fee, which is derived from the interest paid by borrowers, serves as a source of income for you, boosting your overall APY.
+Aave's reputation for security and reliability is built on its extensive track record and adoption across various blockchain networks. With billions of dollars secured across more than five chains, Aave has consistently demonstrated its ability to safeguard user funds and maintain the integrity of its lending platform.`;
   return (
     <>
       <Head>
