@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   IconButton,
   Menu,
   MenuButton,
@@ -9,44 +8,33 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
-import { type FC, useEffect, useState } from "react";
-import { useConnect, useNetwork, useSwitchNetwork } from "wagmi";
+import { type FC, Fragment, useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
 
 import LogoFullDark from "@/assets/ithil/logoFullDark.svg";
 import LogoFullLight from "@/assets/ithil/logoFullLight.svg";
 import LogoSymbolDark from "@/assets/ithil/logoSymbolDark.svg";
 import LogoSymbolLight from "@/assets/ithil/logoSymbolLight.svg";
 import {
-  About as AboutIcon,
-  Discord as DiscordIcon,
-  Docs as DocsIcon,
   HamburgerMenu,
   MagicMarker as MagicMarkerIcon,
-  Source as SourceIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
 import { firstNetwork } from "@/config/chains";
+import { routes, socialMedia } from "@/utils";
 import { mode } from "@/utils/theme";
 
+import ConnectButton from "./connectButton";
 import { ThemeSwitch } from "./theme-switch";
 
-export type PageName = "lend" | "dashboard" | "faucets" | "services";
-interface NavigationPage {
-  name: PageName;
-  url: string;
+interface Props {
+  onSetSidebarOpen: (open: boolean) => void;
 }
 
-const pages: NavigationPage[] = [
-  { name: "lend", url: "/lend" },
-  { name: "services", url: "/services" },
-  { name: "dashboard", url: "/dashboard" },
-];
-
-const Navbar: FC = () => {
+const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
   const { pathname } = useRouter();
   const { colorMode } = useColorMode();
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -59,6 +47,7 @@ const Navbar: FC = () => {
         setShouldChangeNetwork(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const switchToTestNetwork = async () => {
     // @ts-ignore
@@ -88,6 +77,8 @@ const Navbar: FC = () => {
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+  const handleOpenSideBar = () => onSetSidebarOpen(true);
+
   return (
     <nav>
       <div className="flex items-center w-full px-12 my-5">
@@ -108,12 +99,12 @@ const Navbar: FC = () => {
               )}
             </div>
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-7">
             <div className="flex-grow hidden sm:flex">
-              <div className="flex gap-2 justify-items-start">
-                {pages.map(({ name, url }) => (
+              <div className="flex gap-7 justify-items-start">
+                {routes.map(({ name, url }, index) => (
                   <Link
-                    key={name}
+                    key={name + index}
                     href={url}
                     className="relative flex flex-col items-center"
                   >
@@ -130,8 +121,8 @@ const Navbar: FC = () => {
             </div>
           </div>
         </div>
+
         <div
-          className="hidden sm:flex"
           style={{
             display: "flex",
             gap: 5,
@@ -139,123 +130,109 @@ const Navbar: FC = () => {
           }}
         >
           <div className="w-full">
-            {shouldChangeNetwork ? (
-              <Button onClick={switchToTestNetwork}>change network</Button>
-            ) : (
-              <ConnectButton chainStatus="full" />
-            )}
+            <ConnectButton
+              shouldChangeNetwork={shouldChangeNetwork}
+              switchToTestNetwork={switchToTestNetwork}
+            />
           </div>
 
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={<ThreeDotIcon />}
-              variant="solid"
-            />
-            <MenuList
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {[
-                {
-                  Icon: AboutIcon,
-                  link: "https://ithil.fi",
-                  title: "About",
-                },
-                {
-                  link: "https://docs.ithil.fi",
-                  title: "Docs",
-                  Icon: DocsIcon,
-                },
-                {
-                  link: "https://github.com/Ithil-protocol",
-                  title: "Source",
-                  Icon: SourceIcon,
-                },
-                {
-                  Icon: DiscordIcon,
-                  link: "https://discord.com/invite/tEaGBcGdQC",
-                  title: "Discord",
-                },
-              ].map((item) => (
-                <>
-                  <MenuItem
-                    style={{
-                      width: "95%",
-                      border: "transparent",
-                      padding: "5px",
-                      borderRadius: "5px",
-                    }}
-                    _hover={{
-                      backgroundColor: mode(
-                        colorMode,
-                        "primary.200",
-                        "primary.200.dark"
-                      ),
-                    }}
-                  >
-                    <Link href={item.link} target="_blank">
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{ padding: "5px" }}>
-                          <item.Icon width={24} height={24} />
-                        </span>
-                        <span>{item.title}</span>
-                      </div>
-                    </Link>
-                  </MenuItem>
-                </>
-              ))}
-
-              <MenuItem
+          <div className="hidden sm:flex">
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<ThreeDotIcon />}
+                variant="solid"
+              />
+              <MenuList
                 style={{
-                  width: "95%",
-                  border: "transparent",
-                  padding: "5px",
-                  borderRadius: "5px",
-                }}
-                _hover={{
-                  backgroundColor: mode(
-                    colorMode,
-                    "primary.200",
-                    "primary.200.dark"
-                  ),
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <div
+                {socialMedia.map((item, index) => (
+                  <Fragment key={index}>
+                    <MenuItem
+                      style={{
+                        width: "95%",
+                        border: "transparent",
+                        padding: "5px",
+                        borderRadius: "5px",
+                      }}
+                      _hover={{
+                        backgroundColor: mode(
+                          colorMode,
+                          "primary.200",
+                          "primary.200.dark"
+                        ),
+                      }}
+                    >
+                      <Link href={item.link} target="_blank">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                          }}
+                        >
+                          <span style={{ padding: "5px" }}>
+                            <item.Icon width={24} height={24} />
+                          </span>
+                          <span>{item.title}</span>
+                        </div>
+                      </Link>
+                    </MenuItem>
+                  </Fragment>
+                ))}
+
+                <MenuItem
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
+                    width: "95%",
+                    border: "transparent",
+                    padding: "5px",
+                    borderRadius: "5px",
+                  }}
+                  _hover={{
+                    backgroundColor: mode(
+                      colorMode,
+                      "primary.200",
+                      "primary.200.dark"
+                    ),
                   }}
                 >
-                  <span style={{ padding: "5px" }}>
-                    <MagicMarkerIcon width={24} height={24} />
-                  </span>
-                  <span>Tutorial</span>
-                </div>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        padding: "5px",
+                      }}
+                    >
+                      <MagicMarkerIcon width={24} height={24} />
+                    </span>
+                    <span>Tutorial</span>
+                  </div>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </div>
         </div>
 
         <Box
           bg={mode(colorMode, "primary.200", "primary.200.dark")}
           style={{
-            padding: "5px",
             borderRadius: "50%",
+            marginLeft: "10px",
+            padding: "5px",
           }}
           className="sm:hidden"
+          onClick={handleOpenSideBar}
         >
           <HamburgerMenu width={32} height={32} />
         </Box>

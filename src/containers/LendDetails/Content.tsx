@@ -1,10 +1,4 @@
-import {
-  Box,
-  Skeleton,
-  SkeletonText,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { useVaultDetails } from "@/hooks/useVaultDetails";
@@ -16,7 +10,7 @@ const Content = () => {
 
   const token = (router.query.token || "") as string;
 
-  const { data, isLoading } = useVaultDetails(token);
+  const { data } = useVaultDetails(token);
 
   return (
     <Box

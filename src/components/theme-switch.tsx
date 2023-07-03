@@ -1,5 +1,4 @@
 import { useColorMode } from "@chakra-ui/react";
-import Image from "next/image";
 import { type FC } from "react";
 import Switch from "react-switch";
 

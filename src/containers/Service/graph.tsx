@@ -21,7 +21,7 @@ export const Graph = () => {
   const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
-  const windowClassnames = "p-2.5 rounded-xl cursor-pointer";
+  // const windowClassnames = "p-2.5 rounded-xl cursor-pointer";
   const windowChoices: graphWindows[] = ["All", "1M", "1W"];
 
   const sectionClassnames = "p-2.5 rounded-xl cursor-pointer";

@@ -1,8 +1,6 @@
 import type { Chain } from "wagmi";
-import { arbitrum } from "wagmi/chains";
 
 import { CoreInstance, coreConfig } from "@/config/env";
-import contracts from "@/deploy/contracts.json";
 
 export const testNetwork: Chain = {
   name: "ithil test network",

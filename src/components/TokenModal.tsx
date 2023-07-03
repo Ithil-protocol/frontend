@@ -26,6 +26,7 @@ interface Props {
   modalFooter?: JSX.Element;
   onSelectToken: (tokenName: string) => void;
 }
+
 const TokenModal: React.FC<Props> = ({
   isOpen,
   modalFooter,

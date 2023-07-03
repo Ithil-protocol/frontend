@@ -1,13 +1,15 @@
-import { Heading } from "@chakra-ui/react";
-import classNames from "classnames";
-import { type FC } from "react";
+import { Box, Heading } from "@chakra-ui/react";
+import { type FC, useState } from "react";
 
+import Navbar from "@/components/navbar";
+import Sidebar from "@/containers/Sidebar";
 import { type PropsWithClassName } from "@/types/components.types";
 import { body, heading as headingTypo } from "@/utils/fonts";
 
 interface PageWrapperProps extends PropsWithClassName {
   heading?: string;
   textAlign?: "left" | "center" | "right"; // default is 'center'
+  className?: string;
 }
 
 const PageWrapper: FC<PageWrapperProps> = ({
@@ -15,35 +17,36 @@ const PageWrapper: FC<PageWrapperProps> = ({
   heading,
   className,
   textAlign,
-}) => (
-  <main
-    className={classNames([
-      "container p-3 sm:p-0 md:p-1 mx-auto font-sans",
-      body.variable,
-      headingTypo.variable,
-      className,
-    ])}
-  >
-    <div className="flex flex-col items-center w-full">
-      {heading != null && (
-        <Heading
-          as="h1"
-          size="h1"
-          className={classNames(
-            {
-              "self-start": textAlign === "left",
-              "self-end": textAlign === "right",
-            },
-            " mb-2"
-          )}
-        >
-          {heading}
-        </Heading>
-      )}
+}) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-      {children}
-    </div>
-  </main>
-);
+  return (
+    <Box width="100%" height="100%">
+      <Sidebar
+        onSetSidebarOpen={setSidebarOpen}
+        isSidebarOpen={isSidebarOpen}
+      />
+
+      <Navbar onSetSidebarOpen={setSidebarOpen} />
+
+      <Box
+        className={`container p-3 sm:p-0 md:p-1 mx-auto font-sans mt-20 flex flex-col gap-7 items-center w-full ${body.variable} ${headingTypo.variable} ${className}`}
+      >
+        {heading != null && (
+          <Heading
+            as="h1"
+            size="h1"
+            className={`mb-2 ${textAlign === "left" && "self-start"} ${
+              textAlign === "right" && "self-end"
+            }`}
+          >
+            {heading}
+          </Heading>
+        )}
+        {children}
+      </Box>
+    </Box>
+  );
+};
 
 export default PageWrapper;

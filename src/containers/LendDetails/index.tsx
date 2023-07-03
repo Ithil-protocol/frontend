@@ -1,7 +1,7 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 import { ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";

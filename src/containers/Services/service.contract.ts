@@ -1,4 +1,4 @@
-import { formatUnits, toHex } from "viem";
+import { toHex } from "viem";
 import { type Address } from "wagmi";
 
 interface ServiceLoan {

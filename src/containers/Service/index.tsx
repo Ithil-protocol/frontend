@@ -12,10 +12,10 @@ import {
 import { Icon } from "@iconify/react";
 import classNames from "classnames";
 import Head from "next/head";
+import Image from "next/image";
 import { type FC } from "react";
 import { type Address } from "wagmi";
 
-import { MultiAssetsIcons } from "@/components/multi-assets-icon";
 import PageWrapper from "@/components/page-wrapper";
 import { firstNetwork } from "@/config/chains";
 import { palette } from "@/styles/theme/palette";
@@ -237,7 +237,7 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
   const totalApy = aprToApy(vaultApr + boostApr);
   const name = "Aave leveraged lending";
   const description =
-    "Optimise your capital allocation for max returns in one of the biggest and most secure over collateralised lending markets in DeFi";
+    "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi";
 
   const features: SafetyScoreProps["features"] = [
     { value: SafetyScoreValue.positive, text: "Strategy is battle-tested" },
@@ -280,7 +280,12 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
                   <Heading size="h1b" lineHeight="32px">
                     {name}
                   </Heading>
-                  <MultiAssetsIcons assets={[asset.iconName]} />
+                  <Image
+                    src="/assets/aave.svg"
+                    alt="Aave icon"
+                    width={40}
+                    height={40}
+                  />
                 </div>
                 <Text textStyle="sm">{description}</Text>
               </div>

@@ -5,7 +5,6 @@ import { Address } from "viem";
 import contracts from "@/deploy/contracts.json";
 
 import ServiceAbi from "./src/abi/Service.abi";
-import { CoreInstance, coreConfig } from "./src/config/env";
 
 export default defineConfig({
   out: "src/hooks/generated/service.ts",

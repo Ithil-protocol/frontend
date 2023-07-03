@@ -20,7 +20,7 @@ export const EstimatedValue: FC<EstimatedValueProps> = ({ value, token }) => {
       {estimateTokenValue(
         value,
         token.decimals,
-        priceData?.[token.tokenAddress.toLowerCase() as Address].usd
+        priceData?.[token.tokenAddress.toLowerCase() as Address]?.usd
       )}
     </>
   );
