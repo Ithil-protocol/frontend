@@ -37,7 +37,7 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "arrow-parens": "warn",
-    "linebreak-style": ["error", "unix"],
+    // "linebreak-style": ["error", "unix"],
     "no-delete-var": "warn",
     "no-unused-vars": "off",
     "no-use-before-define": [
