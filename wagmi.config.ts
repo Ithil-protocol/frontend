@@ -1,5 +1,8 @@
 import { defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
+import { Address } from "viem";
+
+import contracts from "@/deploy/contracts.json";
 
 import ServiceAbi from "./src/abi/Service.abi";
 import { CoreInstance, coreConfig } from "./src/config/env";
@@ -17,7 +20,7 @@ export default defineConfig({
       //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
       // },
       address: {
-        42161: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
+        42161: contracts.aaveService as Address,
       },
       abi: ServiceAbi,
     },
