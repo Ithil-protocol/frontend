@@ -20,10 +20,10 @@ export const testNetwork: Chain = {
   },
   rpcUrls: {
     default: {
-      http: ["contracts.networkUrl"],
+      http: [contracts.networkUrl],
     },
     public: {
-      http: ["contracts.networkUrl"],
+      http: [contracts.networkUrl],
     },
   },
 };
