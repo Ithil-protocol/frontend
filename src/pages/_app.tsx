@@ -58,10 +58,10 @@ const localStoragePersister = createSyncStoragePersister({
   retry: removeOldestQuery,
 });
 
-persistQueryClient({
-  queryClient,
-  persister: localStoragePersister,
-});
+// persistQueryClient({
+//   queryClient,
+//   persister: localStoragePersister,
+// });
 
 // this wrapper is necessary, as it must be nested inside the ChakraProvider,
 // in that point can correctly read the colorMode
