@@ -4,11 +4,15 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  NumberInput,
+  NumberInputField,
   useColorMode,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { ChangeEvent, useState } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
+import { useChartAave } from "@/hooks/defillama";
 import { palette } from "@/styles/theme/palette";
 import { mode, pickColor } from "@/utils/theme";
 
@@ -18,6 +22,19 @@ import FormDescriptionItem from "./FormDescriptionItem";
 const DepositForm = () => {
   const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
+
+  const {
+    query: { asset },
+  } = useRouter();
+
+  const { data, isLoading } = useChartAave(asset as string);
+  const [leverage, setLeverage] = useState("1.5");
+
+  const baseApy = data?.[data?.length - 1].apy.toFixed(4);
+
+  const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
+
+  const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(4) : "";
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
@@ -54,24 +71,26 @@ const DepositForm = () => {
         )}`}
       >
         <FormDescriptionItem
-          extension="x"
-          leftPart="Best Leverage:"
-          rightPart="5"
-        />
-        <FormDescriptionItem
           extension="%"
           leftPart="Base APY:"
-          rightPart="2.5"
+          rightPart={baseApy}
+          isLoading={isLoading}
         />
         <FormDescriptionItem
-          extension="%"
-          leftPart="Final APY:"
-          rightPart="12.5"
+          extension="x"
+          leftPart="Best Leverage:"
+          rightPart={finalLeverage}
         />
         <FormDescriptionItem
           extension="%"
           leftPart="Borrow Interest:"
-          rightPart="2"
+          rightPart="0"
+        />
+        <FormDescriptionItem
+          extension="%"
+          leftPart="Final APY:"
+          rightPart={finalApy}
+          isLoading={isLoading}
         />
       </Box>
 
@@ -117,28 +136,35 @@ const DepositForm = () => {
 
         {isAdvancedOptionsOpen && (
           <>
-            <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
+            <AdvancedFormLabel label="Leverage" tooltip="Leverage" />
             <InputGroup size="md">
-              <Input type="number" step="0.1" variant="filled" />
+              <NumberInput
+                width="100%"
+                value={leverage}
+                onChange={setLeverage}
+                step={0.01}
+                precision={2}
+                min={1.01}
+                variant="filled"
+              >
+                <NumberInputField />
+              </NumberInput>
               <InputRightElement>%</InputRightElement>
             </InputGroup>
 
-            <AdvancedFormLabel label="Deadline" tooltip="Not implemented" />
-
+            <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
             <InputGroup size="md">
-              <Input type="number" step="0.1" variant="filled" />
-              <InputRightElement width="4.5rem">
-                <Button isDisabled h="1.75rem" size="sm" variant="insideInput">
-                  Min
-                </Button>
-              </InputRightElement>
+              <NumberInput
+                width="100%"
+                step={0.1}
+                precision={1}
+                min={0.1}
+                defaultValue={0.1}
+                variant="filled"
+              >
+                <NumberInputField />
+              </NumberInput>
             </InputGroup>
-
-            {/* <Button
-              bg={pickColor(colorMode, palette.variants.primary, "success")}
-            >
-              Open
-            </Button> */}
           </>
         )}
       </Box>

@@ -1,17 +1,19 @@
-import { Text, useColorMode } from "@chakra-ui/react";
+import { Skeleton, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
 
 import { mode } from "@/utils/theme";
 
 interface Props {
   leftPart: string;
-  rightPart: string;
+  rightPart?: string | number;
   extension: string;
+  isLoading?: boolean;
 }
 
 const FormDescriptionItem: React.FC<Props> = ({
   extension,
   leftPart,
   rightPart,
+  isLoading = false,
 }) => {
   const { colorMode } = useColorMode();
 
@@ -35,16 +37,20 @@ const FormDescriptionItem: React.FC<Props> = ({
         >
           {leftPart}
         </Text>
-        <Text
-          style={{
-            fontSize: "14px",
-            fontWeight: "500",
-            lineHeight: "24px",
-          }}
-        >
-          <span>{rightPart}</span>
-          <span>{extension}</span>
-        </Text>
+        {isLoading ? (
+          <SkeletonText noOfLines={1} width={50} />
+        ) : (
+          <Text
+            style={{
+              fontSize: "14px",
+              fontWeight: "500",
+              lineHeight: "24px",
+            }}
+          >
+            <span>{rightPart}</span>
+            <span>{extension}</span>
+          </Text>
+        )}
       </div>
     </>
   );

@@ -31,9 +31,9 @@ export const prepareOrder = (
   token: Address,
   aToken: Address,
   amount: bigint,
-  _leverage: number
+  leverage: number
 ) => {
-  const amountInLeverage = amount * BigInt(2);
+  const amountInLeverage = amount * BigInt(leverage);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
