@@ -32,6 +32,7 @@ import {
   useServiceTokenByIndex,
   useServiceTotalSupply,
 } from "@/hooks/generated/service";
+import { useAavePositions } from "@/hooks/useAavePositions";
 import { useVaultDetails } from "@/hooks/useVaultDetails";
 import { publicClient } from "@/wagmiTest/config";
 import { serviceTest } from "@/wagmiTest/service";
@@ -126,8 +127,10 @@ const Test = () => {
     args: [1n],
   });
 
-  console.log("serviceAgreements", serviceAgreements);
-  console.log("serviceAgreements isLoading", isLoading);
+  const { open, closed } = useAavePositions();
+
+  console.log("ccccccc open", open);
+  console.log("ccccccc closed", closed);
   console.log("totalSupply", totalSupply);
   console.log("tokenByIndex", tokenByIndex);
   console.log("agreement33", agreement);
