@@ -74,17 +74,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 
   const handleSelectToken = (tokenName: string) => {
     onClose();
-    const serviceName = (history.state.as as string)
-      .split("/")
-      .filter((i) => i !== "")
-      .at(-2);
-
-    if (serviceName) {
-      router.push(`/services/${serviceName}/${tokenName}`);
-    } else {
-      console.error("INVALID_SERVICE_NAME:", serviceName);
-      console.debug("history state:", history.state);
-    }
+    router.push(`/services/${router.query.service}/${tokenName}`);
   };
 
   return (
