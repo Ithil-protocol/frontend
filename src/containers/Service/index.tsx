@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Heading,
+  SkeletonText,
   Text,
   Tooltip,
   useColorMode,
@@ -13,11 +14,13 @@ import { Icon } from "@iconify/react";
 import classNames from "classnames";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { type FC } from "react";
 import { type Address } from "wagmi";
 
 import PageWrapper from "@/components/page-wrapper";
 import { firstNetwork } from "@/config/chains";
+import { useBaseApy } from "@/hooks/useBaseApy";
 import { palette } from "@/styles/theme/palette";
 import { type PropsWithClassName } from "@/types/components.types";
 import { type AaveAsset, type AaveService } from "@/types/onchain.types";
@@ -31,23 +34,25 @@ import { DynamicServiceDeposit } from "./single-asset-deposit";
 interface StrategyDescriptionProps extends PropsWithClassName {
   description: string;
   address: Address;
-  totalApy: number;
-  vaultApr: number;
-  boostApr: number;
+  baseApy?: number;
+  boostApy?: number;
+  isLoading?: boolean;
 }
 
 const StrategyDescription: FC<StrategyDescriptionProps> = ({
   description,
   address,
-  totalApy,
-  vaultApr,
-  boostApr,
+  baseApy,
+  boostApy,
+  isLoading = false,
   className,
 }) => {
   const { colorMode } = useColorMode();
   const network = firstNetwork();
   const explorerBaseUrl = network.blockExplorers?.default.url;
   const containerClasses = "p-5 rounded-xl bg-primary-100";
+
+  const totalApy = baseApy && boostApy ? baseApy + boostApy : 0;
 
   return (
     <div className={classNames(containerClasses, className)}>
@@ -82,31 +87,43 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
                 color={pickColor(colorMode, palette.colors.primary, "800")}
                 textTransform="uppercase"
               >
+                Base APY
+              </Heading>
+              {isLoading ? (
+                <SkeletonText width={30} noOfLines={1} />
+              ) : (
+                <Text textStyle="slender-sm2">{baseApy?.toFixed(2)} %</Text>
+              )}
+            </div>
+
+            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
+              <Heading
+                size="h5"
+                color={pickColor(colorMode, palette.colors.primary, "800")}
+                textTransform="uppercase"
+              >
+                Boost APY
+              </Heading>
+              {isLoading ? (
+                <SkeletonText width={30} noOfLines={1} />
+              ) : (
+                <Text textStyle="slender-sm2">{boostApy?.toFixed(2)} %</Text>
+              )}
+            </div>
+
+            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
+              <Heading
+                size="h5"
+                color={pickColor(colorMode, palette.colors.primary, "800")}
+                textTransform="uppercase"
+              >
                 Total APY
               </Heading>
-              <Text textStyle="slender-sm2">{totalApy.toFixed(2)} %</Text>
-            </div>
-
-            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
-              <Heading
-                size="h5"
-                color={pickColor(colorMode, palette.colors.primary, "800")}
-                textTransform="uppercase"
-              >
-                Vault APR
-              </Heading>
-              <Text textStyle="slender-sm2">{vaultApr.toFixed(2)} %</Text>
-            </div>
-
-            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
-              <Heading
-                size="h5"
-                color={pickColor(colorMode, palette.colors.primary, "800")}
-                textTransform="uppercase"
-              >
-                Boost APR
-              </Heading>
-              <Text textStyle="slender-sm2">{boostApr.toFixed(2)} %</Text>
+              {isLoading ? (
+                <SkeletonText width={30} noOfLines={1} />
+              ) : (
+                <Text textStyle="slender-sm2">{totalApy?.toFixed(2)} %</Text>
+              )}
             </div>
           </div>
         </div>
@@ -232,9 +249,13 @@ interface Props {
 }
 
 const ServicePage: FC<Props> = ({ service, asset }) => {
-  const vaultApr = fakeApy([service.name, asset.iconName, "vault"]);
-  const boostApr = fakeApy([service.name, asset.iconName, "boost"], 1);
-  const totalApy = aprToApy(vaultApr + boostApr);
+  const {
+    query: { asset: token },
+  } = useRouter();
+
+  const boostApy = 1;
+  const { baseApy, isLoading } = useBaseApy(token as string);
+
   const name = "Aave leveraged lending";
   const description =
     "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi";
@@ -296,9 +317,9 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
             <StrategyDescription
               description="Description very long, lorem ipsum & so on"
               address={service.address}
-              totalApy={totalApy}
-              vaultApr={vaultApr}
-              boostApr={boostApr}
+              baseApy={baseApy}
+              boostApy={boostApy}
+              isLoading={isLoading}
             />
 
             <SafetyScore

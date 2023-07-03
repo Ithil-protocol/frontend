@@ -13,6 +13,7 @@ import { ChangeEvent, useState } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
 import { useChartAave } from "@/hooks/defillama";
+import { useBaseApy } from "@/hooks/useBaseApy";
 import { palette } from "@/styles/theme/palette";
 import { mode, pickColor } from "@/utils/theme";
 
@@ -27,10 +28,9 @@ const DepositForm = () => {
     query: { asset },
   } = useRouter();
 
-  const { data, isLoading } = useChartAave(asset as string);
   const [leverage, setLeverage] = useState("1.5");
 
-  const baseApy = data?.[data?.length - 1].apy.toFixed(4);
+  const { baseApy, isLoading } = useBaseApy(asset as string);
 
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
 
