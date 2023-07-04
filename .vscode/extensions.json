@@ -2,9 +2,7 @@
   "recommendations": [
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
-    "wix.vscode-import-cost",
-    "heybourn.headwind"
+    "EditorConfig.EditorConfig"
   ],
   "unwantedRecommendations": []
 }
