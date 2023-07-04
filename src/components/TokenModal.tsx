@@ -22,7 +22,7 @@ import TokenIcon from "./TokenIcon";
 
 interface Props {
   isOpen: boolean;
-  onClose: VoidNoArgs;
+  onClose?: VoidNoArgs;
   modalFooter?: JSX.Element;
   onSelectToken: (tokenName: string) => void;
 }
@@ -35,9 +35,13 @@ const TokenModal: React.FC<Props> = ({
 }) => {
   const { colorMode } = useColorMode();
 
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
+
   return (
     <>
-      <ChakraModal isCentered isOpen={isOpen} onClose={onClose}>
+      <ChakraModal onClose={handleClose} isCentered isOpen={isOpen}>
         <ModalOverlay backdropFilter="blur(10px)" />
         <ModalContent bg={mode(colorMode, "primary.100", "primary.100.dark")}>
           <ModalHeader
@@ -49,16 +53,20 @@ const TokenModal: React.FC<Props> = ({
           >
             <span></span>
             <span>Select a token</span>
-            <Text
-              style={{
-                cursor: "pointer",
-                borderRadius: "8px",
-                padding: "8px",
-              }}
-              onClick={onClose}
-            >
-              <CloseButton width={14} height={14} />
-            </Text>
+            {onClose ? (
+              <Text
+                style={{
+                  cursor: "pointer",
+                  borderRadius: "8px",
+                  padding: "8px",
+                }}
+                onClick={handleClose}
+              >
+                <CloseButton width={14} height={14} />
+              </Text>
+            ) : (
+              <span></span>
+            )}
           </ModalHeader>
 
           <Divider

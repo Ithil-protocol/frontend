@@ -73,7 +73,6 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   const router = useRouter();
 
   const handleSelectToken = (tokenName: string) => {
-    onClose();
     router.push(`/services/${router.query.service}/${tokenName}`);
   };
 
@@ -184,7 +183,10 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
       )}
 
       <TokenModal
-        onSelectToken={handleSelectToken}
+        onSelectToken={(tokenName) => {
+          onClose();
+          handleSelectToken(tokenName);
+        }}
         isOpen={isOpen}
         onClose={onClose}
       />
