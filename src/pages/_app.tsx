@@ -11,10 +11,9 @@ import {
 import type { AppProps } from "next/app";
 import { type FC, type PropsWithChildren, useEffect } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { localhost } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import { addTestNetworks, firstNetwork } from "@/config/chains";
+import { addTestNetworks, firstNetwork, testNetwork } from "@/config/chains";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import {
@@ -71,7 +70,7 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
     <RainbowKitProvider
       chains={chains}
-      initialChain={localhost}
+      initialChain={testNetwork}
       theme={colorMode === "dark" ? rainbowkitDarkTheme : rainbowkitLightTheme}
       showRecentTransactions={true}
     >
