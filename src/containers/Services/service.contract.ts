@@ -1,4 +1,4 @@
-import { toHex } from "viem";
+import { encodeAbiParameters, parseAbiParameters, toHex } from "viem";
 import { type Address } from "wagmi";
 
 interface ServiceLoan {
@@ -27,13 +27,19 @@ interface IServiceOrder {
   data: Address;
 }
 
+const leverageConverter = (amount: bigint, leverage: number) => {
+  const bigLeverage = BigInt(leverage * 100);
+  const result = amount * bigLeverage;
+  return result / BigInt(100);
+};
+
 export const prepareOrder = (
   token: Address,
   aToken: Address,
   amount: bigint,
   leverage: number
 ) => {
-  const amountInLeverage = amount * BigInt(leverage);
+  const amountInLeverage = leverageConverter(amount, leverage);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
@@ -56,8 +62,7 @@ export const prepareOrder = (
 
   const order: IServiceOrder = {
     agreement,
-    // @ts-ignore
-    data: toHex([]), //[] as `0x${string}`,
+    data: toHex(""),
   };
 
   return order;

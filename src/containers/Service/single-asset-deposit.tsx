@@ -229,7 +229,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,
-    2
+    1.5
   );
   // serviceTest(order);
   console.log(order);
@@ -245,16 +245,25 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     name: "a",
     message: "openPrepareError message",
   };
+
+  const { address: accountAddress } = useAccount();
   const {
     data: openData,
     isLoading: isOpenLoading,
     writeAsync: open,
   } = useContractWrite({
-    abi: serviceABI,
-    address: serviceAddress[42161],
-    functionName: "open",
-    args: [order],
+    mode: "prepared",
+    request: {
+      abi: serviceABI,
+      address: serviceAddress[42161],
+      functionName: "open",
+      args: [order],
+      gas: 2000000n,
+      // @ts-ignore
+      account: accountAddress,
+    },
   });
+
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
   });
