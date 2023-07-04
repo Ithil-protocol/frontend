@@ -1,21 +1,16 @@
-import { Button, Heading, Select, Text, useColorMode } from "@chakra-ui/react";
+import { Button, Heading, Text, useColorMode } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import Link from "next/link";
-import { format } from "numerable";
 import { type FC, useMemo, useState } from "react";
 
 import { Aave } from "@/assets/svgs";
-import { MultiAssetsIcons } from "@/components/multi-assets-icon";
 import PageWrapper from "@/components/page-wrapper";
-import { useServices } from "@/hooks/use-services.hook";
 import { palette } from "@/styles/theme/palette";
 import {
   type Services,
   type SupportedServiceName,
 } from "@/types/onchain.types";
-import { fakeApy, fakeTvl } from "@/utils/fake-data.utils";
-import { aprToApy } from "@/utils/math.utils";
 import { pickColor } from "@/utils/theme";
 
 const ServiceToken: FC<{ token: string }> = ({ token }) => (

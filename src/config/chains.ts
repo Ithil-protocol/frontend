@@ -1,5 +1,4 @@
 import type { Chain } from "wagmi";
-import type { arbitrum } from "wagmi/chains";
 
 import { CoreInstance, coreConfig } from "@/config/env";
 import contracts from "@/deploy/contracts.json";

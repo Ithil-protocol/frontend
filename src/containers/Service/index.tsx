@@ -13,7 +13,6 @@ import {
 import { Icon } from "@iconify/react";
 import classNames from "classnames";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { type FC } from "react";
 import { type Address } from "wagmi";
@@ -25,8 +24,6 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { palette } from "@/styles/theme/palette";
 import { type PropsWithClassName } from "@/types/components.types";
 import { type AaveAsset, type AaveService } from "@/types/onchain.types";
-import { fakeApy } from "@/utils/fake-data.utils";
-import { aprToApy } from "@/utils/math.utils";
 import { pickColor } from "@/utils/theme";
 
 import { Graph } from "./graph";

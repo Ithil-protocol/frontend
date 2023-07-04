@@ -1,7 +1,5 @@
 import { useAccount } from "wagmi";
 
-import { account } from "@/wagmiTest/config";
-
 import { useServiceGetUserAgreements } from "./generated/service";
 
 export const useGetAgreementsByUser = () => {

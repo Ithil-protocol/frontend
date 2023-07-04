@@ -1,4 +1,4 @@
-import { Skeleton, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
+import { SkeletonText, Text, useColorMode } from "@chakra-ui/react";
 
 import { mode } from "@/utils/theme";
 

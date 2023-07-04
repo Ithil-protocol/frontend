@@ -1,35 +1,9 @@
-import { Button } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import {
-  Hex,
-  encodeAbiParameters,
-  parseAbiParameters,
-  parseUnits,
-  toHex,
-} from "viem";
-import {
-  Address,
-  useAccount,
-  useContractRead,
-  useContractReads,
-  useContractWrite,
-  usePrepareContractWrite,
-  usePublicClient,
-  useWaitForTransaction,
-  useWalletClient,
-} from "wagmi";
-import { getContract } from "wagmi/actions";
+import { parseUnits, toHex } from "viem";
+import { useAccount, useWalletClient } from "wagmi";
 
-import { vaultABI } from "@/abi";
-import { testNetwork } from "@/config/chains";
-import {
-  ServiceAgreement,
-  prepareOrder,
-} from "@/containers/Services/service.contract";
+import { prepareOrder } from "@/containers/Services/service.contract";
 import {
   serviceABI,
-  serviceAddress,
-  usePrepareServiceOpen,
   useServiceAgreements,
   useServiceGetAgreement,
   useServiceGetUserAgreements,
@@ -37,9 +11,7 @@ import {
   useServiceTotalSupply,
 } from "@/hooks/generated/service";
 import { useAavePositions } from "@/hooks/useAavePositions";
-import { useVaultDetails } from "@/hooks/useVaultDetails";
 import { publicClient } from "@/wagmiTest/config";
-import { serviceTest } from "@/wagmiTest/service";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
