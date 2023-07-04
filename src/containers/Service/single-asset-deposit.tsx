@@ -229,7 +229,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,
-    2
+    1.5
   );
   // serviceTest(order);
   console.log(order);
