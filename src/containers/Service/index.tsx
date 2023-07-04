@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { type FC } from "react";
 import { type Address } from "wagmi";
 
+import Aave from "@/assets/svgs/aave.svg";
 import PageWrapper from "@/components/page-wrapper";
 import { firstNetwork } from "@/config/chains";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -301,12 +302,7 @@ Aave's reputation for security and reliability is built on its extensive track r
                   <Heading size="h1b" lineHeight="32px">
                     {name}
                   </Heading>
-                  <Image
-                    src="/assets/aave.svg"
-                    alt="Aave icon"
-                    width={40}
-                    height={40}
-                  />
+                  <Aave width={40} height={40} />
                 </div>
                 <Text textStyle="sm">{description}</Text>
               </div>
