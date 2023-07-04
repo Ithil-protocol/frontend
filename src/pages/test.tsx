@@ -139,24 +139,28 @@ const Test = () => {
   // });
 
   const { address: accountAddress } = useAccount();
-  const getData = async () => {
-    console.log("useragg", walletError);
+  // const getData = async () => {
+  //   console.log("useragg", walletError);
 
-    if (walletClient) {
-      console.log("useragg", 2);
-      const contract = getContract({
-        abi: serviceABI,
-        address: serviceAddress[42161],
-        walletClient,
-      });
-      console.log("useragg", 3);
-      const data = await contract.read.getUserAgreements({
-        account: accountAddress,
-      });
-      console.log("useragg", data);
-    }
-  };
-  getData();
+  //   if (walletClient) {
+  //     console.log("useragg", 2);
+  //     const contract = getContract({
+  //       abi: serviceABI,
+  //       address: serviceAddress[42161],
+  //       walletClient,
+  //     });
+  //     console.log("useragg", 3);
+  //     const data = await contract.read.getUserAgreements({
+  //       account: accountAddress,
+  //     });
+  //     console.log("useragg", data);
+  //   }
+  // };
+  // getData();
+  const { data: useragg } = useServiceGetUserAgreements({
+    account: accountAddress,
+  });
+  console.log("useragg", useragg);
 
   console.log("ccccccc open", open);
   console.log("ccccccc closed", closed);
