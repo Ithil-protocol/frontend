@@ -12,6 +12,7 @@ import Source from "./svgs/Source.svg";
 import Star from "./svgs/Star.svg";
 import ThreeDot from "./svgs/ThreeDot.svg";
 import Tooltip from "./svgs/Tooltip.svg";
+import Aave from "./svgs/aave.svg";
 
 export {
   About,
@@ -28,4 +29,5 @@ export {
   Star,
   Dashboard,
   Services,
+  Aave,
 };
