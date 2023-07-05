@@ -169,7 +169,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
     <div className="flex flex-col gap-4 p-5 rounded-xl bg-primary-100">
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-2">
-          <Heading size="h3">Safety Score</Heading>
+          <Heading size="h3">Safety Score High</Heading>
           <Text
             textStyle="slender-md"
             fontWeight={700}
@@ -185,15 +185,6 @@ const SafetyScore: FC<SafetyScoreProps> = ({
               color={pickColor(colorMode, palette.safety, "green")}
             />
           )}
-        </div>
-        <div className="flex flex-row items-center gap-2">
-          <Icon
-            icon="tabler:exclamation-circle"
-            width="20px"
-            height="20px"
-            color={pickColor(colorMode, palette.variants.primary, "action")}
-          />
-          <span>Details</span>
         </div>
       </div>
 
@@ -259,17 +250,17 @@ const ServicePage: FC<Props> = ({ service, asset }) => {
     "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi";
 
   const features: SafetyScoreProps["features"] = [
-    { value: SafetyScoreValue.positive, text: "Strategy is battle-tested" },
-    { value: SafetyScoreValue.neutral, text: "Average volatility asset" },
+    { value: SafetyScoreValue.positive, text: "Battle-tested strategy" },
+    { value: SafetyScoreValue.positive, text: "Low volatility assets" },
     {
-      value: SafetyScoreValue.neutral,
-      text: "Medium capitalized asset",
+      value: SafetyScoreValue.positive,
+      text: "DeFi blue chip",
       extendedDescription:
         "Assets with Market Cap between 1M and 10M fall in this category",
     },
     {
-      value: SafetyScoreValue.negative,
-      text: "High expected IL",
+      value: SafetyScoreValue.neutral,
+      text: "Average returns",
       extendedDescription:
         "Impermanent Loss is a potential loss of value experienced by liquidity providers when the price of an asset in a liquidity pool diverges from its price in external markets.",
     },
