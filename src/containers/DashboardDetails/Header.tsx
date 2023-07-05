@@ -1,13 +1,17 @@
 import { Box, GridItem, HStack, Text, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { ArrowLeft } from "@/assets/svgs";
+import { Aave, ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
+import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { palette } from "@/styles/theme/palette";
+import { getTokenData } from "@/utils";
 import { pickColor } from "@/utils/theme";
 
 const Header = () => {
   const { colorMode } = useColorMode();
+  const { data } = useGetAgreementsByUser();
+  const tokenData = getTokenData("0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f");
   return (
     <GridItem
       bg={pickColor(colorMode, palette.colors.primary, "100")}
@@ -47,7 +51,7 @@ const Header = () => {
               top="50%"
               transform="translateY(-50%)"
             >
-              <TokenIcon name="USDT" />
+              <Aave className="w-10 h-10 " />
             </Box>
             <Box
               position="absolute"
@@ -59,13 +63,13 @@ const Header = () => {
                 style={{
                   border:
                     colorMode === "light"
-                      ? "2.5px solid #f2f5f6"
-                      : "2.5px solid #151a29",
+                      ? "0.5px solid #f2f5f6"
+                      : "0.5px solid #151a29",
                   borderRadius: "100%",
                 }}
                 width={42}
                 height={42}
-                name="DAI"
+                name={tokenData.name}
               />
             </Box>
           </Box>

@@ -18,6 +18,7 @@ import {
   Star as StarIcon,
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
+import vaults from "@/deploy/vaults.json";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -33,6 +34,13 @@ export const filterDatesWithinPastWeek = (data: any) => {
   });
 
   return filteredData;
+};
+
+export const getTokenData = (tokenAddress: string) => {
+  const data: any[] = vaults;
+  return data.filter((item) => item.tokenAddress === tokenAddress).length > 0
+    ? data.find((item) => item.tokenAddress === tokenAddress)
+    : null;
 };
 
 export const filterOneDayPastData = (data: any) => {

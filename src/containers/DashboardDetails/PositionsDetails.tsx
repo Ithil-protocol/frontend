@@ -34,11 +34,7 @@ const PositionsDetails = () => {
           Positions Details
         </Heading>
         <VStack spacing="24px" width="full">
-          <PositionsDetailItem
-            title="Position"
-            unit="ETH 2x Long"
-            value="8.05"
-          />
+          <PositionsDetailItem title="Loan" unit="ETH 2x Long" value="8.05" />
           <PositionsDetailItem title="Open Price" unit="USDC" value="4.122" />
           <PositionsDetailItem
             title="Current Price"
