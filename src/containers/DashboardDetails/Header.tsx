@@ -3,14 +3,19 @@ import Link from "next/link";
 
 import { Aave, ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
+import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { palette } from "@/styles/theme/palette";
-import { getTokenData } from "@/utils";
+import { getTokenDataByAddress } from "@/utils";
 import { pickColor } from "@/utils/theme";
 
 const Header = () => {
   const { colorMode } = useColorMode();
+  const { data } = useGetAgreementsByUser();
+  console.log(data);
 
-  const tokenData = getTokenData("0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f");
+  const tokenData = getTokenDataByAddress(
+    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"
+  );
   return (
     <GridItem
       bg={pickColor(colorMode, palette.colors.primary, "100")}

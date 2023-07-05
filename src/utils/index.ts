@@ -37,10 +37,14 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
-export const getTokenData = (tokenAddress: string): VaultsTypes | undefined => {
-  return vaults.filter((item) => item.tokenAddress === tokenAddress).length > 0
-    ? vaults.find((item) => item.tokenAddress === tokenAddress)
-    : undefined;
+export const getTokenDataByAddress = (
+  tokenAddress: string
+): VaultsTypes | undefined => {
+  return vaults.find((item) => item.tokenAddress === tokenAddress);
+};
+
+export const getTokenDataByName = (name: string): VaultsTypes | undefined => {
+  return vaults.find((item) => item.name === name);
 };
 
 export const filterOneDayPastData = (data: any) => {
