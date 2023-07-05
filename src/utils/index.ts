@@ -7,6 +7,7 @@ import {
   subDays,
   subWeeks,
 } from "date-fns";
+import { formatUnits, parseUnits } from "viem";
 
 import {
   About as AboutIcon,
@@ -47,6 +48,27 @@ export const getTokenByName = (name: string): VaultsTypes | undefined => {
   return vaults.find((item) => item.name === name);
 };
 
+export const formatToken = (name: string, value: bigint) => {
+  try {
+    const token = getTokenByName(name);
+    if (!token) throw Error("Token isn't defined");
+    const decimals = token.decimals;
+    return formatUnits(value, decimals);
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const parseToken = (name: string, value: number | string) => {
+  try {
+    const token = getTokenByName(name);
+    if (!token) throw Error("Token isn't defined");
+    const decimals = token.decimals;
+    const val = typeof value === "string" ? value : value.toString();
+    return parseUnits(val, decimals);
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const filterOneDayPastData = (data: any) => {
   const currentDate = startOfToday();
   const oneDayPast = subWeeks(currentDate, 1);
