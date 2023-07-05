@@ -10,7 +10,7 @@ interface Props {
   setActiveView: Dispatch<SetStateAction<viewTypes>>;
 }
 
-const views: viewTypes[] = ["Active", "Closed", "Liquidated"];
+const views: viewTypes[] = ["Active", "Closed"];
 
 const Views: FC<Props> = ({ currentView, setActiveView }) => {
   const { colorMode } = useColorMode();
