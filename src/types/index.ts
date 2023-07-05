@@ -26,3 +26,5 @@ export interface VaultsTypes {
   tokenAddress: string;
   vaultAddress: string;
 }
+
+export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";

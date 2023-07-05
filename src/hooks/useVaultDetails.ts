@@ -1,6 +1,8 @@
 import { useContractReads } from "wagmi";
 
 import { vaultContracts } from "@/contracts";
+import { VaultName } from "@/types";
+import { formatToken } from "@/utils";
 
 type FunctionName =
   | "currentProfits"
@@ -8,9 +10,9 @@ type FunctionName =
   | "netLoans"
   | "latestRepay";
 
-type Data = { [key in FunctionName]: bigint | undefined };
+type Data = { [key in FunctionName]: string };
 
-export const useVaultDetails = (vault: string) => {
+export const useVaultDetails = (vault: VaultName) => {
   const vaultContract = vaultContracts[vault.toUpperCase()];
 
   const contracts = [
@@ -36,11 +38,11 @@ export const useVaultDetails = (vault: string) => {
     contracts,
   });
 
-  console.log(result);
-
   const data = contracts.reduce((prevValue, currValue, index) => {
-    prevValue[currValue.functionName as FunctionName] =
-      result?.data?.[index]?.result;
+    prevValue[currValue.functionName as FunctionName] = formatToken(
+      vault,
+      result?.data?.[index]?.result || 0n
+    )!;
     return prevValue;
   }, {} as Data);
 

@@ -2,6 +2,7 @@ import { Box, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { useVaultDetails } from "@/hooks/useVaultDetails";
+import { VaultName } from "@/types";
 import { mode } from "@/utils/theme";
 
 const Content = () => {
@@ -10,7 +11,7 @@ const Content = () => {
 
   const token = (router.query.token || "") as string;
 
-  const { data } = useVaultDetails(token);
+  const { data } = useVaultDetails(token.toUpperCase() as VaultName);
 
   console.log(data);
 
