@@ -12,6 +12,8 @@ const Content = () => {
 
   const { data } = useVaultDetails(token);
 
+  console.log(data);
+
   return (
     <Box
       width={{
@@ -24,19 +26,19 @@ const Content = () => {
       {[
         {
           title: "Borrowable Balance",
-          value: `${data?.netLoans} ${token}`,
+          value: `${data.netLoans} ${token}`,
         },
         {
           title: "Utilisation Rate",
-          value: `${data?.latestRepay}%`,
+          value: `${data.latestRepay}%`,
         },
         {
           title: "Revenues",
-          value: `${data?.currentProfits} ${token}`,
+          value: `${data.currentProfits} ${token}`,
         },
         {
           title: "Insurance Reserve",
-          value: `${data?.currentLosses} ${token}`,
+          value: `${data.currentLosses} ${token}`,
         },
       ].map((item, index) => {
         return (

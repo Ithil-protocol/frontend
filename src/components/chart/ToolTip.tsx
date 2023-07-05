@@ -17,8 +17,6 @@ const ToolTip: FC<TooltipProps<ValueType, NameType>> = ({
 }) => {
   const { colorMode } = useColorMode();
 
-  console.log("payload", payload);
-
   if (active) {
     return (
       <Box
