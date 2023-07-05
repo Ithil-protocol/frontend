@@ -125,7 +125,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
       <Td textAlign="end" width={200} height="108px">
         {activeView === "Active" && (
           <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
-            Cancel
+            Close
           </Button>
         )}
       </Td>
