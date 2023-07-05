@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, useColorMode } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { palette } from "@/styles/theme/palette";
@@ -29,7 +29,7 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
       borderRadius="12px"
       flexDirection={["column", "row", "row"]}
     >
-      <Text
+      {/* <Text
         className="font-sans"
         size={["10px", "15px", "22px"]}
         fontWeight="bold"
@@ -37,7 +37,7 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
         padding={["10px", "0"]}
       >
         View
-      </Text>
+      </Text> */}
       <ButtonGroup>
         {views.map((view, key) => (
           <Button
