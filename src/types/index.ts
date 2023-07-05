@@ -17,3 +17,12 @@ export interface ChartDataPoint {
   tvl: number;
   apy: number;
 }
+
+export interface VaultsTypes {
+  name: string;
+  coingeckoId: string;
+  iconName: string;
+  decimals: number;
+  tokenAddress: string;
+  vaultAddress: string;
+}

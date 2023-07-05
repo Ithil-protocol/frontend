@@ -19,6 +19,7 @@ import {
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
 import vaults from "@/deploy/vaults.json";
+import { VaultsTypes } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -36,11 +37,10 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
-export const getTokenData = (tokenAddress: string) => {
-  const data: any[] = vaults;
-  return data.filter((item) => item.tokenAddress === tokenAddress).length > 0
-    ? data.find((item) => item.tokenAddress === tokenAddress)
-    : null;
+export const getTokenData = (tokenAddress: string): VaultsTypes | undefined => {
+  return vaults.filter((item) => item.tokenAddress === tokenAddress).length > 0
+    ? vaults.find((item) => item.tokenAddress === tokenAddress)
+    : undefined;
 };
 
 export const filterOneDayPastData = (data: any) => {
