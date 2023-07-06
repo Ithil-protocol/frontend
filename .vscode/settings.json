@@ -44,7 +44,9 @@
     "pnpm-lock.yaml": false,
     ".svgrrc.json": false,
     ".npmrc": false,
-    ".env.local": false
+    ".env.local": false,
+    ".gitattributes": false,
+    ".eslintrc.cjs": false
   },
   "prettier.configPath": ".prettierrc.json",
   "prettier.endOfLine": "lf",

@@ -2,6 +2,7 @@ import { Box, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { useVaultDetails } from "@/hooks/useVaultDetails";
+import { VaultName } from "@/types";
 import { mode } from "@/utils/theme";
 
 const Content = () => {
@@ -10,7 +11,9 @@ const Content = () => {
 
   const token = (router.query.token || "") as string;
 
-  const { data } = useVaultDetails(token);
+  const { data } = useVaultDetails(token.toUpperCase() as VaultName);
+
+  console.log(data);
 
   return (
     <Box
@@ -24,19 +27,19 @@ const Content = () => {
       {[
         {
           title: "Borrowable Balance",
-          value: `${data?.netLoans} ${token}`,
+          value: `${data.netLoans} ${token}`,
         },
         {
           title: "Utilisation Rate",
-          value: `${data?.latestRepay}%`,
+          value: `${data.latestRepay}%`,
         },
         {
           title: "Revenues",
-          value: `${data?.currentProfits} ${token}`,
+          value: `${data.currentProfits} ${token}`,
         },
         {
           title: "Insurance Reserve",
-          value: `${data?.currentLosses} ${token}`,
+          value: `${data.currentLosses} ${token}`,
         },
       ].map((item, index) => {
         return (

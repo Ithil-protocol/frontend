@@ -1,4 +1,4 @@
-export type viewTypes = "Active" | "Closed" | "Liquidated";
+export type viewTypes = "Active" | "Closed";
 
 export type VoidNoArgs = () => void;
 
@@ -26,3 +26,5 @@ export interface VaultsTypes {
   tokenAddress: string;
   vaultAddress: string;
 }
+
+export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";

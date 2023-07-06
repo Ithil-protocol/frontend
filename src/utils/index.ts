@@ -20,7 +20,7 @@ import {
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
 import vaults from "@/deploy/vaults.json";
-import { VaultsTypes } from "@/types";
+import { VaultName, VaultsTypes } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -44,13 +44,14 @@ export const getTokenByAddress = (
   return vaults.find((item) => item.tokenAddress === tokenAddress);
 };
 
-export const getTokenByName = (name: string): VaultsTypes | undefined => {
+export const getTokenByName = (name: VaultName): VaultsTypes | undefined => {
   return vaults.find((item) => item.name === name);
 };
 
-export const formatToken = (name: string, value: bigint) => {
+export const formatToken = (name: VaultName, value: bigint) => {
   try {
     const token = getTokenByName(name);
+    console.log("token:::", token);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
     return formatUnits(value, decimals);
@@ -58,7 +59,7 @@ export const formatToken = (name: string, value: bigint) => {
     console.error(error);
   }
 };
-export const parseToken = (name: string, value: number | string) => {
+export const parseToken = (name: VaultName, value: number | string) => {
   try {
     const token = getTokenByName(name);
     if (!token) throw Error("Token isn't defined");
