@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 
+import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { viewTypes } from "@/types";
 import { mode } from "@/utils/theme";
 
@@ -21,6 +22,11 @@ interface Props {
 
 const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
+
+  const { data } = useGetAgreementsByUser();
+
+  console.log("data33", data);
+
   return (
     <TableContainer width="full">
       <DefaultTable
@@ -44,11 +50,13 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           </Tr>
         </Thead>
         <Tbody>
-          <TRow data="" activeView={activeView} />
-          <TRow data="" activeView={activeView} />
-          <TRow data="" activeView={activeView} />
-          <TRow data="" activeView={activeView} />
-          <TRow data="" activeView={activeView} />
+          {data?.map((item, index) => (
+            <TRow
+              key={index}
+              token={item.loans[0].token}
+              activeView={activeView}
+            />
+          ))}
         </Tbody>
       </DefaultTable>
     </TableContainer>

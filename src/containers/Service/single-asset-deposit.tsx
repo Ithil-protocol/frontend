@@ -73,7 +73,6 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   const router = useRouter();
 
   const handleSelectToken = (tokenName: string) => {
-    onClose();
     router.push(`/services/${router.query.service}/${tokenName}`);
   };
 
@@ -184,7 +183,10 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
       )}
 
       <TokenModal
-        onSelectToken={handleSelectToken}
+        onSelectToken={(tokenName) => {
+          onClose();
+          handleSelectToken(tokenName);
+        }}
         isOpen={isOpen}
         onClose={onClose}
       />
@@ -229,7 +231,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,
-    2
+    1.5
   );
   // serviceTest(order);
   console.log(order);
@@ -245,16 +247,25 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     name: "a",
     message: "openPrepareError message",
   };
+
+  const { address: accountAddress } = useAccount();
   const {
     data: openData,
     isLoading: isOpenLoading,
     writeAsync: open,
   } = useContractWrite({
-    abi: serviceABI,
-    address: serviceAddress[42161],
-    functionName: "open",
-    args: [order],
+    mode: "prepared",
+    request: {
+      abi: serviceABI,
+      address: serviceAddress[42161],
+      functionName: "open",
+      args: [order],
+      gas: 2000000n,
+      // @ts-ignore
+      account: accountAddress,
+    },
   });
+
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
   });

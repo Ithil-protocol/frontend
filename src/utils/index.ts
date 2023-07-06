@@ -7,6 +7,7 @@ import {
   subDays,
   subWeeks,
 } from "date-fns";
+import { formatUnits, parseUnits } from "viem";
 
 import {
   About as AboutIcon,
@@ -18,6 +19,8 @@ import {
   Star as StarIcon,
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
+import vaults from "@/deploy/vaults.json";
+import { VaultName, VaultsTypes } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -35,6 +38,38 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
+export const getTokenByAddress = (tokenAddress: string): VaultsTypes => {
+  const vault = vaults.find((item) => item.tokenAddress === tokenAddress);
+  if (!vault) throw new Error("Vault not found");
+  return vault;
+};
+
+export const getTokenByName = (name: VaultName): VaultsTypes | undefined => {
+  return vaults.find((item) => item.name === name);
+};
+
+export const formatToken = (name: VaultName, value: bigint) => {
+  try {
+    const token = getTokenByName(name);
+    console.log("token:::", token);
+    if (!token) throw Error("Token isn't defined");
+    const decimals = token.decimals;
+    return formatUnits(value, decimals);
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const parseToken = (name: VaultName, value: number | string) => {
+  try {
+    const token = getTokenByName(name);
+    if (!token) throw Error("Token isn't defined");
+    const decimals = token.decimals;
+    const val = typeof value === "string" ? value : value.toString();
+    return parseUnits(val, decimals);
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const filterOneDayPastData = (data: any) => {
   const currentDate = startOfToday();
   const oneDayPast = subWeeks(currentDate, 1);

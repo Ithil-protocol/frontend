@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Input,
   InputGroup,
   InputRightElement,
   NumberInput,
@@ -9,10 +8,9 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
-import { useChartAave } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { palette } from "@/styles/theme/palette";
 import { mode, pickColor } from "@/utils/theme";
@@ -34,7 +32,7 @@ const DepositForm = () => {
 
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
 
-  const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(4) : "";
+  const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(2) : "";
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
@@ -73,7 +71,7 @@ const DepositForm = () => {
         <FormDescriptionItem
           extension="%"
           leftPart="Base APY:"
-          rightPart={baseApy}
+          rightPart={baseApy?.toFixed(2)}
           isLoading={isLoading}
         />
         <FormDescriptionItem

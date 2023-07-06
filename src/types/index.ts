@@ -1,4 +1,4 @@
-export type viewTypes = "Active" | "Closed" | "Liquidated";
+export type viewTypes = "Active" | "Closed";
 
 export type VoidNoArgs = () => void;
 
@@ -17,3 +17,14 @@ export interface ChartDataPoint {
   tvl: number;
   apy: number;
 }
+
+export interface VaultsTypes {
+  name: string;
+  coingeckoId: string;
+  iconName: string;
+  decimals: number;
+  tokenAddress: string;
+  vaultAddress: string;
+}
+
+export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";

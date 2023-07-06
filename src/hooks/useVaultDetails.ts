@@ -1,8 +1,18 @@
 import { useContractReads } from "wagmi";
 
 import { vaultContracts } from "@/contracts";
+import { VaultName } from "@/types";
+import { formatToken } from "@/utils";
 
-export const useVaultDetails = (vault: string) => {
+type FunctionName =
+  | "currentProfits"
+  | "currentLosses"
+  | "netLoans"
+  | "latestRepay";
+
+type Data = { [key in FunctionName]: string };
+
+export const useVaultDetails = (vault: VaultName) => {
   const vaultContract = vaultContracts[vault.toUpperCase()];
 
   const contracts = [
@@ -22,18 +32,19 @@ export const useVaultDetails = (vault: string) => {
       ...vaultContract,
       functionName: "latestRepay",
     },
-  ];
+  ] as const;
 
   const result = useContractReads({
     contracts,
   });
 
-  console.log("result", result.isLoading);
-
-  const data: any = {};
-  contracts.forEach(({ functionName }, index) => {
-    data[functionName] = result?.data?.[index]?.result;
-  });
+  const data = contracts.reduce((prevValue, currValue, index) => {
+    prevValue[currValue.functionName as FunctionName] = formatToken(
+      vault,
+      result?.data?.[index]?.result || 0n
+    )!;
+    return prevValue;
+  }, {} as Data);
 
   return {
     ...result,

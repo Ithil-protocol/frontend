@@ -9,20 +9,25 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { Address } from "viem";
 
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
 import { viewTypes } from "@/types";
+import { getTokenByAddress } from "@/utils";
 import { mode, pickColor } from "@/utils/theme";
 
 interface TRowProps {
-  data: any;
+  token: Address;
   activeView: viewTypes;
 }
 
-const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
+const TRow: FC<TRowProps> = ({ token, activeView }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
+
+  const { name } = getTokenByAddress(token);
+
   const handelCancelBtn = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -55,9 +60,9 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
                   top="50%"
                   transform="translateY(-50%)"
                 >
-                  <TokenIcon name="USDT" />
+                  <TokenIcon name={name} width={40} height={40} />
                 </Box>
-                <Box
+                {/* <Box
                   position="absolute"
                   left="15px"
                   top="50%"
@@ -75,10 +80,10 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
                     height={42}
                     name="DAI"
                   />
-                </Box>
+                </Box> */}
               </Box>
               <Text fontSize="22px" lineHeight="22px">
-                ETH / BNB
+                {name}
               </Text>
             </HStack>
           </Box>
@@ -90,7 +95,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        ETH - 2x Long
+        Aave
       </Td>
       <Td>
         <HStack>
@@ -125,7 +130,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
       <Td textAlign="end" width={200} height="108px">
         {activeView === "Active" && (
           <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
-            Cancel
+            Close
           </Button>
         )}
       </Td>
