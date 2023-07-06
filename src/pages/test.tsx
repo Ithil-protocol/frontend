@@ -1,9 +1,11 @@
 import { Address, parseUnits, toHex } from "viem";
-import { useAccount, useWalletClient } from "wagmi";
+import { useAccount, useContractWrite, useWalletClient } from "wagmi";
 
+import ServiceAbi from "@/abi/Service.abi";
 import { usePrepareOrder } from "@/containers/Services/service.contract";
 import {
   serviceABI,
+  serviceAddress,
   useServiceAgreements,
   useServiceGetAgreement,
   useServiceGetUserAgreements,
@@ -209,7 +211,27 @@ const Test = () => {
   });
   console.log("ii2", vaultFreeLiquidity);
 
-  return <p onClick={yy}>download event </p>;
+  const { write: setRiskParam } = useContractWrite({
+    mode: "prepared",
+    // @ts-ignore
+    request: {
+      abi: ServiceAbi,
+      address: serviceAddress[42161],
+      functionName: "setRiskParams",
+      args: [
+        "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+        BigInt(3e15),
+        BigInt(1e16),
+        BigInt(3 * 86400),
+      ],
+      gas: 20000000n,
+    },
+  });
+
+  // const {data:ss} = useGetAgreementsByUser();
+  // console.log("ssss", ss);
+
+  return <p onClick={() => setRiskParam && setRiskParam()}>download event </p>;
 
   // return (
   //   <Button disabled={!!write} onClick={() => write?.()}>

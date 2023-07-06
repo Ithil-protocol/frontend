@@ -1,4 +1,4 @@
-import { Address, parseEther } from "viem";
+import { Address } from "viem";
 
 import { getVaultByTokenAddress } from "@/utils";
 
@@ -24,11 +24,22 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
     enabled: !!vaultFreeLiquidity,
   });
 
+  // console.log(
+  //   "ii",
+  //   "vaultFreeLiquidity:",
+  //   vaultFreeLiquidity,
+  //   "loan:",
+  //   loan,
+  //   "margin:",
+  //   margin
+  // );
+  // console.log("ii2", data);
+
   if (data) {
-    return (data[0] + data[1]) / parseEther("1");
+    return (
+      ((data[0] * 101n) / 100n) * BigInt(2 ** 128) + (data[1] * 101n) / 100n
+    );
   }
   // or throw an error to stop user from opoenning position
   return 0n;
-  // console.log("ii", "vaultFreeLiquidity:", vaultFreeLiquidity,"loan:",loan, "margin:",margin, );
-  // console.log("ii2", data);
 };

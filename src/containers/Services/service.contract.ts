@@ -47,6 +47,7 @@ export const usePrepareOrder = (
     loan: amountInLeverage,
     margin: amount,
   });
+
   const collateral: ServiceCollateral = {
     itemType: 0,
     token: aToken,
