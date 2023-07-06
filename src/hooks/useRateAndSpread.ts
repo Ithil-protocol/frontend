@@ -1,6 +1,6 @@
 import { Address, formatEther } from "viem";
 
-import { getVaultByTokenAddress } from "@/utils";
+import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 
 import { useServiceComputeBaseRateAndSpread } from "./generated/service";
 import { useVaultFreeLiquidity } from "./generated/vault";
@@ -9,7 +9,8 @@ const spreadToUint256 = (base: bigint, spread: bigint) => {
   return ((base * 101n) / 100n) * BigInt(2 ** 128) + (spread * 101n) / 100n;
 };
 const displayInterestSpread = (base: bigint, spread: bigint) => {
-  return formatEther(base + spread);
+  const result = formatEther(base + spread);
+  return fixPrecision(Number(result) * 100, 2);
 };
 
 interface Props {
@@ -42,7 +43,7 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   // );
   // console.log("ii2", data);
 
-  const result = { interestAndSpread: 0n, displayInterestAndSpread: "0" };
+  const result = { interestAndSpread: 0n, displayInterestAndSpread: 0 };
   if (data) {
     result.interestAndSpread = spreadToUint256(...data);
     result.displayInterestAndSpread = displayInterestSpread(...data);
