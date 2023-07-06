@@ -42,7 +42,6 @@ export const usePrepareOrder = (
   leverage: number
 ) => {
   const amountInLeverage = leverageConverter(amount, leverage);
-  // get spread
   const interestAndSpread = useRateAndSpread({
     tokenAddress: token,
     loan: amountInLeverage,
