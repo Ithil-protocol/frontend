@@ -18,7 +18,6 @@ import { type FC } from "react";
 import { type Address } from "wagmi";
 
 import Aave from "@/assets/svgs/aave.svg";
-import PageWrapper from "@/components/page-wrapper";
 import { firstNetwork } from "@/config/chains";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { palette } from "@/styles/theme/palette";
@@ -280,43 +279,41 @@ Aave's reputation for security and reliability is built on its extensive track r
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <PageWrapper>
-        <div className="grid w-full grid-cols-10 gap-6">
-          <div className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">
-            {/* Strategy Introduction */}
-            <div className="flex flex-row gap-2 p-5 rounded-xl bg-primary-100">
-              <div className="flex flex-col w-full gap-3">
-                <div className="flex flex-row justify-between">
-                  <Heading size="h1b" lineHeight="32px">
-                    {name}
-                  </Heading>
-                  <Aave width={40} height={40} />
-                </div>
-                <Text textStyle="sm">{description}</Text>
+      <div className="grid w-full grid-cols-10 gap-6">
+        <div className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">
+          {/* Strategy Introduction */}
+          <div className="flex flex-row gap-2 p-5 rounded-xl bg-primary-100">
+            <div className="flex flex-col w-full gap-3">
+              <div className="flex flex-row justify-between">
+                <Heading size="h1b" lineHeight="32px">
+                  {name}
+                </Heading>
+                <Aave width={40} height={40} />
               </div>
+              <Text textStyle="sm">{description}</Text>
             </div>
-
-            <Graph />
-
-            <StrategyDescription
-              description="This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
-              address={service.address}
-              baseApy={baseApy}
-              boostApy={boostApy}
-              isLoading={isLoading}
-            />
-
-            <SafetyScore
-              score={9.3}
-              features={features}
-              description={safetyScoreDescription}
-            />
           </div>
-          <div className="flex-shrink-0 col-span-full lg:col-span-3">
-            <DynamicServiceDeposit asset={asset} />
-          </div>
+
+          <Graph />
+
+          <StrategyDescription
+            description="This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
+            address={service.address}
+            baseApy={baseApy}
+            boostApy={boostApy}
+            isLoading={isLoading}
+          />
+
+          <SafetyScore
+            score={9.3}
+            features={features}
+            description={safetyScoreDescription}
+          />
         </div>
-      </PageWrapper>
+        <div className="flex-shrink-0 col-span-full lg:col-span-3">
+          <DynamicServiceDeposit asset={asset} />
+        </div>
+      </div>
     </>
   );
 };

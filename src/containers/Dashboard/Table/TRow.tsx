@@ -10,7 +10,6 @@ import {
 import { useRouter } from "next/router";
 import { FC } from "react";
 
-import { Aave } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
 import { VaultName, viewTypes } from "@/types";
@@ -61,14 +60,6 @@ const TRow: FC<TRowProps> = ({ data, activeView }) => {
                 <Box
                   position="absolute"
                   left="0"
-                  top="50%"
-                  transform="translateY(-50%)"
-                >
-                  <Aave width={32} height={32} />
-                </Box>
-                <Box
-                  position="absolute"
-                  left="15px"
                   top="50%"
                   transform="translateY(-50%)"
                 >
