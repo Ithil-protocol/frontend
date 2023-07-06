@@ -5,7 +5,6 @@ import Link from "next/link";
 import { type FC, useMemo, useState } from "react";
 
 import { Aave } from "@/assets/svgs";
-import PageWrapper from "@/components/page-wrapper";
 import { palette } from "@/styles/theme/palette";
 import {
   type Services,
@@ -132,9 +131,7 @@ const ServicesPage: FC<Props> = ({ services }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <PageWrapper heading="Services" textAlign="left">
-        <ServicesGrid services={filteredServices} />
-      </PageWrapper>
+      <ServicesGrid services={filteredServices} />
     </>
   );
 };

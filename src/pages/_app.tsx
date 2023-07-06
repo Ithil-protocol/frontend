@@ -10,6 +10,7 @@ import { type FC, type PropsWithChildren, useEffect } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
+import PageWrapper from "@/components/page-wrapper";
 import { addTestNetworks, firstNetwork, testNetwork } from "@/config/chains";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
@@ -87,10 +88,10 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Chakra>
           <RainbowWrapper>
-            <div>
+            <PageWrapper>
               <Component {...pageProps} />
               <ReactQueryDevtools initialIsOpen={false} />
-            </div>
+            </PageWrapper>
           </RainbowWrapper>
         </Chakra>
       </QueryClientProvider>
