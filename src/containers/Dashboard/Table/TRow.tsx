@@ -10,17 +10,25 @@ import {
 import { useRouter } from "next/router";
 import { FC } from "react";
 
+import { Aave } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
-import { viewTypes } from "@/types";
+import { VaultName, viewTypes } from "@/types";
+import { formatToken, getVaultByTokenAddress } from "@/utils";
+import { formatFullDate } from "@/utils/date.utils";
 import { mode, pickColor } from "@/utils/theme";
 
 interface TRowProps {
-  data: any;
+  data: {
+    token: string;
+    amount: bigint;
+    margin: bigint;
+    createdAt: bigint;
+  };
   activeView: viewTypes;
 }
 
-const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
+const TRow: FC<TRowProps> = ({ data, activeView }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const handelCancelBtn = (
@@ -29,6 +37,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
     e.stopPropagation();
     e.preventDefault();
   };
+  const vaultTokenData = getVaultByTokenAddress(data.token);
   return (
     <Tr
       width="full"
@@ -55,7 +64,7 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
                   top="50%"
                   transform="translateY(-50%)"
                 >
-                  <TokenIcon name="USDT" />
+                  <Aave width={32} height={32} />
                 </Box>
                 <Box
                   position="absolute"
@@ -73,12 +82,12 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
                     }}
                     width={42}
                     height={42}
-                    name="DAI"
+                    name={vaultTokenData?.iconName || ""}
                   />
                 </Box>
               </Box>
               <Text fontSize="22px" lineHeight="22px">
-                ETH / BNB
+                {vaultTokenData?.name}
               </Text>
             </HStack>
           </Box>
@@ -90,7 +99,11 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        ETH - 2x Long
+        {vaultTokenData?.name} -{" "}
+        {formatToken(
+          vaultTokenData?.name as VaultName,
+          data.amount / data.margin
+        )}
       </Td>
       <Td>
         <HStack>
@@ -104,7 +117,9 @@ const TRow: FC<TRowProps> = ({ data: _data, activeView }) => {
             fontSize="22px"
             lineHeight="22px"
           >
-            {activeView === "Active" ? "$ 1200" : "2023/01/01"}
+            {activeView === "Active"
+              ? "$ 1200"
+              : formatFullDate(new Date(Number(data.createdAt) * 1000))}
           </Text>
           <Text
             opacity={activeView === "Active" ? "100%" : "0%"}
