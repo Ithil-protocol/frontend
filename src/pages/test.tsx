@@ -1,4 +1,4 @@
-import { parseUnits, toHex } from "viem";
+import { Address, parseUnits, toHex } from "viem";
 import { useAccount, useWalletClient } from "wagmi";
 
 import { usePrepareOrder } from "@/containers/Services/service.contract";
@@ -10,6 +10,7 @@ import {
   useServiceTokenByIndex,
   useServiceTotalSupply,
 } from "@/hooks/generated/service";
+import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
 import { useAavePositions } from "@/hooks/useAavePositions";
 import { publicClient } from "@/wagmiTest/config";
 
@@ -200,6 +201,13 @@ const Test = () => {
   // console.log("yy", yy);
 
   // useRateAndSpread({tokenAddress:"0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"});
+
+  // const vault = getVaultByTokenAddress("0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f");
+  // console.log("ii", vault);
+  const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
+    address: "0x8e39010dC8f11aD087Ba377f605c122d8dd4C72E" as Address,
+  });
+  console.log("ii2", vaultFreeLiquidity);
 
   return <p onClick={yy}>download event </p>;
 

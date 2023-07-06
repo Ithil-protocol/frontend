@@ -13,6 +13,7 @@ interface Props {
 
 export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   const vault = getVaultByTokenAddress(tokenAddress);
+  // console.log("ii", vault);
   const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
     address: vault?.vaultAddress as Address,
     enabled: !!vault,
@@ -20,7 +21,9 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
 
   const { data } = useServiceComputeBaseRateAndSpread({
     args: [tokenAddress, loan, margin, vaultFreeLiquidity as bigint],
+    enabled: !!vaultFreeLiquidity,
   });
 
-  console.log("ii", data);
+  // console.log("ii", "vaultFreeLiquidity:", vaultFreeLiquidity,"loan:",loan, "margin:",margin, );
+  // console.log("ii2", data);
 };
