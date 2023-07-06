@@ -1,6 +1,6 @@
 {
   "name": "AAVE",
-  "description": "The vault deposits the user's BNBx-BNB vLP in a Thena farm, earning the platform's governance token.",
+  "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
   "assets": [
     {
       "name": "USDC",
