@@ -1,6 +1,8 @@
 import { toHex } from "viem";
 import { type Address } from "wagmi";
 
+import { useRateAndSpread } from "@/hooks/useRateAndSpread";
+
 interface ServiceLoan {
   token: Address;
   amount: bigint;
@@ -33,13 +35,19 @@ const leverageConverter = (amount: bigint, leverage: number) => {
   return result / BigInt(100);
 };
 
-export const prepareOrder = (
+export const usePrepareOrder = (
   token: Address,
   aToken: Address,
   amount: bigint,
   leverage: number
 ) => {
   const amountInLeverage = leverageConverter(amount, leverage);
+
+  useRateAndSpread({
+    tokenAddress: token,
+    loan: amountInLeverage,
+    margin: amount,
+  });
 
   const collateral: ServiceCollateral = {
     itemType: 0,

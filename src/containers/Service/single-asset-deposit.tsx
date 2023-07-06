@@ -31,7 +31,7 @@ import {
   stringInputToBigNumber,
 } from "@/utils/input.utils";
 
-import { prepareOrder } from "../Services/service.contract";
+import { usePrepareOrder } from "../Services/service.contract";
 import DepositForm from "./DepositForm";
 
 interface WidgetSingleAssetDepositProps {
@@ -227,7 +227,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     hash: approveData?.hash,
   });
 
-  const order = prepareOrder(
+  const order = usePrepareOrder(
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,

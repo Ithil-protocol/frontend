@@ -1,7 +1,7 @@
 import { parseUnits, toHex } from "viem";
 import { useAccount, useWalletClient } from "wagmi";
 
-import { prepareOrder } from "@/containers/Services/service.contract";
+import { usePrepareOrder } from "@/containers/Services/service.contract";
 import {
   serviceABI,
   useServiceAgreements,
@@ -50,7 +50,7 @@ const Test = () => {
   // serviceTest(order);
 
   // this order works fine. if you want to test "open" function. (token, aToken, amount, _leverage)
-  const workedOrder = prepareOrder(
+  const workedOrder = usePrepareOrder(
     "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
     "0x078f358208685046a11C85e8ad32895DED33A249",
     parseUnits("0.000241", 8),
@@ -198,6 +198,8 @@ const Test = () => {
   //   ],
   // });
   // console.log("yy", yy);
+
+  // useRateAndSpread({tokenAddress:"0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"});
 
   return <p onClick={yy}>download event </p>;
 
