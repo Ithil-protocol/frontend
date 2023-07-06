@@ -43,10 +43,13 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   // );
   // console.log("ii2", data);
 
-  const result = { interestAndSpread: 0n, displayInterestAndSpread: 0 };
+  const result = {
+    interestAndSpread: 0n,
+    displayInterestAndSpreadInPercent: 0,
+  };
   if (data) {
     result.interestAndSpread = spreadToUint256(...data);
-    result.displayInterestAndSpread = displayInterestSpread(...data);
+    result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
     return result;
   }
   // or throw an error to stop user from opoenning position

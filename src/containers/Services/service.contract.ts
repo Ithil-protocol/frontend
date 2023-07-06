@@ -42,12 +42,13 @@ export const usePrepareOrder = (
   leverage: number
 ) => {
   const amountInLeverage = leverageConverter(amount, leverage);
-  const { interestAndSpread, displayInterestAndSpread } = useRateAndSpread({
-    tokenAddress: token,
-    loan: amountInLeverage,
-    margin: amount,
-  });
-  // console.log("pppp", displayInterestAndSpread);
+  const { interestAndSpread, displayInterestAndSpreadInPercent } =
+    useRateAndSpread({
+      tokenAddress: token,
+      loan: amountInLeverage,
+      margin: amount,
+    });
+  console.log("pppp", displayInterestAndSpreadInPercent);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
