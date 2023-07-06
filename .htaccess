@@ -1,2 +1,0 @@
-RedirectMatch 301 ^/$ /lend/
-ErrorDocument 404 /404.html
