@@ -227,7 +227,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     hash: approveData?.hash,
   });
 
-  const order = usePrepareOrder(
+  const { order } = usePrepareOrder(
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,

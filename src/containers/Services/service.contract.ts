@@ -48,7 +48,6 @@ export const usePrepareOrder = (
       loan: amountInLeverage,
       margin: amount,
     });
-  console.log("pppp", displayInterestAndSpreadInPercent);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
@@ -74,5 +73,5 @@ export const usePrepareOrder = (
     data: toHex(""),
   };
 
-  return order;
+  return { order, displayInterestAndSpreadInPercent };
 };
