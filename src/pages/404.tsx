@@ -15,7 +15,7 @@ const Page404 = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "full",
       }}
     >
       <Box
