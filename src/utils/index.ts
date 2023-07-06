@@ -38,19 +38,21 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
-export const getTokenByAddress = (
+export const getVaultByTokenAddress = (
   tokenAddress: string
 ): VaultsTypes | undefined => {
   return vaults.find((item) => item.tokenAddress === tokenAddress);
 };
 
-export const getTokenByName = (name: VaultName): VaultsTypes | undefined => {
+export const getVaultByTokenName = (
+  name: VaultName
+): VaultsTypes | undefined => {
   return vaults.find((item) => item.name === name);
 };
 
 export const formatToken = (name: VaultName, value: bigint) => {
   try {
-    const token = getTokenByName(name);
+    const token = getVaultByTokenName(name);
     console.log("token:::", token);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
@@ -61,7 +63,7 @@ export const formatToken = (name: VaultName, value: bigint) => {
 };
 export const parseToken = (name: VaultName, value: number | string) => {
   try {
-    const token = getTokenByName(name);
+    const token = getVaultByTokenName(name);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
     const val = typeof value === "string" ? value : value.toString();

@@ -5,7 +5,7 @@ import { Aave, ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { palette } from "@/styles/theme/palette";
-import { getTokenByAddress } from "@/utils";
+import { getVaultByTokenAddress } from "@/utils";
 import { pickColor } from "@/utils/theme";
 
 const Header = () => {
@@ -13,7 +13,7 @@ const Header = () => {
   const { data } = useGetAgreementsByUser();
   console.log(data);
 
-  const tokenData = getTokenByAddress(
+  const tokenData = getVaultByTokenAddress(
     "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"
   );
   return (
