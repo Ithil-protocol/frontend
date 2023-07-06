@@ -61,8 +61,8 @@ const ServiceCard: FC<ServiceCardProps> = ({
       </Heading>
       <div className="flex py-3 mb-4 rounded-md bg-primary-600">
         <div className="flex items-center gap-2 mx-auto">
+          <Text textStyle="md2">Best APY</Text>
           <Text textStyle="slender-md">{apy}</Text>
-          <Text textStyle="md2">APY</Text>
         </div>
       </div>
       <Text className="mb-4">
@@ -100,7 +100,7 @@ const ServicesGrid: FC<{ services: Services }> = ({ services }) => {
         multiplier={"1 - 3%"}
         name={services.aave.name}
         apy={"%12"}
-        tvl={"$ 9"}
+        tvl={"$158.86m"}
       />
     </div>
   );
