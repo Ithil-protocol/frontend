@@ -28,3 +28,14 @@ export interface VaultsTypes {
 }
 
 export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
+
+export interface Service {
+  name: string;
+  description: string;
+  apyRange: string;
+  bestApy: number;
+  tokens: string[];
+  tvl: number;
+  url: string;
+  icon: string;
+}

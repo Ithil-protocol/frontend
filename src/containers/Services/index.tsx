@@ -1,15 +1,13 @@
 import { Button, Heading, Text, useColorMode } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
-import { type FC, useMemo, useState } from "react";
+import { type FC } from "react";
 
-import { Aave } from "@/assets/svgs";
+import services from "@/data/services.json";
 import { palette } from "@/styles/theme/palette";
-import {
-  type Services,
-  type SupportedServiceName,
-} from "@/types/onchain.types";
+import { Service } from "@/types";
 import { pickColor } from "@/utils/theme";
 
 const ServiceToken: FC<{ token: string }> = ({ token }) => (
@@ -28,6 +26,7 @@ interface ServiceCardProps {
   name: string;
   apy: string;
   tvl: string;
+  icon: string;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -38,6 +37,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
   name,
   apy,
   tvl,
+  icon,
 }) => {
   const { colorMode } = useColorMode();
   return (
@@ -46,7 +46,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
       className="flex flex-col p-7 rounded-xl bg-primary-100"
     >
       <div className="flex justify-between mb-6">
-        <Aave className="w-7 h-7" />
+        <Image src={icon} alt={name + " icon"} width={28} height={28} />
         {/* 1 - 10% multiplier */}
         <div className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
           <Icon
@@ -90,36 +90,27 @@ const ServiceCard: FC<ServiceCardProps> = ({
   );
 };
 
-const ServicesGrid: FC<{ services: Services }> = ({ services }) => {
+const ServicesGrid: FC<{ services: Service[] }> = ({ services }) => {
   return (
     <div className="grid gap-4 py-10 mg:gap-6 md:grid-cols-2 lg:grid-cols-3 rounded-xl">
-      <ServiceCard
-        assets={["USDC", "USDT", "DAI", "WETH", "WBTC"]}
-        description={services.aave.description}
-        to={"aave"}
-        multiplier={"1 - 3%"}
-        name={services.aave.name}
-        apy={"%12"}
-        tvl={"$158.86m"}
-      />
+      {services.map((item, index) => (
+        <ServiceCard
+          key={item.name + index}
+          assets={item.tokens}
+          description={item.description}
+          to={item.url}
+          multiplier={`${item.apyRange}%`}
+          name={item.name}
+          apy={`%${item.bestApy}`}
+          tvl={`${item.tvl}m`}
+          icon={item.icon}
+        />
+      ))}
     </div>
   );
 };
 
-interface Props {
-  services: Services;
-}
-
-const ServicesPage: FC<Props> = ({ services }) => {
-  const [filteredService, setFilteredService] =
-    useState<SupportedServiceName | null>(null);
-
-  const filteredServices: Services = useMemo(() => {
-    if (filteredService === null) return services;
-    const whitelistService = services[filteredService];
-    return { [filteredService]: whitelistService };
-  }, [services, filteredService]);
-
+const ServicesPage = () => {
   return (
     <>
       <Head>
@@ -131,7 +122,7 @@ const ServicesPage: FC<Props> = ({ services }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ServicesGrid services={filteredServices} />
+      <ServicesGrid services={services} />
     </>
   );
 };

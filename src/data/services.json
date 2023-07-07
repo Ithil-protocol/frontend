@@ -1,0 +1,12 @@
+[
+  {
+    "name": "AAVE",
+    "description": "The vault deposits the user's BNBx-BNB vLP in a Thena farm, earning the platform's governance token.",
+    "apyRange": "1-3",
+    "bestApy": 12,
+    "tokens": ["USDC", "USDT", "DAI", "WETH", "WBTC"],
+    "tvl": 158.86,
+    "url": "/aave",
+    "icon": "/assets/aave.svg"
+  }
+]
