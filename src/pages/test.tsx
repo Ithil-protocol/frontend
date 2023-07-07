@@ -2,7 +2,6 @@ import { Address, parseUnits, toHex } from "viem";
 import { useAccount, useContractWrite, useWalletClient } from "wagmi";
 
 import ServiceAbi from "@/abi/Service.abi";
-import { usePrepareOrder } from "@/containers/Services/service.contract";
 import {
   serviceABI,
   serviceAddress,
@@ -14,6 +13,7 @@ import {
 } from "@/hooks/generated/service";
 import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
 import { useAavePositions } from "@/hooks/useAavePositions";
+import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { publicClient } from "@/wagmiTest/config";
 
 const Test = () => {

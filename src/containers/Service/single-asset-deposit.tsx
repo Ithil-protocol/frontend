@@ -25,13 +25,13 @@ import { Loading } from "@/components/loading";
 import { serviceABI, serviceAddress } from "@/hooks/generated/service";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { type AaveAsset } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
   stringInputToBigNumber,
 } from "@/utils/input.utils";
 
-import { usePrepareOrder } from "../Services/service.contract";
 import DepositForm from "./DepositForm";
 
 interface WidgetSingleAssetDepositProps {
