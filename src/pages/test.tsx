@@ -1,9 +1,10 @@
 import { Address, parseUnits, toHex } from "viem";
-import { useAccount, useWalletClient } from "wagmi";
+import { useAccount, useContractWrite, useWalletClient } from "wagmi";
 
-import { usePrepareOrder } from "@/containers/Services/service.contract";
+import ServiceAbi from "@/abi/Service.abi";
 import {
   serviceABI,
+  serviceAddress,
   useServiceAgreements,
   useServiceGetAgreement,
   useServiceGetUserAgreements,
@@ -12,6 +13,7 @@ import {
 } from "@/hooks/generated/service";
 import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
 import { useAavePositions } from "@/hooks/useAavePositions";
+import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { publicClient } from "@/wagmiTest/config";
 
 const Test = () => {
@@ -51,7 +53,7 @@ const Test = () => {
   // serviceTest(order);
 
   // this order works fine. if you want to test "open" function. (token, aToken, amount, _leverage)
-  const workedOrder = usePrepareOrder(
+  const { order: workedOrder } = usePrepareOrder(
     "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
     "0x078f358208685046a11C85e8ad32895DED33A249",
     parseUnits("0.000241", 8),
@@ -133,7 +135,7 @@ const Test = () => {
   const { data: useragg } = useServiceGetUserAgreements({
     account: accountAddress,
   });
-  console.log("useragg", useragg);
+  // console.log("useragg", reverseDisplayInterestSpreadInPercent(useragg[2].loans[0].interestAndSpread));
 
   console.log("ccccccc open", open);
   console.log("ccccccc closed", closed);
@@ -209,7 +211,27 @@ const Test = () => {
   });
   console.log("ii2", vaultFreeLiquidity);
 
-  return <p onClick={yy}>download event </p>;
+  const { write: setRiskParam } = useContractWrite({
+    mode: "prepared",
+    // @ts-ignore
+    request: {
+      abi: ServiceAbi,
+      address: serviceAddress[42161],
+      functionName: "setRiskParams",
+      args: [
+        "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+        BigInt(3e15),
+        BigInt(1e16),
+        BigInt(3 * 86400),
+      ],
+      gas: 20000000n,
+    },
+  });
+
+  // const {data:ss} = useGetAgreementsByUser();
+  // console.log("ssss", ss);
+
+  return <p onClick={() => setRiskParam && setRiskParam()}>download event </p>;
 
   // return (
   //   <Button disabled={!!write} onClick={() => write?.()}>
