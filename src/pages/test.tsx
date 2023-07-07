@@ -135,7 +135,7 @@ const Test = () => {
   const { data: useragg } = useServiceGetUserAgreements({
     account: accountAddress,
   });
-  console.log("useragg", useragg);
+  // console.log("useragg", reverseDisplayInterestSpreadInPercent(useragg[2].loans[0].interestAndSpread));
 
   console.log("ccccccc open", open);
   console.log("ccccccc closed", closed);

@@ -55,3 +55,14 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   // or throw an error to stop user from opoenning position
   return result;
 };
+
+export const reverseDisplayInterestSpreadInPercent = (
+  interestAndSpread: bigint
+) => {
+  const twoPow128 = BigInt(2 ** 128);
+  const base = interestAndSpread % twoPow128;
+  const spread = interestAndSpread / twoPow128;
+  let result = (base + spread).toString();
+  result = formatEther(base + spread);
+  return fixPrecision(Number(result) * 100, 2);
+};
