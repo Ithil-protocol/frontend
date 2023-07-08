@@ -5,6 +5,7 @@ import {
   InputRightElement,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
@@ -199,6 +200,7 @@ interface ServiceDepositProps {
 }
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
+  const toast = useToast();
   const { address, isConnected } = useAccount();
   const chainId = useChainId() as 42161;
   const [inputAmount, setInputAmount] = useState<string>("0");
@@ -287,19 +289,28 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     setInputAmount(amount);
   };
   const onActionClick = async () => {
-    if (!isApproved) {
-      const result = await approve?.();
-      await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`);
+    try {
+      if (!isApproved) {
+        const result = await approve?.();
+        await trackTransaction(result, `Approve ${inputAmount} ${asset.name}`);
+        await refetchAllowance();
+        return;
+      }
+
+      if (isOpenPrepareError) return reportException(openPrepareError);
+
+      const result = await open?.();
+      await trackTransaction(result, `Deposit ${inputAmount} ${asset.name}`);
       await refetchAllowance();
-      return;
+      setInputAmount("0");
+    } catch (error) {
+      toast({
+        title: (error as { shortMessage: string }).shortMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-
-    if (isOpenPrepareError) return reportException(openPrepareError);
-
-    const result = await open?.();
-    await trackTransaction(result, `Deposit ${inputAmount} ${asset.name}`);
-    await refetchAllowance();
-    setInputAmount("0");
   };
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
