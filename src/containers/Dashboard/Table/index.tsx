@@ -54,7 +54,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
               item.loans.map((loanItem, key) => (
                 <TRow
                   key={item.createdAt.toString() + "-" + key}
-                  data={{ ...loanItem, createdAt: item.createdAt }}
+                  data={loanItem}
                 />
               ))
             )}

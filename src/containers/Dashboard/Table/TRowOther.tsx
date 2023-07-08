@@ -3,18 +3,13 @@ import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
-import { VaultName } from "@/types";
+import { TRowTypes, VaultName } from "@/types";
 import { formatToken, getVaultByTokenAddress } from "@/utils";
 import { formatFullDate } from "@/utils/date.utils";
 import { mode, pickColor } from "@/utils/theme";
 
 interface Props {
-  data: {
-    token: string;
-    amount: bigint;
-    margin: bigint;
-    createdAt: bigint;
-  };
+  data: TRowTypes;
 }
 
 const TRowOther: FC<Props> = ({ data }) => {

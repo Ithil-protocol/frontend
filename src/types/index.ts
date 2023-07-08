@@ -39,3 +39,10 @@ export interface Service {
   url: string;
   icon: string;
 }
+
+export interface TRowTypes {
+  token: string;
+  amount: bigint;
+  margin: bigint;
+  createdAt: bigint;
+}
