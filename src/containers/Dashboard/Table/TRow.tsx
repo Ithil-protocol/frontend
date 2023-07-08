@@ -42,7 +42,7 @@ const TRow: FC<TRowProps> = ({ data, activeView }) => {
       width="full"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       borderRadius="12px"
-      onClick={() => router.push("/dashboard/detail/1")}
+      // onClick={() => router.push("/dashboard/detail/1")}
       cursor="pointer"
       sx={{
         "& > td": {
