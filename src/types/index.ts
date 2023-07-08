@@ -46,3 +46,8 @@ export interface TRowTypes {
   margin: bigint;
   createdAt: bigint;
 }
+
+export interface PageHeading {
+  pathName: string;
+  heading: string;
+}

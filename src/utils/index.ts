@@ -20,7 +20,7 @@ import {
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
 import vaults from "@/deploy/vaults.json";
-import { VaultName, VaultsTypes } from "@/types";
+import { PageHeading, VaultName, VaultsTypes } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -135,3 +135,18 @@ export const fixPrecision = (value: number, precision: number) => {
 
   return value;
 };
+
+export const pageHeading: PageHeading[] = [
+  {
+    pathName: "lend",
+    heading: "Lend",
+  },
+  {
+    pathName: "services",
+    heading: "Services",
+  },
+  {
+    pathName: "dashboard",
+    heading: "",
+  },
+];

@@ -6,7 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { removeOldestQuery } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
-import { type FC, type PropsWithChildren, useEffect } from "react";
+import { useRouter } from "next/router";
+import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
@@ -18,6 +19,7 @@ import {
   rainbowkitDarkTheme,
   rainbowkitLightTheme,
 } from "@/styles/theme/rainbowkit";
+import { pageHeading } from "@/utils";
 
 const network = firstNetwork();
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -78,17 +80,28 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [heading, setHeading] = useState<string>("");
   // effect only for private and testnet mode
   useEffect(() => {
     void addTestNetworks();
   }, []);
+  const router = useRouter();
+  useEffect(() => {
+    setHeading("");
+    pageHeading.forEach((item) => {
+      if (router.pathname.split("/")[1] === item.pathName) {
+        return setHeading(item.heading);
+      }
+    });
+  }, [router]);
+  console.log(router.pathname.split("/")[0]);
 
   return (
     <WagmiConfig config={wagmiClient}>
       <QueryClientProvider client={queryClient}>
         <Chakra>
           <RainbowWrapper>
-            <PageWrapper>
+            <PageWrapper heading={heading} textAlign="left">
               <Component {...pageProps} />
               <ReactQueryDevtools initialIsOpen={false} />
             </PageWrapper>
