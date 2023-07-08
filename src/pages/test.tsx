@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 import { Address, parseUnits, toHex } from "viem";
 import { useAccount, useContractWrite, useWalletClient } from "wagmi";
 
@@ -61,7 +62,7 @@ const Test = () => {
   );
 
   // I don't know what is it
-  // const { config, error: errr } = usePrepareContractWrite({
+  // const { config, error: err } = usePrepareContractWrite({
   // mode
   // });
   // const { write, error } = useContractWrite({
