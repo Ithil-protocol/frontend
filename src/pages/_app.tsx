@@ -50,7 +50,7 @@ const queryClient = new QueryClient({
 });
 
 // persist cache only in client mode, that's good enough for now
-const localStoragePersister = createSyncStoragePersister({
+const _localStoragePersister = createSyncStoragePersister({
   storage: typeof window !== "undefined" ? window.localStorage : undefined,
   retry: removeOldestQuery,
 });

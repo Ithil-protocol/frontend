@@ -15,6 +15,7 @@ import {
 import React from "react";
 
 import { CloseButton } from "@/assets/svgs";
+import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
 import { VoidNoArgs } from "@/types";
 import { mode } from "@/utils/theme";
 
@@ -38,6 +39,9 @@ const TokenModal: React.FC<Props> = ({
   const handleClose = () => {
     if (onClose) onClose();
   };
+
+  const { data: vaultData } = useVaults();
+  const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
 
   return (
     <>
@@ -83,89 +87,80 @@ const TokenModal: React.FC<Props> = ({
             }}
           >
             <List p="10px" bg="transparent">
-              {[
-                {
-                  title: "DAI",
-                  description: "DAI Stablecoin",
-                  tokenName: "dai",
-                },
-                {
-                  description: "USD Coin",
-                  tokenName: "usdc",
-                  title: "USDC",
-                },
-                {
-                  title: "LINK",
-                  description: "ChainLink Token",
-                  tokenName: "chain_link",
-                },
-                {
-                  description: "Wrapped BTC",
-                  tokenName: "wbtc",
-                  title: "WBTC",
-                },
-                {
-                  title: "WETH",
-                  description: "Wrapped Ether",
-                  tokenName: "weth",
-                },
-              ].map((item, key) => (
-                <React.Fragment key={key}>
-                  <ListItem>
-                    <Button
-                      onClick={() => onSelectToken(item.tokenName)}
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        gap: "15px",
-                        padding: "30px",
-                        width: "100%",
-                        border: "0px",
-                      }}
-                      variant="outline"
-                    >
-                      <div>
-                        <TokenIcon
-                          width={40}
-                          height={40}
-                          name={item.tokenName}
-                        />
-                      </div>
+              {vaultDataWithFallback
+                .map((item) => {
+                  const descriptions = {
+                    USDC: "USD Coin",
+                    USDT: "USD Tether",
+                    WETH: "Wrapped Ether",
+                    WBTC: "Wrapped BTC",
+                  };
 
-                      <div
+                  return {
+                    ...item.token,
+                    description:
+                      descriptions[
+                        item.token.name as keyof typeof descriptions
+                      ],
+                  };
+                })
+                .map((item, key) => (
+                  <React.Fragment key={key}>
+                    <ListItem>
+                      <Button
+                        onClick={() => onSelectToken(item.name.toLowerCase())}
                         style={{
+                          border: "0px",
                           display: "flex",
-                          flexDirection: "column",
+                          gap: "15px",
                           justifyContent: "flex-start",
-                          alignItems: "flex-start",
+                          padding: "30px",
+                          width: "100%",
                         }}
+                        variant="outline"
                       >
-                        <Text
-                          fontWeight="medium"
-                          color={mode(
-                            colorMode,
-                            "secondary.100",
-                            "secondary.100.dark"
-                          )}
+                        <div>
+                          <TokenIcon
+                            width={40}
+                            height={40}
+                            name={item.iconName}
+                          />
+                        </div>
+
+                        <div
+                          style={{
+                            alignItems: "flex-start",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-start",
+                          }}
                         >
-                          {item.title}
-                        </Text>
-                        <Text
-                          fontWeight="medium"
-                          fontSize="md"
-                          color={mode(
-                            colorMode,
-                            "primary.400.dark",
-                            "primary.400"
-                          )}
-                        >
-                          {item.description}
-                        </Text>
-                      </div>
-                    </Button>
-                  </ListItem>
-                </React.Fragment>
-              ))}
+                          <Text
+                            fontWeight="medium"
+                            color={mode(
+                              colorMode,
+                              "secondary.100",
+                              "secondary.100.dark"
+                            )}
+                          >
+                            {item.name}
+                          </Text>
+                          <Text
+                            fontWeight="medium"
+                            fontSize="md"
+                            color={mode(
+                              colorMode,
+                              "primary.400.dark",
+                              "primary.400"
+                            )}
+                          >
+                            {item.description}
+                          </Text>
+                        </div>
+                      </Button>
+                    </ListItem>
+                  </React.Fragment>
+                ))}
             </List>
           </ModalBody>
           <ModalFooter>{modalFooter}</ModalFooter>
