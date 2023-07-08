@@ -14,6 +14,7 @@ import { viewTypes } from "@/types";
 import { mode } from "@/utils/theme";
 
 import TRow from "./TRow";
+import TRowOther from "./TRowOther";
 
 interface Props {
   columns: any[];
@@ -47,18 +48,25 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {data ? (
+          {activeView === "Active" &&
+            data &&
             data.map((item) =>
               item.loans.map((loanItem, key) => (
                 <TRow
                   key={item.createdAt.toString() + "-" + key}
                   data={{ ...loanItem, createdAt: item.createdAt }}
-                  activeView={activeView}
                 />
               ))
-            )
-          ) : (
-            <></>
+            )}
+          {activeView === "Closed" && (
+            <TRowOther
+              data={{
+                amount: 2000n,
+                createdAt: 1688477804n,
+                margin: 15000000n,
+                token: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+              }}
+            />
           )}
         </Tbody>
       </DefaultTable>

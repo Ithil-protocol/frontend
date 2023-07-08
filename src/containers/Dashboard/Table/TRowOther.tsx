@@ -1,22 +1,14 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Td,
-  Text,
-  Tr,
-  useColorMode,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { Box, HStack, Td, Text, Tr, useColorMode } from "@chakra-ui/react";
 import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
 import { VaultName } from "@/types";
 import { formatToken, getVaultByTokenAddress } from "@/utils";
+import { formatFullDate } from "@/utils/date.utils";
 import { mode, pickColor } from "@/utils/theme";
 
-interface TRowProps {
+interface Props {
   data: {
     token: string;
     amount: bigint;
@@ -25,16 +17,10 @@ interface TRowProps {
   };
 }
 
-const TRow: FC<TRowProps> = ({ data }) => {
+const TRowOther: FC<Props> = ({ data }) => {
   const { colorMode } = useColorMode();
-  const router = useRouter();
-  const handelCancelBtn = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    e.preventDefault();
-  };
   const vaultTokenData = getVaultByTokenAddress(data.token);
+
   return (
     <Tr
       width="full"
@@ -95,37 +81,18 @@ const TRow: FC<TRowProps> = ({ data }) => {
         )}
       </Td>
       <Td>
-        <HStack>
-          <Text
-            fontWeight="medium"
-            color={"#15ac89"}
-            fontSize="22px"
-            lineHeight="22px"
-          >
-            $ 1200
-          </Text>
-          <Text
-            bg="#15ac89"
-            borderRadius="8px"
-            fontWeight="bold"
-            fontFamily="18px"
-            lineHeight="24px"
-            textColor={mode(colorMode, "primary.100", "primary.100.dark")}
-            paddingX="8px"
-            paddingY="4px"
-            fontSize="18px"
-          >
-            + 12 %
-          </Text>
-        </HStack>
+        <Text
+          fontWeight="medium"
+          color={mode(colorMode, "primary.700", "primary.700.dark")}
+          fontSize="22px"
+          lineHeight="22px"
+        >
+          {formatFullDate(new Date(Number(data.createdAt) * 1000))}
+        </Text>
       </Td>
-      <Td textAlign="end" width={200} height="108px">
-        <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
-          Close
-        </Button>
-      </Td>
+      <Td textAlign="end" width={200} height="108px"></Td>
     </Tr>
   );
 };
 
-export default TRow;
+export default TRowOther;
