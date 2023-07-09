@@ -3,6 +3,7 @@ import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -16,6 +17,9 @@ interface Props {
 const TRowOther: FC<Props> = ({ data }) => {
   const { colorMode } = useColorMode();
   const vaultTokenData = getVaultByTokenAddress(data.token);
+  const isMounted = useIsMounted();
+
+  if (!isMounted) return null;
 
   return (
     <Tr

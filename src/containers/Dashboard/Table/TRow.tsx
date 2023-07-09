@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -30,7 +31,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
   const router = useRouter();
 
   const { name } = getVaultByTokenAddress(data.token);
-
+  const isMounted = useIsMounted();
   const handelCancelBtn = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -38,6 +39,9 @@ const TRow: FC<TRowProps> = ({ data }) => {
     e.preventDefault();
   };
   const vaultTokenData = getVaultByTokenAddress(data.token);
+
+  if (!isMounted) return null;
+
   return (
     <Tr
       width="48"
