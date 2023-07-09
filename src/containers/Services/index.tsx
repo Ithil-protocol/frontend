@@ -1,8 +1,8 @@
-import { Button, Heading, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, useColorMode } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { type FC } from "react";
 
 import services from "@/data/services.json";
@@ -40,11 +40,9 @@ const ServiceCard: FC<ServiceCardProps> = ({
   icon,
 }) => {
   const { colorMode } = useColorMode();
+  const { push } = useRouter();
   return (
-    <Link
-      href={`/services/${to}`}
-      className="flex flex-col p-7 rounded-xl bg-primary-100"
-    >
+    <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <div className="flex justify-between mb-6">
         <Image src={icon} alt={name + " icon"} width={28} height={28} />
         {/* 1 - 10% multiplier */}
@@ -83,10 +81,14 @@ const ServiceCard: FC<ServiceCardProps> = ({
           <ServiceToken token={token} key={token} />
         ))}
       </div>
-      <Button size="lg" className="w-full">
+      <Button
+        onClick={() => push(`/services/${to}`)}
+        size="lg"
+        className="w-full"
+      >
         Enter
       </Button>
-    </Link>
+    </Box>
   );
 };
 
