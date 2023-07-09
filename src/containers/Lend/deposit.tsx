@@ -189,8 +189,10 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   const { isLoading: isApproveWaiting } = useWaitForTransaction({
     hash: approveData?.hash,
   });
+
   // deposit
-  const { config: depositConfig } = usePrepareDeposit(inputBigNumber);
+  const { config: depositConfig, isFetching: isDepositFetching } =
+    usePrepareDeposit(inputBigNumber);
   const {
     data: depositData,
     isLoading: isDepositLoading,
@@ -200,15 +202,14 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     hash: depositData?.hash,
   });
 
-  console.log("deposit3333", deposit);
-
   // computed properties
   const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
   const isButtonLoading =
     isApproveLoading ||
     isApproveWaiting ||
     isDepositLoading ||
-    isDepositWaiting;
+    isDepositWaiting ||
+    isDepositFetching;
   const isInconsistent = balance ? inputBigNumber > balance.value : true;
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
@@ -225,12 +226,14 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     try {
       if (!isApproved) {
         // after approval is successful, read again the allowance
-        const result = await approve?.();
+        if (!approve) return;
+        const result = await approve();
         await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
         await refetchAllowance();
         return;
       }
-      const result = await deposit?.();
+      if (!deposit) return;
+      const result = await deposit();
       await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
       await refetchAllowance();
       setInputAmount("0");
@@ -294,8 +297,11 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   const { trackTransaction } = useTransactionFeedback();
 
   // withdraw
-  const { config: redeemConfig, isError: isPrRedeemError } =
-    usePrepareRedeem(inputBigNumber);
+  const {
+    config: redeemConfig,
+    isError: isPrRedeemError,
+    isFetching: isWithdrawFetching,
+  } = usePrepareRedeem(inputBigNumber);
   const { isLoading: isWithdrawLoading, writeAsync: withdraw } =
     useContractWrite(redeemConfig);
   const { data: assetsRatioData, isLoading: isAssetsRatioLoading } =
@@ -319,6 +325,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     isButtonLoading ||
     isPrepareError ||
     isInconsistent ||
+    isWithdrawFetching ||
     inputBigNumber === BigInt(0);
   const isMaxDisabled = balance
     ? inputBigNumber === balance.value || balance.value === BigInt(0)
@@ -345,7 +352,8 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
 
   const handleClick = async () => {
     try {
-      const result = await withdraw?.();
+      if (!withdraw) return;
+      const result = await withdraw();
       await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
       setInputAmount("0");
     } catch (error) {
