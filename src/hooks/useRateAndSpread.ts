@@ -49,7 +49,7 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   const result = {
     interestAndSpread: 0n,
     displayInterestAndSpreadInPercent: 0,
-    isLoading,
+    isInterestAndSpreadLoading: isLoading,
   };
   if (data) {
     result.interestAndSpread = spreadToUint256(...data);

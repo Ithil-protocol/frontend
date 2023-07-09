@@ -42,12 +42,15 @@ export const usePrepareOrder = (
   leverage: number
 ) => {
   const amountInLeverage = leverageConverter(amount, leverage);
-  const { interestAndSpread, displayInterestAndSpreadInPercent } =
-    useRateAndSpread({
-      tokenAddress: token,
-      loan: amountInLeverage,
-      margin: amount,
-    });
+  const {
+    interestAndSpread,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+  } = useRateAndSpread({
+    tokenAddress: token,
+    loan: amountInLeverage,
+    margin: amount,
+  });
 
   const collateral: ServiceCollateral = {
     itemType: 0,
@@ -73,5 +76,9 @@ export const usePrepareOrder = (
     data: toHex(""),
   };
 
-  return { order, displayInterestAndSpreadInPercent };
+  return {
+    order,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+  };
 };
