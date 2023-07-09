@@ -22,9 +22,15 @@ interface Props {
   leverage: string;
   setLeverage: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
+  interestAndSpreadInPercent: number;
 }
 
-const DepositForm: FC<Props> = ({ leverage, setLeverage, isLoading }) => {
+const DepositForm: FC<Props> = ({
+  leverage,
+  setLeverage,
+  isLoading,
+  interestAndSpreadInPercent,
+}) => {
   const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
@@ -32,13 +38,14 @@ const DepositForm: FC<Props> = ({ leverage, setLeverage, isLoading }) => {
     query: { asset },
   } = useRouter();
 
-  const { baseApy } = useBaseApy(asset as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy(asset as string);
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
   const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(2) : "";
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
   };
+  console.log(interestAndSpreadInPercent);
 
   return (
     <Box width="full" gap="30px">
@@ -56,25 +63,23 @@ const DepositForm: FC<Props> = ({ leverage, setLeverage, isLoading }) => {
           extension="%"
           leftPart="Base APY:"
           rightPart={baseApy?.toFixed(2)}
-          isLoading={isLoading}
+          isLoading={apyLoading}
         />
         <FormDescriptionItem
           extension="x"
           leftPart="Best Leverage:"
           rightPart={finalLeverage}
-          isLoading={isLoading}
         />
         <FormDescriptionItem
           extension="%"
           leftPart="Borrow Interest:"
-          rightPart="0"
+          rightPart={interestAndSpreadInPercent}
           isLoading={isLoading}
         />
         <FormDescriptionItem
           extension="%"
           leftPart="Final APY:"
           rightPart={finalApy}
-          isLoading={isLoading}
         />
       </Box>
 

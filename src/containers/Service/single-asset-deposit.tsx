@@ -57,6 +57,7 @@ interface WidgetSingleAssetDepositProps {
   leverage: string;
   setLeverage: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
+  interestAndSpreadInPercent: number;
 }
 
 export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
@@ -75,6 +76,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   leverage,
   setLeverage,
   isLoading,
+  interestAndSpreadInPercent,
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
@@ -174,6 +176,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           leverage={leverage}
           setLeverage={setLeverage}
           isLoading={isLoading}
+          interestAndSpreadInPercent={interestAndSpreadInPercent}
         />
       </div>
 
@@ -360,6 +363,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
       leverage={leverage}
       setLeverage={setLeverage}
       isLoading={isInterestAndSpreadLoading}
+      interestAndSpreadInPercent={displayInterestAndSpreadInPercent}
     />
   );
 };
