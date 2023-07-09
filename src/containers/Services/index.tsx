@@ -1,4 +1,11 @@
-import { Box, Button, Heading, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  VStack,
+  useColorMode,
+} from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import Image from "next/image";
@@ -66,21 +73,23 @@ const ServiceCard: FC<ServiceCardProps> = ({
       <Text className="mb-4">
         {typeof description === "string" ? description : description(assets)}
       </Text>
-      <div className="flex gap-2 mb-4">
-        <Text
-          textStyle="sm"
-          color={pickColor(colorMode, palette.colors.primary, "700")}
-        >
-          TVL:
-        </Text>
-        <Text textStyle="slender-sm2">{tvl}</Text>
-      </div>
-      {/* tokens array */}
-      <div className="flex flex-wrap gap-2 mb-6 justify-evenly">
-        {assets.map((token) => (
-          <ServiceToken token={token} key={token} />
-        ))}
-      </div>
+      <VStack align="start">
+        <div className="flex gap-2 mb-4">
+          <Text
+            textStyle="sm"
+            color={pickColor(colorMode, palette.colors.primary, "700")}
+          >
+            TVL:
+          </Text>
+          <Text textStyle="slender-sm2">{tvl}</Text>
+        </div>
+        {/* tokens array */}
+        <div className="flex flex-wrap gap-2 mb-6 justify-evenly">
+          {assets.map((token) => (
+            <ServiceToken token={token} key={token} />
+          ))}
+        </div>
+      </VStack>
       <Button
         onClick={() => push(`/services/${to}`)}
         size="lg"
