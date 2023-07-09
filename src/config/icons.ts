@@ -1,5 +1,3 @@
-import CHAIN_LINK from "cryptocurrency-icons/svg/color/chain.svg";
-import DAI from "cryptocurrency-icons/svg/color/dai.svg";
 import ETH from "cryptocurrency-icons/svg/color/eth.svg";
 import USDC from "cryptocurrency-icons/svg/color/usdc.svg";
 import USDT from "cryptocurrency-icons/svg/color/usdt.svg";
@@ -13,8 +11,6 @@ import WBTC from "cryptocurrency-icons/svg/color/wbtc.svg";
 // TokenX: any-SVG-icon-file
 
 export const icons = {
-  CHAIN_LINK,
-  DAI,
   USDC,
   // ARB,
   USDT,

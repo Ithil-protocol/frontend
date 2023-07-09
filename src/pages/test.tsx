@@ -1,5 +1,11 @@
 /* eslint-disable unused-imports/no-unused-vars */
-import { Address, parseUnits, toHex } from "viem";
+import {
+  Address,
+  encodeAbiParameters,
+  parseAbiParameters,
+  parseUnits,
+  toHex,
+} from "viem";
 import { useAccount, useContractWrite, useWalletClient } from "wagmi";
 
 import ServiceAbi from "@/abi/Service.abi";
@@ -14,6 +20,7 @@ import {
 } from "@/hooks/generated/service";
 import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
 import { useAavePositions } from "@/hooks/useAavePositions";
+import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { publicClient } from "@/wagmiTest/config";
 
@@ -136,33 +143,35 @@ const Test = () => {
   const { data: useragg } = useServiceGetUserAgreements({
     account: accountAddress,
   });
+
+  const { data: getAgreementsByUser } = useGetAgreementsByUser();
   // console.log("useragg", reverseDisplayInterestSpreadInPercent(useragg[2].loans[0].interestAndSpread));
 
-  console.log("ccccccc open", open);
+  console.log("getAgreementsByUser", getAgreementsByUser);
   console.log("ccccccc closed", closed);
   console.log("totalSupply", totalSupply);
   console.log("tokenByIndex", tokenByIndex);
   console.log("agreement33", agreement);
 
   // this is for closing an agreement
-  // const {
-  //   write,
-  //   error,
-  //   data: txData,
-  // } = useContractWrite({
-  //   mode: "prepared",
-  //   // @ts-ignore
-  //   request: {
-  //     abi: serviceABI,
-  //     address: serviceAddress[42161],
-  //     functionName: "close",
-  //     args: [
-  //       BigInt(4),
-  //       encodeAbiParameters(parseAbiParameters("uint256"), [19980000n]),
-  //     ],
-  //     gas: 20000000n,
-  //   },
-  // });
+  const {
+    write: close,
+    error,
+    data: txData,
+  } = useContractWrite({
+    mode: "prepared",
+    // @ts-ignore
+    request: {
+      abi: serviceABI,
+      address: serviceAddress[42161],
+      functionName: "close",
+      args: [
+        BigInt(0),
+        encodeAbiParameters(parseAbiParameters("uint256"), [62437n]),
+      ],
+      gas: 20000000n,
+    },
+  });
 
   // // to see if transaction failed or succeed
   // const { data: tx, error: txError } = useWaitForTransaction({
@@ -190,18 +199,25 @@ const Test = () => {
 
   // console.log("xx", xx?.[0].result);
 
-  // // to see quote
-  // const { data: yy } = useContractReads({
+  // to see quote
+  // const { data: zz } = useContractReads({
   //   contracts: [
   //     {
   //       abi: serviceABI,
   //       address: serviceAddress[42161],
   //       functionName: "quote",
-  //       args: [xx?.[0].result as unknown as ServiceAgreement],
+  //       args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
+  //       // enabled: getAgreementsByUser?.[0]?.[0],
   //     },
   //   ],
   // });
-  // console.log("yy", yy);
+  // console.log("zz", zz);
+
+  // const { data: pp } = useServiceComputeDueFees({
+  //   args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
+  // });
+
+  // console.log("pppp22",pp)
 
   // useRateAndSpread({tokenAddress:"0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"});
 
@@ -232,7 +248,7 @@ const Test = () => {
   // const {data:ss} = useGetAgreementsByUser();
   // console.log("ssss", ss);
 
-  return <p onClick={() => setRiskParam && setRiskParam()}>download event </p>;
+  return <p onClick={() => close?.()}>download event </p>;
 
   // return (
   //   <Button disabled={!!write} onClick={() => write?.()}>

@@ -72,6 +72,8 @@ const Lend: FC = () => {
   const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
   const isVaultsLoading = isLoading || isLoadingError;
 
+  console.log("vaultData33", placeHolderVaultData);
+
   const onSelectedChange = (idx: number) => {
     // not sure this check is necessary
     const vault = vaultDataWithFallback?.[idx];
@@ -145,7 +147,7 @@ const Lend: FC = () => {
                   <Td>
                     <div className="flex items-center gap-2">
                       <TokenIcon
-                        name={vault.token.iconName}
+                        name={vault.token.name}
                         height={32}
                         width={32}
                       />

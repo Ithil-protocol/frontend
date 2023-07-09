@@ -126,7 +126,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
                 <span>
                   <TokenIcon
                     className="w-6 h-6"
-                    name={asset.iconName}
+                    name={asset.name}
                     height={24}
                     width={24}
                   />
@@ -229,11 +229,16 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     hash: approveData?.hash,
   });
 
-  const { order } = usePrepareOrder(
+  const { order, displayInterestAndSpreadInPercent } = usePrepareOrder(
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,
     1.5
+  );
+
+  console.log(
+    "displayInterestAndSpreadInPercent",
+    displayInterestAndSpreadInPercent
   );
   // serviceTest(order);
   console.log(order);

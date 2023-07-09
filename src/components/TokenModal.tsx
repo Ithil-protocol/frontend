@@ -120,11 +120,7 @@ const TokenModal: React.FC<Props> = ({
                         variant="outline"
                       >
                         <div>
-                          <TokenIcon
-                            width={40}
-                            height={40}
-                            name={item.iconName}
-                          />
+                          <TokenIcon width={40} height={40} name={item.name} />
                         </div>
 
                         <div

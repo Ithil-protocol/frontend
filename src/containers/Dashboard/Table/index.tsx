@@ -50,7 +50,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         <Tbody>
           {activeView === "Active" &&
             data &&
-            data.map((item) =>
+            data[0].map((item) =>
               item.loans.map((loanItem, key) => (
                 <TRow
                   key={item.createdAt.toString() + "-" + key}
