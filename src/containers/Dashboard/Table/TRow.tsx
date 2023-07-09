@@ -114,7 +114,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
             paddingY="4px"
             fontSize="18px"
           >
-            + 12 %
+            + {Number(data.pnl) / 100} %
           </Text>
         </HStack>
       </Td>
