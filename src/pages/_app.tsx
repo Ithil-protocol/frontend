@@ -36,19 +36,20 @@ const { connectors } = getDefaultWallets({
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
 });
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 0,
+    },
+  },
+});
+
 const wagmiClient = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
   webSocketPublicClient,
-});
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
-    },
-  },
+  queryClient,
 });
 
 // persist cache only in client mode, that's good enough for now

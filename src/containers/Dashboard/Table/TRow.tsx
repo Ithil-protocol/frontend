@@ -42,9 +42,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   const {
     writeAsync: close,
-    error,
     isLoading,
-    data: txData,
     reset,
   } = useContractWrite({
     address: serviceAddress[42161] as Address,
@@ -70,7 +68,6 @@ const TRow: FC<TRowProps> = ({ data }) => {
       ],
     });
     await trackTransaction(result, "Position closed");
-    reset();
     queryClient.clear();
   };
   const vaultTokenData = getVaultByTokenAddress(data.token);
