@@ -12,8 +12,8 @@ import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { palette } from "@/styles/theme/palette";
-import { TRowTypes, VaultName } from "@/types";
-import { formatToken, getVaultByTokenAddress } from "@/utils";
+import { TRowTypes } from "@/types";
+import { getVaultByTokenAddress } from "@/utils";
 import { mode, pickColor } from "@/utils/theme";
 
 interface Data extends Omit<TRowTypes, "createdAt"> {
@@ -91,11 +91,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        {vaultTokenData?.name} -{" "}
-        {formatToken(
-          vaultTokenData?.name as VaultName,
-          data.amount / data.margin
-        )}
+        Aave
       </Td>
       <Td>
         <HStack>
