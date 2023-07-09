@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { FC } from "react";
 
 import ServicePage from "@/containers/Service";
+import vaults from "@/deploy/vaults.json";
 import { getServices } from "@/hooks/use-services.hook";
 import {
   AaveAsset,
@@ -24,14 +25,21 @@ const Service: FC<Props> = ({ service, asset }) => {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const { names, services } = getServices();
-  // Generate all possible paths for the dynamic route
-  const paths = names.flatMap((serviceName) => {
-    const assets = Object.keys(services[serviceName].assets) as Array<
-      Lowercase<string>
-    >;
-    return assets.map((asset) => ({ params: { service: serviceName, asset } }));
-  });
+  // const { names, services } = getServices();
+  // // Generate all possible paths for the dynamic route
+  // const paths = names.flatMap((serviceName) => {
+  //   const assets = Object.keys(services[serviceName].assets) as Array<
+  //     Lowercase<string>
+  //   >;
+  //   return assets.map((asset) => ({ params: { service: serviceName, asset } }));
+  // });
+
+  const paths = vaults.map((vault) => ({
+    params: {
+      service: "aave",
+      asset: vault.name,
+    },
+  }));
 
   return {
     paths,
