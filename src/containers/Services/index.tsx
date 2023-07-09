@@ -8,10 +8,10 @@ import {
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { type FC } from "react";
 
+import { Aave } from "@/assets/svgs";
 import services from "@/data/services.json";
 import { palette } from "@/styles/theme/palette";
 import { Service } from "@/types";
@@ -51,7 +51,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <div className="flex justify-between mb-6">
-        <Image src={icon} alt={name + " icon"} width={28} height={28} />
+        <Aave width={28} height={28} />
         {/* 1 - 10% multiplier */}
         <div className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
           <Icon
