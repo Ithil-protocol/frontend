@@ -16,8 +16,13 @@ import { TRowTypes, VaultName } from "@/types";
 import { formatToken, getVaultByTokenAddress } from "@/utils";
 import { mode, pickColor } from "@/utils/theme";
 
+interface Data extends Omit<TRowTypes, "createdAt"> {
+  pnl: bigint | undefined;
+  id: bigint | undefined;
+}
+
 interface TRowProps {
-  data: Omit<TRowTypes, "createdAt">;
+  data: Data;
 }
 
 const TRow: FC<TRowProps> = ({ data }) => {
@@ -100,7 +105,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
             fontSize="22px"
             lineHeight="22px"
           >
-            $ 1200
+            $ {Number(data.pnl)}
           </Text>
           <Text
             bg="#15ac89"

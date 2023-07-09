@@ -10,7 +10,7 @@ import {
 import { FC } from "react";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
-import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
+import { useOpenPositions } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
 import { mode } from "@/utils/theme";
 
@@ -24,7 +24,7 @@ interface Props {
 
 const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
-  const { data } = useGetAgreementsByUser();
+  const { positions } = useOpenPositions();
   const { data: closed } = useClosePositions();
   return (
     <TableContainer width="full">
@@ -50,12 +50,18 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         </Thead>
         <Tbody>
           {activeView === "Active" &&
-            data &&
-            data[0].map((item) =>
-              item.loans.map((loanItem, key) => (
+            positions &&
+            positions.map((item, key) =>
+              item.agreement?.loans.map((loanItem) => (
                 <TRow
-                  key={item.createdAt.toString() + "-" + key}
-                  data={loanItem}
+                  key={key}
+                  data={{
+                    amount: loanItem.amount,
+                    margin: loanItem.margin,
+                    token: loanItem.token,
+                    pnl: item.pnl,
+                    id: item.id,
+                  }}
                 />
               ))
             )}
