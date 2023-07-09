@@ -9,8 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import { useContractWrite } from "wagmi";
 
 import TokenIcon from "@/components/TokenIcon";
+import { serviceABI, serviceAddress } from "@/hooks/generated/service";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -30,6 +33,27 @@ const TRow: FC<TRowProps> = ({ data }) => {
   const router = useRouter();
 
   const { name } = getVaultByTokenAddress(data.token);
+
+  console.log("data11", data);
+
+  const {
+    write: close,
+    error,
+    data: txData,
+  } = useContractWrite({
+    mode: "prepared",
+    // @ts-ignore
+    request: {
+      abi: serviceABI,
+      address: serviceAddress[42161] as Address,
+      functionName: "close",
+      args: [
+        BigInt(0),
+        encodeAbiParameters(parseAbiParameters("uint256"), [62437n]),
+      ],
+      gas: 20000000n,
+    },
+  });
 
   const handelCancelBtn = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

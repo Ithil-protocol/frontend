@@ -30,7 +30,7 @@ const nextConfig = {
     return config;
   },
   compiler: {
-    removeConsole: true,
+    removeConsole: process.env.NODE_ENV === "production",
   },
 
   // async rewrites() {
