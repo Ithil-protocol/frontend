@@ -1,32 +1,9 @@
 /* eslint-disable unused-imports/no-unused-vars */
-import {
-  Address,
-  encodeAbiParameters,
-  parseAbiParameters,
-  parseUnits,
-  toHex,
-} from "viem";
-import { useAccount, useContractWrite, useWalletClient } from "wagmi";
-
-import ServiceAbi from "@/abi/Service.abi";
-import {
-  serviceABI,
-  serviceAddress,
-  useServiceAgreements,
-  useServiceGetAgreement,
-  useServiceGetUserAgreements,
-  useServiceTokenByIndex,
-  useServiceTotalSupply,
-} from "@/hooks/generated/service";
-import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
-import { useAavePositions } from "@/hooks/useAavePositions";
-import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
-import { usePrepareOrder } from "@/hooks/usePrepareOrder";
-import { publicClient } from "@/wagmiTest/config";
+import { useOpenPositions } from "@/hooks/useOpenPositions";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
-  console.log("toHex", toHex(""));
+  // console.log("toHex", toHex(""));
 
   // vault data
   // const { data } = useVaultDetails("wbtc");
@@ -61,12 +38,12 @@ const Test = () => {
   // serviceTest(order);
 
   // this order works fine. if you want to test "open" function. (token, aToken, amount, _leverage)
-  const { order: workedOrder } = usePrepareOrder(
-    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-    "0x078f358208685046a11C85e8ad32895DED33A249",
-    parseUnits("0.000241", 8),
-    2
-  );
+  // const { order: workedOrder } = usePrepareOrder(
+  //   "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+  //   "0x078f358208685046a11C85e8ad32895DED33A249",
+  //   parseUnits("0.000241", 8),
+  //   2
+  // );
 
   // I don't know what is it
   // const { config, error: err } = usePrepareContractWrite({
@@ -87,33 +64,33 @@ const Test = () => {
 
   // this is for downloading events. it doesn't work I dont know why
 
-  const yy = async () => {
-    const filter = await publicClient.createContractEventFilter({
-      abi: serviceABI,
-      // address: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
-      eventName: "PositionOpened",
-      fromBlock: 0n,
-    });
-    const logs = await publicClient.getFilterLogs({ filter });
-    console.log("event999", logs);
-  };
+  // const yy = async () => {
+  //   const filter = await publicClient.createContractEventFilter({
+  //     abi: serviceABI,
+  //     // address: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
+  //     eventName: "PositionOpened",
+  //     fromBlock: 0n,
+  //   });
+  //   const logs = await publicClient.getFilterLogs({ filter });
+  //   console.log("event999", logs);
+  // };
 
-  const { data: serviceAgreements, isLoading } = useServiceAgreements({
-    args: [5n],
-  });
+  // const { data: serviceAgreements, isLoading } = useServiceAgreements({
+  //   args: [5n],
+  // });
 
-  const { data: totalSupply } = useServiceTotalSupply();
-  const { data: tokenByIndex } = useServiceTokenByIndex({
-    args: [0n],
-  });
+  // const { data: totalSupply } = useServiceTotalSupply();
+  // const { data: tokenByIndex } = useServiceTokenByIndex({
+  //   args: [0n],
+  // });
 
-  const { data: agreement } = useServiceGetAgreement({
-    args: [1n],
-  });
+  // const { data: agreement } = useServiceGetAgreement({
+  //   args: [1n],
+  // });
 
-  const { open, closed } = useAavePositions();
+  // const { open, closed } = useAavePositions();
 
-  const { data: walletClient, error: walletError } = useWalletClient();
+  // const { data: walletClient, error: walletError } = useWalletClient();
   // const { data: xx } = useContractRead({
   //   abi: serviceABI,
   //   address: serviceAddress[42161],
@@ -121,7 +98,7 @@ const Test = () => {
   //   account: walletClient,
   // });
 
-  const { address: accountAddress } = useAccount();
+  // const { address: accountAddress } = useAccount();
   // const getData = async () => {
   //   console.log("useragg", walletError);
 
@@ -140,38 +117,38 @@ const Test = () => {
   //   }
   // };
   // getData();
-  const { data: useragg } = useServiceGetUserAgreements({
-    account: accountAddress,
-  });
+  // const { data: useragg } = useServiceGetUserAgreements({
+  //   account: accountAddress,
+  // });
 
-  const { data: getAgreementsByUser } = useGetAgreementsByUser();
+  // const { data: getAgreementsByUser } = useGetAgreementsByUser();
   // console.log("useragg", reverseDisplayInterestSpreadInPercent(useragg[2].loans[0].interestAndSpread));
 
-  console.log("getAgreementsByUser", getAgreementsByUser);
-  console.log("ccccccc closed", closed);
-  console.log("totalSupply", totalSupply);
-  console.log("tokenByIndex", tokenByIndex);
-  console.log("agreement33", agreement);
+  // console.log("getAgreementsByUser", getAgreementsByUser);
+  // console.log("ccccccc closed", closed);
+  // console.log("totalSupply", totalSupply);
+  // console.log("tokenByIndex", tokenByIndex);
+  // console.log("agreement33", agreement);
 
   // this is for closing an agreement
-  const {
-    write: close,
-    error,
-    data: txData,
-  } = useContractWrite({
-    mode: "prepared",
-    // @ts-ignore
-    request: {
-      abi: serviceABI,
-      address: serviceAddress[42161],
-      functionName: "close",
-      args: [
-        BigInt(0),
-        encodeAbiParameters(parseAbiParameters("uint256"), [62437n]),
-      ],
-      gas: 20000000n,
-    },
-  });
+  // const {
+  //   write: close,
+  //   error,
+  //   data: txData,
+  // } = useContractWrite({
+  //   mode: "prepared",
+  //   // @ts-ignore
+  //   request: {
+  //     abi: serviceABI,
+  //     address: serviceAddress[42161],
+  //     functionName: "close",
+  //     args: [
+  //       BigInt(0),
+  //       encodeAbiParameters(parseAbiParameters("uint256"), [62437n]),
+  //     ],
+  //     gas: 20000000n,
+  //   },
+  // });
 
   // // to see if transaction failed or succeed
   // const { data: tx, error: txError } = useWaitForTransaction({
@@ -213,6 +190,8 @@ const Test = () => {
   // });
   // console.log("zz", zz);
 
+  useOpenPositions();
+
   // const { data: pp } = useServiceComputeDueFees({
   //   args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
   // });
@@ -223,32 +202,32 @@ const Test = () => {
 
   // const vault = getVaultByTokenAddress("0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f");
   // console.log("ii", vault);
-  const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
-    address: "0x8e39010dC8f11aD087Ba377f605c122d8dd4C72E" as Address,
-  });
-  console.log("ii2", vaultFreeLiquidity);
+  // const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
+  //   address: "0x8e39010dC8f11aD087Ba377f605c122d8dd4C72E" as Address,
+  // });
+  // console.log("ii2", vaultFreeLiquidity);
 
-  const { write: setRiskParam } = useContractWrite({
-    mode: "prepared",
-    // @ts-ignore
-    request: {
-      abi: ServiceAbi,
-      address: serviceAddress[42161],
-      functionName: "setRiskParams",
-      args: [
-        "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-        BigInt(3e15),
-        BigInt(1e16),
-        BigInt(3 * 86400),
-      ],
-      gas: 20000000n,
-    },
-  });
+  // const { write: setRiskParam } = useContractWrite({
+  //   mode: "prepared",
+  //   // @ts-ignore
+  //   request: {
+  //     abi: ServiceAbi,
+  //     address: serviceAddress[42161],
+  //     functionName: "setRiskParams",
+  //     args: [
+  //       "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+  //       BigInt(3e15),
+  //       BigInt(1e16),
+  //       BigInt(3 * 86400),
+  //     ],
+  //     gas: 20000000n,
+  //   },
+  // });
 
   // const {data:ss} = useGetAgreementsByUser();
   // console.log("ssss", ss);
 
-  return <p onClick={() => close?.()}>download event </p>;
+  // return <p onClick={() => close?.()}>download event </p>;
 
   // return (
   //   <Button disabled={!!write} onClick={() => write?.()}>
