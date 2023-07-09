@@ -14,8 +14,10 @@ import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
 
 import TokenIcon from "@/components/TokenIcon";
+import { Loading } from "@/components/loading";
 import { serviceABI, serviceAddress } from "@/hooks/generated/service";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -36,8 +38,6 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   const { name } = getVaultByTokenAddress(data.token);
 
-  console.log("data11", data);
-
   const { trackTransaction, reportException } = useTransactionFeedback();
 
   const {
@@ -53,6 +53,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   const queryClient = useQueryClient();
 
+  const isMounted = useIsMounted();
   const handelCancelBtn = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -71,6 +72,9 @@ const TRow: FC<TRowProps> = ({ data }) => {
     queryClient.clear();
   };
   const vaultTokenData = getVaultByTokenAddress(data.token);
+
+  if (!isMounted) return null;
+
   return (
     <Tr
       width="48"
@@ -127,29 +131,33 @@ const TRow: FC<TRowProps> = ({ data }) => {
         Aave
       </Td>
       <Td>
-        <HStack>
-          <Text
-            fontWeight="medium"
-            color={"#15ac89"}
-            fontSize="22px"
-            lineHeight="22px"
-          >
-            $ {Number(data.pnl)}
-          </Text>
-          <Text
-            bg="#15ac89"
-            borderRadius="8px"
-            fontWeight="bold"
-            fontFamily="18px"
-            lineHeight="24px"
-            textColor={mode(colorMode, "primary.100", "primary.100.dark")}
-            paddingX="8px"
-            paddingY="4px"
-            fontSize="18px"
-          >
-            + {Number(data.pnl) / 100} %
-          </Text>
-        </HStack>
+        {data.pnl !== undefined ? (
+          <HStack>
+            <Text
+              fontWeight="medium"
+              color={"#15ac89"}
+              fontSize="22px"
+              lineHeight="22px"
+            >
+              $ {Number(data.pnl)}
+            </Text>
+            <Text
+              bg="#15ac89"
+              borderRadius="8px"
+              fontWeight="bold"
+              fontFamily="18px"
+              lineHeight="24px"
+              textColor={mode(colorMode, "primary.100", "primary.100.dark")}
+              paddingX="8px"
+              paddingY="4px"
+              fontSize="18px"
+            >
+              + {Number(data.pnl) / 100} %
+            </Text>
+          </HStack>
+        ) : (
+          <Loading />
+        )}
       </Td>
       <Td textAlign="end" width={200} height="108px">
         <Button
