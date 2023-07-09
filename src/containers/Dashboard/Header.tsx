@@ -14,6 +14,8 @@ interface Props {
 const Header: FC<Props> = ({ currentView, setActiveView }) => {
   const { colorMode } = useColorMode();
 
+  console.log("currentView33", currentView);
+
   return (
     <Box
       display="flex"
@@ -31,7 +33,7 @@ const Header: FC<Props> = ({ currentView, setActiveView }) => {
           />
         </Link>
         <Text fontWeight="bold" fontSize="24px">
-          Open Positions
+          {currentView} Positions
         </Text>
       </Box>
       <Views currentView={currentView} setActiveView={setActiveView} />

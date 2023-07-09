@@ -24,7 +24,8 @@ import { getVaultByTokenAddress } from "@/utils";
 import { mode, pickColor } from "@/utils/theme";
 
 interface Data extends Omit<TRowTypes, "createdAt"> {
-  pnl: bigint | undefined;
+  pnlPercentage: string | undefined;
+  pnl: string | undefined;
   id: bigint | undefined;
 }
 
@@ -74,6 +75,8 @@ const TRow: FC<TRowProps> = ({ data }) => {
   const vaultTokenData = getVaultByTokenAddress(data.token);
 
   if (!isMounted) return null;
+
+  const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
 
   return (
     <Tr
@@ -135,14 +138,14 @@ const TRow: FC<TRowProps> = ({ data }) => {
           <HStack>
             <Text
               fontWeight="medium"
-              color={"#15ac89"}
+              color={isPnlPositive ? "#15ac89" : "#f35959"}
               fontSize="22px"
               lineHeight="22px"
             >
-              $ {Number(data.pnl)}
+              $ {data.pnl}
             </Text>
             <Text
-              bg="#15ac89"
+              bg={isPnlPositive ? "#15ac89" : "#f35959"}
               borderRadius="8px"
               fontWeight="bold"
               fontFamily="18px"
@@ -152,7 +155,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
               paddingY="4px"
               fontSize="18px"
             >
-              + {Number(data.pnl) / 100} %
+              + {data.pnlPercentage} %
             </Text>
           </HStack>
         ) : (

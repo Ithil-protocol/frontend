@@ -62,6 +62,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     margin: loanItem.margin,
                     token: loanItem.token,
                     pnl: item.pnl,
+                    pnlPercentage: item.pnlPercentage,
                     id: item.id,
                   }}
                 />

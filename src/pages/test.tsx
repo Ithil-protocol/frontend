@@ -1,4 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
+import { formatUnits } from "viem";
+
 import { useClosePositions } from "@/hooks/useClosePositions";
 
 const Test = () => {
@@ -237,6 +239,8 @@ const Test = () => {
   //     write
   //   </Button>
   // );
+
+  return <p>{formatUnits(100n, 12)}</p>;
 };
 
 export default Test;

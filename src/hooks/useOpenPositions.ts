@@ -1,6 +1,8 @@
+import { formatUnits } from "viem";
 import { Address, useContractReads } from "wagmi";
 
 import ServiceAbi from "@/abi/Service.abi";
+import { getVaultByTokenAddress } from "@/utils";
 
 import { serviceAddress } from "./generated/service";
 import { useGetAgreementsByUser } from "./useGetAgreementByUser";
@@ -63,10 +65,16 @@ export const useOpenPositions = () => {
         ? quote - fee - amount - margin
         : undefined;
 
+    const tokenAddress = agreement?.loans[0].token;
+    const decimals = tokenAddress
+      ? getVaultByTokenAddress(tokenAddress).decimals
+      : 1;
+
     positions.push({
       agreement,
       id: data?.[1][i],
-      pnl,
+      pnl: pnl ? formatUnits(pnl, decimals) : undefined,
+      pnlPercentage: pnl ? formatUnits(pnl / 100n, decimals) : undefined,
     });
   }
 
