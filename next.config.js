@@ -29,6 +29,9 @@ const nextConfig = {
 
     return config;
   },
+  compiler: {
+    removeConsole: true,
+  },
 
   // async rewrites() {
   //   return [
