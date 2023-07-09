@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
+import { Loading } from "@/components/loading";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
@@ -98,29 +99,33 @@ const TRow: FC<TRowProps> = ({ data }) => {
         Aave
       </Td>
       <Td>
-        <HStack>
-          <Text
-            fontWeight="medium"
-            color={"#15ac89"}
-            fontSize="22px"
-            lineHeight="22px"
-          >
-            $ {Number(data.pnl)}
-          </Text>
-          <Text
-            bg="#15ac89"
-            borderRadius="8px"
-            fontWeight="bold"
-            fontFamily="18px"
-            lineHeight="24px"
-            textColor={mode(colorMode, "primary.100", "primary.100.dark")}
-            paddingX="8px"
-            paddingY="4px"
-            fontSize="18px"
-          >
-            + {Number(data.pnl) / 100} %
-          </Text>
-        </HStack>
+        {data.pnl ? (
+          <HStack>
+            <Text
+              fontWeight="medium"
+              color={"#15ac89"}
+              fontSize="22px"
+              lineHeight="22px"
+            >
+              $ {Number(data.pnl)}
+            </Text>
+            <Text
+              bg="#15ac89"
+              borderRadius="8px"
+              fontWeight="bold"
+              fontFamily="18px"
+              lineHeight="24px"
+              textColor={mode(colorMode, "primary.100", "primary.100.dark")}
+              paddingX="8px"
+              paddingY="4px"
+              fontSize="18px"
+            >
+              + {Number(data.pnl) / 100} %
+            </Text>
+          </HStack>
+        ) : (
+          <Loading />
+        )}
       </Td>
       <Td textAlign="end" width={200} height="108px">
         <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
