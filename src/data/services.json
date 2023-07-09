@@ -4,7 +4,7 @@
     "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
     "apyRange": "1-3",
     "bestApy": 12,
-    "tokens": ["USDC", "USDT", "DAI", "WETH", "WBTC"],
+    "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
     "url": "/aave",
     "icon": "/assets/aave.svg"
