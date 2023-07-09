@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 
+import { useClosePositions } from "@/hooks/useClosePositions";
 import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { viewTypes } from "@/types";
 import { mode } from "@/utils/theme";
@@ -24,7 +25,7 @@ interface Props {
 const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
   const { data } = useGetAgreementsByUser();
-  console.log(data);
+  const { data: closed } = useClosePositions();
   return (
     <TableContainer width="full">
       <DefaultTable
@@ -58,16 +59,21 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                 />
               ))
             )}
-          {activeView === "Closed" && (
-            <TRowOther
-              data={{
-                amount: 2000n,
-                createdAt: 1688477804n,
-                margin: 15000000n,
-                token: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-              }}
-            />
-          )}
+          {activeView === "Closed" &&
+            closed &&
+            closed.map((item, key) =>
+              item.agreement?.loans.map((loanItem) => (
+                <TRowOther
+                  key={key}
+                  data={{
+                    amount: loanItem.amount,
+                    createdAt: item.agreement?.createdAt,
+                    margin: loanItem.margin,
+                    token: loanItem.token,
+                  }}
+                />
+              ))
+            )}
         </Tbody>
       </DefaultTable>
     </TableContainer>

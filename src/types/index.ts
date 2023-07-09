@@ -44,7 +44,7 @@ export interface TRowTypes {
   token: string;
   amount: bigint;
   margin: bigint;
-  createdAt: bigint;
+  createdAt: bigint | undefined;
 }
 
 export interface PageHeading {

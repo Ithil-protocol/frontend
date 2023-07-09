@@ -2,9 +2,10 @@ import { Box, HStack, Td, Text, Tr, useColorMode } from "@chakra-ui/react";
 import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
+import { Loading } from "@/components/loading";
 import { palette } from "@/styles/theme/palette";
-import { TRowTypes, VaultName } from "@/types";
-import { formatToken, getVaultByTokenAddress } from "@/utils";
+import { TRowTypes } from "@/types";
+import { getVaultByTokenAddress } from "@/utils";
 import { formatFullDate } from "@/utils/date.utils";
 import { mode, pickColor } from "@/utils/theme";
 
@@ -69,11 +70,7 @@ const TRowOther: FC<Props> = ({ data }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        {vaultTokenData?.name} -{" "}
-        {formatToken(
-          vaultTokenData?.name as VaultName,
-          data.amount / data.margin
-        )}
+        Aave
       </Td>
       <Td>
         <Text
@@ -82,7 +79,11 @@ const TRowOther: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {formatFullDate(new Date(Number(data.createdAt) * 1000))}
+          {data.createdAt ? (
+            formatFullDate(new Date(Number(data.createdAt) * 1000))
+          ) : (
+            <Loading />
+          )}
         </Text>
       </Td>
       <Td textAlign="end" width={200} height="108px"></Td>
