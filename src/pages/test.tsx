@@ -1,5 +1,5 @@
 /* eslint-disable unused-imports/no-unused-vars */
-import { useOpenPositions } from "@/hooks/useOpenPositions";
+import { useClosePositions } from "@/hooks/useClosePositions";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -190,7 +190,10 @@ const Test = () => {
   // });
   // console.log("zz", zz);
 
-  useOpenPositions();
+  // useOpenPositions();
+  const { data: closePositions, isLoading } = useClosePositions();
+  console.log("closePositions data", closePositions);
+  console.log("closePositions isLoading", isLoading);
 
   // const { data: pp } = useServiceComputeDueFees({
   //   args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
