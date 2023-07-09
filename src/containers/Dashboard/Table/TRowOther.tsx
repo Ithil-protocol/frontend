@@ -19,7 +19,7 @@ const TRowOther: FC<Props> = ({ data }) => {
 
   return (
     <Tr
-      width="full"
+      width="48"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}

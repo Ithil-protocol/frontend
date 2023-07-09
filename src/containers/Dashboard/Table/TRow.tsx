@@ -40,7 +40,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
   const vaultTokenData = getVaultByTokenAddress(data.token);
   return (
     <Tr
-      width="full"
+      width="48"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}

@@ -34,9 +34,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         width="full"
       >
         <Thead>
-          <Tr>
+          <Tr width="48">
             {columns.map((col, index) => (
               <Th
+                width="48"
                 color={mode(colorMode, "primary.700", "primary.700.dark")}
                 className="font-sans"
                 fontSize="18px"
