@@ -53,7 +53,7 @@ const TRowOther: FC<Props> = ({ data }) => {
                     }}
                     width={42}
                     height={42}
-                    name={vaultTokenData?.iconName || ""}
+                    name={vaultTokenData?.name || ""}
                   />
                 </Box>
               </Box>
