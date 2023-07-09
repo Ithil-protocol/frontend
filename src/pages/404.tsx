@@ -20,37 +20,47 @@ const Page404 = () => {
     >
       <Box
         style={{
-          padding: "20px",
-          borderRadius: "10px",
           width: "100%",
           display: "flex",
-          maxWidth: "400px",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "column",
+          height: "80vh",
         }}
       >
-        <Text
+        <Box
           style={{
-            fontSize: "28px",
+            padding: "20px",
+            borderRadius: "10px",
+            width: "100%",
+            display: "flex",
+            maxWidth: "400px",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
           }}
         >
-          Page not found!
-        </Text>
-
-        <IthilWizard width="100%" height="400px" />
-
-        <Link style={{ width: "100%" }} href="/lend">
-          <Button
-            bg={mode(
-              colorMode,
-              palette.variants.primary.action,
-              palette.variants.primary["action.dark"]
-            )}
+          <Text
+            style={{
+              fontSize: "28px",
+            }}
           >
-            Back to Home!
-          </Button>
-        </Link>
+            Page not found!
+          </Text>
+
+          <IthilWizard width="100%" height="400px" />
+
+          <Link style={{ width: "100%" }} href="/lend">
+            <Button
+              bg={mode(
+                colorMode,
+                palette.variants.primary.action,
+                palette.variants.primary["action.dark"]
+              )}
+            >
+              Back to Home!
+            </Button>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );

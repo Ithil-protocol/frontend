@@ -23,6 +23,9 @@ interface TRowProps {
 const TRow: FC<TRowProps> = ({ data }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
+
+  const { name } = getVaultByTokenAddress(data.token);
+
   const handelCancelBtn = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {

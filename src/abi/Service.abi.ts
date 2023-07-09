@@ -1718,6 +1718,11 @@ export default [
         name: "",
         type: "tuple[]",
       },
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
     ],
     stateMutability: "view",
     type: "function",
