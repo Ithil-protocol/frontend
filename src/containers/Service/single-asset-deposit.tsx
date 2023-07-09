@@ -101,7 +101,6 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             <>
               <Text textStyle="slender-sm2">
                 {abbreviateBigNumber(balance, asset!.decimals)}
-                HI
               </Text>
               <HStack textStyle="slender-sm2">
                 <EstimatedValue value={balance} token={asset!} />

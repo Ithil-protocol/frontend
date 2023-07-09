@@ -200,6 +200,8 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     hash: depositData?.hash,
   });
 
+  console.log("deposit3333", deposit);
+
   // computed properties
   const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
   const isButtonLoading =
