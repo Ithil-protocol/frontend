@@ -7,6 +7,7 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
@@ -14,6 +15,7 @@ import { useContractWrite } from "wagmi";
 
 import TokenIcon from "@/components/TokenIcon";
 import { serviceABI, serviceAddress } from "@/hooks/generated/service";
+import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -36,30 +38,40 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   console.log("data11", data);
 
+  const { trackTransaction, reportException } = useTransactionFeedback();
+
   const {
-    write: close,
+    writeAsync: close,
     error,
+    isLoading,
     data: txData,
+    reset,
   } = useContractWrite({
-    mode: "prepared",
-    // @ts-ignore
-    request: {
-      abi: serviceABI,
-      address: serviceAddress[42161] as Address,
-      functionName: "close",
-      args: [
-        BigInt(0),
-        encodeAbiParameters(parseAbiParameters("uint256"), [62437n]),
-      ],
-      gas: 20000000n,
-    },
+    address: serviceAddress[42161] as Address,
+    abi: serviceABI,
+    functionName: "close",
+    gas: 20000000n,
   });
 
-  const handelCancelBtn = (
+  const queryClient = useQueryClient();
+
+  const handelCancelBtn = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
     e.preventDefault();
+    if (!data.id || !data.amount) return;
+    const result = await close({
+      args: [
+        data.id,
+        encodeAbiParameters(parseAbiParameters("uint256"), [
+          (data.amount * 999n) / 1000n,
+        ]),
+      ],
+    });
+    await trackTransaction(result, "Position closed");
+    reset();
+    queryClient.clear();
   };
   const vaultTokenData = getVaultByTokenAddress(data.token);
   return (
@@ -143,7 +155,12 @@ const TRow: FC<TRowProps> = ({ data }) => {
         </HStack>
       </Td>
       <Td textAlign="end" width={200} height="108px">
-        <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
+        <Button
+          onClick={handelCancelBtn}
+          variant="outline"
+          color="#f35959"
+          isLoading={isLoading}
+        >
           Close
         </Button>
       </Td>

@@ -27,7 +27,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const { positions } = useOpenPositions();
   const { data: closed } = useClosePositions();
 
-  console.log("positionspositions", positions);
   return (
     <TableContainer width="full">
       <DefaultTable
