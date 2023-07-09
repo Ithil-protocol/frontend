@@ -22,15 +22,17 @@ interface Props {
 export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   const vault = getVaultByTokenAddress(tokenAddress);
   // console.log("ii", vault);
-  const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
-    address: vault?.vaultAddress as Address,
-    enabled: !!vault,
-  });
+  const { data: vaultFreeLiquidity, isLoading: isFreeLiquidityLoading } =
+    useVaultFreeLiquidity({
+      address: vault?.vaultAddress as Address,
+      enabled: !!vault,
+    });
 
-  const { data } = useServiceComputeBaseRateAndSpread({
-    args: [tokenAddress, loan, margin, vaultFreeLiquidity as bigint],
-    enabled: !!vaultFreeLiquidity,
-  });
+  const { data, isLoading: isBaseRateLoading } =
+    useServiceComputeBaseRateAndSpread({
+      args: [tokenAddress, loan, margin, vaultFreeLiquidity as bigint],
+      enabled: !!vaultFreeLiquidity,
+    });
 
   // console.log(
   //   "ii",
@@ -42,10 +44,12 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
   //   margin
   // );
   // console.log("ii2", data);
+  const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
   const result = {
     interestAndSpread: 0n,
     displayInterestAndSpreadInPercent: 0,
+    isLoading,
   };
   if (data) {
     result.interestAndSpread = spreadToUint256(...data);
