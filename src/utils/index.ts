@@ -38,10 +38,10 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
-export const getVaultByTokenAddress = (
-  tokenAddress: string
-): VaultsTypes | undefined => {
-  return vaults.find((item) => item.tokenAddress === tokenAddress);
+export const getVaultByTokenAddress = (tokenAddress: string): VaultsTypes => {
+  const vault = vaults.find((item) => item.tokenAddress === tokenAddress);
+  if (!vault) throw new Error("Vault not found");
+  return vault;
 };
 
 export const getVaultByTokenName = (

@@ -32,7 +32,7 @@ const DepositForm = () => {
 
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
 
-  const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(4) : "";
+  const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(2) : "";
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
@@ -71,7 +71,7 @@ const DepositForm = () => {
         <FormDescriptionItem
           extension="%"
           leftPart="Base APY:"
-          rightPart={baseApy}
+          rightPart={baseApy?.toFixed(2)}
           isLoading={isLoading}
         />
         <FormDescriptionItem

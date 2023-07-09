@@ -30,7 +30,7 @@ const PageWrapper: FC<PageWrapperProps> = ({
       <Navbar onSetSidebarOpen={setSidebarOpen} />
 
       <Box
-        className={`container p-3 sm:p-0 md:p-1 mx-auto font-sans mt-20 flex flex-col gap-7 items-center w-full ${body.variable} ${headingTypo.variable} ${className}`}
+        className={`container p-3 sm:p-0 md:p-1 mx-auto font-sans flex flex-col gap-7 items-center w-full ${body.variable} ${headingTypo.variable} ${className}`}
       >
         {heading != null && (
           <Heading
