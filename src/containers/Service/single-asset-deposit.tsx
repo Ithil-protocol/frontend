@@ -1,5 +1,6 @@
 import {
   Button,
+  HStack,
   Input,
   InputGroup,
   InputRightElement,
@@ -8,9 +9,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { type FC, useState } from "react";
+import React, { Dispatch, type FC, SetStateAction, useState } from "react";
 import {
   useAccount,
   useBalance,
@@ -26,6 +26,7 @@ import { Loading } from "@/components/loading";
 import { serviceABI, serviceAddress } from "@/hooks/generated/service";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { type AaveAsset } from "@/types/onchain.types";
 import {
@@ -53,6 +54,9 @@ interface WidgetSingleAssetDepositProps {
   isButtonLoading: boolean;
   isMaxDisabled: boolean;
   isApproved: boolean;
+  leverage: string;
+  setLeverage: Dispatch<SetStateAction<string>>;
+  isLoading: boolean;
 }
 
 export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
@@ -68,14 +72,19 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   onActionClick,
   onInputChange,
   onMaxClick,
+  leverage,
+  setLeverage,
+  isLoading,
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
   const router = useRouter();
-
+  const isMounted = useIsMounted();
   const handleSelectToken = (tokenName: string) => {
     router.push(`/services/${router.query.service}/${tokenName}`);
   };
+
+  if (!isMounted) return null;
 
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
@@ -83,15 +92,18 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         <Text textStyle="lg">Deposit</Text>
         <div className="flex flex-row items-center justify-end gap-2">
           {isBalanceLoading ? (
-            <Loading />
+            <>
+              <Loading />
+            </>
           ) : (
             <>
               <Text textStyle="slender-sm2">
                 {abbreviateBigNumber(balance, asset!.decimals)}
+                HI
               </Text>
-              <Text textStyle="slender-sm2">
-                (<EstimatedValue value={balance} token={asset!} />)
-              </Text>
+              <HStack textStyle="slender-sm2">
+                <EstimatedValue value={balance} token={asset!} />
+              </HStack>
             </>
           )}
         </div>
@@ -104,7 +116,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           gap: "5px",
         }}
       >
-        <div className="flex  gap-2">
+        <div className="flex gap-2">
           <div
             style={{
               cursor: "pointer",
@@ -158,31 +170,36 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           </InputGroup>
         </div>
 
-        <DepositForm />
+        <DepositForm
+          leverage={leverage}
+          setLeverage={setLeverage}
+          isLoading={isLoading}
+        />
       </div>
 
-      {isConnected ? (
-        <Button
-          mt="20px"
-          onClick={() => {
-            void onActionClick();
-          }}
-          isDisabled={isButtonDisabled}
-          isLoading={isButtonLoading}
-          loadingText={isButtonLoading ? "Waiting" : undefined}
-        >
-          {asset == null
-            ? "Loading..."
-            : isApproved
-            ? "Open position"
-            : `Approve ${asset.name}`}
-        </Button>
-      ) : (
-        <Button mt="20px" onClick={openConnectModal}>
-          Connect Wallet
-        </Button>
-      )}
-
+      <>
+        {isConnected ? (
+          <Button
+            mt="20px"
+            onClick={() => {
+              void onActionClick();
+            }}
+            isDisabled={isButtonDisabled}
+            isLoading={isButtonLoading}
+            loadingText={isButtonLoading ? "Waiting" : undefined}
+          >
+            {!asset
+              ? "Loading..."
+              : isApproved
+              ? "Open position"
+              : `Approve ${asset.name}`}
+          </Button>
+        ) : (
+          <Button mt="20px" onClick={openConnectModal}>
+            Connect Wallet
+          </Button>
+        )}
+      </>
       <TokenModal
         onSelectToken={(tokenName) => {
           onClose();
@@ -205,6 +222,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const chainId = useChainId() as 42161;
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals);
+  const [leverage, setLeverage] = useState("1.5");
 
   // web3 hooks
   const { trackTransaction, reportException } = useTransactionFeedback();
@@ -229,7 +247,11 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     hash: approveData?.hash,
   });
 
-  const { order, displayInterestAndSpreadInPercent } = usePrepareOrder(
+  const {
+    order,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+  } = usePrepareOrder(
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,
@@ -335,30 +357,9 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
       isMaxDisabled={isMaxDisabled}
       isApproved={isApproved}
       asset={asset}
+      leverage={leverage}
+      setLeverage={setLeverage}
+      isLoading={isInterestAndSpreadLoading}
     />
   );
 };
-
-export const DynamicServiceDeposit = dynamic(
-  async () =>
-    await import("@/containers/Service/single-asset-deposit").then(
-      (mod) => mod.ServiceDeposit
-    ),
-  {
-    ssr: false,
-    loading: () => (
-      <WidgetSingleAssetDeposit
-        inputAmount="0"
-        onInputChange={() => console.log}
-        onActionClick={() => console.log}
-        onMaxClick={() => console.log}
-        isConnected={false}
-        isBalanceLoading={true}
-        isButtonDisabled={true}
-        isButtonLoading={false}
-        isMaxDisabled={false}
-        isApproved={false}
-      />
-    ),
-  }
-);

@@ -26,7 +26,7 @@ import { type AaveAsset, type AaveService } from "@/types/onchain.types";
 import { pickColor } from "@/utils/theme";
 
 import { Graph } from "./graph";
-import { DynamicServiceDeposit } from "./single-asset-deposit";
+import { ServiceDeposit } from "./single-asset-deposit";
 
 interface StrategyDescriptionProps extends PropsWithClassName {
   description: string;
@@ -311,7 +311,7 @@ Aave's reputation for security and reliability is built on its extensive track r
           />
         </div>
         <div className="flex-shrink-0 col-span-full lg:col-span-3">
-          <DynamicServiceDeposit asset={asset} />
+          <ServiceDeposit asset={asset} />
         </div>
       </div>
     </>

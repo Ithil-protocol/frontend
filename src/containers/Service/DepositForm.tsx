@@ -8,7 +8,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -18,7 +18,13 @@ import { mode, pickColor } from "@/utils/theme";
 import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormDescriptionItem from "./FormDescriptionItem";
 
-const DepositForm = () => {
+interface Props {
+  leverage: string;
+  setLeverage: Dispatch<SetStateAction<string>>;
+  isLoading: boolean;
+}
+
+const DepositForm: FC<Props> = ({ leverage, setLeverage, isLoading }) => {
   const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
@@ -26,12 +32,8 @@ const DepositForm = () => {
     query: { asset },
   } = useRouter();
 
-  const [leverage, setLeverage] = useState("1.5");
-
-  const { baseApy, isLoading } = useBaseApy(asset as string);
-
+  const { baseApy } = useBaseApy(asset as string);
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
-
   const finalApy = baseApy ? (+baseApy * +finalLeverage).toFixed(2) : "";
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
@@ -40,24 +42,6 @@ const DepositForm = () => {
 
   return (
     <Box width="full" gap="30px">
-      {/* <Box
-        mt="32px"
-        style={{ borderRadius: "10px", border: "1px solid transparent" }}
-        bg={mode(colorMode, "primary.200", "primary.200.dark")}
-      >
-        <FormDescriptionItem
-          leftPart="Total Margin:"
-          rightPart="1000"
-          extension="$"
-        />
-
-        <FormDescriptionItem
-          extension="$"
-          leftPart="Price Impact:"
-          rightPart="1"
-        />
-      </Box> */}
-
       <Box
         marginTop={5}
         bg={mode(colorMode, "primary.100", "primary.100.dark")}
@@ -78,11 +62,13 @@ const DepositForm = () => {
           extension="x"
           leftPart="Best Leverage:"
           rightPart={finalLeverage}
+          isLoading={isLoading}
         />
         <FormDescriptionItem
           extension="%"
           leftPart="Borrow Interest:"
           rightPart="0"
+          isLoading={isLoading}
         />
         <FormDescriptionItem
           extension="%"
