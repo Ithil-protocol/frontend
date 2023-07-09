@@ -37,7 +37,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const paths = vaults.map((vault) => ({
     params: {
       service: "aave",
-      asset: vault.name,
+      asset: vault.name.toLowerCase(),
     },
   }));
 
