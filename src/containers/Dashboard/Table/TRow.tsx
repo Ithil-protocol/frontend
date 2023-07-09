@@ -99,7 +99,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
         Aave
       </Td>
       <Td>
-        {data.pnl ? (
+        {data.pnl !== undefined ? (
           <HStack>
             <Text
               fontWeight="medium"
