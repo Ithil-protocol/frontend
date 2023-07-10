@@ -72,7 +72,7 @@ const Lend: FC = () => {
   const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
   const isVaultsLoading = isLoading || isLoadingError;
 
-  console.log("vaultData33", placeHolderVaultData);
+  console.log("vaultData33", vaultData);
 
   const onSelectedChange = (idx: number) => {
     // not sure this check is necessary

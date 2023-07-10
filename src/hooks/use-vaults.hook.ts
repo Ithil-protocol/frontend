@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { erc4626ABI, multicall } from "@wagmi/core";
+import { multicall } from "@wagmi/core";
 import { useAccount } from "wagmi";
 
+import { vaultABI } from "@/hooks/generated/vault";
 import { lendingTokens } from "@/hooks/use-price-data.hook";
 import { type Vaults } from "@/types/onchain.types";
 import { ErrorCause } from "@/utils/error-cause";
@@ -19,7 +20,7 @@ const ithil4626customAbi = [
   },
 ] as const;
 
-const VaultAbi = [...erc4626ABI, ...ithil4626customAbi];
+const VaultAbi = [...vaultABI];
 
 export const placeHolderVaultData = lendingTokens.map((token) => ({
   key: token.name,
@@ -54,6 +55,11 @@ const getVaultData = async (address?: string) => {
     functionName: "convertToAssets",
     args: [oneUnitWithDecimals(token.decimals)],
   }));
+  const netLoans = lendingTokens.map((token) => ({
+    address: token.vaultAddress,
+    abi: VaultAbi,
+    functionName: "netLoans",
+  }));
 
   const multicallData = await multicall({
     contracts: [
@@ -61,6 +67,7 @@ const getVaultData = async (address?: string) => {
       ...freeLiquidityCalls,
       ...balanceOfCalls,
       ...convertToAssetCalls,
+      ...netLoans,
     ],
   });
 
@@ -77,7 +84,7 @@ const getVaultData = async (address?: string) => {
     const tvl = multicallData[idx].result as bigint;
     // freeLiquidity informations are available at index length...length*2
     const freeLiquidity = multicallData[arr.length + idx].result as bigint;
-    const borrowed = tvl / freeLiquidity;
+
     // deposited informations are available at index length*2...length*3
     const depositedShares =
       address != null
@@ -90,7 +97,7 @@ const getVaultData = async (address?: string) => {
       sharesToAsset,
       vault.token.decimals
     );
-
+    const borrowed = multicallData[arr.length * 4 + idx].result as bigint;
     return {
       key: vault.key,
       token: vault.token,
