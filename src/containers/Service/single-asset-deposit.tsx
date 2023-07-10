@@ -257,7 +257,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     asset.tokenAddress,
     asset.aTokenAddress,
     inputBigNumber,
-    1.5
+    +leverage
   );
 
   console.log(
