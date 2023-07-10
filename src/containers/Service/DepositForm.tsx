@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   InputGroup,
-  InputRightElement,
   NumberInput,
   NumberInputField,
   useColorMode,
@@ -140,7 +139,6 @@ const DepositForm: FC<Props> = ({
               >
                 <NumberInputField />
               </NumberInput>
-              <InputRightElement>%</InputRightElement>
             </InputGroup>
 
             <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
