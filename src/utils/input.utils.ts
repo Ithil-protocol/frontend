@@ -2,15 +2,15 @@ import { format, parse } from "numerable";
 import { formatUnits, parseUnits } from "viem";
 
 export const stringInputToBigNumber = (input: string, decimals: number) => {
-  if (input === "") {
-    return BigInt(0);
-  }
-  const mantissa = input.split(".")[1];
-  if (mantissa !== undefined && mantissa.length > decimals)
-    // wrong calculation
-    return BigInt(0); // wrong calculation
-  const num = Number(input);
-  return parseUnits(`${num}`, decimals);
+  // if (input === "") {
+  //   return BigInt(0);
+  // }
+  // const mantissa = input.split(".")[1];
+  // if (mantissa !== undefined && mantissa.length > decimals)
+  //   // wrong calculation
+  //   return BigInt(0); // wrong calculation
+  // const num = Number(input);
+  return parseUnits(input, decimals);
 };
 
 /**
