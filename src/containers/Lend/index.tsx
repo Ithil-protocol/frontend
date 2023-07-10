@@ -154,9 +154,7 @@ const Lend: FC = () => {
                       <Text className="uppercase">{vault.token.name}</Text>
                     </div>
                   </Td>
-                  <Td>
-                    <Loading />
-                  </Td>
+                  <Td>5%</Td>
                   <Td>
                     {isVaultsLoading || (isVaultsError && <Loading />)}
                     <DynamicEstimatedValue
