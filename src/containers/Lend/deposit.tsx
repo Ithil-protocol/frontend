@@ -354,6 +354,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     isButtonLoading ||
     isInconsistent ||
     inputBigNumber === BigInt(0);
+
   const isMaxDisabled = balance
     ? inputBigNumber === balance.value || balance.value === BigInt(0)
     : false;
@@ -384,6 +385,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
       });
       await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
       setInputAmount("0");
+      setInputBigNumber(BigInt(0));
     } catch (error) {
       toast({
         title: (error as { shortMessage: string }).shortMessage,
