@@ -111,7 +111,7 @@ const ServicesGrid: FC<{ services: Service[] }> = ({ services }) => {
           to={item.url}
           multiplier={`${item.apyRange}%`}
           name={item.name}
-          apy={`%${item.bestApy}`}
+          apy={`${item.bestApy}%`}
           tvl={`${item.tvl}m`}
         />
       ))}
