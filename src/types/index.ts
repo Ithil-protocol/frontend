@@ -28,7 +28,7 @@ export interface VaultsTypes {
 }
 
 export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
-
+export type ServiceType = "AAVE";
 export interface Service {
   name: string;
   description: string;
@@ -37,7 +37,6 @@ export interface Service {
   tokens: string[];
   tvl: number;
   url: string;
-  icon: string;
 }
 
 export interface TRowTypes {

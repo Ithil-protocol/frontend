@@ -11,11 +11,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { type FC } from "react";
 
-import { Aave } from "@/assets/svgs";
 import services from "@/data/services.json";
 import { palette } from "@/styles/theme/palette";
-import { Service } from "@/types";
+import { Service, ServiceType } from "@/types";
 import { pickColor } from "@/utils/theme";
+
+import ServiceIcon from "../Service/ServiceIcon";
 
 const ServiceToken: FC<{ token: string }> = ({ token }) => (
   <div className="flex py-1 min-w-[92px] border border-primary-500 rounded-md">
@@ -33,7 +34,6 @@ interface ServiceCardProps {
   name: string;
   apy: string;
   tvl: string;
-  icon: string;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -44,14 +44,13 @@ const ServiceCard: FC<ServiceCardProps> = ({
   name,
   apy,
   tvl,
-  icon,
 }) => {
   const { colorMode } = useColorMode();
   const { push } = useRouter();
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <div className="flex justify-between mb-6">
-        <Aave width={28} height={28} />
+        <ServiceIcon name={name as ServiceType} />
         {/* 1 - 10% multiplier */}
         <div className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
           <Icon
@@ -114,7 +113,6 @@ const ServicesGrid: FC<{ services: Service[] }> = ({ services }) => {
           name={item.name}
           apy={`%${item.bestApy}`}
           tvl={`${item.tvl}m`}
-          icon={item.icon}
         />
       ))}
     </div>

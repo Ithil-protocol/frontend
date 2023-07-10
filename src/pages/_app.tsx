@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { removeOldestQuery } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
+import Script from "next/script";
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -95,21 +96,35 @@ export default function App({ Component, pageProps }: AppProps) {
       }
     });
   }, [router]);
-  console.log(router.pathname.split("/")[0]);
 
   return (
-    <WagmiConfig config={wagmiClient}>
-      <QueryClientProvider client={queryClient}>
-        <Chakra>
-          <RainbowWrapper>
-            <PageWrapper heading={heading} textAlign="left">
-              <Component {...pageProps} />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </PageWrapper>
-          </RainbowWrapper>
-        </Chakra>
-      </QueryClientProvider>
-    </WagmiConfig>
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', ${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}});
+   
+    `}
+      </Script>
+      <WagmiConfig config={wagmiClient}>
+        <QueryClientProvider client={queryClient}>
+          <Chakra>
+            <RainbowWrapper>
+              <PageWrapper heading={heading} textAlign="left">
+                <Component {...pageProps} />
+                <ReactQueryDevtools initialIsOpen={false} />
+              </PageWrapper>
+            </RainbowWrapper>
+          </Chakra>
+        </QueryClientProvider>
+      </WagmiConfig>
+    </>
   );
 }
 

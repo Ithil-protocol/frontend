@@ -6,7 +6,6 @@
     "bestApy": 12,
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
-    "url": "/aave",
-    "icon": "/assets/aave.svg"
+    "url": "/aave"
   }
 ]
