@@ -73,6 +73,7 @@ export const useOpenPositions = () => {
     positions.push({
       agreement,
       id: data?.[1][i],
+      quote,
       pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
       pnlPercentage:
         pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,

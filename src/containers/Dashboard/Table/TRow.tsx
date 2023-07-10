@@ -27,6 +27,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   pnlPercentage: string | undefined;
   pnl: string | undefined;
   id: bigint | undefined;
+  quote: bigint | undefined;
 }
 
 interface TRowProps {
@@ -60,12 +61,18 @@ const TRow: FC<TRowProps> = ({ data }) => {
   ) => {
     e.stopPropagation();
     e.preventDefault();
-    if (!data.id || !data.amount) return;
+    console.log("data.quote", data.quote);
+    if (
+      data.id === undefined ||
+      data.amount === undefined ||
+      data.quote === undefined
+    )
+      return;
     const result = await close({
       args: [
         data.id,
         encodeAbiParameters(parseAbiParameters("uint256"), [
-          (data.amount * 999n) / 1000n,
+          (data.quote * 999n) / 1000n,
         ]),
       ],
     });
