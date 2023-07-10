@@ -8,8 +8,10 @@ import {
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { type FC, useState } from "react";
-import { formatUnits } from "viem";
+import { Address, formatUnits } from "viem";
 import {
+  erc20ABI,
+  erc4626ABI,
   useAccount,
   useBalance,
   useContractWrite,
@@ -181,35 +183,54 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     address,
     token.vaultAddress
   );
+
+  const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
+
+  console.log("allowance33", allowance);
+
+  // const {
+  //   data: approveData,
+  //   isLoading: isApproveLoading,
+  //   writeAsync: approve,
+  // } = useApprove(token.vaultAddress, inputBigNumber);
+
   const {
     data: approveData,
     isLoading: isApproveLoading,
     writeAsync: approve,
-  } = useApprove(token.vaultAddress, inputBigNumber);
+  } = useContractWrite({
+    address: token.tokenAddress as Address,
+    abi: erc20ABI,
+    functionName: "approve",
+  });
+
   const { isLoading: isApproveWaiting } = useWaitForTransaction({
     hash: approveData?.hash,
   });
 
   // deposit
-  const { config: depositConfig, isFetching: isDepositFetching } =
-    usePrepareDeposit(inputBigNumber);
+  // const { config: depositConfig, isFetching: isDepositFetching } =
+  //   usePrepareDeposit(inputBigNumber);
+
   const {
     data: depositData,
     isLoading: isDepositLoading,
     writeAsync: deposit,
-  } = useContractWrite(depositConfig);
+  } = useContractWrite({
+    address: token.vaultAddress as Address,
+    abi: erc4626ABI,
+    functionName: "deposit",
+  });
   const { isLoading: isDepositWaiting } = useWaitForTransaction({
     hash: depositData?.hash,
   });
 
   // computed properties
-  const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
   const isButtonLoading =
     isApproveLoading ||
     isApproveWaiting ||
     isDepositLoading ||
-    isDepositWaiting ||
-    isDepositFetching;
+    isDepositWaiting;
   const isInconsistent = balance ? inputBigNumber > balance.value : true;
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
@@ -226,14 +247,17 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     try {
       if (!isApproved) {
         // after approval is successful, read again the allowance
-        if (!approve) return;
-        const result = await approve();
+        const result = await approve({
+          args: [token.vaultAddress, inputBigNumber],
+        });
         await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
         await refetchAllowance();
         return;
       }
-      if (!deposit) return;
-      const result = await deposit();
+      // if (!deposit) return;
+      const result = await deposit({
+        args: [inputBigNumber, address!],
+      });
       await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
       await refetchAllowance();
       setInputAmount("0");
