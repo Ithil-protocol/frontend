@@ -149,7 +149,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
               fontSize="22px"
               lineHeight="22px"
             >
-              $ {data.pnl}
+              {data.pnl}
             </Text>
             <Text
               bg={isPnlPositive ? "#15ac89" : "#f35959"}
