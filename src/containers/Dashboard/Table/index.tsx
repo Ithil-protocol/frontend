@@ -64,6 +64,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     pnl: item.pnl,
                     pnlPercentage: item.pnlPercentage,
                     id: item.id,
+                    quote: item.quote,
                   }}
                 />
               ))
