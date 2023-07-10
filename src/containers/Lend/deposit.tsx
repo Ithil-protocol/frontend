@@ -321,13 +321,18 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   const { trackTransaction } = useTransactionFeedback();
 
   // withdraw
-  const {
-    config: redeemConfig,
-    isError: isPrRedeemError,
-    isFetching: isWithdrawFetching,
-  } = usePrepareRedeem(inputBigNumber);
+  // const {
+  //   config: redeemConfig,
+  //   isError: isPrRedeemError,
+  //   isFetching: isWithdrawFetching,
+  // } = usePrepareRedeem(inputBigNumber);
+
   const { isLoading: isWithdrawLoading, writeAsync: withdraw } =
-    useContractWrite(redeemConfig);
+    useContractWrite({
+      address: token.vaultAddress,
+      abi: erc4626ABI,
+      functionName: "redeem",
+    });
   const { data: assetsRatioData, isLoading: isAssetsRatioLoading } =
     useConvertToAssets();
   const { data: sharesRatioData, isLoading: isSharesRatioLoading } =
@@ -342,14 +347,12 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   );
   const isButtonLoading = isWithdrawLoading || isMaxRedeemLoading;
   const isRequiredInfoLoading = isAssetsRatioLoading || isSharesRatioLoading;
-  const isPrepareError = isPrRedeemError;
+  // const isPrepareError = isPrRedeemError;
   const isInconsistent = balance ? inputBigNumber > balance.value : true;
   const isButtonDisabled =
     isRequiredInfoLoading ||
     isButtonLoading ||
-    isPrepareError ||
     isInconsistent ||
-    isWithdrawFetching ||
     inputBigNumber === BigInt(0);
   const isMaxDisabled = balance
     ? inputBigNumber === balance.value || balance.value === BigInt(0)
@@ -376,8 +379,9 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
 
   const handleClick = async () => {
     try {
-      if (!withdraw) return;
-      const result = await withdraw();
+      const result = await withdraw({
+        args: [inputBigNumber, address!, address!],
+      });
       await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
       setInputAmount("0");
     } catch (error) {

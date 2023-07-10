@@ -246,7 +246,7 @@ const Test = () => {
   const d = aToken.read.balanceOf([
     "0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba8",
   ]);
-  d.then((e) => console.log(e));
+  d.then((e) => console.log("aToken33", e));
 
   return <p>{formatUnits(100n, 12)}</p>;
 };
