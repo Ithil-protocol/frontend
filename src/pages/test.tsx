@@ -4,7 +4,7 @@ import { erc4626ABI, useContractWrite } from "wagmi";
 import { getContract } from "wagmi/actions";
 
 import { gmxABI } from "@/abi";
-import { aaveAddress } from "@/hooks/generated/aave";
+import { gmxAddress } from "@/hooks/generated/gmx";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -220,10 +220,10 @@ const Test = () => {
     // @ts-ignore
     request: {
       abi: gmxABI,
-      address: aaveAddress[42161],
+      address: gmxAddress[42161],
       functionName: "setRiskParams",
       args: [
-        "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
+        "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
         BigInt(3e15),
         BigInt(1e16),
       ],

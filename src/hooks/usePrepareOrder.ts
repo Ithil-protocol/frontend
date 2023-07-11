@@ -1,9 +1,7 @@
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { type Address } from "wagmi";
 
-import { useRateAndSpread } from "@/hooks/useRateAndSpread";
-
-import { useVaultFreeLiquidity } from "./generated/vault";
+import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
 
 interface ServiceLoan {
   token: Address;
@@ -48,7 +46,7 @@ export const usePrepareOrder = (
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
-  } = useRateAndSpread({
+  } = useAaveRateAndSpread({
     tokenAddress: token,
     loan: amountInLeverage,
     margin: amount,
@@ -78,10 +76,7 @@ export const usePrepareOrder = (
     data: encodeAbiParameters(parseAbiParameters("uint256"), [0n]),
   };
 
-  const { data } = useVaultFreeLiquidity({
-    address: "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
-  });
-  console.log("wethhh", data, order);
+  console.log("ii", order);
 
   return {
     order,
