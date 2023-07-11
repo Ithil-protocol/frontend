@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { erc4626ABI, useContractWrite } from "wagmi";
 import { getContract } from "wagmi/actions";
 
-import { serviceAddress } from "@/hooks/generated/aave";
+import { aaveAddress } from "@/hooks/generated/aave";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -56,8 +56,8 @@ const Test = () => {
   // const { write, error } = useContractWrite({
   //   mode:"prepared",
   //   request:{
-  //     abi: serviceABI,
-  //     address: serviceAddress[42161],
+  //     abi: aaveABI,
+  //     address: aaveAddress[42161],
   //     functionName: "open",
   //     args: [workedOrder],
   //     gas: 2000000n,
@@ -70,7 +70,7 @@ const Test = () => {
 
   // const yy = async () => {
   //   const filter = await publicClient.createContractEventFilter({
-  //     abi: serviceABI,
+  //     abi: aaveABI,
   //     // address: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
   //     eventName: "PositionOpened",
   //     fromBlock: 0n,
@@ -79,16 +79,16 @@ const Test = () => {
   //   console.log("event999", logs);
   // };
 
-  // const { data: serviceAgreements, isLoading } = useServiceAgreements({
+  // const { data: serviceAgreements, isLoading } = useAaveAgreements({
   //   args: [5n],
   // });
 
-  // const { data: totalSupply } = useServiceTotalSupply();
-  // const { data: tokenByIndex } = useServiceTokenByIndex({
+  // const { data: totalSupply } = useAaveTotalSupply();
+  // const { data: tokenByIndex } = useAaveTokenByIndex({
   //   args: [0n],
   // });
 
-  // const { data: agreement } = useServiceGetAgreement({
+  // const { data: agreement } = useAaveGetAgreement({
   //   args: [1n],
   // });
 
@@ -96,8 +96,8 @@ const Test = () => {
 
   // const { data: walletClient, error: walletError } = useWalletClient();
   // const { data: xx } = useContractRead({
-  //   abi: serviceABI,
-  //   address: serviceAddress[42161],
+  //   abi: aaveABI,
+  //   address: aaveAddress[42161],
   //   functionName: "getUserAgreements",
   //   account: walletClient,
   // });
@@ -109,8 +109,8 @@ const Test = () => {
   //   if (walletClient) {
   //     console.log("useragg", 2);
   //     const contract = getContract({
-  //       abi: serviceABI,
-  //       address: serviceAddress[42161],
+  //       abi: aaveABI,
+  //       address: aaveAddress[42161],
   //       walletClient,
   //     });
   //     console.log("useragg", 3);
@@ -121,7 +121,7 @@ const Test = () => {
   //   }
   // };
   // getData();
-  // const { data: useragg } = useServiceGetUserAgreements({
+  // const { data: useragg } = useAaveGetUserAgreements({
   //   account: accountAddress,
   // });
 
@@ -143,8 +143,8 @@ const Test = () => {
   //   mode: "prepared",
   //   // @ts-ignore
   //   request: {
-  //     abi: serviceABI,
-  //     address: serviceAddress[42161],
+  //     abi: aaveABI,
+  //     address: aaveAddress[42161],
   //     functionName: "close",
   //     args: [
   //       BigInt(0),
@@ -170,8 +170,8 @@ const Test = () => {
   // const { data: xx } = useContractReads({
   //   contracts: [
   //     {
-  //       abi: serviceABI,
-  //       address: serviceAddress[42161],
+  //       abi: aaveABI,
+  //       address: aaveAddress[42161],
   //       functionName: "getAgreement",
   //       args: [4n],
   //     },
@@ -184,8 +184,8 @@ const Test = () => {
   // const { data: zz } = useContractReads({
   //   contracts: [
   //     {
-  //       abi: serviceABI,
-  //       address: serviceAddress[42161],
+  //       abi: aaveABI,
+  //       address: aaveAddress[42161],
   //       functionName: "quote",
   //       args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
   //       // enabled: getAgreementsByUser?.[0]?.[0],
@@ -199,7 +199,7 @@ const Test = () => {
   // console.log("closePositions data", closePositions);
   // console.log("closePositions isLoading", isLoading);
 
-  // const { data: pp } = useServiceComputeDueFees({
+  // const { data: pp } = useAaveComputeDueFees({
   //   args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
   // });
 
@@ -245,7 +245,7 @@ const Test = () => {
     // @ts-ignore
     request: {
       abi: gmxRiskParamAbi,
-      address: serviceAddress[42161],
+      address: aaveAddress[42161],
       functionName: "setRiskParams",
       args: [
         "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",

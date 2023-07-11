@@ -1,8 +1,8 @@
 import { useAccount } from "wagmi";
 
-import { useServiceGetUserAgreements } from "./generated/aave";
+import { useAaveGetUserAgreements } from "./generated/aave";
 
 export const useGetAgreementsByUser = () => {
   const { address } = useAccount();
-  return useServiceGetUserAgreements({ account: address, enabled: !!address });
+  return useAaveGetUserAgreements({ account: address, enabled: !!address });
 };

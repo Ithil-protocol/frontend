@@ -4,7 +4,7 @@ import { Address, useContractReads } from "wagmi";
 import { aaveABI } from "@/abi";
 import { getVaultByTokenAddress } from "@/utils";
 
-import { serviceAddress } from "./generated/aave";
+import { aaveAddress } from "./generated/aave";
 import { useGetAgreementsByUser } from "./useGetAgreementByUser";
 
 export const useOpenPositions = () => {
@@ -15,7 +15,7 @@ export const useOpenPositions = () => {
   // console.log(
   //   "data333",
   //   data?.[0]?.map((agreement) => ({
-  //     abi: ServiceAbi,
+  //     abi: aaveABI,
   //     address: "0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba8" as Address,
   //     functionName: "quote",
   //     args: [agreement],
@@ -24,14 +24,14 @@ export const useOpenPositions = () => {
 
   const quoteContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
-    address: serviceAddress[42161] as Address,
+    address: aaveAddress[42161] as Address,
     functionName: "quote",
     args: [agreement],
   }));
 
   const feeContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
-    address: serviceAddress[42161] as Address,
+    address: aaveAddress[42161] as Address,
     functionName: "computeDueFees",
     args: [agreement],
   }));

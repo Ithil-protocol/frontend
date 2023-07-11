@@ -10,7 +10,7 @@ export default defineConfig([
     out: "src/hooks/generated/aave.ts",
     contracts: [
       {
-        name: "Service",
+        name: "Aave",
         // address: {
         //   1337:
         //     // same for now, but it can happen they have different addresses
@@ -50,7 +50,7 @@ export default defineConfig([
     out: "src/hooks/generated/gmx.ts",
     contracts: [
       {
-        name: "gmx",
+        name: "Gmx",
         abi: gmxABI,
         address: {
           42161: contracts.gmxService as Address,

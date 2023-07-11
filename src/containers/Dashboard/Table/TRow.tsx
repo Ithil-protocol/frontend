@@ -15,7 +15,7 @@ import { useContractWrite } from "wagmi";
 
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
-import { serviceABI, serviceAddress } from "@/hooks/generated/aave";
+import { aaveABI, aaveAddress } from "@/hooks/generated/aave";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
@@ -47,8 +47,8 @@ const TRow: FC<TRowProps> = ({ data }) => {
     isLoading,
     reset,
   } = useContractWrite({
-    address: serviceAddress[42161] as Address,
-    abi: serviceABI,
+    address: aaveAddress[42161] as Address,
+    abi: aaveABI,
     functionName: "close",
     gas: 20000000n,
   });
