@@ -34,16 +34,16 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
       enabled: !!vaultFreeLiquidity,
     });
 
-  // console.log(
-  //   "ii",
-  //   "vaultFreeLiquidity:",
-  //   vaultFreeLiquidity,
-  //   "loan:",
-  //   loan,
-  //   "margin:",
-  //   margin
-  // );
-  // console.log("ii2", data);
+  console.log(
+    "ii",
+    "vaultFreeLiquidity:",
+    vaultFreeLiquidity,
+    "loan:",
+    loan,
+    "margin:",
+    margin
+  );
+  console.log("ii2", data);
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
   const result = {

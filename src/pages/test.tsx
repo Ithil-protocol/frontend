@@ -1,7 +1,9 @@
 /* eslint-disable unused-imports/no-unused-vars */
-import { formatUnits } from "viem";
-import { erc4626ABI } from "wagmi";
+import { Button } from "@chakra-ui/react";
+import { erc4626ABI, useContractWrite } from "wagmi";
 import { getContract } from "wagmi/actions";
+
+import { serviceAddress } from "@/hooks/generated/service";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -212,22 +214,47 @@ const Test = () => {
   // });
   // console.log("ii2", vaultFreeLiquidity);
 
-  // const { write: setRiskParam } = useContractWrite({
-  //   mode: "prepared",
-  //   // @ts-ignore
-  //   request: {
-  //     abi: ServiceAbi,
-  //     address: serviceAddress[42161],
-  //     functionName: "setRiskParams",
-  //     args: [
-  //       "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-  //       BigInt(3e15),
-  //       BigInt(1e16),
-  //       BigInt(3 * 86400),
-  //     ],
-  //     gas: 20000000n,
-  //   },
-  // });
+  const gmxRiskParamAbi = [
+    {
+      inputs: [
+        {
+          internalType: "address",
+          name: "token",
+          type: "address",
+        },
+        {
+          internalType: "uint256",
+          name: "riskSpread",
+          type: "uint256",
+        },
+        {
+          internalType: "uint256",
+          name: "baseRisk",
+          type: "uint256",
+        },
+      ],
+      name: "setRiskParams",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+  ] as const;
+
+  const { write: setRiskParam } = useContractWrite({
+    mode: "prepared",
+    // @ts-ignore
+    request: {
+      abi: gmxRiskParamAbi,
+      address: serviceAddress[42161],
+      functionName: "setRiskParams",
+      args: [
+        "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
+        BigInt(3e15),
+        BigInt(1e16),
+      ],
+      gas: 20000000n,
+    },
+  });
 
   // const {data:ss} = useGetAgreementsByUser();
   // console.log("ssss", ss);
@@ -248,7 +275,7 @@ const Test = () => {
   ]);
   d.then((e) => console.log("aToken33", e));
 
-  return <p>{formatUnits(100n, 12)}</p>;
+  return <Button onClick={() => setRiskParam?.()}>write</Button>;
 };
 
 export default Test;

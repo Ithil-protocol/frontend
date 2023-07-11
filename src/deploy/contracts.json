@@ -1,5 +1,6 @@
 {
   "networkUrl": "https://rpc.tenderly.co/fork/55f13034-69da-4481-bd70-d9a31f432ffe",
-  "manager": "0x4F2EC67428c64C8C51DC60a4BA400a89508F3541",
-  "aaveService": "0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba8"
+  "manager": "0x469B988014681E4415317C93eE4dd6192be10A75",
+  "aaveService": "0x959a0c1506c37c9870aD66264df85e15d96B4467",
+  "gmxService": "0x959a0c1506c37c9870aD66264df85e15d96B4467"
 }
