@@ -2,7 +2,7 @@ import { Address, formatEther } from "viem";
 
 import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 
-import { useServiceComputeBaseRateAndSpread } from "./generated/service";
+import { useServiceComputeBaseRateAndSpread } from "./generated/aave";
 import { useVaultFreeLiquidity } from "./generated/vault";
 
 const spreadToUint256 = (base: bigint, spread: bigint) => {

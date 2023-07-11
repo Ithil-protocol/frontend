@@ -23,7 +23,7 @@ import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { serviceABI, serviceAddress } from "@/hooks/generated/service";
+import { serviceABI, serviceAddress } from "@/hooks/generated/aave";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";

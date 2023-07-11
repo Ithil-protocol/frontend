@@ -1,7 +1,7 @@
 import { BaseError, ContractFunctionRevertedError } from "viem";
 
 import { testNetwork } from "@/config/chains";
-import { serviceABI } from "@/hooks/generated/service";
+import { serviceABI } from "@/hooks/generated/aave";
 
 import { account, publicClient } from "./config";
 

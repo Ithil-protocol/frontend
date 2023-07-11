@@ -1,10 +1,10 @@
 import { formatUnits } from "viem";
 import { Address, useContractReads } from "wagmi";
 
-import ServiceAbi from "@/abi/Service.abi";
+import { aaveABI } from "@/abi";
 import { getVaultByTokenAddress } from "@/utils";
 
-import { serviceAddress } from "./generated/service";
+import { serviceAddress } from "./generated/aave";
 import { useGetAgreementsByUser } from "./useGetAgreementByUser";
 
 export const useOpenPositions = () => {
@@ -23,14 +23,14 @@ export const useOpenPositions = () => {
   // );
 
   const quoteContracts = data?.[0]?.map((agreement) => ({
-    abi: ServiceAbi,
+    abi: aaveABI,
     address: serviceAddress[42161] as Address,
     functionName: "quote",
     args: [agreement],
   }));
 
   const feeContracts = data?.[0]?.map((agreement) => ({
-    abi: ServiceAbi,
+    abi: aaveABI,
     address: serviceAddress[42161] as Address,
     functionName: "computeDueFees",
     args: [agreement],

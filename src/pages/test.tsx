@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { erc4626ABI, useContractWrite } from "wagmi";
 import { getContract } from "wagmi/actions";
 
-import { serviceAddress } from "@/hooks/generated/service";
+import { serviceAddress } from "@/hooks/generated/aave";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
