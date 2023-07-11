@@ -1,7 +1,7 @@
 import { BaseError, ContractFunctionRevertedError } from "viem";
 
 import { testNetwork } from "@/config/chains";
-import { serviceABI } from "@/hooks/generated/aave";
+import { aaveABI } from "@/hooks/generated/aave";
 
 import { account, publicClient } from "./config";
 
@@ -30,7 +30,7 @@ export async function serviceTest(order: Props) {
     console.log("error1111");
     const { result } = await publicClient.simulateContract({
       address: "0x19b9192455351473E3833B3D3BEAd3fFF09c460B",
-      abi: serviceABI,
+      abi: aaveABI,
       functionName: "open",
       account,
       args: [order],
