@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { aaveABI } from "@/abi";
 import { publicClient } from "@/wagmiTest/config";
-
-import { serviceABI } from "./generated/aave";
 
 interface Positions {
   open: any[];
@@ -19,14 +18,14 @@ export const useAavePositions = () => {
     const fn = async () => {
       const positionOpenedFilter = await publicClient.createContractEventFilter(
         {
-          abi: serviceABI,
+          abi: aaveABI,
           eventName: "PositionOpened",
           fromBlock: 0n,
         }
       );
       const positionClosedFilter = await publicClient.createContractEventFilter(
         {
-          abi: serviceABI,
+          abi: aaveABI,
           eventName: "PositionClosed",
           fromBlock: 0n,
         }

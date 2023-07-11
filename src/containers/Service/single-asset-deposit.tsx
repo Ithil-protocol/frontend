@@ -19,11 +19,12 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
+import { aaveABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { serviceABI, serviceAddress } from "@/hooks/generated/aave";
+import { aaveAddress } from "@/hooks/generated/aave";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -238,13 +239,13 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const { useAllowance, useApprove } = useToken(asset.tokenAddress);
   const { data: allowance, refetch: refetchAllowance } = useAllowance(
     address,
-    serviceAddress[chainId]
+    aaveAddress[chainId]
   );
   const {
     data: approveData,
     isLoading: isApproveLoading,
     writeAsync: approve,
-  } = useApprove(serviceAddress[chainId], inputBigNumber);
+  } = useApprove(aaveAddress[chainId], inputBigNumber);
   const { isLoading: isApproveWaiting } = useWaitForTransaction({
     hash: approveData?.hash,
   });
@@ -287,8 +288,8 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   } = useContractWrite({
     mode: "prepared",
     request: {
-      abi: serviceABI,
-      address: serviceAddress[42161],
+      abi: aaveABI,
+      address: aaveAddress[42161],
       functionName: "open",
       args: [order],
       gas: 2000000n,
