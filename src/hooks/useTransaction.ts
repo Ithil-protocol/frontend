@@ -5,21 +5,26 @@ import { useNotificationDialog } from "./useNotificationDialog";
 
 export const useTransaction = (hash: Address, description: string) => {
   const notificationDialog = useNotificationDialog();
-  const { isError, isLoading, isSuccess, isIdle, error, status } =
+  const { isError, isLoading, isSuccess, error, status } =
     useWaitForTransaction({
       hash: hash as Address,
     });
+
   useEffect(() => {
     if (isSuccess) {
+      console.log("isSuccess:::", isSuccess);
+
       notificationDialog.openDialog({
         title: description,
         status: "success",
         duration: 5_000,
       });
     }
-  }, [isSuccess, notificationDialog, description]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
   useEffect(() => {
     if (isError) {
+      console.log("isError:::", isError);
       notificationDialog.openDialog({
         title: error?.message
           ? error.message
@@ -28,16 +33,19 @@ export const useTransaction = (hash: Address, description: string) => {
         duration: 5_000,
       });
     }
-  }, [description, error, isError, notificationDialog]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
   useEffect(() => {
     if (isLoading) {
+      console.log("isLoading:::", isLoading);
       notificationDialog.openDialog({
         title: description,
         status: "loading",
         duration: 5_000,
       });
     }
-  }, [description, notificationDialog, isLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
   useEffect(() => {
     console.log("STATUS" + " " + status);
   }, [status]);
