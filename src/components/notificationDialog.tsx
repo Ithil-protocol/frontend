@@ -59,7 +59,7 @@ const NotificationDialog: React.FC<Props> = ({
       onClose={onClose}
       isCentered
     >
-      <AlertDialogOverlay>
+      <AlertDialogOverlay backdropFilter="blur(10px)">
         <AlertDialogContent>
           <AlertDialogHeader display="flex" justifyContent="center">
             <Icon className={`w-16 h-16 ${classNames}`} />
