@@ -1,10 +1,11 @@
-import { useToast } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { formatUnits } from "viem";
 import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useVault } from "@/hooks/use-vault.hook";
+import { useNotificationDialog } from "@/hooks/useNotificationDialog";
+import { useTransaction } from "@/hooks/useTransaction";
+import { Address } from "@/types";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,
@@ -19,11 +20,13 @@ interface LendingProps {
 }
 export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // state
+  const inputValueRef = useRef("0");
+
   const [inputAmount, setInputAmount] = useState<string>("0");
   // in Withdraw, this represents Shares, not Assets
   const [inputBigNumber, setInputBigNumber] = useState<bigint>(BigInt(0));
   const { address } = useAccount();
-  const toast = useToast();
+  const notificationDialog = useNotificationDialog();
 
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -36,7 +39,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     token,
     address
   );
-  const { trackTransaction } = useTransactionFeedback();
 
   // withdraw
   // const {
@@ -45,12 +47,15 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   //   isFetching: isWithdrawFetching,
   // } = usePrepareRedeem(inputBigNumber);
 
-  const { isLoading: isWithdrawLoading, writeAsync: withdraw } =
-    useContractWrite({
-      address: token.vaultAddress,
-      abi: erc4626ABI,
-      functionName: "redeem",
-    });
+  const {
+    data: withdrawData,
+    isLoading: isWithdrawLoading,
+    writeAsync: withdraw,
+  } = useContractWrite({
+    address: token.vaultAddress,
+    abi: erc4626ABI,
+    functionName: "redeem",
+  });
   const { data: assetsRatioData, isLoading: isAssetsRatioLoading } =
     useConvertToAssets();
   const { data: sharesRatioData, isLoading: isSharesRatioLoading } =
@@ -96,20 +101,25 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     setInputBigNumber(maxRedeem ?? BigInt(0));
   };
 
+  useTransaction(
+    withdrawData?.hash as Address,
+    `Withdraw ${inputValueRef.current} ${token.name}`
+  );
+
   const handleClick = async () => {
+    inputValueRef.current = inputAmount;
+
     try {
-      const result = await withdraw({
+      await withdraw({
         args: [inputBigNumber, address!, address!],
       });
-      await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
+      // await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
+      inputValueRef.current = inputAmount;
       setInputAmount("0");
       setInputBigNumber(BigInt(0));
     } catch (error) {
-      toast({
+      notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };

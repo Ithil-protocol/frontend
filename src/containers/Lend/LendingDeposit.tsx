@@ -1,5 +1,4 @@
-import { useToast } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { Address, formatUnits } from "viem";
 import {
   erc20ABI,
@@ -11,8 +10,8 @@ import {
 } from "wagmi";
 
 import { useToken } from "@/hooks/use-token.hook";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
-import { useVault } from "@/hooks/use-vault.hook";
+import { useNotificationDialog } from "@/hooks/useNotificationDialog";
+import { useTransaction } from "@/hooks/useTransaction";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,
@@ -27,11 +26,11 @@ interface LendingProps {
 
 export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   // state
+  const notificationDialog = useNotificationDialog();
+
   const [inputAmount, setInputAmount] = useState<string>("0");
   const { address } = useAccount();
   const inputBigNumber = stringInputToBigNumber(inputAmount, token.decimals);
-
-  const toast = useToast();
 
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -40,9 +39,8 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const { useAllowance, useApprove } = useToken(token.tokenAddress);
-  const { usePrepareDeposit } = useVault(token, address);
-  const { trackTransaction } = useTransactionFeedback();
+  const { useAllowance } = useToken(token.tokenAddress);
+  const inputValueRef = useRef("0");
 
   const { data: allowance, refetch: refetchAllowance } = useAllowance(
     address,
@@ -50,8 +48,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   );
 
   const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
-
-  console.log("allowance33", allowance);
 
   // const {
   //   data: approveData,
@@ -107,31 +103,36 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   const handleMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
+  useTransaction(
+    depositData?.hash as Address,
+    `${isApproved ? "Deposit" : "Approve"} ${inputValueRef.current} ${
+      token.name
+    }`
+  );
 
   const handleClick = async () => {
+    inputValueRef.current = inputAmount;
     try {
       if (!isApproved) {
         // after approval is successful, read again the allowance
-        const result = await approve({
+        await approve({
           args: [token.vaultAddress, inputBigNumber],
         });
-        await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
+        // await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
         await refetchAllowance();
         return;
       }
       // if (!deposit) return;
-      const result = await deposit({
+      await deposit({
         args: [inputBigNumber, address!],
       });
-      await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
+      // await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
       await refetchAllowance();
+      inputValueRef.current = inputAmount;
       setInputAmount("0");
     } catch (error) {
-      toast({
+      notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };
