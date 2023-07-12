@@ -17,8 +17,6 @@ const Content = () => {
 
   const vault = getVaultByTokenName(token as VaultName);
 
-  console.log("vaultvault", vault);
-
   return (
     <Box
       width={{

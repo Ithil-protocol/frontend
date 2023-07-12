@@ -47,7 +47,7 @@ export const getVaultByTokenAddress = (tokenAddress: string): VaultsTypes => {
 export const getVaultByTokenName = (
   name: VaultName
 ): VaultsTypes | undefined => {
-  return vaults.find((item) => item.name === name.toUpperCase());
+  return vaults.find((item) => item.name.toLowerCase() === name.toLowerCase());
 };
 
 export const formatToken = (name: VaultName, value: bigint) => {

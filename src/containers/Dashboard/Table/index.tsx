@@ -62,7 +62,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     amount: loanItem.amount,
                     margin: loanItem.margin,
                     token: loanItem.token,
-                    pnl: fixPrecision(+item.pnl!, 2).toString(),
+                    formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
+                    pnl: item.pnl,
                     pnlPercentage: fixPrecision(
                       +item.pnlPercentage!,
                       2
