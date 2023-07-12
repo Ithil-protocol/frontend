@@ -266,6 +266,9 @@ const Test = () => {
   //     write
   //   </Button>
   // );
+
+  // return <p>{formatUnits(undefined,4)}</p>
+
   const aToken = getContract({
     address: "0x078f358208685046a11C85e8ad32895DED33A249",
     abi: erc4626ABI,
