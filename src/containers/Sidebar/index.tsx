@@ -1,5 +1,7 @@
 import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { CloseButton } from "@/assets/svgs";
 import { routes, socialMedia } from "@/utils";
@@ -14,6 +16,11 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
   const { colorMode } = useColorMode();
 
   const closeSidebar = () => onSetSidebarOpen(false);
+  const router = useRouter();
+  useEffect(() => {
+    closeSidebar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   return (
     <Box
@@ -26,7 +33,7 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
       <HStack justifyContent="end" className="p-14">
         <span onClick={closeSidebar}>
           {" "}
-          <CloseButton className="w-4 h-4" />
+          <CloseButton className="w-4 h-4 cursor-pointer" />
         </span>
       </HStack>
       <VStack
@@ -56,6 +63,7 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
               key={item.link + index}
               href={item.link}
               target="_blank"
+              onClick={() => closeSidebar()}
             >
               <span style={{ padding: "5px" }}>
                 <item.Icon width={24} height={24} />

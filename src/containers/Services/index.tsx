@@ -102,7 +102,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
 
 const ServicesGrid: FC<{ services: Service[] }> = ({ services }) => {
   return (
-    <div className="grid gap-4 py-10 mg:gap-6 md:grid-cols-2 lg:grid-cols-3 rounded-xl">
+    <div className="grid mg:gap-6 md:grid-cols-2 lg:grid-cols-3 rounded-xl">
       {services.map((item, index) => (
         <ServiceCard
           key={item.name + index}

@@ -10,7 +10,7 @@ import { Fragment, useState } from "react";
 import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
 import { Vaults } from "@/types/onchain.types";
 
-import Deposit from "../Deposit";
+import Deposit from "../deposit";
 import TRow from "./TRow";
 import Thead from "./Thead";
 

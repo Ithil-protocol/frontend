@@ -8,7 +8,7 @@ import { type Vaults } from "@/types/onchain.types";
 import { ErrorCause } from "@/utils/error-cause";
 import { multiplyBigNumbers, oneUnitWithDecimals } from "@/utils/input.utils";
 
-const ithil4626customAbi = [
+const _ithil4626customAbi = [
   {
     type: "function",
     name: "freeLiquidity",
@@ -83,7 +83,8 @@ const getVaultData = async (address?: string) => {
     // tvl informations are available at index 0...length
     const tvl = multicallData[idx].result as bigint;
     // freeLiquidity informations are available at index length...length*2
-    const freeLiquidity = multicallData[arr.length + idx].result as bigint;
+
+    // const freeLiquidity = multicallData[arr.length + idx].result as bigint;
 
     // deposited informations are available at index length*2...length*3
     const depositedShares =

@@ -41,14 +41,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
   // remove this block of code for production. this is only for having chains with same id that can not happen in production
   const { chains: ithilChain, chain } = useNetwork();
   const [shouldChangeNetwork, setShouldChangeNetwork] = useState(false);
-  useEffect(() => {
-    if (chain) {
-      if (chain.rpcUrls.default !== ithilChain[0].rpcUrls.default) {
-        setShouldChangeNetwork(true);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
   const switchToTestNetwork = async () => {
     // @ts-ignore
     if (window?.ethereum) {
@@ -75,6 +68,17 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (chain) {
+      if (
+        chain.rpcUrls.default.http[0] !== ithilChain[0].rpcUrls.default.http[0]
+      ) {
+        setShouldChangeNetwork(true);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chain]);
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   const handleOpenSideBar = () => onSetSidebarOpen(true);

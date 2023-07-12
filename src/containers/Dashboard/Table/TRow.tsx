@@ -8,7 +8,6 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { FC } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
@@ -28,6 +27,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   pnl: string | undefined;
   id: bigint | undefined;
   quote: bigint | undefined;
+  formattedPnl: string;
 }
 
 interface TRowProps {
@@ -36,17 +36,12 @@ interface TRowProps {
 
 const TRow: FC<TRowProps> = ({ data }) => {
   const { colorMode } = useColorMode();
-  const router = useRouter();
 
-  const { name } = getVaultByTokenAddress(data.token);
+  // const { name } = getVaultByTokenAddress(data.token);
 
-  const { trackTransaction, reportException } = useTransactionFeedback();
+  const { trackTransaction } = useTransactionFeedback();
 
-  const {
-    writeAsync: close,
-    isLoading,
-    reset,
-  } = useContractWrite({
+  const { writeAsync: close, isLoading } = useContractWrite({
     address: aaveAddress[42161] as Address,
     abi: aaveABI,
     functionName: "close",
@@ -149,7 +144,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
               fontSize="22px"
               lineHeight="22px"
             >
-              {data.pnl}
+              {data.formattedPnl}
             </Text>
             <Text
               bg={isPnlPositive ? "#15ac89" : "#f35959"}

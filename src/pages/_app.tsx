@@ -14,6 +14,7 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import PageWrapper from "@/components/page-wrapper";
 import { addTestNetworks, firstNetwork, testNetwork } from "@/config/chains";
+import NotificationDialogProvider from "@/providers/notificationDialog";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import {
@@ -118,7 +119,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <Chakra>
             <RainbowWrapper>
               <PageWrapper heading={heading} textAlign="left">
-                <Component {...pageProps} />
+                <NotificationDialogProvider>
+                  <Component {...pageProps} />
+                </NotificationDialogProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
               </PageWrapper>
             </RainbowWrapper>
