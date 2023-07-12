@@ -28,6 +28,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   pnl: string | undefined;
   id: bigint | undefined;
   quote: bigint | undefined;
+  formattedPnl: string;
 }
 
 interface TRowProps {
@@ -149,7 +150,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
               fontSize="22px"
               lineHeight="22px"
             >
-              {data.pnl}
+              {data.formattedPnl}
             </Text>
             <Text
               bg={isPnlPositive ? "#15ac89" : "#f35959"}
