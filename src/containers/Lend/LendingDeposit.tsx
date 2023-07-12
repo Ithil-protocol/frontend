@@ -13,6 +13,7 @@ import {
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useVault } from "@/hooks/use-vault.hook";
+import { useTransaction } from "@/hooks/useTransaction";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,
@@ -107,6 +108,10 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   const handleMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
+  const transaction = useTransaction(
+    depositData?.hash as Address,
+    `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${token.name}`
+  );
 
   const handleClick = async () => {
     try {
@@ -115,7 +120,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         const result = await approve({
           args: [token.vaultAddress, inputBigNumber],
         });
-        await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
+        // await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
         await refetchAllowance();
         return;
       }
@@ -123,7 +128,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
       const result = await deposit({
         args: [inputBigNumber, address!],
       });
-      await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
+      // await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
       await refetchAllowance();
       setInputAmount("0");
     } catch (error) {
