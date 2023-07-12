@@ -1,7 +1,7 @@
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { type Address } from "wagmi";
 
-import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
+import { useGmxRateAndSpread } from "@/hooks/useRateAndSpread";
 
 interface ServiceLoan {
   token: Address;
@@ -46,7 +46,7 @@ export const usePrepareOrder = (
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
-  } = useAaveRateAndSpread({
+  } = useGmxRateAndSpread({
     tokenAddress: token,
     loan: amountInLeverage,
     margin: amount,
