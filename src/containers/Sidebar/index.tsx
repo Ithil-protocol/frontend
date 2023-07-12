@@ -1,5 +1,7 @@
 import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { CloseButton } from "@/assets/svgs";
 import { routes, socialMedia } from "@/utils";
@@ -14,6 +16,10 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
   const { colorMode } = useColorMode();
 
   const closeSidebar = () => onSetSidebarOpen(false);
+  const router = useRouter();
+  useEffect(() => {
+    closeSidebar();
+  }, [router]);
 
   return (
     <Box
@@ -56,6 +62,7 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
               key={item.link + index}
               href={item.link}
               target="_blank"
+              onClick={() => closeSidebar()}
             >
               <span style={{ padding: "5px" }}>
                 <item.Icon width={24} height={24} />
