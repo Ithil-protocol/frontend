@@ -2,20 +2,30 @@ import { useContractReads } from "wagmi";
 
 import { vaultContracts } from "@/contracts";
 import { VaultName } from "@/types";
-import { formatToken } from "@/utils";
+
+import { useIsMounted } from "./useIsMounted";
 
 type FunctionName =
+  | "freeLiquidity"
+  | "netLoans"
   | "currentProfits"
   | "currentLosses"
-  | "netLoans"
-  | "latestRepay";
+  | "convertToShares";
 
-type Data = { [key in FunctionName]: string };
+type Data = { [key in FunctionName]: bigint | undefined };
 
 export const useVaultDetails = (vault: VaultName) => {
   const vaultContract = vaultContracts[vault.toUpperCase()];
 
   const contracts = [
+    {
+      ...vaultContract,
+      functionName: "freeLiquidity",
+    },
+    {
+      ...vaultContract,
+      functionName: "netLoans",
+    },
     {
       ...vaultContract,
       functionName: "currentProfits",
@@ -26,11 +36,8 @@ export const useVaultDetails = (vault: VaultName) => {
     },
     {
       ...vaultContract,
-      functionName: "netLoans",
-    },
-    {
-      ...vaultContract,
-      functionName: "latestRepay",
+      functionName: "convertToShares",
+      args: [10n ** BigInt(vaultContract?.decimals ?? 0)],
     },
   ] as const;
 
@@ -38,16 +45,24 @@ export const useVaultDetails = (vault: VaultName) => {
     contracts,
   });
 
-  const data = contracts.reduce((prevValue, currValue, index) => {
-    prevValue[currValue.functionName as FunctionName] = formatToken(
-      vault,
-      result?.data?.[index]?.result || 0n
-    )!;
-    return prevValue;
-  }, {} as Data);
+  // const data = contracts.reduce((prevValue, currValue, index) => {
+  //   prevValue[currValue.functionName as FunctionName] = formatToken(
+  //     vault,
+  //     result?.data?.[index]?.result || 0n
+  //   )!;
+  //   return prevValue;
+  // }, {} as Data);
+
+  const data = {} as Data;
+  contracts.forEach(({ functionName }, index) => {
+    data[functionName as FunctionName] = result?.data?.[index]?.result;
+  });
+
+  const isMounted = useIsMounted();
 
   return {
     ...result,
+    isLoading: result.isLoading || !isMounted,
     data,
   };
 };

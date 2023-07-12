@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import ServiceAbi from "@/abi/Service.abi";
+import { aaveABI } from "@/abi";
 import { publicClient } from "@/wagmiTest/config";
 
 export const useClosePositions = () => {
@@ -9,7 +9,7 @@ export const useClosePositions = () => {
     queryFn: async () => {
       const positionClosedFilter = await publicClient.createContractEventFilter(
         {
-          abi: ServiceAbi,
+          abi: aaveABI,
           eventName: "PositionClosed",
           fromBlock: 0n,
         }

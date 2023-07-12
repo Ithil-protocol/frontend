@@ -1,9 +1,12 @@
+import { Address } from "viem";
+
 import { vaultABI } from "@/abi/";
 import vaults from "@/deploy/vaults.json";
 
 interface Contract {
-  address: `0x${string}`;
+  address: Address;
   abi: typeof vaultABI;
+  decimals: number;
 }
 
 interface VaultContracts {
@@ -14,7 +17,8 @@ export const vaultContracts: VaultContracts = {};
 
 vaults.forEach((vault) => {
   vaultContracts[vault.name] = {
-    address: vault.vaultAddress as `0x${string}`,
+    address: vault.vaultAddress as Address,
     abi: vaultABI,
+    decimals: vault.decimals,
   };
 });

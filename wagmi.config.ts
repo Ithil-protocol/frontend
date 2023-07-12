@@ -2,17 +2,15 @@ import { defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
 import { Address } from "viem";
 
-import { vaultABI } from "@/abi";
+import { aaveABI, gmxABI, vaultABI } from "@/abi";
 import contracts from "@/deploy/contracts.json";
-
-import ServiceAbi from "./src/abi/Service.abi";
 
 export default defineConfig([
   {
-    out: "src/hooks/generated/service.ts",
+    out: "src/hooks/generated/aave.ts",
     contracts: [
       {
-        name: "Service",
+        name: "Aave",
         // address: {
         //   1337:
         //     // same for now, but it can happen they have different addresses
@@ -23,7 +21,7 @@ export default defineConfig([
         address: {
           42161: contracts.aaveService as Address,
         },
-        abi: ServiceAbi,
+        abi: aaveABI,
       },
     ],
     plugins: [
@@ -39,6 +37,24 @@ export default defineConfig([
       {
         name: "Vault",
         abi: vaultABI,
+      },
+    ],
+    plugins: [
+      react({
+        useContractWrite: false,
+        useContractFunctionWrite: false,
+      }),
+    ],
+  },
+  {
+    out: "src/hooks/generated/gmx.ts",
+    contracts: [
+      {
+        name: "Gmx",
+        abi: gmxABI,
+        address: {
+          42161: contracts.gmxService as Address,
+        },
       },
     ],
     plugins: [

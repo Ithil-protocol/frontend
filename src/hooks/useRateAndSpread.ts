@@ -2,7 +2,7 @@ import { Address, formatEther } from "viem";
 
 import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 
-import { useServiceComputeBaseRateAndSpread } from "./generated/service";
+import { useAaveComputeBaseRateAndSpread } from "./generated/aave";
 import { useVaultFreeLiquidity } from "./generated/vault";
 
 const spreadToUint256 = (base: bigint, spread: bigint) => {
@@ -29,21 +29,21 @@ export const useRateAndSpread = ({ tokenAddress, loan, margin }: Props) => {
     });
 
   const { data, isLoading: isBaseRateLoading } =
-    useServiceComputeBaseRateAndSpread({
+    useAaveComputeBaseRateAndSpread({
       args: [tokenAddress, loan, margin, vaultFreeLiquidity as bigint],
       enabled: !!vaultFreeLiquidity,
     });
 
-  // console.log(
-  //   "ii",
-  //   "vaultFreeLiquidity:",
-  //   vaultFreeLiquidity,
-  //   "loan:",
-  //   loan,
-  //   "margin:",
-  //   margin
-  // );
-  // console.log("ii2", data);
+  console.log(
+    "ii",
+    "vaultFreeLiquidity:",
+    vaultFreeLiquidity,
+    "loan:",
+    loan,
+    "margin:",
+    margin
+  );
+  console.log("ii2", data);
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
   const result = {

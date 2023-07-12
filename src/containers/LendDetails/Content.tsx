@@ -1,8 +1,10 @@
 import { Box, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { formatUnits } from "viem";
 
 import { useVaultDetails } from "@/hooks/useVaultDetails";
 import { VaultName } from "@/types";
+import { fixPrecision, getVaultByTokenName } from "@/utils";
 import { mode } from "@/utils/theme";
 
 const Content = () => {
@@ -11,9 +13,11 @@ const Content = () => {
 
   const token = (router.query.token || "") as string;
 
-  const { data } = useVaultDetails(token.toUpperCase() as VaultName);
+  const { data, isLoading } = useVaultDetails(token.toUpperCase() as VaultName);
 
-  console.log(data);
+  const vault = getVaultByTokenName(token as VaultName);
+
+  console.log("vaultvault", vault);
 
   return (
     <Box
@@ -27,19 +31,32 @@ const Content = () => {
       {[
         {
           title: "Borrowable Balance",
-          value: `${data.netLoans} ${token}`,
+          value: `${fixPrecision(
+            +formatUnits(data.freeLiquidity ?? 0n, vault?.decimals ?? 0),
+            2
+          )} ${vault?.name}`,
         },
         {
-          title: "Utilisation Rate",
-          value: `${data.latestRepay}%`,
+          title: "Loaned out",
+          value: `${fixPrecision(
+            +formatUnits(data.netLoans ?? 0n, vault?.decimals ?? 0),
+            2
+          )}  ${vault?.name}`,
         },
         {
-          title: "Revenues",
-          value: `${data.currentProfits} ${token}`,
+          title: "Current Profits",
+          value: `${
+            !!data.currentProfits && !!data.currentLosses
+              ? data.currentProfits - data.currentLosses
+              : 0n
+          } ${vault?.name}`,
         },
         {
-          title: "Insurance Reserve",
-          value: `${data.currentLosses} ${token}`,
+          title: "Share price",
+          value: fixPrecision(
+            +formatUnits(data?.convertToShares ?? 0n, vault?.decimals ?? 0),
+            2
+          ),
         },
       ].map((item, index) => {
         return (
@@ -60,11 +77,11 @@ const Content = () => {
             <Text textAlign="center" fontWeight="bold">
               {item.title}
             </Text>
-            {data?.netLoans === undefined ? (
+            {isLoading ? (
               <SkeletonText width={30} noOfLines={1} mt={10} />
             ) : (
               <Text mt="20px" textAlign="center" fontWeight="medium">
-                {item.value}
+                {item.value?.toString()}
               </Text>
             )}
           </Box>
