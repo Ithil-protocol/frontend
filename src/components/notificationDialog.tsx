@@ -8,17 +8,50 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
-import { Error as ErrorIcon } from "@/assets/svgs";
-import { CloseDialogFn } from "@/types";
+import {
+  Check as CheckIcon,
+  Error as ErrorIcon,
+  Information as InformationIcon,
+  Warning as WarningIcon,
+} from "@/assets/svgs";
+import { CloseDialogFn, DialogStatus } from "@/types";
 
 interface Props {
   isOpen: boolean;
   message: string;
   onClose: CloseDialogFn;
+  status: DialogStatus;
 }
 
-const NotificationDialog: React.FC<Props> = ({ isOpen, onClose, message }) => {
+const icons: {
+  [key in DialogStatus]: React.FC<React.SVGProps<SVGSVGElement>>;
+} = {
+  error: ErrorIcon,
+  info: InformationIcon,
+  success: CheckIcon,
+  warning: WarningIcon,
+};
+
+const iconClassNames: {
+  [key in DialogStatus]: string;
+} = {
+  error: "text-blue-500",
+  info: "text-orange-500",
+  success: "text-green-500",
+  warning: "text-red-500",
+};
+
+const NotificationDialog: React.FC<Props> = ({
+  isOpen,
+  message,
+  onClose,
+  status,
+}) => {
   const dialogRef = useRef<null | any>(null);
+
+  const Icon = icons[status];
+  const classNames = iconClassNames[status];
+
   return (
     <AlertDialog
       isOpen={isOpen}
@@ -29,10 +62,7 @@ const NotificationDialog: React.FC<Props> = ({ isOpen, onClose, message }) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader display="flex" justifyContent="center">
-            {/* <InformationIcon className="w-16 h-16 text-blue-500" /> */}
-            {/* <WarningIcon className="w-16 h-16 text-orange-500" /> */}
-            {/* <CheckIcon className="w-16 h-16 text-green-500" /> */}
-            <ErrorIcon className="w-16 h-16 text-red-500" />
+            <Icon className={`w-16 h-16 ${classNames}`} />
           </AlertDialogHeader>
           <AlertDialogBody display="flex" justifyContent="center" padding={13}>
             <Text fontSize={20}> {message}</Text>

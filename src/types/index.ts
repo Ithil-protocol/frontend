@@ -51,9 +51,10 @@ export interface PageHeading {
   heading: string;
 }
 
+export type DialogStatus = "error" | "warning" | "success" | "info";
 
 export interface DialogOptions {
-  status: "error" | "warning" | "success" | "info" | "idle";
+  status: DialogStatus;
   message: string;
   duration: number;
   isClosable: boolean;
