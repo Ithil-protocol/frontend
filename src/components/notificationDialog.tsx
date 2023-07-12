@@ -20,11 +20,12 @@ import {
 import { CloseDialogFn, DialogStatus } from "@/types";
 
 interface Props {
+  description: string;
+  isClosable: boolean;
   isOpen: boolean;
-  message: string;
   onClose: CloseDialogFn;
   status: DialogStatus;
-  isClosable: boolean;
+  title: string;
 }
 
 const icons: {
@@ -50,11 +51,12 @@ const iconClassNames: {
 };
 
 const NotificationDialog: React.FC<Props> = ({
+  description,
   isClosable,
   isOpen,
-  message,
   onClose,
   status,
+  title,
 }) => {
   const dialogRef = useRef<null | any>(null);
 
@@ -111,7 +113,8 @@ const NotificationDialog: React.FC<Props> = ({
               className={`w-16 h-16 ${classNames}`}
             />
 
-            <Text fontSize={20}> {message}</Text>
+            <Text fontSize={24}>{title}</Text>
+            <Text fontSize={18}>{description}</Text>
           </AlertDialogBody>
         </AlertDialogContent>
       </AlertDialogOverlay>

@@ -1,7 +1,8 @@
-import { useToast } from "@chakra-ui/react";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { type SendTransactionResult } from "@wagmi/core";
 import { waitForTransaction } from "@wagmi/core";
+
+import { useNotificationDialog } from "./useNotificationDialog";
 
 interface EthersError extends Error {
   reason: string;
@@ -25,7 +26,7 @@ const isEthersError = (error: any): error is EthersError => {
 
 export const useTransactionFeedback = () => {
   const addRecentTransaction = useAddRecentTransaction();
-  const toast = useToast();
+  const notificationDialog = useNotificationDialog();
 
   const trackTransaction = async (
     txResult: SendTransactionResult | undefined,
@@ -37,19 +38,18 @@ export const useTransactionFeedback = () => {
       hash: txResult.hash,
       description: pastTenseDescription ?? description,
     });
-    const toastId = toast({
+
+    notificationDialog.openDialog({
       title: description,
       status: "loading",
       duration: 30_000,
-      isClosable: true,
     });
 
     await waitForTransaction({ hash: txResult.hash });
-    toast.update(toastId, {
+
+    notificationDialog.openDialog({
       title: description,
       status: "success",
-      duration: 5000,
-      isClosable: true,
     });
   };
 
@@ -60,12 +60,11 @@ export const useTransactionFeedback = () => {
       ethersError != null
         ? `method: ${ethersError.method} errored: ${ethersError.reason}`
         : "execution reverted";
-    toast({
-      title: "Transaction failed",
+
+    notificationDialog.openDialog({
       description,
       status: "error",
-      duration: 5000,
-      isClosable: true,
+      title: "Transaction failed",
     });
   };
 

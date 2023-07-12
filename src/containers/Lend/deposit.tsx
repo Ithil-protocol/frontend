@@ -4,7 +4,6 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { type FC, useState } from "react";
@@ -24,6 +23,7 @@ import { getDecimalRegex } from "@/data/regex";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useVault } from "@/hooks/use-vault.hook";
+import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { type LendingToken } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
@@ -163,10 +163,10 @@ interface LendingProps {
 export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   // state
   const [inputAmount, setInputAmount] = useState<string>("0");
+  const notificationDialog = useNotificationDialog();
+
   const { address } = useAccount();
   const inputBigNumber = stringInputToBigNumber(inputAmount, token.decimals);
-
-  const toast = useToast();
 
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -262,11 +262,9 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
       await refetchAllowance();
       setInputAmount("0");
     } catch (error) {
-      toast({
+      notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };
@@ -303,7 +301,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // in Withdraw, this represents Shares, not Assets
   const [inputBigNumber, setInputBigNumber] = useState<bigint>(BigInt(0));
   const { address } = useAccount();
-  const toast = useToast();
+  const notificationDialog = useNotificationDialog();
 
   // web3 hooks
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -312,12 +310,10 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const {
-    usePrepareRedeem,
-    useMaxRedeem,
-    useConvertToAssets,
-    useConvertToShares,
-  } = useVault(token, address);
+  const { useMaxRedeem, useConvertToAssets, useConvertToShares } = useVault(
+    token,
+    address
+  );
   const { trackTransaction } = useTransactionFeedback();
 
   // withdraw
@@ -387,11 +383,9 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
       setInputAmount("0");
       setInputBigNumber(BigInt(0));
     } catch (error) {
-      toast({
+      notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };

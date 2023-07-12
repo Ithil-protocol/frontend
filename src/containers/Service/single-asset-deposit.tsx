@@ -6,7 +6,6 @@ import {
   InputRightElement,
   Text,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
@@ -27,6 +26,7 @@ import { aaveABI, aaveAddress } from "@/hooks/generated/aave";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { type AaveAsset } from "@/types/onchain.types";
 import {
@@ -219,12 +219,12 @@ interface ServiceDepositProps {
 }
 
 export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
-  const toast = useToast();
   const { address, isConnected } = useAccount();
   const chainId = useChainId() as 42161;
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals);
   const [leverage, setLeverage] = useState("1.5");
+  const notificationDialog = useNotificationDialog();
 
   // web3 hooks
   const { trackTransaction, reportException } = useTransactionFeedback();
@@ -333,11 +333,9 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
       await refetchAllowance();
       setInputAmount("0");
     } catch (error) {
-      toast({
+      notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };
