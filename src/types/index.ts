@@ -61,8 +61,9 @@ export interface DialogOptions {
 }
 
 export interface OpenDialogFnOptions
-  extends Omit<DialogOptions, "duration" | "isClosable"> {
+  extends Omit<DialogOptions, "duration" | "isClosable" | "status"> {
   duration?: number;
+  status?: DialogStatus;
   isClosable?: boolean;
 }
 
