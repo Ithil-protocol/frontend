@@ -5,15 +5,12 @@ import { useNotificationDialog } from "./useNotificationDialog";
 
 export const useTransaction = (hash: Address, description: string) => {
   const notificationDialog = useNotificationDialog();
-  const { isError, isLoading, isSuccess, error, status } =
-    useWaitForTransaction({
-      hash: hash as Address,
-    });
+  const { isError, isLoading, isSuccess, error } = useWaitForTransaction({
+    hash: hash as Address,
+  });
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("isSuccess:::", isSuccess);
-
       notificationDialog.openDialog({
         title: description,
         status: "success",
@@ -24,7 +21,6 @@ export const useTransaction = (hash: Address, description: string) => {
   }, [isSuccess]);
   useEffect(() => {
     if (isError) {
-      console.log("isError:::", isError);
       notificationDialog.openDialog({
         title: error?.message
           ? error.message
@@ -37,7 +33,6 @@ export const useTransaction = (hash: Address, description: string) => {
   }, [isError]);
   useEffect(() => {
     if (isLoading) {
-      console.log("isLoading:::", isLoading);
       notificationDialog.openDialog({
         title: description,
         status: "loading",
@@ -46,7 +41,4 @@ export const useTransaction = (hash: Address, description: string) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
-  useEffect(() => {
-    console.log("STATUS" + " " + status);
-  }, [status]);
 };
