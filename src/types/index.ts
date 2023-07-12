@@ -55,16 +55,21 @@ export type DialogStatus = "error" | "warning" | "success" | "info" | "loading";
 
 export interface DialogOptions {
   status: DialogStatus;
-  message: string;
+  title: string;
+  description: string;
   duration: number;
   isClosable: boolean;
 }
 
 export interface OpenDialogFnOptions
-  extends Omit<DialogOptions, "duration" | "isClosable" | "status"> {
+  extends Omit<
+    DialogOptions,
+    "duration" | "description" | "isClosable" | "status"
+  > {
   duration?: number;
   status?: DialogStatus;
   isClosable?: boolean;
+  description?: string;
 }
 
 export type OpenDialogFn = (o: OpenDialogFnOptions) => void;

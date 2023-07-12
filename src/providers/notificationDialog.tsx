@@ -3,13 +3,14 @@ import React, { PropsWithChildren, useState } from "react";
 
 import NotificationDialog from "@/components/notificationDialog";
 import NotificationDialogContext from "@/contexts/notificationDialog";
-import { DialogOptions, OpenDialogFn } from "@/types";
+import { CloseDialogFn, DialogOptions, OpenDialogFn } from "@/types";
 
 const getDialogDefaultOptions = (): DialogOptions => ({
-  message: "",
-  status: "error",
+  description: "",
   duration: 5000,
   isClosable: true,
+  status: "error",
+  title: "",
 });
 
 const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
@@ -21,14 +22,21 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const openDialog: OpenDialogFn = (options) => {
-    setDialogOptions({
+    const newOptions = {
       ...getDialogDefaultOptions(),
       ...options,
-    });
+    };
+
+    setDialogOptions(newOptions);
     onOpen();
+
+    if (newOptions.isClosable)
+      setTimeout(() => {
+        closeDialog();
+      }, newOptions.duration);
   };
 
-  const closeDialog = () => {
+  const closeDialog: CloseDialogFn = () => {
     setDialogOptions(getDialogDefaultOptions());
     onClose();
   };
