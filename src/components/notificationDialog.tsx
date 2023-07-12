@@ -4,9 +4,11 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogOverlay,
+  CircularProgress,
+  CircularProgressProps,
   Text,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
 import {
   Check as CheckIcon,
@@ -22,13 +24,17 @@ interface Props {
   message: string;
   onClose: CloseDialogFn;
   status: DialogStatus;
+  isClosable: boolean;
 }
 
 const icons: {
-  [key in DialogStatus]: React.FC<React.SVGProps<SVGSVGElement>>;
+  [key in DialogStatus]:
+    | React.FC<React.SVGProps<SVGSVGElement>>
+    | React.FC<CircularProgressProps>;
 } = {
   error: ErrorIcon,
   info: InformationIcon,
+  loading: CircularProgress,
   success: CheckIcon,
   warning: WarningIcon,
 };
@@ -38,11 +44,13 @@ const iconClassNames: {
 } = {
   error: "text-red-500",
   info: "text-blue-500",
+  loading: "",
   success: "text-green-500",
   warning: "text-yellow-500",
 };
 
 const NotificationDialog: React.FC<Props> = ({
+  isClosable,
   isOpen,
   message,
   onClose,
@@ -53,11 +61,15 @@ const NotificationDialog: React.FC<Props> = ({
   const Icon = icons[status];
   const classNames = iconClassNames[status];
 
+  const handleClose = () => {
+    if (isClosable) onClose();
+  };
+
   return (
     <AlertDialog
       isOpen={isOpen}
       leastDestructiveRef={dialogRef}
-      onClose={onClose}
+      onClose={handleClose}
       isCentered
     >
       <AlertDialogOverlay backdropFilter="blur(10px)">
@@ -77,9 +89,13 @@ const NotificationDialog: React.FC<Props> = ({
                 cursor: "pointer",
                 borderRadius: "8px",
               }}
-              onClick={onClose}
+              onClick={handleClose}
             >
-              <CloseButton width={14} height={14} />
+              {isClosable ? (
+                <CloseButton width={14} height={14} />
+              ) : (
+                <span></span>
+              )}
             </Text>
           </AlertDialogHeader>
           <AlertDialogBody
@@ -89,7 +105,11 @@ const NotificationDialog: React.FC<Props> = ({
             alignItems="center"
             padding={13}
           >
-            <Icon className={`w-16 h-16 ${classNames}`} />
+            <Icon
+              value={80}
+              isIndeterminate
+              className={`w-16 h-16 ${classNames}`}
+            />
 
             <Text fontSize={20}> {message}</Text>
           </AlertDialogBody>

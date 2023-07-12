@@ -51,7 +51,7 @@ export interface PageHeading {
   heading: string;
 }
 
-export type DialogStatus = "error" | "warning" | "success" | "info";
+export type DialogStatus = "error" | "warning" | "success" | "info" | "loading";
 
 export interface DialogOptions {
   status: DialogStatus;
