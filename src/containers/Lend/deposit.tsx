@@ -175,8 +175,8 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const { useAllowance, useApprove } = useToken(token.tokenAddress);
-  const { usePrepareDeposit } = useVault(token, address);
+  const { useAllowance } = useToken(token.tokenAddress);
+  // const { usePrepareDeposit } = useVault(token, address);
   const { trackTransaction } = useTransactionFeedback();
 
   const { data: allowance, refetch: refetchAllowance } = useAllowance(

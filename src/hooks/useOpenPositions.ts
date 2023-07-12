@@ -36,12 +36,12 @@ export const useOpenPositions = () => {
     args: [agreement],
   }));
 
-  const { data: quotes, isLoading: isQuotesLoading } = useContractReads({
+  const { data: quotes } = useContractReads({
     contracts: quoteContracts,
     enabled: !!data,
   });
 
-  const { data: fees, isLoading: isFeesLoading } = useContractReads({
+  const { data: fees } = useContractReads({
     contracts: feeContracts,
     enabled: !!data,
   });
