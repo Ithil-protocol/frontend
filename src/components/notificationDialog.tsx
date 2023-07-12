@@ -35,10 +35,10 @@ const icons: {
 const iconClassNames: {
   [key in DialogStatus]: string;
 } = {
-  error: "text-blue-500",
-  info: "text-orange-500",
+  error: "text-red-500",
+  info: "text-blue-500",
   success: "text-green-500",
-  warning: "text-red-500",
+  warning: "text-yellow-500",
 };
 
 const NotificationDialog: React.FC<Props> = ({
