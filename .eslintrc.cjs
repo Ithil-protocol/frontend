@@ -52,7 +52,7 @@ module.exports = {
     "no-var": "warn",
     "object-shorthand": ["error", "always"],
     quotes: ["warn", "double"],
-    semi: ["error", "always"],
+    semi: "off",
     "unused-imports/no-unused-imports": "warn",
     "unused-imports/no-unused-vars": [
       "warn",
