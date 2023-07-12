@@ -12,6 +12,7 @@ import { FC } from "react";
 import { useClosePositions } from "@/hooks/useClosePositions";
 import { useOpenPositions } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
+import { fixPrecision } from "@/utils";
 import { mode } from "@/utils/theme";
 
 import TRow from "./TRow";
@@ -61,8 +62,11 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     amount: loanItem.amount,
                     margin: loanItem.margin,
                     token: loanItem.token,
-                    pnl: item.pnl,
-                    pnlPercentage: item.pnlPercentage,
+                    pnl: fixPrecision(+item.pnl!, 2).toString(),
+                    pnlPercentage: fixPrecision(
+                      +item.pnlPercentage!,
+                      2
+                    ).toString(),
                     id: item.id,
                     quote: item.quote,
                   }}

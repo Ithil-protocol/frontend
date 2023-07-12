@@ -94,7 +94,7 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
           ) : (
             <>
               <Text textStyle="lg">
-                {abbreviateBigNumber(balance, token.decimals)}
+                {abbreviateBigNumber(balance, token.decimals, 3)}
               </Text>
               <Text textStyle="lg">
                 (<EstimatedValue value={balance} token={token} />)
