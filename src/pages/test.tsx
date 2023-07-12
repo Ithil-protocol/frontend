@@ -242,11 +242,11 @@ const Test = () => {
   //   </Button>
   // );
   const aToken = getContract({
-    address: "0x078f358208685046a11C85e8ad32895DED33A249",
+    address: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
     abi: erc4626ABI,
   });
   const d = aToken.read.balanceOf([
-    "0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba8",
+    "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
   ]);
   d.then((e) => console.log("aToken33", e));
 

@@ -86,50 +86,33 @@ export const useGmxRateAndSpread = ({
   loan,
   margin,
 }: GmxRateAndSpreadProps) => {
-  const vault = getVaultByTokenAddress(tokenAddress);
-  // console.log("ii", vault);
-  const { data: vaultFreeLiquidity, isLoading: isFreeLiquidityLoading } =
-    useVaultFreeLiquidity({
-      address: vault?.vaultAddress as Address,
-      enabled: !!vault,
+  const { data: baseRisk, isLoading: isBaseRateLoading } = useGmxBaseRisks({
+    args: [tokenAddress],
+  });
+  const { data: riskSpreads, isLoading: isRiskSpreadsLoading } =
+    useGmxRiskSpreads({
+      args: [tokenAddress],
     });
 
-  const { data: baseRisk } = useGmxBaseRisks({
-    args: [tokenAddress],
-    enabled: !!vaultFreeLiquidity,
-  });
-  const { data: riskSpreads } = useGmxRiskSpreads({
-    args: [tokenAddress],
-    enabled: !!vaultFreeLiquidity,
-  });
-  console.log("baseRisk:", baseRisk, "riskSpreads:", riskSpreads);
+  const riskSpreadWithLeverage =
+    riskSpreads && margin !== 0n ? (riskSpreads * loan) / margin : 0n;
 
-  const { data, isLoading: isBaseRateLoading } =
-    useAaveComputeBaseRateAndSpread({
-      args: [tokenAddress, loan, margin, vaultFreeLiquidity as bigint],
-      enabled: !!vaultFreeLiquidity,
-    });
-
-  console.log(
-    "ii",
-    "vaultFreeLiquidity:",
-    vaultFreeLiquidity,
-    "loan:",
-    loan,
-    "margin:",
-    margin
-  );
-  console.log("ii2", data);
-  const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
+  const isLoading = isBaseRateLoading || isRiskSpreadsLoading;
 
   const result = {
     interestAndSpread: 0n,
     displayInterestAndSpreadInPercent: 0,
     isInterestAndSpreadLoading: isLoading,
   };
-  if (data) {
-    result.interestAndSpread = spreadToUint256(...data);
-    result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
+  if (baseRisk && riskSpreads) {
+    result.interestAndSpread = spreadToUint256(
+      baseRisk,
+      riskSpreadWithLeverage
+    );
+    result.displayInterestAndSpreadInPercent = displayInterestSpread(
+      baseRisk,
+      riskSpreadWithLeverage
+    );
     return result;
   }
   // or throw an error to stop user from opoenning position
