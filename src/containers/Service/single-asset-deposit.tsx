@@ -22,6 +22,7 @@ import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
+import { getDecimalRegex } from "@/data/regex";
 import { aaveABI, aaveAddress } from "@/hooks/generated/aave";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
@@ -55,7 +56,9 @@ interface WidgetSingleAssetDepositProps {
   isMaxDisabled: boolean;
   isApproved: boolean;
   leverage: string;
+  slippage: string;
   setLeverage: Dispatch<SetStateAction<string>>;
+  setSlippage: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
   interestAndSpreadInPercent: number;
 }
@@ -64,19 +67,21 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   asset,
   balance,
   inputAmount,
+  interestAndSpreadInPercent,
   isApproved,
   isBalanceLoading,
   isButtonDisabled,
   isButtonLoading,
   isConnected,
+  isLoading,
   isMaxDisabled,
+  leverage,
   onActionClick,
   onInputChange,
   onMaxClick,
-  leverage,
   setLeverage,
-  isLoading,
-  interestAndSpreadInPercent,
+  setSlippage,
+  slippage,
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
@@ -172,8 +177,11 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
         </div>
 
         <DepositForm
+          assetDecimal={asset?.decimals}
           leverage={leverage}
+          slippage={slippage}
           setLeverage={setLeverage}
+          setSlippage={setSlippage}
           isLoading={isLoading}
           interestAndSpreadInPercent={interestAndSpreadInPercent}
         />
@@ -224,6 +232,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = stringInputToBigNumber(inputAmount, asset.decimals);
   const [leverage, setLeverage] = useState("1.5");
+  const [slippage, setSlippage] = useState("0.1");
   const notificationDialog = useNotificationDialog();
 
   // web3 hooks
@@ -314,8 +323,9 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
   const isMaxDisabled = inputBigNumber === (balance?.value ?? 0);
 
-  const onInputChange = (amount: string) => {
-    setInputAmount(amount);
+  const onInputChange = (value: string) => {
+    if (getDecimalRegex(asset.decimals).test(value) || value === "")
+      setInputAmount(value);
   };
   const onActionClick = async () => {
     try {
@@ -358,7 +368,9 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
       isApproved={isApproved}
       asset={asset}
       leverage={leverage}
+      slippage={slippage}
       setLeverage={setLeverage}
+      setSlippage={setSlippage}
       isLoading={isInterestAndSpreadLoading}
       interestAndSpreadInPercent={displayInterestAndSpreadInPercent}
     />
