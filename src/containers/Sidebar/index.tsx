@@ -32,7 +32,7 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
       <HStack justifyContent="end" className="p-14">
         <span onClick={closeSidebar}>
           {" "}
-          <CloseButton className="w-4 h-4" />
+          <CloseButton className="w-4 h-4 cursor-pointer" />
         </span>
       </HStack>
       <VStack
