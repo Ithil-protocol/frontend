@@ -10,6 +10,7 @@ import { useRef } from "react";
 
 import {
   Check as CheckIcon,
+  CloseButton,
   Error as ErrorIcon,
   Information as InformationIcon,
   Warning as WarningIcon,
@@ -61,10 +62,35 @@ const NotificationDialog: React.FC<Props> = ({
     >
       <AlertDialogOverlay backdropFilter="blur(10px)">
         <AlertDialogContent>
-          <AlertDialogHeader display="flex" justifyContent="center">
-            <Icon className={`w-16 h-16 ${classNames}`} />
+          <AlertDialogHeader
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span></span>
+            <span></span>
+
+            <Text
+              style={{
+                cursor: "pointer",
+                borderRadius: "8px",
+              }}
+              onClick={onClose}
+            >
+              <CloseButton width={14} height={14} />
+            </Text>
           </AlertDialogHeader>
-          <AlertDialogBody display="flex" justifyContent="center" padding={13}>
+          <AlertDialogBody
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            alignItems="center"
+            padding={13}
+          >
+            <Icon className={`w-16 h-16 ${classNames}`} />
+
             <Text fontSize={20}> {message}</Text>
           </AlertDialogBody>
         </AlertDialogContent>
