@@ -25,11 +25,12 @@ export const bigNumberPercentage = (
 };
 
 export const abbreviateBigNumber = (
-  value: bigint | undefined,
-  decimals: number
+  value = BigInt(0),
+  decimals: number,
+  precision = 2
 ): string => {
-  const v = value ?? BigInt(0);
-  return format(parse(formatUnits(v, decimals)), "0.00a");
+  const formatPattern = precision === 2 ? "0.00a" : "0.000a";
+  return format(parse(formatUnits(value, decimals)), formatPattern);
 };
 
 export const estimateTokenValue = (
