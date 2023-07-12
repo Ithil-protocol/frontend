@@ -50,3 +50,20 @@ export interface PageHeading {
   pathName: string;
   heading: string;
 }
+
+
+export interface DialogOptions {
+  status: "error" | "warning" | "success" | "info" | "idle";
+  message: string;
+  duration: number;
+  isClosable: boolean;
+}
+
+export interface OpenDialogFnOptions
+  extends Omit<DialogOptions, "duration" | "isClosable"> {
+  duration?: number;
+  isClosable?: boolean;
+}
+
+export type OpenDialogFn = (o: OpenDialogFnOptions) => void;
+export type CloseDialogFn = VoidNoArgs;
