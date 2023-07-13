@@ -129,7 +129,7 @@ const NotificationDialog: React.FC<Props> = ({
             />
 
             <Text fontSize={24} textAlign="center" fontWeight={"bold"}>
-              {title} Successful
+              {title}
             </Text>
 
             <Text fontWeight={"light"} textAlign="center" fontSize={17}>
