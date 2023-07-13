@@ -4,6 +4,7 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Button,
   CircularProgress,
   CircularProgressProps,
   Text,
@@ -17,6 +18,7 @@ import {
   Information as InformationIcon,
   Warning as WarningIcon,
 } from "@/assets/svgs";
+import { palette } from "@/styles/theme/palette";
 import { CloseDialogFn, DialogStatus } from "@/types";
 
 interface Props {
@@ -67,6 +69,14 @@ const NotificationDialog: React.FC<Props> = ({
     if (isClosable) onClose();
   };
 
+  const bgColors: { [key in typeof status]: string } = {
+    error: palette.variants.primary.error,
+    info: palette.variants.primary.action,
+    success: palette.variants.primary.success,
+    warning: palette.variants.primary.warning,
+    loading: palette.variants.primary.action,
+  };
+
   return (
     <AlertDialog
       isOpen={isOpen}
@@ -75,7 +85,11 @@ const NotificationDialog: React.FC<Props> = ({
       isCentered
     >
       <AlertDialogOverlay backdropFilter="blur(10px)">
-        <AlertDialogContent>
+        <AlertDialogContent
+          style={{
+            borderRadius: " 20px",
+          }}
+        >
           <AlertDialogHeader
             style={{
               display: "flex",
@@ -94,7 +108,7 @@ const NotificationDialog: React.FC<Props> = ({
               onClick={handleClose}
             >
               {isClosable ? (
-                <CloseButton width={14} height={14} />
+                <CloseButton width={12} height={12} />
               ) : (
                 <span></span>
               )}
@@ -105,6 +119,7 @@ const NotificationDialog: React.FC<Props> = ({
             justifyContent="center"
             flexDirection="column"
             alignItems="center"
+            gap={"20px"}
             padding={13}
           >
             <Icon
@@ -113,8 +128,33 @@ const NotificationDialog: React.FC<Props> = ({
               className={`w-16 h-16 ${classNames}`}
             />
 
-            <Text fontSize={24}>{title}</Text>
-            <Text fontSize={18}>{description}</Text>
+            <Text fontSize={24} fontWeight={"bold"}>
+              {title} Successful
+            </Text>
+
+            <Text fontWeight={"light"} fontSize={17}>
+              {description}
+            </Text>
+
+            <div
+              style={{
+                borderBottom: "1px solid gray",
+                width: "100%",
+              }}
+            ></div>
+
+            <Button
+              style={{
+                width: "60%",
+                borderRadius: "20px",
+                backgroundColor: bgColors[status],
+              }}
+              _focusVisible={{
+                border: "transparent",
+              }}
+            >
+              OK
+            </Button>
           </AlertDialogBody>
         </AlertDialogContent>
       </AlertDialogOverlay>
