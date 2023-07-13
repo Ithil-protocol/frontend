@@ -150,3 +150,11 @@ export const pageHeading: PageHeading[] = [
     heading: "",
   },
 ];
+
+export enum SafetyScoreValue {
+  positive = "positive",
+  neutral = "neutral",
+  negative = "negative",
+}
+
+export type serviceType = "aave";

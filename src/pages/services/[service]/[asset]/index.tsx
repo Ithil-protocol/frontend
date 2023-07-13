@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
+import Head from "next/head";
 import { FC } from "react";
 
 import ServicePage from "@/containers/Service";
@@ -21,19 +22,23 @@ interface Props {
 }
 
 const Service: FC<Props> = ({ service, asset }) => {
-  return <ServicePage service={service} asset={asset} />;
+  return (
+    <>
+      <Head>
+        <title>Ithil - Services</title>
+        <meta
+          name="description"
+          content="Official frontend for Ithil strategies"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <ServicePage service={service} asset={asset} />
+    </>
+  );
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  // const { names, services } = getServices();
-  // // Generate all possible paths for the dynamic route
-  // const paths = names.flatMap((serviceName) => {
-  //   const assets = Object.keys(services[serviceName].assets) as Array<
-  //     Lowercase<string>
-  //   >;
-  //   return assets.map((asset) => ({ params: { service: serviceName, asset } }));
-  // });
-
   const paths = vaults.map((vault) => ({
     params: {
       service: "aave",
