@@ -128,11 +128,11 @@ const NotificationDialog: React.FC<Props> = ({
               className={`w-16 h-16 ${classNames}`}
             />
 
-            <Text fontSize={24} fontWeight={"bold"}>
+            <Text fontSize={24} textAlign="center" fontWeight={"bold"}>
               {title} Successful
             </Text>
 
-            <Text fontWeight={"light"} fontSize={17}>
+            <Text fontWeight={"light"} textAlign="center" fontSize={17}>
               {description}
             </Text>
 
