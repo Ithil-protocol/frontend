@@ -19,13 +19,12 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-import { gmxABI } from "@/abi";
+import { aaveABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { aaveAddress } from "@/hooks/generated/aave";
-import { gmxAddress } from "@/hooks/generated/gmx";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -287,8 +286,8 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     isLoading: isOpenLoading,
     writeAsync: open,
   } = useContractWrite({
-    abi: gmxABI,
-    address: gmxAddress[42161],
+    abi: aaveABI,
+    address: aaveAddress[42161],
     functionName: "open",
     args: [order],
     account: accountAddress,
