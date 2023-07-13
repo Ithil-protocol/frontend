@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 
 import TokenModal from "@/components/TokenModal";
 
-const ServiceAsset = () => {
+const AavePage = () => {
   const router = useRouter();
 
   const handleSelectToken = (tokenName: string) => {
-    router.push(`/services/${router.query.service}/${tokenName}`);
+    router.push(`/services/aave/${tokenName}`);
   };
   return (
     <>
@@ -15,4 +15,4 @@ const ServiceAsset = () => {
   );
 };
 
-export default ServiceAsset;
+export default AavePage;

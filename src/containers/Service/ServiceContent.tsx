@@ -21,6 +21,13 @@ const ServiceContent: FC<Props> = ({ service }) => {
   } = useRouter();
   const { baseApy, isLoading } = useBaseApy(token as string);
 
+  // const services ={
+  //   gmx:{},
+  //   aave:{}
+  // }
+
+  // const service = services[serviceName]
+
   return (
     <Box className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">
       <ServiceHeading token={token as string} />

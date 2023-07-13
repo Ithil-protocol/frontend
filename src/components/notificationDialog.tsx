@@ -133,7 +133,7 @@ const NotificationDialog: React.FC<Props> = ({
             </Text>
 
             <Text fontWeight={"light"} textAlign="center" fontSize={17}>
-              {description}
+              Withdraw 500 USDT successfully
             </Text>
 
             <div
