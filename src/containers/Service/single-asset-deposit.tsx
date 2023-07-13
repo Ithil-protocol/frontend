@@ -18,12 +18,13 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
+import { aaveABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
-import { aaveABI, aaveAddress } from "@/hooks/generated/aave";
+import { aaveAddress } from "@/hooks/generated/aave";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -294,16 +295,11 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     isLoading: isOpenLoading,
     writeAsync: open,
   } = useContractWrite({
-    mode: "prepared",
-    request: {
-      abi: aaveABI,
-      address: aaveAddress[42161],
-      functionName: "open",
-      args: [order],
-      gas: 2000000n,
-      // @ts-ignore
-      account: accountAddress,
-    },
+    abi: aaveABI,
+    address: aaveAddress[42161],
+    functionName: "open",
+    args: [order],
+    account: accountAddress,
   });
 
   const { isLoading: isOpenWaiting } = useWaitForTransaction({

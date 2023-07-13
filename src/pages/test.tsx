@@ -3,7 +3,8 @@ import { Button } from "@chakra-ui/react";
 import { erc4626ABI, useContractWrite } from "wagmi";
 import { getContract } from "wagmi/actions";
 
-import { aaveAddress } from "@/hooks/generated/aave";
+import { gmxABI } from "@/abi";
+import { gmxAddress } from "@/hooks/generated/gmx";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -214,41 +215,15 @@ const Test = () => {
   // });
   // console.log("ii2", vaultFreeLiquidity);
 
-  const gmxRiskParamAbi = [
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "token",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "riskSpread",
-          type: "uint256",
-        },
-        {
-          internalType: "uint256",
-          name: "baseRisk",
-          type: "uint256",
-        },
-      ],
-      name: "setRiskParams",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ] as const;
-
   const { write: setRiskParam } = useContractWrite({
     mode: "prepared",
     // @ts-ignore
     request: {
-      abi: gmxRiskParamAbi,
-      address: aaveAddress[42161],
+      abi: gmxABI,
+      address: gmxAddress[42161],
       functionName: "setRiskParams",
       args: [
-        "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
+        "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
         BigInt(3e15),
         BigInt(1e16),
       ],
@@ -270,11 +245,11 @@ const Test = () => {
   // return <p>{formatUnits(undefined,4)}</p>
 
   const aToken = getContract({
-    address: "0x078f358208685046a11C85e8ad32895DED33A249",
+    address: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
     abi: erc4626ABI,
   });
   const d = aToken.read.balanceOf([
-    "0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba8",
+    "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
   ]);
   d.then((e) => console.log("aToken33", e));
 

@@ -12,9 +12,10 @@ import { FC } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
 
+import { aaveABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
-import { aaveABI, aaveAddress } from "@/hooks/generated/aave";
+import { aaveAddress } from "@/hooks/generated/aave";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
@@ -41,7 +42,11 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   const { trackTransaction } = useTransactionFeedback();
 
-  const { writeAsync: close, isLoading } = useContractWrite({
+  const {
+    writeAsync: close,
+    isLoading,
+    reset,
+  } = useContractWrite({
     address: aaveAddress[42161] as Address,
     abi: aaveABI,
     functionName: "close",

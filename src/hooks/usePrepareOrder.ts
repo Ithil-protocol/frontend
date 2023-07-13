@@ -1,7 +1,7 @@
 import { toHex } from "viem";
 import { type Address } from "wagmi";
 
-import { useRateAndSpread } from "@/hooks/useRateAndSpread";
+import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
 
 interface ServiceLoan {
   token: Address;
@@ -46,7 +46,7 @@ export const usePrepareOrder = (
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
-  } = useRateAndSpread({
+  } = useAaveRateAndSpread({
     tokenAddress: token,
     loan: amountInLeverage,
     margin: amount,
@@ -75,6 +75,8 @@ export const usePrepareOrder = (
     agreement,
     data: toHex(""),
   };
+
+  console.log("ii", order);
 
   return {
     order,
