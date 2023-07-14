@@ -7,11 +7,11 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { removeOldestQuery } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import Script from "next/script";
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageWrapper from "@/components/page-wrapper";
 import { addTestNetworks, firstNetwork, testNetwork } from "@/config/chains";
 import NotificationDialogProvider from "@/providers/notificationDialog";
@@ -100,20 +100,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-   
-     gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
-   
-    `}
-      </Script>
+      <GoogleAnalytics />
       <WagmiConfig config={wagmiClient}>
         <QueryClientProvider client={queryClient}>
           <Chakra>
