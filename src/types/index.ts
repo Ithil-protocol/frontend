@@ -30,7 +30,7 @@ export interface VaultsTypes {
 }
 
 export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
-export type ServiceType = "AAVE";
+export type ServiceType = "AAVE" | "GMX";
 
 export interface SafetyScore {
   score: number;

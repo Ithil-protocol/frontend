@@ -1,7 +1,9 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { FC } from "react";
 
-import { Aave } from "@/assets/svgs";
+import { ServiceType } from "@/types";
+
+import ServiceIcon from "./ServiceIcon";
 
 interface Props {
   data: {
@@ -18,7 +20,7 @@ const ServiceHeading: FC<Props> = ({ data }) => {
           <Heading size="h1b" lineHeight="32px">
             {data.name}
           </Heading>
-          <Aave width={40} height={40} />
+          <ServiceIcon name={data.name as ServiceType} />
         </div>
         <Text textStyle="sm">{data.description}</Text>
       </div>
