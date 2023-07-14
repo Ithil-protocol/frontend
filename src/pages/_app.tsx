@@ -105,7 +105,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <Chakra>
             <RainbowWrapper>
-              <PageWrapper heading={heading} textAlign="left">
+              <PageWrapper>
                 <NotificationDialogProvider>
                   <Component {...pageProps} />
                 </NotificationDialogProvider>
