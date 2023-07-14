@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { removeOldestQuery } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -21,7 +20,6 @@ import {
   rainbowkitDarkTheme,
   rainbowkitLightTheme,
 } from "@/styles/theme/rainbowkit";
-import { pageHeading } from "@/utils";
 
 const network = firstNetwork();
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -88,15 +86,6 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     void addTestNetworks();
   }, []);
-  const router = useRouter();
-  useEffect(() => {
-    setHeading("");
-    pageHeading.forEach((item) => {
-      if (router.pathname.split("/")[1] === item.pathName) {
-        return setHeading(item.heading);
-      }
-    });
-  }, [router]);
 
   return (
     <>
