@@ -7,7 +7,6 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { AaveService } from "@/types/onchain.types";
 
 import SafetyScore from "./SafetyScore";
-import ServiceHeading from "./ServiceHeading";
 import StrategyDescription from "./StrategyDescription";
 import { Graph } from "./graph";
 
@@ -30,7 +29,7 @@ const ServiceContent: FC<Props> = ({ service }) => {
 
   return (
     <Box className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">
-      <ServiceHeading token={token as string} />
+      {/* <ServiceHeading token={token as string} /> */}
       <Graph />
       <StrategyDescription
         description="This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
