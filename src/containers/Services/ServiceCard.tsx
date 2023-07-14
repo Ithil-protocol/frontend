@@ -70,7 +70,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
       <Text className="mb-4 ">
         {typeof description === "string" ? description : description(assets)}
       </Text>
-      <VStack className="mt-auto" align="start">
+      <VStack className="mt-auto bg-red-500" align="start">
         <HStack spacing="8px" marginBottom="16px">
           <Text
             textStyle="sm"
