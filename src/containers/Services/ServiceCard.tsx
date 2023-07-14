@@ -8,6 +8,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
@@ -99,13 +100,11 @@ const ServiceCard: FC<ServiceCardProps> = ({
           ))}
         </Box>
       </VStack>
-      <Button
-        onClick={() => push(`/services/${to}`)}
-        size="lg"
-        className="w-full"
-      >
-        Enter
-      </Button>
+      <Link href={`/services/${to}`}>
+        <Button size="lg" className="w-full">
+          Enter
+        </Button>
+      </Link>
     </Box>
   );
 };
