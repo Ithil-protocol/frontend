@@ -67,10 +67,10 @@ const ServiceCard: FC<ServiceCardProps> = ({
         <Text textStyle="md2">Best APY</Text>
         <Text textStyle="slender-md">{apy}</Text>
       </HStack>
-      <Text className="h-20 mb-4 line-clamp-2">
+      <Text className="mb-4 ">
         {typeof description === "string" ? description : description(assets)}
       </Text>
-      <VStack align="start">
+      <VStack className="mt-auto" align="start">
         <HStack spacing="8px" marginBottom="16px">
           <Text
             textStyle="sm"
