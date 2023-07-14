@@ -18,6 +18,7 @@ import ThreeDot from "./svgs/ThreeDot.svg";
 import Tooltip from "./svgs/Tooltip.svg";
 import Warning from "./svgs/Warning.svg";
 import Aave from "./svgs/aave.svg";
+import Gmx from "./svgs/gmx.svg";
 
 export {
   Aave,
@@ -40,4 +41,5 @@ export {
   ThreeDot,
   Tooltip,
   Warning,
+  Gmx,
 };

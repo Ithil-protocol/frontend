@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FC } from "react";
 
 import { palette } from "@/styles/theme/palette";
@@ -38,11 +37,10 @@ const ServiceCard: FC<ServiceCardProps> = ({
   tvl,
 }) => {
   const { colorMode } = useColorMode();
-  const { push } = useRouter();
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <HStack className="flex justify-between mb-6">
-        <ServiceIcon name={name as ServiceType} />
+        <ServiceIcon name={name as ServiceType} width={30} />
         {/* 1 - 10% multiplier */}
         <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
           <Icon
@@ -69,7 +67,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
         <Text textStyle="md2">Best APY</Text>
         <Text textStyle="slender-md">{apy}</Text>
       </HStack>
-      <Text className="mb-4">
+      <Text className="h-20 mb-4 line-clamp-2">
         {typeof description === "string" ? description : description(assets)}
       </Text>
       <VStack align="start">
