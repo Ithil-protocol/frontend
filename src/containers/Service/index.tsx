@@ -13,14 +13,12 @@ interface Props {
 
 const ServicePage: FC<Props> = ({ service, asset }) => {
   return (
-    <>
-      <Box className="grid w-full grid-cols-10 gap-6">
-        <ServiceContent service={service} />
-        <Box className="flex-shrink-0 col-span-full lg:col-span-3">
-          <ServiceDeposit asset={asset} />
-        </Box>
+    <Box className="grid w-full grid-cols-10 gap-6">
+      <ServiceContent service={service} />
+      <Box className="flex-shrink-0 col-span-full lg:col-span-3">
+        <ServiceDeposit asset={asset} />
       </Box>
-    </>
+    </Box>
   );
 };
 

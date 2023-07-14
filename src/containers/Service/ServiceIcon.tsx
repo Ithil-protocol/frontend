@@ -1,19 +1,22 @@
 import { FC } from "react";
 
-import { Aave } from "@/assets/svgs";
+import { Aave, Gmx } from "@/assets/svgs";
 import { ServiceType } from "@/types";
 
 interface Props {
   name: ServiceType;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
 }
 
 const ServiceIcon: FC<Props> = ({ name, width = 28, height = 28 }) => {
-  switch (name) {
-    case "AAVE":
-      return <Aave width={width} height={height} />;
-  }
+  const icons = {
+    AAVE: Aave,
+    GMX: Gmx,
+  };
+
+  const Icon = icons[name];
+  return <Icon width={width} height={height} />;
 };
 
 export default ServiceIcon;

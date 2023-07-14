@@ -1,6 +1,6 @@
 import TokenModal from "@/components/TokenModal";
 
-const ServiceAsset = () => {
+const AavePage = () => {
   return (
     <>
       <TokenModal isOpen />
@@ -8,4 +8,4 @@ const ServiceAsset = () => {
   );
 };
 
-export default ServiceAsset;
+export default AavePage;

@@ -132,7 +132,6 @@ const DepositForm: FC<Props> = ({
         )}
 
         {isAdvancedOptionsOpen && (
-          //TODO:
           <>
             <AdvancedFormLabel label="Leverage" tooltip="Leverage" />
             <InputGroup size="md">

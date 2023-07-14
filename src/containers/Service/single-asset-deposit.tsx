@@ -258,18 +258,6 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     +leverage
   );
 
-  console.log(
-    "displayInterestAndSpreadInPercent",
-    displayInterestAndSpreadInPercent
-  );
-  // serviceTest(order);
-  console.log(order);
-  // const {
-  //   config: openConfig,
-  //   isLoading: isOpenPrepareLoading,
-  //   isError: isOpenPrepareError,
-  //   error: openPrepareError,
-  // } = usePrepareServiceOpen({ args: [order] });
   const isOpenPrepareLoading = false;
   const isOpenPrepareError = false;
   const openPrepareError: Error = {
