@@ -1,6 +1,6 @@
 {
-  "networkUrl": "https://rpc.tenderly.co/fork/55f13034-69da-4481-bd70-d9a31f432ffe",
-  "manager": "0x469B988014681E4415317C93eE4dd6192be10A75",
-  "aaveService": "0xE56D685c0fDb264F455C497c5A58320B176c4015",
-  "gmxService": "0x959a0c1506c37c9870aD66264df85e15d96B4467"
+  "networkUrl": "https://rpc.tenderly.co/fork/0ed39173-cd71-46d9-bf31-e09411bf54d4",
+  "manager": "0xe439A318c37198de59F3835F676BF938DA636639",
+  "aaveService": "0x36C522987DC6cef39629067AB083BbEcCB8C7f10",
+  "gmxService": "0x1d85b8A4C82c9d711Ade3D484c3C5715C3f22beA"
 }

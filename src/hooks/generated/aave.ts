@@ -972,7 +972,7 @@ export const aaveABI = [
  * [__View Contract on Arbitrum One Arbiscan__](https://arbiscan.io/address/0xE56D685c0fDb264F455C497c5A58320B176c4015)
  */
 export const aaveAddress = {
-  42161: "0xE56D685c0fDb264F455C497c5A58320B176c4015",
+  98745: "0xE56D685c0fDb264F455C497c5A58320B176c4015",
 } as const;
 
 /**
@@ -1000,7 +1000,7 @@ export function useAaveRead<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
 }
@@ -1021,7 +1021,7 @@ export function useAaveAave<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "aave",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1043,7 +1043,7 @@ export function useAaveAgreements<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "agreements",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1065,7 +1065,7 @@ export function useAaveBalanceOf<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "balanceOf",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1087,7 +1087,7 @@ export function useAaveComputeBaseRateAndSpread<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "computeBaseRateAndSpread",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1109,7 +1109,7 @@ export function useAaveComputeDueFees<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "computeDueFees",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1131,7 +1131,7 @@ export function useAaveDeadline<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "deadline",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1153,7 +1153,7 @@ export function useAaveEnabled<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "enabled",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1175,7 +1175,7 @@ export function useAaveGetAgreement<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "getAgreement",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1197,7 +1197,7 @@ export function useAaveGetApproved<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "getApproved",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1219,7 +1219,7 @@ export function useAaveGetUserAgreements<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "getUserAgreements",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1241,7 +1241,7 @@ export function useAaveGuardian<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "guardian",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1263,7 +1263,7 @@ export function useAaveHalvingTime<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "halvingTime",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1285,7 +1285,7 @@ export function useAaveId<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "id",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1307,7 +1307,7 @@ export function useAaveIsApprovedForAll<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "isApprovedForAll",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1329,7 +1329,7 @@ export function useAaveLatestAndBase<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "latestAndBase",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1351,7 +1351,7 @@ export function useAaveLiquidationScore<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "liquidationScore",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1373,7 +1373,7 @@ export function useAaveLocked<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "locked",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1395,7 +1395,7 @@ export function useAaveManager<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "manager",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1417,7 +1417,7 @@ export function useAaveMinMargin<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "minMargin",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1439,7 +1439,7 @@ export function useAaveName<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "name",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1461,7 +1461,7 @@ export function useAaveOwner<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "owner",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1483,7 +1483,7 @@ export function useAaveOwnerOf<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "ownerOf",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1505,7 +1505,7 @@ export function useAaveQuote<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "quote",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1527,7 +1527,7 @@ export function useAaveRiskSpreads<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "riskSpreads",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1549,7 +1549,7 @@ export function useAaveSupportsInterface<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "supportsInterface",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1571,7 +1571,7 @@ export function useAaveSymbol<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "symbol",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1593,7 +1593,7 @@ export function useAaveTokenByIndex<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "tokenByIndex",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1615,7 +1615,7 @@ export function useAaveTokenOfOwnerByIndex<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "tokenOfOwnerByIndex",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1637,7 +1637,7 @@ export function useAaveTokenUri<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "tokenURI",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1659,7 +1659,7 @@ export function useAaveTotalAllowance<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "totalAllowance",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1681,7 +1681,7 @@ export function useAaveTotalSupply<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "totalSupply",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1703,7 +1703,7 @@ export function useAaveWhitelisted<
 ) {
   return useContractRead({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "whitelisted",
     ...config,
   } as UseContractReadConfig<typeof aaveABI, TFunctionName, TSelectData>);
@@ -1722,7 +1722,7 @@ export function usePrepareAaveWrite<TFunctionName extends string>(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, TFunctionName>);
 }
@@ -1740,7 +1740,7 @@ export function usePrepareAaveAddToWhitelist(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "addToWhitelist",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "addToWhitelist">);
@@ -1759,7 +1759,7 @@ export function usePrepareAaveApprove(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "approve",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "approve">);
@@ -1778,7 +1778,7 @@ export function usePrepareAaveClose(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "close",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "close">);
@@ -1797,7 +1797,7 @@ export function usePrepareAaveEdit(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "edit",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "edit">);
@@ -1816,7 +1816,7 @@ export function usePrepareAaveOpen(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "open",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "open">);
@@ -1835,7 +1835,7 @@ export function usePrepareAaveRemoveFromWhitelist(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "removeFromWhitelist",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "removeFromWhitelist">);
@@ -1854,7 +1854,7 @@ export function usePrepareAaveRenounceOwnership(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "renounceOwnership",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "renounceOwnership">);
@@ -1873,7 +1873,7 @@ export function usePrepareAaveSafeTransferFrom(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "safeTransferFrom",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "safeTransferFrom">);
@@ -1892,7 +1892,7 @@ export function usePrepareAaveSetApprovalForAll(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "setApprovalForAll",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "setApprovalForAll">);
@@ -1911,7 +1911,7 @@ export function usePrepareAaveSetGuardian(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "setGuardian",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "setGuardian">);
@@ -1930,7 +1930,7 @@ export function usePrepareAaveSetMinMargin(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "setMinMargin",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "setMinMargin">);
@@ -1949,7 +1949,7 @@ export function usePrepareAaveSetRiskParams(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "setRiskParams",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "setRiskParams">);
@@ -1968,7 +1968,7 @@ export function usePrepareAaveToggleLock(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "toggleLock",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "toggleLock">);
@@ -1987,7 +1987,7 @@ export function usePrepareAaveToggleWhitelistFlag(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "toggleWhitelistFlag",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "toggleWhitelistFlag">);
@@ -2006,7 +2006,7 @@ export function usePrepareAaveTransferFrom(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "transferFrom",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "transferFrom">);
@@ -2025,7 +2025,7 @@ export function usePrepareAaveTransferOwnership(
 ) {
   return usePrepareContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "transferOwnership",
     ...config,
   } as UsePrepareContractWriteConfig<typeof aaveABI, "transferOwnership">);
@@ -2044,7 +2044,7 @@ export function useAaveEvent<TEventName extends string>(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     ...config,
   } as UseContractEventConfig<typeof aaveABI, TEventName>);
 }
@@ -2062,7 +2062,7 @@ export function useAaveApprovalEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "Approval",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "Approval">);
@@ -2081,7 +2081,7 @@ export function useAaveApprovalForAllEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "ApprovalForAll",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "ApprovalForAll">);
@@ -2100,7 +2100,7 @@ export function useAaveBaseRiskSpreadWasUpdatedEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "BaseRiskSpreadWasUpdated",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "BaseRiskSpreadWasUpdated">);
@@ -2119,7 +2119,7 @@ export function useAaveGuardianWasUpdatedEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "GuardianWasUpdated",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "GuardianWasUpdated">);
@@ -2138,7 +2138,7 @@ export function useAaveLiquidationTriggeredEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "LiquidationTriggered",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "LiquidationTriggered">);
@@ -2157,7 +2157,7 @@ export function useAaveLockWasToggledEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "LockWasToggled",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "LockWasToggled">);
@@ -2176,7 +2176,7 @@ export function useAaveOwnershipTransferredEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "OwnershipTransferred",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "OwnershipTransferred">);
@@ -2195,7 +2195,7 @@ export function useAavePositionClosedEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "PositionClosed",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "PositionClosed">);
@@ -2214,7 +2214,7 @@ export function useAavePositionOpenedEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "PositionOpened",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "PositionOpened">);
@@ -2233,7 +2233,7 @@ export function useAaveTransferEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "Transfer",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "Transfer">);
@@ -2252,7 +2252,7 @@ export function useAaveWhitelistAccessFlagWasToggledEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "WhitelistAccessFlagWasToggled",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "WhitelistAccessFlagWasToggled">);
@@ -2271,7 +2271,7 @@ export function useAaveWhitelistedStatusWasChangedEvent(
 ) {
   return useContractEvent({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     eventName: "WhitelistedStatusWasChanged",
     ...config,
   } as UseContractEventConfig<typeof aaveABI, "WhitelistedStatusWasChanged">);

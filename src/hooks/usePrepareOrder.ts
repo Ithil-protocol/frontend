@@ -1,7 +1,10 @@
-import { toHex } from "viem";
+import { encodeAbiParameters, parseAbiParameters, toHex } from "viem";
 import { type Address } from "wagmi";
 
-import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
+import {
+  useAaveRateAndSpread,
+  useGmxRateAndSpread,
+} from "@/hooks/useRateAndSpread";
 
 interface ServiceLoan {
   token: Address;
@@ -77,6 +80,54 @@ export const usePrepareOrder = (
   };
 
   console.log("ii", order);
+
+  return {
+    order,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+  };
+};
+
+export const useGmxPrepareOrder = (
+  token: Address,
+  aToken: Address,
+  amount: bigint,
+  leverage: number
+) => {
+  const amountInLeverage = leverageConverter(amount, leverage);
+  const {
+    interestAndSpread,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+  } = useGmxRateAndSpread({
+    tokenAddress: token,
+    loan: amountInLeverage,
+    margin: amount,
+  });
+
+  const collateral: ServiceCollateral = {
+    itemType: 0,
+    token: aToken,
+    identifier: BigInt(0),
+    amount: amount + amountInLeverage,
+  };
+  const loan: ServiceLoan = {
+    token,
+    amount: amountInLeverage,
+    margin: amount,
+    interestAndSpread,
+  };
+  const agreement: ServiceAgreement = {
+    loans: [loan],
+    collaterals: [collateral],
+    createdAt: BigInt(0),
+    status: 0,
+  };
+
+  const order: IServiceOrder = {
+    agreement,
+    data: encodeAbiParameters(parseAbiParameters("uint256"), [0n]),
+  };
 
   return {
     order,

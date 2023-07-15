@@ -24,14 +24,14 @@ export const useOpenPositions = () => {
 
   const quoteContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
-    address: aaveAddress[42161] as Address,
+    address: aaveAddress[98745] as Address,
     functionName: "quote",
     args: [agreement],
   }));
 
   const feeContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
-    address: aaveAddress[42161] as Address,
+    address: aaveAddress[98745] as Address,
     functionName: "computeDueFees",
     args: [agreement],
   }));
