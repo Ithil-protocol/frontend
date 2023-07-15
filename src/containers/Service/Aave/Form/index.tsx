@@ -89,13 +89,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     +leverage
   );
 
-  const isOpenPrepareLoading = false;
-  const isOpenPrepareError = false;
-  const openPrepareError: Error = {
-    name: "a",
-    message: "openPrepareError message",
-  };
-
   const { address: accountAddress } = useAccount();
   const {
     data: openData,
@@ -116,11 +109,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   // computed properties
   const isApproved = allowance ? allowance >= inputBigNumber : false;
   const isButtonLoading =
-    isApproveLoading ||
-    isApproveWaiting ||
-    isOpenLoading ||
-    isOpenWaiting ||
-    isOpenPrepareLoading;
+    isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting;
   const isInconsistent = inputBigNumber > (balance?.value ?? 0);
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
@@ -139,8 +128,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         await refetchAllowance();
         return;
       }
-
-      if (isOpenPrepareError) return reportException(openPrepareError);
 
       const result = await open?.();
       await trackTransaction(result, `Deposit ${inputAmount} ${asset?.name}`);
