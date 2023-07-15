@@ -6,7 +6,6 @@ import {
   ListItem,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
@@ -170,7 +169,7 @@ const TokenModal: React.FC<Props> = ({
                 ))}
             </List>
           </ModalBody>
-          <ModalFooter>{modalFooter}</ModalFooter>
+          {/* <ModalFooter>{modalFooter}</ModalFooter> */}
         </ModalContent>
       </ChakraModal>
     </>
