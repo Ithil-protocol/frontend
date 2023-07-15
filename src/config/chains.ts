@@ -8,7 +8,7 @@ export const testNetwork: Chain = {
   ...arbitrum,
   name: "ithil test network",
   network: "ithil test network",
-  id: 42161,
+  id: 98745,
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   blockExplorers: {
     etherscan: {
