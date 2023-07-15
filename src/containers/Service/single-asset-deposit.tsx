@@ -8,7 +8,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/router";
 import React, { Dispatch, type FC, SetStateAction, useState } from "react";
 import {
   useAccount,
@@ -86,11 +85,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
 }) => {
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
-  const router = useRouter();
   const isMounted = useIsMounted();
-  const handleSelectToken = (tokenName: string) => {
-    router.push(`/services/${router.query.service}/${tokenName}`);
-  };
 
   if (!isMounted) return null;
 
@@ -211,14 +206,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           </Button>
         )}
       </>
-      <TokenModal
-        onSelectToken={(tokenName) => {
-          onClose();
-          handleSelectToken(tokenName);
-        }}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
+      <TokenModal onSelectToken={onClose} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };

@@ -36,7 +36,7 @@ export const useTransaction = (hash: Address, description: string) => {
       notificationDialog.openDialog({
         title: description,
         status: "loading",
-        duration: 5_000,
+        duration: 30_000,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

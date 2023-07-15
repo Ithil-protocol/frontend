@@ -89,11 +89,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     hash: approveData?.hash,
   });
 
-  const {
-    order,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-  } = usePrepareOrder(
+  const { order, displayInterestAndSpreadInPercent } = usePrepareOrder(
     asset?.tokenAddress,
     asset?.aTokenAddress,
     inputBigNumber,
@@ -170,11 +166,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const { openConnectModal } = useConnectModal();
   const { isOpen, onOpen, onClose } = useDisclosure({});
-  const router = useRouter();
   const isMounted = useIsMounted();
-  const handleSelectToken = (tokenName: string) => {
-    router.push(`/services/${router.query.service}/${tokenName}`);
-  };
 
   const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
@@ -428,14 +420,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           </Button>
         )}
       </>
-      <TokenModal
-        onSelectToken={(tokenName) => {
-          onClose();
-          handleSelectToken(tokenName);
-        }}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
+      <TokenModal onSelectToken={onClose} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
