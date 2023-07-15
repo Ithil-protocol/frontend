@@ -56,7 +56,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
             fontWeight={700}
             color={pickColor(colorMode, palette.safety, "green")}
           >
-            {score}
+            {score.toFixed(1)}
           </Text>
           {score > 9 && (
             <Icon
