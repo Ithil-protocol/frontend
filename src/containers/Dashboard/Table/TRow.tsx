@@ -47,7 +47,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
     isLoading,
     reset,
   } = useContractWrite({
-    address: aaveAddress[42161] as Address,
+    address: aaveAddress[98745] as Address,
     abi: aaveABI,
     functionName: "close",
     gas: 20000000n,

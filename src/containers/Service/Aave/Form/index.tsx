@@ -57,7 +57,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   } = useRouter();
 
   const { address, isConnected } = useAccount();
-  const chainId = useChainId() as 42161;
+  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = asset?.decimals
     ? stringInputToBigNumber(inputAmount, asset?.decimals)
@@ -114,7 +114,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     writeAsync: open,
   } = useContractWrite({
     abi: aaveABI,
-    address: aaveAddress[42161],
+    address: aaveAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress,
