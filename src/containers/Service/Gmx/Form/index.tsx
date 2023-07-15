@@ -308,7 +308,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
             setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
-            asset={asset}
           />
         </Box>
       </div>
