@@ -111,9 +111,7 @@ const TokenModal: React.FC<Props> = ({
                   <React.Fragment key={key}>
                     <Link
                       onClick={onSelectToken}
-                      href={`/services/${
-                        router.query.service
-                      }/${item.name.toLowerCase()}`}
+                      href={`/services/aave/${item.name.toLowerCase()}`}
                     >
                       <ListItem>
                         <Button
