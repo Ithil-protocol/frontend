@@ -38,7 +38,7 @@ import {
 } from "@/utils/input.utils";
 import { mode, pickColor } from "@/utils/theme";
 
-import AdvanceSection from "../../../../components/ui/form/AdvanceSection";
+import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormDescriptionItem from "../../FormDescriptionItem";
 

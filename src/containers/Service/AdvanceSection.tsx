@@ -9,8 +9,6 @@ import {
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
-import { getDecimalRegex } from "@/data/regex";
-import { AaveAsset } from "@/types/onchain.types";
 import { mode } from "@/utils/theme";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -22,7 +20,6 @@ interface Props {
   setLeverage: Dispatch<SetStateAction<string>>;
   slippage: string;
   setSlippage: Dispatch<SetStateAction<string>>;
-  asset: AaveAsset;
 }
 
 const AdvanceSection: FC<Props> = ({
@@ -32,7 +29,6 @@ const AdvanceSection: FC<Props> = ({
   setLeverage,
   slippage,
   setSlippage,
-  asset,
 }) => {
   const { colorMode } = useColorMode();
 
@@ -87,10 +83,7 @@ const AdvanceSection: FC<Props> = ({
             <NumberInput
               width="100%"
               value={leverage}
-              onChange={(value) => {
-                if (getDecimalRegex(asset.decimals).test(value) || value === "")
-                  setLeverage(value);
-              }}
+              onChange={setLeverage}
               step={0.01}
               precision={2}
               min={1.01}
@@ -106,10 +99,7 @@ const AdvanceSection: FC<Props> = ({
               width="100%"
               step={0.1}
               value={slippage}
-              onChange={(value) => {
-                if (getDecimalRegex(asset.decimals).test(value) || value === "")
-                  setSlippage(value);
-              }}
+              onChange={setSlippage}
               precision={1}
               min={0.1}
               defaultValue={0.1}
