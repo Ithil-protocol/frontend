@@ -24,12 +24,7 @@ export default defineConfig([
         abi: aaveABI,
       },
     ],
-    plugins: [
-      react({
-        useContractWrite: false,
-        useContractFunctionWrite: false,
-      }),
-    ],
+    plugins: [react()],
   },
   {
     out: "src/hooks/generated/vault.ts",
@@ -39,12 +34,7 @@ export default defineConfig([
         abi: vaultABI,
       },
     ],
-    plugins: [
-      react({
-        useContractWrite: false,
-        useContractFunctionWrite: false,
-      }),
-    ],
+    plugins: [react()],
   },
   {
     out: "src/hooks/generated/gmx.ts",
@@ -57,11 +47,6 @@ export default defineConfig([
         },
       },
     ],
-    plugins: [
-      react({
-        useContractWrite: false,
-        useContractFunctionWrite: false,
-      }),
-    ],
+    plugins: [react()],
   },
 ]);
