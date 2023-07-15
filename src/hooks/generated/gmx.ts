@@ -991,7 +991,7 @@ export const gmxABI = [
  * [__View Contract on Arbitrum One Arbiscan__](https://arbiscan.io/address/0x959a0c1506c37c9870aD66264df85e15d96B4467)
  */
 export const gmxAddress = {
-  42161: "0x959a0c1506c37c9870aD66264df85e15d96B4467",
+  98745: "0x959a0c1506c37c9870aD66264df85e15d96B4467",
 } as const;
 
 /**
@@ -1019,7 +1019,7 @@ export function useGmxRead<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
 }
@@ -1040,7 +1040,7 @@ export function useGmxAgreements<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "agreements",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1062,7 +1062,7 @@ export function useGmxBalanceOf<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "balanceOf",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1084,7 +1084,7 @@ export function useGmxBaseRisks<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "baseRisks",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1106,7 +1106,7 @@ export function useGmxComputeDueFees<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "computeDueFees",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1128,7 +1128,7 @@ export function useGmxDeadline<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "deadline",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1150,7 +1150,7 @@ export function useGmxEnabled<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "enabled",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1172,7 +1172,7 @@ export function useGmxGetAgreement<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "getAgreement",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1194,7 +1194,7 @@ export function useGmxGetApproved<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "getApproved",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1216,7 +1216,7 @@ export function useGmxGetUserAgreements<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "getUserAgreements",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1238,7 +1238,7 @@ export function useGmxGlp<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "glp",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1260,7 +1260,7 @@ export function useGmxGlpManager<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "glpManager",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1282,7 +1282,7 @@ export function useGmxGuardian<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "guardian",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1304,7 +1304,7 @@ export function useGmxId<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "id",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1326,7 +1326,7 @@ export function useGmxIsApprovedForAll<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "isApprovedForAll",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1348,7 +1348,7 @@ export function useGmxLiquidationScore<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "liquidationScore",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1370,7 +1370,7 @@ export function useGmxLocked<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "locked",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1392,7 +1392,7 @@ export function useGmxManager<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "manager",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1414,7 +1414,7 @@ export function useGmxMinMargin<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "minMargin",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1436,7 +1436,7 @@ export function useGmxName<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "name",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1458,7 +1458,7 @@ export function useGmxOwner<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "owner",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1480,7 +1480,7 @@ export function useGmxOwnerOf<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "ownerOf",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1502,7 +1502,7 @@ export function useGmxQuote<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "quote",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1524,7 +1524,7 @@ export function useGmxRewardTracker<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "rewardTracker",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1546,7 +1546,7 @@ export function useGmxRiskSpreads<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "riskSpreads",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1568,7 +1568,7 @@ export function useGmxRouter<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "router",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1590,7 +1590,7 @@ export function useGmxRouterV2<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "routerV2",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1612,7 +1612,7 @@ export function useGmxSupportsInterface<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "supportsInterface",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1634,7 +1634,7 @@ export function useGmxSymbol<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "symbol",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1656,7 +1656,7 @@ export function useGmxTokenByIndex<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "tokenByIndex",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1678,7 +1678,7 @@ export function useGmxTokenOfOwnerByIndex<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "tokenOfOwnerByIndex",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1700,7 +1700,7 @@ export function useGmxTokenUri<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "tokenURI",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1722,7 +1722,7 @@ export function useGmxTotalSupply<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "totalSupply",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1744,7 +1744,7 @@ export function useGmxUsdgVault<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "usdgVault",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1766,7 +1766,7 @@ export function useGmxWeth<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "weth",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1788,7 +1788,7 @@ export function useGmxWhitelisted<
 ) {
   return useContractRead({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "whitelisted",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
@@ -1807,7 +1807,7 @@ export function usePrepareGmxWrite<TFunctionName extends string>(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, TFunctionName>);
 }
@@ -1825,7 +1825,7 @@ export function usePrepareGmxAddToWhitelist(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "addToWhitelist",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "addToWhitelist">);
@@ -1844,7 +1844,7 @@ export function usePrepareGmxApprove(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "approve",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "approve">);
@@ -1863,7 +1863,7 @@ export function usePrepareGmxClose(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "close",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "close">);
@@ -1882,7 +1882,7 @@ export function usePrepareGmxEdit(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "edit",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "edit">);
@@ -1901,7 +1901,7 @@ export function usePrepareGmxOpen(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "open",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "open">);
@@ -1920,7 +1920,7 @@ export function usePrepareGmxRemoveFromWhitelist(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "removeFromWhitelist",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "removeFromWhitelist">);
@@ -1939,7 +1939,7 @@ export function usePrepareGmxRenounceOwnership(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "renounceOwnership",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "renounceOwnership">);
@@ -1958,7 +1958,7 @@ export function usePrepareGmxSafeTransferFrom(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "safeTransferFrom",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "safeTransferFrom">);
@@ -1977,7 +1977,7 @@ export function usePrepareGmxSetApprovalForAll(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "setApprovalForAll",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "setApprovalForAll">);
@@ -1996,7 +1996,7 @@ export function usePrepareGmxSetGuardian(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "setGuardian",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "setGuardian">);
@@ -2015,7 +2015,7 @@ export function usePrepareGmxSetMinMargin(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "setMinMargin",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "setMinMargin">);
@@ -2034,7 +2034,7 @@ export function usePrepareGmxSetRiskParams(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "setRiskParams",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "setRiskParams">);
@@ -2053,7 +2053,7 @@ export function usePrepareGmxToggleLock(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "toggleLock",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "toggleLock">);
@@ -2072,7 +2072,7 @@ export function usePrepareGmxToggleWhitelistFlag(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "toggleWhitelistFlag",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "toggleWhitelistFlag">);
@@ -2091,7 +2091,7 @@ export function usePrepareGmxTransferFrom(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "transferFrom",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "transferFrom">);
@@ -2110,7 +2110,7 @@ export function usePrepareGmxTransferOwnership(
 ) {
   return usePrepareContractWrite({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     functionName: "transferOwnership",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "transferOwnership">);
@@ -2129,7 +2129,7 @@ export function useGmxEvent<TEventName extends string>(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     ...config,
   } as UseContractEventConfig<typeof gmxABI, TEventName>);
 }
@@ -2147,7 +2147,7 @@ export function useGmxApprovalEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "Approval",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "Approval">);
@@ -2166,7 +2166,7 @@ export function useGmxApprovalForAllEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "ApprovalForAll",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "ApprovalForAll">);
@@ -2185,7 +2185,7 @@ export function useGmxBaseRiskSpreadWasUpdatedEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "BaseRiskSpreadWasUpdated",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "BaseRiskSpreadWasUpdated">);
@@ -2204,7 +2204,7 @@ export function useGmxGuardianWasUpdatedEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "GuardianWasUpdated",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "GuardianWasUpdated">);
@@ -2223,7 +2223,7 @@ export function useGmxLiquidationTriggeredEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "LiquidationTriggered",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "LiquidationTriggered">);
@@ -2242,7 +2242,7 @@ export function useGmxLockWasToggledEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "LockWasToggled",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "LockWasToggled">);
@@ -2261,7 +2261,7 @@ export function useGmxOwnershipTransferredEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "OwnershipTransferred",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "OwnershipTransferred">);
@@ -2280,7 +2280,7 @@ export function useGmxPositionClosedEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "PositionClosed",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "PositionClosed">);
@@ -2299,7 +2299,7 @@ export function useGmxPositionOpenedEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "PositionOpened",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "PositionOpened">);
@@ -2318,7 +2318,7 @@ export function useGmxTransferEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "Transfer",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "Transfer">);
@@ -2337,7 +2337,7 @@ export function useGmxWhitelistAccessFlagWasToggledEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "WhitelistAccessFlagWasToggled",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "WhitelistAccessFlagWasToggled">);
@@ -2356,7 +2356,7 @@ export function useGmxWhitelistedStatusWasChangedEvent(
 ) {
   return useContractEvent({
     abi: gmxABI,
-    address: gmxAddress[42161],
+    address: gmxAddress[98745],
     eventName: "WhitelistedStatusWasChanged",
     ...config,
   } as UseContractEventConfig<typeof gmxABI, "WhitelistedStatusWasChanged">);

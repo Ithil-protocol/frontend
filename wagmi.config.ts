@@ -19,7 +19,7 @@ export default defineConfig([
         //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
         // },
         address: {
-          42161: contracts.aaveService as Address,
+          98745: contracts.aaveService as Address,
         },
         abi: aaveABI,
       },
@@ -53,7 +53,7 @@ export default defineConfig([
         name: "Gmx",
         abi: gmxABI,
         address: {
-          42161: contracts.gmxService as Address,
+          98745: contracts.gmxService as Address,
         },
       },
     ],

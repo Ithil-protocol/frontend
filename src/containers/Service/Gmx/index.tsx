@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+import aave from "@/data/aave";
 import servicesJson from "@/data/services";
 import { useBaseApy } from "@/hooks/useBaseApy";
 
@@ -41,7 +42,9 @@ const Gmx = () => {
         />
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
-        <Form />
+        {/* CHANGE THE NEXT LINE */}
+        <Form asset={aave.assets[3]} />
+        {/* CHANGE THE PREVIOUS LINE */}
       </Box>
     </Box>
   );
