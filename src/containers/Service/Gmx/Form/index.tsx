@@ -24,7 +24,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-import { aaveABI } from "@/abi";
+import { gmxABI } from "@/abi";
 import { CloseButtonWithCircle } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
@@ -32,6 +32,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
 import { aaveAddress } from "@/hooks/generated/aave";
+import { gmxAddress } from "@/hooks/generated/gmx";
 import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -113,8 +114,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isLoading: isOpenLoading,
     writeAsync: open,
   } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress[42161],
+    abi: gmxABI,
+    address: gmxAddress[42161],
     functionName: "open",
     args: [order],
     account: accountAddress,
