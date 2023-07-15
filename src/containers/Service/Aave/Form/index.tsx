@@ -5,14 +5,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  Box,
-  Button,
-  InputGroup,
-  NumberInput,
-  NumberInputField,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Button, InputGroup, useColorMode } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -25,7 +18,6 @@ import {
 } from "wagmi";
 
 import { aaveABI } from "@/abi";
-import { CloseButtonWithCircle } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
@@ -46,6 +38,7 @@ import {
 } from "@/utils/input.utils";
 import { mode, pickColor } from "@/utils/theme";
 
+import AdvanceSection from "../../../../components/ui/form/AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormDescriptionItem from "../../FormDescriptionItem";
 
@@ -177,10 +170,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";
 
-  const handleAdvancedOptionClick = (condition: boolean) => () => {
-    setIsAdvancedOptionsOpen(condition);
-  };
-
   if (!isMounted) return null;
 
   return (
@@ -307,93 +296,15 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
             />
           </Box>
 
-          <Box gap={5} display="flex" flexDirection="column" marginTop={5}>
-            {isAdvancedOptionsOpen ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <span>Advanced Options</span>
-                <span
-                  onClick={handleAdvancedOptionClick(false)}
-                  style={{ width: "24px", height: "24px", cursor: "pointer" }}
-                >
-                  <CloseButtonWithCircle />
-                </span>
-              </div>
-            ) : (
-              <Button
-                style={{
-                  padding: "10px",
-                }}
-                onClick={handleAdvancedOptionClick(true)}
-                color={mode(colorMode, "primary.100.dark", "primary.100")}
-                bg={mode(colorMode, "primary.400", "primary.500.dark")}
-              >
-                <span
-                  style={{
-                    fontSize: "16px",
-                    padding: "5px",
-                    fontWeight: "700",
-                    lineHeight: "27.63px",
-                  }}
-                >
-                  +
-                </span>
-                <span>Advanced Option</span>
-              </Button>
-            )}
-
-            {isAdvancedOptionsOpen && (
-              <>
-                {/* <AdvancedFormLabel label="Leverage" tooltip="Leverage" /> */}
-                <InputGroup size="md">
-                  <NumberInput
-                    width="100%"
-                    value={leverage}
-                    onChange={(value) => {
-                      if (
-                        getDecimalRegex(asset.decimals).test(value) ||
-                        value === ""
-                      )
-                        setLeverage(value);
-                    }}
-                    step={0.01}
-                    precision={2}
-                    min={1.01}
-                    variant="filled"
-                  >
-                    <NumberInputField />
-                  </NumberInput>
-                </InputGroup>
-
-                {/* <AdvancedFormLabel label="Slippage" tooltip="Not implemented" /> */}
-                <InputGroup size="md">
-                  <NumberInput
-                    width="100%"
-                    step={0.1}
-                    value={slippage}
-                    onChange={(value) => {
-                      if (
-                        getDecimalRegex(asset.decimals).test(value) ||
-                        value === ""
-                      )
-                        setSlippage(value);
-                    }}
-                    precision={1}
-                    min={0.1}
-                    defaultValue={0.1}
-                    variant="filled"
-                  >
-                    <NumberInputField />
-                  </NumberInput>
-                </InputGroup>
-              </>
-            )}
-          </Box>
+          <AdvanceSection
+            isAdvancedOptionsOpen={isAdvancedOptionsOpen}
+            setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
+            leverage={leverage}
+            setLeverage={setLeverage}
+            setSlippage={setSlippage}
+            slippage={slippage}
+            asset={asset}
+          />
         </Box>
       </div>
 
