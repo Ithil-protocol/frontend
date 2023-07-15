@@ -2,7 +2,7 @@ import { useColorMode } from "@chakra-ui/react";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { removeOldestQuery } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
@@ -13,6 +13,7 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageWrapper from "@/components/page-wrapper";
 import { addTestNetworks, firstNetwork, testNetwork } from "@/config/chains";
+import { queryClient } from "@/lib/react-query";
 import NotificationDialogProvider from "@/providers/notificationDialog";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
@@ -34,14 +35,6 @@ const { connectors } = getDefaultWallets({
   appName: "Ithil Core",
   chains,
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-});
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      cacheTime: 0,
-    },
-  },
 });
 
 const wagmiClient = createConfig({
