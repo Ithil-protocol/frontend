@@ -102,3 +102,12 @@ export interface TokenModalOptions {
 }
 
 export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+
+export type Asset = {
+  name: string;
+  coingeckoId: string;
+  iconName: string;
+  decimals: number;
+  tokenAddress: Address;
+  collateralTokenAddress: Address;
+};
