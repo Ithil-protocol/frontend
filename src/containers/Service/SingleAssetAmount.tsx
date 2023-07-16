@@ -41,6 +41,11 @@ const SingleAssetAmount: FC<Props> = ({
     }
   };
 
+  const onSelectToken = () => {
+    onChange("0");
+    onClose();
+  };
+
   return (
     <>
       <div className="flex gap-2">
@@ -96,7 +101,11 @@ const SingleAssetAmount: FC<Props> = ({
           </InputRightElement>
         </InputGroup>
       </div>
-      <TokenModal onSelectToken={onClose} isOpen={isOpen} onClose={onClose} />
+      <TokenModal
+        onSelectToken={onSelectToken}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </>
   );
 };
