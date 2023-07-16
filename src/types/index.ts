@@ -31,7 +31,11 @@ export interface VaultsTypes {
 
 export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
 export type ServiceType = "AAVE" | "GMX";
-
+export interface ChartPoint {
+  timestamp: Date;
+  tvlUsd: number;
+  apyBase: number;
+}
 export interface SafetyScore {
   score: number;
   features: {

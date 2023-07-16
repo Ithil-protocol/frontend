@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 
 import aave from "@/data/aave";
 import servicesJson from "@/data/services";
+import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
 
 import SafetyScore from "../SafetyScore";
@@ -11,13 +11,11 @@ import StrategyDescription from "../StrategyDescription";
 import { Graph } from "../graph";
 import Form from "./Form";
 
-// import Form from "./Form";
-
 const Gmx = () => {
-  const {
-    query: { asset: token },
-  } = useRouter();
-  const { baseApy, isLoading } = useBaseApy(token as string);
+  const { data: chartData } = useChart("GMX");
+  const { baseApy, isLoading } = useBaseApy("GMX");
+
+  console.log("chartData", chartData);
 
   const service = servicesJson.find((item) => item.name === "GMX");
   if (!service) return null;
@@ -27,7 +25,7 @@ const Gmx = () => {
         <ServiceHeading
           data={{ name: service.name, description: service.description }}
         />
-        <Graph />
+        <Graph data={chartData} />
         <StrategyDescription
           description={service.explanation}
           address={"0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba80"}

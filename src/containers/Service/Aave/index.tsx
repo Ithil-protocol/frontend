@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import aave from "@/data/aave";
 import services from "@/data/services";
+import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
 
 import SafetyScore from "../SafetyScore";
@@ -16,6 +17,8 @@ const Aave = () => {
     query: { asset: token },
   } = useRouter();
 
+  const { data: chartData } = useChart(token as string);
+
   const asset = aave.assets.find((asset) => asset.name.toLowerCase() === token);
 
   const { baseApy, isLoading } = useBaseApy(token as string);
@@ -28,7 +31,7 @@ const Aave = () => {
         <ServiceHeading
           data={{ name: service.name, description: service.description }}
         />
-        <Graph />
+        <Graph data={chartData} />
         <StrategyDescription
           description={service.explanation}
           address={"0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba80"}

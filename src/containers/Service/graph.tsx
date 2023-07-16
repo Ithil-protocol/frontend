@@ -1,23 +1,20 @@
 import { Box, Heading } from "@chakra-ui/react";
 import classNames from "classnames";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Chart from "@/components/chart";
-import { useChartAave } from "@/hooks/defillama";
+import { ChartDataPoint } from "@/types";
 import { isWithinIntervalDaysAgo } from "@/utils";
 import { formatDate } from "@/utils/date.utils";
 
 type graphWindows = "All" | "1M" | "1W";
 type graphSections = "TVL" | "APY";
 
-export const Graph = () => {
-  const {
-    query: { asset },
-  } = useRouter();
+interface Props {
+  data?: ChartDataPoint[];
+}
 
-  const { data } = useChartAave(asset as string);
-
+export const Graph = ({ data }: Props) => {
   const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
@@ -33,8 +30,6 @@ export const Graph = () => {
       : graphWindow === "1M"
       ? isWithinIntervalDaysAgo(data, 30)
       : data;
-
-  console.log(filteredData);
 
   return (
     <div className="p-5 rounded-xl bg-primary-100">
