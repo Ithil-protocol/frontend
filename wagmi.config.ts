@@ -1,6 +1,7 @@
 import { defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
 import { Address } from "viem";
+import { erc20ABI } from "wagmi";
 
 import { aaveABI, gmxABI, vaultABI } from "@/abi";
 import contracts from "@/deploy/contracts.json";
@@ -45,6 +46,16 @@ export default defineConfig([
         address: {
           98745: contracts.gmxService as Address,
         },
+      },
+    ],
+    plugins: [react()],
+  },
+  {
+    out: "src/hooks/generated/token.ts",
+    contracts: [
+      {
+        abi: erc20ABI,
+        name: "Token",
       },
     ],
     plugins: [react()],
