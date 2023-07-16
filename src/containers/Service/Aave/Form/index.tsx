@@ -38,8 +38,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     query: { asset: token },
   } = useRouter();
-
-  const { address, isConnected } = useAccount();
+  const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
   const inputBigNumber = asset?.decimals
@@ -53,7 +52,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { trackTransaction } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address,
+    address: accountAddress,
     token: asset?.tokenAddress,
     cacheTime: 5_000,
     watch: true,
@@ -76,7 +75,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     +leverage
   );
 
-  const { address: accountAddress } = useAccount();
   const {
     data: openData,
     isLoading: isOpenLoading,
