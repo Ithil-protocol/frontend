@@ -3,10 +3,13 @@ import { Address, useWaitForTransaction } from "wagmi";
 
 import { useNotificationDialog } from "./useNotificationDialog";
 
-export const useTransaction = (hash: Address, description: string) => {
+export const useTransaction = (
+  hash: Address | undefined,
+  description: string
+) => {
   const notificationDialog = useNotificationDialog();
   const { isError, isLoading, isSuccess, error } = useWaitForTransaction({
-    hash: hash as Address,
+    hash,
   });
 
   useEffect(() => {

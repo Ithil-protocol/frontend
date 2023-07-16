@@ -47,6 +47,7 @@ export const useAllowance = ({
 
   const {
     writeAsync,
+    write,
     data: writeData,
     isLoading: writeLoading,
   } = useTokenApprove({
@@ -68,6 +69,7 @@ export const useAllowance = ({
   }, [needAllowance, isSuccess, refetchAllowance]);
 
   return {
+    write,
     writeAsync,
     isApproved,
     isLoading: writeLoading || waitLoading,
