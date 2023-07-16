@@ -35,6 +35,7 @@
     "description": "Earn a part of the protocol trading fees and get exposure to ETH",
     "apyRange": "5-10",
     "bestApy": 40,
+    "boostApy": 1,
     "tokens": ["WETH"],
     "tvl": 100,
     "url": "/gmx",
