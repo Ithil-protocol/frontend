@@ -226,8 +226,9 @@ const Test = () => {
         "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
         BigInt(3e15),
         BigInt(1e16),
+        BigInt(3 * 86400),
       ],
-      gas: 50_000_000n,
+      gas: 5_000_000n,
     },
   });
 

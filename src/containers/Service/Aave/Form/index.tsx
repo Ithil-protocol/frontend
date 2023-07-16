@@ -22,7 +22,7 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
-import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
+import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { useTransaction } from "@/hooks/useTransaction";
 import { AaveAsset } from "@/types/onchain.types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
@@ -70,7 +70,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
-  } = useAaveRateAndSpread({
+  } = useRateAndSpread({
     token: asset,
     leverage,
     margin: inputAmount,
