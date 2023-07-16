@@ -5,7 +5,6 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  CircularProgress,
   CircularProgressProps,
   Text,
 } from "@chakra-ui/react";
@@ -20,6 +19,8 @@ import {
 } from "@/assets/svgs";
 import { palette } from "@/styles/theme/palette";
 import { CloseDialogFn, DialogStatus } from "@/types";
+
+import NotificationDialogLoading from "./notificationDialogLoading";
 
 interface Props {
   description: string;
@@ -37,7 +38,7 @@ const icons: {
 } = {
   error: ErrorIcon,
   info: InformationIcon,
-  loading: CircularProgress,
+  loading: NotificationDialogLoading,
   success: CheckIcon,
   warning: WarningIcon,
 };
@@ -133,28 +134,33 @@ const NotificationDialog: React.FC<Props> = ({
             </Text>
 
             <Text fontWeight={"light"} textAlign="center" fontSize={17}>
-              Something went wrong
+              {description}
             </Text>
 
-            <div
-              style={{
-                borderBottom: "1px solid gray",
-                width: "100%",
-              }}
-            ></div>
+            {status !== "loading" && (
+              <>
+                <div
+                  style={{
+                    borderBottom: "1px solid gray",
+                    width: "100%",
+                  }}
+                ></div>
 
-            <Button
-              style={{
-                width: "60%",
-                borderRadius: "20px",
-                backgroundColor: bgColors[status],
-              }}
-              _focusVisible={{
-                border: "transparent",
-              }}
-            >
-              OK
-            </Button>
+                <Button
+                  onClick={onClose}
+                  style={{
+                    width: "60%",
+                    borderRadius: "20px",
+                    backgroundColor: bgColors[status],
+                  }}
+                  _focusVisible={{
+                    border: "transparent",
+                  }}
+                >
+                  OK
+                </Button>
+              </>
+            )}
           </AlertDialogBody>
         </AlertDialogContent>
       </AlertDialogOverlay>
