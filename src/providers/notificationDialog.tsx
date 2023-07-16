@@ -30,7 +30,7 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
     setDialogOptions(newOptions);
     onOpen();
 
-    if (newOptions.isClosable)
+    if (newOptions.isClosable && newOptions.duration)
       setTimeout(() => {
         closeDialog();
       }, newOptions.duration);
