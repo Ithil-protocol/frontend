@@ -12,7 +12,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 import { palette } from "@/styles/theme/palette";
-import { ServiceType } from "@/types";
+import { ButtonEvent, ServiceType } from "@/types";
 import { pickColor } from "@/utils/theme";
 
 import ServiceIcon from "../Service/ServiceIcon";
@@ -25,6 +25,7 @@ interface ServiceCardProps {
   name: string;
   apy: string;
   tvl: string;
+  onOpenModal: () => void;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -35,8 +36,16 @@ const ServiceCard: FC<ServiceCardProps> = ({
   name,
   apy,
   tvl,
+  onOpenModal,
 }) => {
   const { colorMode } = useColorMode();
+  const handleEnterClick = (e: ButtonEvent) => {
+    if (to.includes("aave")) {
+      e.preventDefault();
+      onOpenModal();
+    }
+  };
+
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <HStack className="flex justify-between w-full mb-6">
@@ -101,7 +110,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
         </Box>
       </VStack>
       <Link href={`/services/${to}`}>
-        <Button size="lg" className="w-full">
+        <Button onClick={handleEnterClick} size="lg" className="w-full">
           Enter
         </Button>
       </Link>

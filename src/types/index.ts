@@ -94,3 +94,5 @@ export interface OpenDialogFnOptions
 
 export type OpenDialogFn = (o: OpenDialogFnOptions) => void;
 export type CloseDialogFn = VoidNoArgs;
+
+export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
