@@ -87,26 +87,34 @@ export const useAaveRateAndSpread = ({
 };
 
 interface GmxRateAndSpreadProps {
-  tokenAddress: Address;
-  loan: bigint;
-  margin: bigint;
+  token: Token;
+  leverage: string;
+  margin: string;
 }
 
 export const useGmxRateAndSpread = ({
-  tokenAddress,
-  loan,
+  token,
+  leverage,
   margin,
 }: GmxRateAndSpreadProps) => {
+  const loan = parseUnits(
+    `${Number(margin) * Number(leverage)}`,
+    token.decimals
+  );
+  const bigintMargin = parseUnits(margin, token.decimals);
+
   const { data: baseRisk, isLoading: isBaseRateLoading } = useGmxBaseRisks({
-    args: [tokenAddress],
+    args: [token.tokenAddress],
   });
   const { data: riskSpreads, isLoading: isRiskSpreadsLoading } =
     useGmxRiskSpreads({
-      args: [tokenAddress],
+      args: [token.tokenAddress],
     });
 
   const riskSpreadWithLeverage =
-    riskSpreads && margin !== 0n ? (riskSpreads * loan) / margin : 0n;
+    riskSpreads && bigintMargin !== 0n
+      ? (riskSpreads * loan) / bigintMargin
+      : 0n;
 
   const isLoading = isBaseRateLoading || isRiskSpreadsLoading;
 

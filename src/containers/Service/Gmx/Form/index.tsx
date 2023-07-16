@@ -1,7 +1,9 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { Box, Button, useColorMode } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import {
   useAccount,
   useBalance,
@@ -10,23 +12,20 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-import { gmxABI } from "@/abi";
+import { aaveABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { getDecimalRegex } from "@/data/regex";
 import { aaveAddress } from "@/hooks/generated/aave";
-import { gmxAddress } from "@/hooks/generated/gmx";
-import { useToken } from "@/hooks/use-token.hook";
+import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
-import { useGmxPrepareOrder } from "@/hooks/usePrepareOrder";
+import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { useGmxRateAndSpread } from "@/hooks/useRateAndSpread";
 import { useTransaction } from "@/hooks/useTransaction";
 import { AaveAsset } from "@/types/onchain.types";
-import {
-  abbreviateBigNumber,
-  stringInputToBigNumber,
-} from "@/utils/input.utils";
+import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -36,64 +35,71 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 // import DepositForm from "./DepositForm"
 
 const Form = ({ asset }: { asset: AaveAsset }) => {
-  const { address, isConnected } = useAccount();
+  const {
+    query: { asset: token },
+  } = useRouter();
+  const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
-  const inputBigNumber = asset?.decimals
-    ? stringInputToBigNumber(inputAmount, asset?.decimals)
-    : 0n;
   const [leverage, setLeverage] = useState("1.5");
   const [slippage, setSlippage] = useState("0.1");
   const notificationDialog = useNotificationDialog();
 
   // web3 hooks
+  const { trackTransaction } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address,
+    address: accountAddress,
     token: asset?.tokenAddress,
     cacheTime: 5_000,
     watch: true,
   });
-  const { useAllowance, useApprove } = useToken(asset?.tokenAddress);
-  const { data: allowance, refetch: refetchAllowance } = useAllowance(
-    address,
-    aaveAddress[chainId]
-  );
+
   const {
-    data: approveData,
+    isApproved,
     isLoading: isApproveLoading,
     write: approve,
-  } = useApprove(aaveAddress[chainId], inputBigNumber);
-  const { isLoading: isApproveWaiting } = useWaitForTransaction({
-    hash: approveData?.hash,
+  } = useAllowance({
+    amount: inputAmount,
+    spender: aaveAddress[chainId],
+    token: asset,
   });
 
   const {
-    order,
+    interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
-  } = useGmxPrepareOrder(
-    asset?.tokenAddress,
-    asset?.collateralTokenAddress,
-    inputBigNumber,
-    +leverage
-  );
+  } = useGmxRateAndSpread({
+    token: asset,
+    leverage,
+    margin: inputAmount,
+  });
+  const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
-  const { address: accountAddress } = useAccount();
+  const { order } = usePrepareOrder({
+    token: asset,
+    collateralToken: asset?.collateralTokenAddress,
+    leverage,
+    amount: inputAmount,
+    interestAndSpread,
+    extraData,
+  });
+
   const {
     data: openData,
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    abi: gmxABI,
-    address: gmxAddress[98745],
+    abi: aaveABI,
+    address: aaveAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress,
     onSuccess: () => {
       setInputAmount("0");
     },
-    onError(error) {
+    onError: (error) => {
+      console.log("errrrrr33");
       // notificationDialog.openDialog({
       //   title: (error as { shortMessage: string }).shortMessage,
       //   status: "error",
@@ -105,24 +111,15 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     hash: openData?.hash,
   });
 
-  // computed properties
-  const isApproved = allowance ? allowance >= inputBigNumber : false;
-  const isButtonLoading =
-    isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting;
-  const isInconsistent = inputBigNumber > (balance?.value ?? 0);
-  const isButtonDisabled =
-    isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
-  const isMaxDisabled = inputBigNumber === (balance?.value ?? 0);
-
-  const onInputChange = (value: string) => {
-    if (!asset?.decimals) return;
-    if (getDecimalRegex(asset?.decimals).test(value) || value === "")
-      setInputAmount(value);
-  };
   useTransaction(
     openData?.hash,
-    `${!isApproved ? "Deposit" : "Approve"} ${inputAmount} ${asset?.name}`
+    `${!isApproved ? "Approve" : "Deposit"} ${inputAmount} ${asset?.name}`
   );
+
+  // computed properties
+  const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
+  const isButtonDisabled = isButtonLoading || inputAmount === "0";
+  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
@@ -131,10 +128,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { openConnectModal } = useConnectModal();
   const isMounted = useIsMounted();
 
-  const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
+  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
@@ -208,7 +204,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={false}
+          switchableAsset={true}
         />
 
         <Box width="full" gap="30px">

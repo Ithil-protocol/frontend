@@ -1,12 +1,6 @@
-import {
-  encodeAbiParameters,
-  parseAbiParameters,
-  parseUnits,
-  toHex,
-} from "viem";
+import { parseUnits } from "viem";
 import { type Address } from "wagmi";
 
-import { useGmxRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Token } from "@/types/onchain.types";
 
 interface ServiceLoan {
@@ -41,13 +35,23 @@ const leverageConverter = (amount: bigint, leverage: number) => {
   return result / BigInt(100);
 };
 
-export const usePrepareOrder = (
-  token: Token,
-  collateralToken: Address,
-  amount: string,
-  leverage: string,
-  interestAndSpread: bigint
-) => {
+interface PrepareOrderProps {
+  token: Token;
+  collateralToken: Address;
+  amount: string;
+  leverage: string;
+  interestAndSpread: bigint;
+  extraData: Address;
+}
+
+export const usePrepareOrder = ({
+  token,
+  collateralToken,
+  amount,
+  leverage,
+  interestAndSpread,
+  extraData,
+}: PrepareOrderProps) => {
   const amountInLeverage = parseUnits(
     `${Number(amount) * Number(leverage)}`,
     token.decimals
@@ -75,60 +79,12 @@ export const usePrepareOrder = (
 
   const order: IServiceOrder = {
     agreement,
-    data: toHex(""),
+    data: extraData,
   };
 
   console.log("ii", order);
 
   return {
     order,
-  };
-};
-
-export const useGmxPrepareOrder = (
-  token: Address,
-  collateralToken: Address,
-  amount: bigint,
-  leverage: number
-) => {
-  const amountInLeverage = leverageConverter(amount, leverage);
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-  } = useGmxRateAndSpread({
-    tokenAddress: token,
-    loan: amountInLeverage,
-    margin: amount,
-  });
-
-  const collateral: ServiceCollateral = {
-    itemType: 0,
-    token: collateralToken,
-    identifier: BigInt(0),
-    amount: amount + amountInLeverage,
-  };
-  const loan: ServiceLoan = {
-    token,
-    amount: amountInLeverage,
-    margin: amount,
-    interestAndSpread,
-  };
-  const agreement: ServiceAgreement = {
-    loans: [loan],
-    collaterals: [collateral],
-    createdAt: BigInt(0),
-    status: 0,
-  };
-
-  const order: IServiceOrder = {
-    agreement,
-    data: encodeAbiParameters(parseAbiParameters("uint256"), [0n]),
-  };
-
-  return {
-    order,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
   };
 };

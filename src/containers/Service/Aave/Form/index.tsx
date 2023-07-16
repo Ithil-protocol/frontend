@@ -3,6 +3,7 @@ import { Box, Button } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toHex } from "viem";
 import {
   useAccount,
   useBalance,
@@ -74,13 +75,16 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     margin: inputAmount,
   });
 
-  const { order } = usePrepareOrder(
-    asset,
-    asset?.collateralTokenAddress,
-    inputAmount,
+  const extraData = toHex("");
+
+  const { order } = usePrepareOrder({
+    token: asset,
+    collateralToken: asset?.collateralTokenAddress,
     leverage,
-    interestAndSpread
-  );
+    amount: inputAmount,
+    interestAndSpread,
+    extraData,
+  });
 
   const {
     data: openData,
