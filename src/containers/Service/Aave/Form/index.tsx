@@ -22,6 +22,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
+import { useTransaction } from "@/hooks/useTransaction";
 import { AaveAsset } from "@/types/onchain.types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
@@ -56,7 +57,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     isApproved,
     isLoading: isApproveLoading,
-    writeAsync: approve,
+    write: approve,
   } = useAllowance({
     amount: inputAmount,
     spender: aaveAddress[chainId],
@@ -84,42 +85,36 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     data: openData,
     isLoading: isOpenLoading,
-    writeAsync: open,
+    write: openPosition,
   } = useContractWrite({
     abi: aaveABI,
     address: aaveAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress,
+    onSuccess: () => {
+      setInputAmount("0");
+    },
+    onError: (error) => {
+      console.log("errrrrr33");
+      // notificationDialog.openDialog({
+      //   title: (error as { shortMessage: string }).shortMessage,
+      //   status: "error",
+      // });
+    },
   });
 
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
   });
 
+  useTransaction(openData?.hash, "salam");
+
   // computed properties
   const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
   const isButtonDisabled = isButtonLoading || inputAmount === "0";
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
-  const onActionClick = async () => {
-    try {
-      if (!isApproved) {
-        const result = await approve?.();
-        await trackTransaction(result, `Approve ${inputAmount} ${asset?.name}`);
-        return;
-      }
-
-      const result = await open?.();
-      await trackTransaction(result, `Deposit ${inputAmount} ${asset?.name}`);
-      setInputAmount("0");
-    } catch (error) {
-      notificationDialog.openDialog({
-        title: (error as { shortMessage: string }).shortMessage,
-        status: "error",
-      });
-    }
-  };
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
@@ -224,9 +219,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         {isConnected ? (
           <Button
             mt="20px"
-            onClick={() => {
-              void onActionClick();
-            }}
+            onClick={isApproved ? () => openPosition() : approve}
             isDisabled={isButtonDisabled}
             isLoading={isButtonLoading}
             loadingText={isButtonLoading ? "Waiting" : undefined}
