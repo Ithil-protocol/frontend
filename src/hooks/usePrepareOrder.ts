@@ -6,10 +6,7 @@ import {
 } from "viem";
 import { type Address } from "wagmi";
 
-import {
-  useAaveRateAndSpread,
-  useGmxRateAndSpread,
-} from "@/hooks/useRateAndSpread";
+import { useGmxRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Token } from "@/types/onchain.types";
 
 interface ServiceLoan {
@@ -48,22 +45,14 @@ export const usePrepareOrder = (
   token: Token,
   collateralToken: Address,
   amount: string,
-  leverage: number
+  leverage: string,
+  interestAndSpread: bigint
 ) => {
   const amountInLeverage = parseUnits(
-    `${Number(amount) * leverage}`,
+    `${Number(amount) * Number(leverage)}`,
     token.decimals
   );
   const bigintAmount = parseUnits(amount, token.decimals);
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-  } = useAaveRateAndSpread({
-    tokenAddress: token.tokenAddress,
-    loan: amountInLeverage,
-    margin: bigintAmount,
-  });
 
   const collateral: ServiceCollateral = {
     itemType: 0,
@@ -93,8 +82,6 @@ export const usePrepareOrder = (
 
   return {
     order,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
   };
 };
 
