@@ -1,13 +1,6 @@
-import {
-  HStack,
-  Input,
-  InputRightElement,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { Box, Button, InputGroup, useColorMode } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
+import { Box, Button, useColorMode } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
   useAccount,
@@ -18,8 +11,6 @@ import {
 } from "wagmi";
 
 import { gmxABI } from "@/abi";
-import TokenIcon from "@/components/TokenIcon";
-import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
@@ -31,25 +22,20 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { useGmxPrepareOrder } from "@/hooks/usePrepareOrder";
-import { palette } from "@/styles/theme/palette";
 import { AaveAsset } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
   stringInputToBigNumber,
 } from "@/utils/input.utils";
-import { mode, pickColor } from "@/utils/theme";
 
 import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
-import FormDescriptionItem from "../../FormDescriptionItem";
+import FormInfo from "../../FormInfo";
+import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
 const Form = ({ asset }: { asset: AaveAsset }) => {
-  const {
-    query: { asset: token },
-  } = useRouter();
-
   const { address, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
@@ -94,13 +80,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     +leverage
   );
 
-  const isOpenPrepareLoading = false;
-  const isOpenPrepareError = false;
-  const openPrepareError: Error = {
-    name: "a",
-    message: "openPrepareError message",
-  };
-
   const { address: accountAddress } = useAccount();
   const {
     data: openData,
@@ -121,11 +100,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   // computed properties
   const isApproved = allowance ? allowance >= inputBigNumber : false;
   const isButtonLoading =
-    isApproveLoading ||
-    isApproveWaiting ||
-    isOpenLoading ||
-    isOpenWaiting ||
-    isOpenPrepareLoading;
+    isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting;
   const isInconsistent = inputBigNumber > (balance?.value ?? 0);
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
@@ -145,8 +120,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         return;
       }
 
-      if (isOpenPrepareError) return reportException(openPrepareError);
-
       const result = await open?.();
       await trackTransaction(result, `Deposit ${inputAmount} ${asset?.name}`);
       await refetchAllowance();
@@ -163,17 +136,41 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   };
 
   const { openConnectModal } = useConnectModal();
-  const { isOpen, onOpen, onClose } = useDisclosure({});
   const isMounted = useIsMounted();
 
   const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";
+
+  const formInfoItems = [
+    {
+      label: "Base APY:",
+      value: baseApy?.toFixed(2),
+      extension: "%",
+      isLoading: apyLoading,
+    },
+    {
+      label: "Best Leverage:",
+      value: finalLeverage,
+      extension: "x",
+    },
+    {
+      label: "Borrow Interest:",
+      value: displayInterestAndSpreadInPercent,
+      extension: "%",
+      // isLoading={isLoading}
+    },
+    {
+      label: "Final APY:",
+      value: finalApy,
+      extension: "%",
+    },
+  ];
 
   if (!isMounted) return null;
 
@@ -212,94 +209,17 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           gap: "5px",
         }}
       >
-        <div className="flex gap-2">
-          <div
-            style={{
-              cursor: "pointer",
-            }}
-            onClick={onOpen}
-            className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
-          >
-            {asset == null ? (
-              <Loading />
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  gap: 5,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <span>
-                  <TokenIcon
-                    className="w-6 h-6"
-                    name={asset?.name}
-                    height={24}
-                    width={24}
-                  />
-                </span>
-                <Text textStyle="sm">{asset?.name}</Text>
-              </div>
-            )}
-          </div>
-
-          <InputGroup size="md">
-            <Input
-              type="number"
-              step="0.1"
-              variant="filled"
-              value={inputAmount}
-              onChange={(event) => onInputChange(event.target.value)}
-            />
-            <InputRightElement width="4.5rem">
-              <Button
-                h="1.75rem"
-                size="sm"
-                onClick={onMaxClick}
-                isDisabled={isMaxDisabled}
-                variant="insideInput"
-              >
-                Max
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </div>
+        <SingleAssetAmount
+          asset={asset}
+          onMaxClick={onMaxClick}
+          isMaxDisabled={isMaxDisabled}
+          value={inputAmount}
+          onChange={setInputAmount}
+          switchableAsset={false}
+        />
 
         <Box width="full" gap="30px">
-          <Box
-            marginTop={5}
-            bg={mode(colorMode, "primary.100", "primary.100.dark")}
-            borderRadius="5px"
-            border={`2px dashed ${pickColor(
-              colorMode,
-              palette.colors.primary,
-              "400"
-            )}`}
-          >
-            <FormDescriptionItem
-              extension="%"
-              leftPart="Base APY:"
-              rightPart={baseApy?.toFixed(2)}
-              isLoading={apyLoading}
-            />
-            <FormDescriptionItem
-              extension="x"
-              leftPart="Best Leverage:"
-              rightPart={finalLeverage}
-            />
-            <FormDescriptionItem
-              extension="%"
-              leftPart="Borrow Interest:"
-              rightPart={displayInterestAndSpreadInPercent}
-              // isLoading={isLoading}
-            />
-            <FormDescriptionItem
-              extension="%"
-              leftPart="Final APY:"
-              rightPart={finalApy}
-            />
-          </Box>
+          <FormInfo items={formInfoItems} />
 
           <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
@@ -335,7 +255,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           </Button>
         )}
       </>
-      <TokenModal onSelectToken={onClose} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
