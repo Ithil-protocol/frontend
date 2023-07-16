@@ -1,18 +1,11 @@
-import { Address } from "viem";
+import { Asset } from "@/types";
 
 import aave from "./aave.json";
 
 type AaveAssets = typeof aave;
 
 interface Aave extends Omit<AaveAssets, "assets"> {
-  assets: {
-    name: string;
-    coingeckoId: string;
-    iconName: string;
-    decimals: number;
-    tokenAddress: Address;
-    collateralTokenAddress: Address;
-  }[];
+  assets: Asset[];
 }
 
 export const aaveData = aave as Aave;
