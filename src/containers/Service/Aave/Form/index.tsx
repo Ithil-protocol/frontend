@@ -15,8 +15,8 @@ import { aaveABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { aaveAddress } from "@/hooks/generated/aave";
-import { useToken } from "@/hooks/use-token.hook";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
@@ -58,18 +58,15 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const { useAllowance, useApprove } = useToken(asset?.tokenAddress);
-  const { data: allowance, refetch: refetchAllowance } = useAllowance(
-    address,
-    aaveAddress[chainId]
-  );
+
   const {
-    data: approveData,
+    isApproved,
     isLoading: isApproveLoading,
     writeAsync: approve,
-  } = useApprove(aaveAddress[chainId], inputBigNumber);
-  const { isLoading: isApproveWaiting } = useWaitForTransaction({
-    hash: approveData?.hash,
+  } = useAllowance({
+    amount: inputAmount,
+    spender: aaveAddress[chainId],
+    token: asset,
   });
 
   const { order, displayInterestAndSpreadInPercent } = usePrepareOrder(
@@ -97,9 +94,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   });
 
   // computed properties
-  const isApproved = allowance ? allowance >= inputBigNumber : false;
-  const isButtonLoading =
-    isApproveLoading || isApproveWaiting || isOpenLoading || isOpenWaiting;
+  const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
   const isInconsistent = inputBigNumber > (balance?.value ?? 0);
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
@@ -110,13 +105,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
       if (!isApproved) {
         const result = await approve?.();
         await trackTransaction(result, `Approve ${inputAmount} ${asset?.name}`);
-        await refetchAllowance();
         return;
       }
 
       const result = await open?.();
       await trackTransaction(result, `Deposit ${inputAmount} ${asset?.name}`);
-      await refetchAllowance();
       setInputAmount("0");
     } catch (error) {
       notificationDialog.openDialog({
