@@ -1,5 +1,6 @@
-import { Address, formatEther } from "viem";
+import { Address, formatEther, parseUnits } from "viem";
 
+import { Token } from "@/types/onchain.types";
 import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 
 import { useAaveComputeBaseRateAndSpread } from "./generated/aave";
@@ -25,17 +26,22 @@ export const reverseDisplayInterestSpreadInPercent = (
 };
 
 interface AaveRateAndSpreadProps {
-  tokenAddress: Address;
-  loan: bigint;
-  margin: bigint;
+  token: Token;
+  leverage: string;
+  margin: string;
 }
 
 export const useAaveRateAndSpread = ({
-  tokenAddress,
-  loan,
+  token,
+  leverage,
   margin,
 }: AaveRateAndSpreadProps) => {
-  const vault = getVaultByTokenAddress(tokenAddress);
+  const loan = parseUnits(
+    `${Number(margin) * Number(leverage)}`,
+    token.decimals
+  );
+  const bigintMargin = parseUnits(margin, token.decimals);
+  const vault = getVaultByTokenAddress(token.tokenAddress);
   // console.log("ii", vault);
   const { data: vaultFreeLiquidity, isLoading: isFreeLiquidityLoading } =
     useVaultFreeLiquidity({
@@ -45,7 +51,12 @@ export const useAaveRateAndSpread = ({
 
   const { data, isLoading: isBaseRateLoading } =
     useAaveComputeBaseRateAndSpread({
-      args: [tokenAddress, loan, margin, vaultFreeLiquidity as bigint],
+      args: [
+        token.tokenAddress,
+        loan,
+        bigintMargin,
+        vaultFreeLiquidity as bigint,
+      ],
       enabled: !!vaultFreeLiquidity,
     });
 

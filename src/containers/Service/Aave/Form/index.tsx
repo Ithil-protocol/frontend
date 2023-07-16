@@ -21,11 +21,9 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { useAaveRateAndSpread } from "@/hooks/useRateAndSpread";
 import { AaveAsset } from "@/types/onchain.types";
-import {
-  abbreviateBigNumber,
-  stringInputToBigNumber,
-} from "@/utils/input.utils";
+import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -41,9 +39,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
-  const inputBigNumber = asset?.decimals
-    ? stringInputToBigNumber(inputAmount, asset?.decimals)
-    : 0n;
   const [leverage, setLeverage] = useState("1.5");
   const [slippage, setSlippage] = useState("0.1");
   const notificationDialog = useNotificationDialog();
@@ -68,11 +63,22 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     token: asset,
   });
 
-  const { order, displayInterestAndSpreadInPercent } = usePrepareOrder(
-    asset?.tokenAddress,
+  const {
+    interestAndSpread,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+  } = useAaveRateAndSpread({
+    token: asset,
+    leverage,
+    margin: inputAmount,
+  });
+
+  const { order } = usePrepareOrder(
+    asset,
     asset?.collateralTokenAddress,
-    inputBigNumber,
-    +leverage
+    inputAmount,
+    leverage,
+    interestAndSpread
   );
 
   const {
@@ -93,10 +99,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   // computed properties
   const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
-  const isInconsistent = inputBigNumber > (balance?.value ?? 0);
-  const isButtonDisabled =
-    isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
-  const isMaxDisabled = inputBigNumber === (balance?.value ?? 0);
+  const isButtonDisabled = isButtonLoading || inputAmount === "0";
+  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
   const onActionClick = async () => {
     try {
