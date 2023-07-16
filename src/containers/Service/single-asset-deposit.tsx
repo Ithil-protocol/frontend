@@ -5,7 +5,6 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import React, { Dispatch, type FC, SetStateAction, useState } from "react";
@@ -19,7 +18,6 @@ import {
 
 import { aaveABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
-import TokenModal from "@/components/TokenModal";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
@@ -29,6 +27,7 @@ import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { useTokenModal } from "@/hooks/useTokenModal";
 import { type AaveAsset } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
@@ -84,7 +83,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
   slippage,
 }) => {
   const { openConnectModal } = useConnectModal();
-  const { isOpen, onOpen, onClose } = useDisclosure({});
+  const tokenModal = useTokenModal();
   const isMounted = useIsMounted();
 
   if (!isMounted) return null;
@@ -123,7 +122,7 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
             style={{
               cursor: "pointer",
             }}
-            onClick={onOpen}
+            onClick={tokenModal.openDialog}
             className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
           >
             {asset == null ? (
@@ -206,7 +205,6 @@ export const WidgetSingleAssetDeposit: FC<WidgetSingleAssetDepositProps> = ({
           </Button>
         )}
       </>
-      <TokenModal onSelectToken={onClose} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };

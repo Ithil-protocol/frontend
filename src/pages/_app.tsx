@@ -13,6 +13,7 @@ import { testNetwork } from "@/config/chains";
 import { queryClient } from "@/lib/react-query";
 import { chains, wagmiClient } from "@/lib/wagmi";
 import NotificationDialogProvider from "@/providers/notificationDialog";
+import TokenModalProvider from "@/providers/tokenModal";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import {
@@ -47,7 +48,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <RainbowWrapper>
               <PageWrapper>
                 <NotificationDialogProvider>
-                  <Component {...pageProps} />
+                  <TokenModalProvider>
+                    <Component {...pageProps} />
+                  </TokenModalProvider>
                 </NotificationDialogProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
               </PageWrapper>

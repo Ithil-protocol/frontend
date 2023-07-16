@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext } from "react";
 
-import { CloseDialogFn, OpenDialogFn, OpenDialogFnOptions } from "@/types";
+import {
+  CloseDialogFn,
+  OpenDialogFnOptions,
+  OpenNotificationDialogFn,
+} from "@/types";
 
 const NotificationDialog = createContext<{
-  openDialog: OpenDialogFn;
+  openDialog: OpenNotificationDialogFn;
   closeDialog: CloseDialogFn;
 }>({
   closeDialog: () => {},

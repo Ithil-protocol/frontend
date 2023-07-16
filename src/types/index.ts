@@ -92,7 +92,13 @@ export interface OpenDialogFnOptions
   description?: string;
 }
 
-export type OpenDialogFn = (o: OpenDialogFnOptions) => void;
+export type OpenNotificationDialogFn = (o: OpenDialogFnOptions) => void;
 export type CloseDialogFn = VoidNoArgs;
+
+export type OpenTokenDialogFn = () => void;
+export interface TokenModalOptions {
+  isClosable: boolean;
+  onSelectTokenCallback: () => void;
+}
 
 export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;

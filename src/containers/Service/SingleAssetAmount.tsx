@@ -4,14 +4,13 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
-import TokenModal from "@/components/TokenModal";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
+import { useTokenModal } from "@/hooks/useTokenModal";
 import { AaveAsset } from "@/types/onchain.types";
 
 interface Props {
@@ -31,7 +30,11 @@ const SingleAssetAmount: FC<Props> = ({
   isMaxDisabled,
   switchableAsset = true,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const tokenModal = useTokenModal({
+    onSelectTokenCallback: () => {
+      onChange("0");
+    },
+  });
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -41,11 +44,6 @@ const SingleAssetAmount: FC<Props> = ({
     }
   };
 
-  const onSelectToken = () => {
-    onChange("0");
-    onClose();
-  };
-
   return (
     <>
       <div className="flex gap-2">
@@ -53,7 +51,7 @@ const SingleAssetAmount: FC<Props> = ({
           style={{
             cursor: "pointer",
           }}
-          onClick={switchableAsset ? onOpen : undefined}
+          onClick={switchableAsset ? tokenModal.openDialog : undefined}
           className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
         >
           {asset === null ? (
@@ -101,11 +99,6 @@ const SingleAssetAmount: FC<Props> = ({
           </InputRightElement>
         </InputGroup>
       </div>
-      <TokenModal
-        onSelectToken={onSelectToken}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
     </>
   );
 };

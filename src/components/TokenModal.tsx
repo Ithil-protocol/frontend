@@ -12,7 +12,6 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 
 import { CloseButton } from "@/assets/svgs";
@@ -25,18 +24,11 @@ import TokenIcon from "./TokenIcon";
 interface Props {
   isOpen: boolean;
   onClose?: VoidNoArgs;
-  modalFooter?: JSX.Element;
   onSelectToken?: () => void;
 }
 
-const TokenModal: React.FC<Props> = ({
-  isOpen,
-  modalFooter,
-  onClose,
-  onSelectToken,
-}) => {
+const TokenModal: React.FC<Props> = ({ isOpen, onClose, onSelectToken }) => {
   const { colorMode } = useColorMode();
-  const router = useRouter();
 
   const handleClose = () => {
     if (onClose) onClose();

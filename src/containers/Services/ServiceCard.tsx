@@ -11,6 +11,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { FC } from "react";
 
+import { useTokenModal } from "@/hooks/useTokenModal";
 import { palette } from "@/styles/theme/palette";
 import { ButtonEvent, ServiceType } from "@/types";
 import { pickColor } from "@/utils/theme";
@@ -25,7 +26,6 @@ interface ServiceCardProps {
   name: string;
   apy: string;
   tvl: string;
-  onOpenModal: () => void;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -36,13 +36,14 @@ const ServiceCard: FC<ServiceCardProps> = ({
   name,
   apy,
   tvl,
-  onOpenModal,
 }) => {
+  const tokenModal = useTokenModal();
   const { colorMode } = useColorMode();
+
   const handleEnterClick = (e: ButtonEvent) => {
     if (to.includes("aave")) {
       e.preventDefault();
-      onOpenModal();
+      tokenModal.openDialog();
     }
   };
 

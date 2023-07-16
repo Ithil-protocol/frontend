@@ -1,9 +1,13 @@
 import { useDisclosure } from "@chakra-ui/react";
 import React, { PropsWithChildren, useState } from "react";
 
-import NotificationDialog from "@/components/notificationDialog";
+import NotificationDialogModal from "@/components/notificationDialog";
 import NotificationDialogContext from "@/contexts/notificationDialog";
-import { CloseDialogFn, DialogOptions, OpenDialogFn } from "@/types";
+import {
+  CloseDialogFn,
+  DialogOptions,
+  OpenNotificationDialogFn,
+} from "@/types";
 
 const getDialogDefaultOptions = (): DialogOptions => ({
   description: "",
@@ -13,15 +17,13 @@ const getDialogDefaultOptions = (): DialogOptions => ({
   title: "",
 });
 
-const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
-  children,
-}) => {
+const NotificationDialog: React.FC<PropsWithChildren> = ({ children }) => {
   const [dialogOptions, setDialogOptions] = useState<DialogOptions>(
     getDialogDefaultOptions
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const openDialog: OpenDialogFn = (options) => {
+  const openDialog: OpenNotificationDialogFn = (options) => {
     const newOptions = {
       ...getDialogDefaultOptions(),
       ...options,
@@ -48,7 +50,7 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
         closeDialog,
       }}
     >
-      <NotificationDialog
+      <NotificationDialogModal
         isOpen={isOpen}
         {...dialogOptions}
         onClose={closeDialog}
@@ -58,4 +60,4 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
   );
 };
 
-export default NotificationDialogProvider;
+export default NotificationDialog;
