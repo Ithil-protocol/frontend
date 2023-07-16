@@ -1,7 +1,7 @@
 import { type Address } from "wagmi";
 
 // the minimal intersection of LendingToken and ServiceAsset
-export interface MinimalToken {
+export interface Token {
   name: string;
   coingeckoId: string;
   iconName: string;
@@ -10,7 +10,7 @@ export interface MinimalToken {
 }
 
 // used in Lend page
-export interface LendingToken extends MinimalToken {
+export interface LendingToken extends Token {
   vaultAddress: Address;
 }
 export type LendingTokenList = LendingToken[];
