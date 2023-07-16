@@ -1,10 +1,16 @@
-import { encodeAbiParameters, parseAbiParameters, toHex } from "viem";
+import {
+  encodeAbiParameters,
+  parseAbiParameters,
+  parseUnits,
+  toHex,
+} from "viem";
 import { type Address } from "wagmi";
 
 import {
   useAaveRateAndSpread,
   useGmxRateAndSpread,
 } from "@/hooks/useRateAndSpread";
+import { Token } from "@/types/onchain.types";
 
 interface ServiceLoan {
   token: Address;
@@ -39,32 +45,36 @@ const leverageConverter = (amount: bigint, leverage: number) => {
 };
 
 export const usePrepareOrder = (
-  token: Address,
+  token: Token,
   collateralToken: Address,
-  amount: bigint,
+  amount: string,
   leverage: number
 ) => {
-  const amountInLeverage = leverageConverter(amount, leverage);
+  const amountInLeverage = parseUnits(
+    `${Number(amount) * leverage}`,
+    token.decimals
+  );
+  const bigintAmount = parseUnits(amount, token.decimals);
   const {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
   } = useAaveRateAndSpread({
-    tokenAddress: token,
+    tokenAddress: token.tokenAddress,
     loan: amountInLeverage,
-    margin: amount,
+    margin: bigintAmount,
   });
 
   const collateral: ServiceCollateral = {
     itemType: 0,
     token: collateralToken,
     identifier: BigInt(0),
-    amount: amount + amountInLeverage,
+    amount: bigintAmount + amountInLeverage,
   };
   const loan: ServiceLoan = {
-    token,
+    token: token.tokenAddress,
     amount: amountInLeverage,
-    margin: amount,
+    margin: bigintAmount,
     interestAndSpread,
   };
   const agreement: ServiceAgreement = {
