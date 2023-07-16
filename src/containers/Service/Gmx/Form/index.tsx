@@ -17,11 +17,11 @@ import { getDecimalRegex } from "@/data/regex";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useToken } from "@/hooks/use-token.hook";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { useGmxPrepareOrder } from "@/hooks/usePrepareOrder";
+import { useTransaction } from "@/hooks/useTransaction";
 import { AaveAsset } from "@/types/onchain.types";
 import {
   abbreviateBigNumber,
@@ -47,7 +47,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const notificationDialog = useNotificationDialog();
 
   // web3 hooks
-  const { trackTransaction, reportException } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address,
@@ -63,7 +62,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     data: approveData,
     isLoading: isApproveLoading,
-    writeAsync: approve,
+    write: approve,
   } = useApprove(aaveAddress[chainId], inputBigNumber);
   const { isLoading: isApproveWaiting } = useWaitForTransaction({
     hash: approveData?.hash,
@@ -84,13 +83,22 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     data: openData,
     isLoading: isOpenLoading,
-    writeAsync: open,
+    write: openPosition,
   } = useContractWrite({
     abi: gmxABI,
     address: gmxAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress,
+    onSuccess: () => {
+      setInputAmount("0");
+    },
+    onError(error) {
+      // notificationDialog.openDialog({
+      //   title: (error as { shortMessage: string }).shortMessage,
+      //   status: "error",
+      // });
+    },
   });
 
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
@@ -111,26 +119,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     if (getDecimalRegex(asset?.decimals).test(value) || value === "")
       setInputAmount(value);
   };
-  const onActionClick = async () => {
-    try {
-      if (!isApproved) {
-        const result = await approve?.();
-        await trackTransaction(result, `Approve ${inputAmount} ${asset?.name}`);
-        await refetchAllowance();
-        return;
-      }
+  useTransaction(
+    openData?.hash,
+    `${!isApproved ? "Deposit" : "Approve"} ${inputAmount} ${asset?.name}`
+  );
 
-      const result = await open?.();
-      await trackTransaction(result, `Deposit ${inputAmount} ${asset?.name}`);
-      await refetchAllowance();
-      setInputAmount("0");
-    } catch (error) {
-      notificationDialog.openDialog({
-        title: (error as { shortMessage: string }).shortMessage,
-        status: "error",
-      });
-    }
-  };
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
@@ -236,9 +229,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         {isConnected ? (
           <Button
             mt="20px"
-            onClick={() => {
-              void onActionClick();
-            }}
+            onClick={isApproved ? () => openPosition() : approve}
             isDisabled={isButtonDisabled}
             isLoading={isButtonLoading}
             loadingText={isButtonLoading ? "Waiting" : undefined}
