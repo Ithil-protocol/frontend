@@ -108,7 +108,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     hash: openData?.hash,
   });
 
-  useTransaction(openData?.hash, "salam");
+  useTransaction(
+    openData?.hash,
+    `${!isApproved ? "Approve" : "Deposit"} ${inputAmount} ${asset?.name}`
+  );
 
   // computed properties
   const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
