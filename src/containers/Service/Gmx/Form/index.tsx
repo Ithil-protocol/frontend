@@ -12,10 +12,10 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-import { aaveABI } from "@/abi";
+import { gmxABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { aaveAddress } from "@/hooks/generated/aave";
+import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -24,7 +24,7 @@ import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { useGmxRateAndSpread } from "@/hooks/useRateAndSpread";
 import { useTransaction } from "@/hooks/useTransaction";
-import { AaveAsset } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -34,7 +34,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: AaveAsset }) => {
+const Form = ({ asset }: { asset: Asset }) => {
   const {
     query: { asset: token },
   } = useRouter();
@@ -61,7 +61,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     write: approve,
   } = useAllowance({
     amount: inputAmount,
-    spender: aaveAddress[chainId],
+    spender: gmxAddress[chainId],
     token: asset,
   });
 
@@ -90,8 +90,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress[98745],
+    abi: gmxABI,
+    address: gmxAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress,
