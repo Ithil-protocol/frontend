@@ -223,11 +223,11 @@ const Test = () => {
       address: gmxAddress[98745],
       functionName: "setRiskParams",
       args: [
-        "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+        "0xF23A2b59cF9faD118D37018dDdB1b319590f9C2b",
         BigInt(3e15),
         BigInt(1e16),
       ],
-      gas: 20000000n,
+      gas: 50_000_000n,
     },
   });
 

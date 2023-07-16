@@ -118,6 +118,7 @@ export const useGmxRateAndSpread = ({
 
   const isLoading = isBaseRateLoading || isRiskSpreadsLoading;
 
+  console.log("ii3", baseRisk, riskSpreadWithLeverage);
   const result = {
     interestAndSpread: 0n,
     displayInterestAndSpreadInPercent: 0,
