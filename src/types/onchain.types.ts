@@ -29,7 +29,7 @@ export interface AaveAsset {
   iconName: string;
   decimals: number;
   tokenAddress: Address;
-  aTokenAddress: Address;
+  collateralTokenAddress: Address;
 }
 export type AaveAssetHash = Record<Lowercase<string>, AaveAsset>;
 

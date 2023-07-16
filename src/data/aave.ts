@@ -11,7 +11,7 @@ interface Aave extends Omit<AaveAssets, "assets"> {
     iconName: string;
     decimals: number;
     tokenAddress: Address;
-    aTokenAddress: Address;
+    collateralTokenAddress: Address;
   }[];
 }
 

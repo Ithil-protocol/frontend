@@ -253,7 +253,7 @@ export const ServiceDeposit: FC<ServiceDepositProps> = ({ asset }) => {
     isInterestAndSpreadLoading,
   } = usePrepareOrder(
     asset.tokenAddress,
-    asset.aTokenAddress,
+    asset.collateralTokenAddress,
     inputBigNumber,
     +leverage
   );

@@ -75,7 +75,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isInterestAndSpreadLoading,
   } = useGmxPrepareOrder(
     asset?.tokenAddress,
-    asset?.aTokenAddress,
+    asset?.collateralTokenAddress,
     inputBigNumber,
     +leverage
   );

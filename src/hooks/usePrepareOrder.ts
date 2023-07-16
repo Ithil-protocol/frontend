@@ -40,7 +40,7 @@ const leverageConverter = (amount: bigint, leverage: number) => {
 
 export const usePrepareOrder = (
   token: Address,
-  aToken: Address,
+  collateralToken: Address,
   amount: bigint,
   leverage: number
 ) => {
@@ -57,7 +57,7 @@ export const usePrepareOrder = (
 
   const collateral: ServiceCollateral = {
     itemType: 0,
-    token: aToken,
+    token: collateralToken,
     identifier: BigInt(0),
     amount: amount + amountInLeverage,
   };
@@ -90,7 +90,7 @@ export const usePrepareOrder = (
 
 export const useGmxPrepareOrder = (
   token: Address,
-  aToken: Address,
+  collateralToken: Address,
   amount: bigint,
   leverage: number
 ) => {
@@ -107,7 +107,7 @@ export const useGmxPrepareOrder = (
 
   const collateral: ServiceCollateral = {
     itemType: 0,
-    token: aToken,
+    token: collateralToken,
     identifier: BigInt(0),
     amount: amount + amountInLeverage,
   };

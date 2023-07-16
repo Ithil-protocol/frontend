@@ -74,7 +74,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const { order, displayInterestAndSpreadInPercent } = usePrepareOrder(
     asset?.tokenAddress,
-    asset?.aTokenAddress,
+    asset?.collateralTokenAddress,
     inputBigNumber,
     +leverage
   );

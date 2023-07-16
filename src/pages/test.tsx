@@ -42,7 +42,7 @@ const Test = () => {
   // this function simulate a contract write without calling it and return the output. (as the output of "open" is undefined it will return undefined)
   // serviceTest(order);
 
-  // this order works fine. if you want to test "open" function. (token, aToken, amount, _leverage)
+  // this order works fine. if you want to test "open" function. (token, collateralToken, amount, _leverage)
   // const { order: workedOrder } = usePrepareOrder(
   //   "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
   //   "0x078f358208685046a11C85e8ad32895DED33A249",
@@ -244,14 +244,14 @@ const Test = () => {
 
   // return <p>{formatUnits(undefined,4)}</p>
 
-  const aToken = getContract({
+  const collateralToken = getContract({
     address: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
     abi: erc4626ABI,
   });
-  const d = aToken.read.balanceOf([
+  const d = collateralToken.read.balanceOf([
     "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
   ]);
-  d.then((e) => console.log("aToken33", e));
+  d.then((e) => console.log("collateralToken33", e));
 
   return <Button onClick={() => setRiskParam?.()}>write</Button>;
 };
