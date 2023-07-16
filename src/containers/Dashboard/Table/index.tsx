@@ -2,6 +2,7 @@ import {
   Table as DefaultTable,
   TableContainer,
   Tbody,
+  Td,
   Th,
   Thead,
   Tr,
@@ -27,6 +28,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
   const { positions } = useOpenPositions();
   const { data: closed } = useClosePositions();
+  const hasItems =
+    activeView === "Active"
+      ? positions && positions.length > 0
+      : closed && closed.length > 0;
 
   return (
     <TableContainer width="full">
@@ -37,23 +42,23 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       >
         <Thead>
           <Tr width="48">
-            {columns.map((col, index) => (
-              <Th
-                width="48"
-                color={mode(colorMode, "primary.700", "primary.700.dark")}
-                className="font-sans"
-                fontSize="18px"
-                fontWeight="medium"
-                key={col + index}
-              >
-                {col}
-              </Th>
-            ))}
+            {hasItems &&
+              columns.map((col, index) => (
+                <Th
+                  width="48"
+                  color={mode(colorMode, "primary.700", "primary.700.dark")}
+                  className="font-sans"
+                  fontSize="18px"
+                  fontWeight="medium"
+                  key={col + index}
+                >
+                  {col}
+                </Th>
+              ))}
           </Tr>
         </Thead>
         <Tbody>
-          {activeView === "Active" &&
-            positions &&
+          {activeView === "Active" && positions && positions.length > 0 ? (
             positions.map((item, key) =>
               item.agreement?.loans.map((loanItem) => (
                 <TRow
@@ -73,9 +78,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   }}
                 />
               ))
-            )}
-          {activeView === "Closed" &&
-            closed &&
+            )
+          ) : activeView === "Closed" && closed && closed.length > 0 ? (
             closed.map((item, key) =>
               item.agreement?.loans.map((loanItem) => (
                 <TRowOther
@@ -88,7 +92,16 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   }}
                 />
               ))
-            )}
+            )
+          ) : (
+            <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
+              <Td>
+                {activeView === "Active"
+                  ? "You don't have any recorded open positions."
+                  : "You don't have any recorded closed positions."}
+              </Td>
+            </Tr>
+          )}
         </Tbody>
       </DefaultTable>
     </TableContainer>
