@@ -42,7 +42,7 @@ export const useTransactionFeedback = () => {
     notificationDialog.openDialog({
       title: description,
       status: "loading",
-      duration: 30_000,
+      duration: 0,
     });
 
     await waitForTransaction({ hash: txResult.hash });

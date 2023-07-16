@@ -39,8 +39,10 @@ const ServiceCard: FC<ServiceCardProps> = ({
   const { colorMode } = useColorMode();
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
-      <HStack className="flex justify-between mb-6">
-        <ServiceIcon name={name as ServiceType} width={30} />
+      <HStack className="flex justify-between w-full mb-6">
+        <Box>
+          <ServiceIcon name={name as ServiceType} width="full" />
+        </Box>
         {/* 1 - 10% multiplier */}
         <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
           <Icon
