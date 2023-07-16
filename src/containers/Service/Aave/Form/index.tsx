@@ -41,6 +41,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
+  const [prevInputAmount, setPrevInputAmount] = useState<string | undefined>();
   const [leverage, setLeverage] = useState("1.5");
   const [slippage, setSlippage] = useState("0.1");
   const notificationDialog = useNotificationDialog();
@@ -96,8 +97,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     functionName: "open",
     args: [order],
     account: accountAddress,
-    onSuccess: () => {
+    onSuccess: (_, data) => {
       setInputAmount("0");
+    },
+    onMutate: (variables) => {
+      setPrevInputAmount(variables.value);
     },
     onError: (error) => {
       console.log("errrrrr33");
@@ -114,7 +118,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   useTransaction(
     openData?.hash,
-    `${!isApproved ? "Approve" : "Deposit"} ${inputAmount} ${asset?.name}`
+    `${!isApproved ? "Approve" : "Deposit"} ${prevInputAmount} ${asset?.name}`
   );
 
   // computed properties
