@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import aave from "@/data/aave";
+import { aaveData } from "@/data/aave";
 import services from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -19,7 +19,9 @@ const Aave = () => {
 
   const { data: chartData } = useChart(token as string);
 
-  const asset = aave.assets.find((asset) => asset.name.toLowerCase() === token);
+  const asset = aaveData.assets.find(
+    (asset) => asset.name.toLowerCase() === token
+  );
 
   const { baseApy, isLoading } = useBaseApy(token as string);
 

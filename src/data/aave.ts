@@ -15,4 +15,4 @@ interface Aave extends Omit<AaveAssets, "assets"> {
   }[];
 }
 
-export default aave as Aave;
+export const aaveData = aave as Aave;
