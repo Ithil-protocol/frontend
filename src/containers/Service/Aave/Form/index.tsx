@@ -69,6 +69,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
     isInterestError,
+    isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
     leverage,
