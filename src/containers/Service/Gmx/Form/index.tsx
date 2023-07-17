@@ -242,6 +242,10 @@ const Form = ({ asset }: { asset: Asset }) => {
         </Box>
       </div>
 
+      <ServiceError
+        isFreeLiquidityError={isFreeLiquidityError}
+        isInterestError={isInterestError}
+      />
       <>
         {isConnected ? (
           <Button
@@ -263,10 +267,6 @@ const Form = ({ asset }: { asset: Asset }) => {
           </Button>
         )}
       </>
-      <ServiceError
-        isFreeLiquidityError={isFreeLiquidityError}
-        isInterestError={isInterestError}
-      />
     </div>
   );
 };
