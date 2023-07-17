@@ -74,7 +74,8 @@ export const useRateAndSpread = ({
     result.interestAndSpread = spreadToUint256(...data);
     result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
     result.isInterestError =
-      data[0] + data[1] > BigInt(1e18) * BigInt(1 - Number(slippage));
+      data[0] + data[1] >
+      (BigInt(1e18) * BigInt(1000 - Number(slippage) * 1000)) / 1000n;
     return result;
   }
   // or throw an error to stop user from opoenning position
