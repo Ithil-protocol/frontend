@@ -1,7 +1,6 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box, Button } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import {
@@ -35,9 +34,6 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 // import DepositForm from "./DepositForm"
 
 const Form = ({ asset }: { asset: Asset }) => {
-  const {
-    query: { asset: token },
-  } = useRouter();
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
@@ -121,6 +117,10 @@ const Form = ({ asset }: { asset: Asset }) => {
   const isButtonDisabled = isButtonLoading || inputAmount === "0";
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
+  console.log("yyyy isApproveLoading", isApproveLoading);
+  console.log("yyyy isOpenLoading", isOpenLoading);
+  console.log("yyyy isOpenWaiting", isOpenWaiting);
+
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
@@ -130,7 +130,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
@@ -204,7 +204,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={true}
+          switchableAsset={false}
         />
 
         <Box width="full" gap="30px">
