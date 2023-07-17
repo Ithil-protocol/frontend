@@ -69,13 +69,15 @@ export const useRateAndSpread = ({
     displayInterestAndSpreadInPercent: 0,
     isInterestAndSpreadLoading: isLoading,
     isInterestError: false,
+    isFreeLiquidityError: false,
   };
-  if (data) {
+  if (data && vaultFreeLiquidity) {
     result.interestAndSpread = spreadToUint256(...data);
     result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
     result.isInterestError =
       data[0] + data[1] >
       (BigInt(1e18) * BigInt(1000 - Number(slippage) * 1000)) / 1000n;
+    result.isFreeLiquidityError = loan > vaultFreeLiquidity;
     return result;
   }
   // or throw an error to stop user from opoenning position
