@@ -11,7 +11,6 @@ import {
 
 import { useToken } from "@/hooks/use-token.hook";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
-import { useTransaction } from "@/hooks/useTransaction";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,
@@ -81,9 +80,37 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     address: token.vaultAddress as Address,
     abi: erc4626ABI,
     functionName: "deposit",
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${
+          token.name
+        }`,
+        status: "loading",
+        duration: 0,
+      });
+    },
   });
   const { isLoading: isDepositWaiting } = useWaitForTransaction({
     hash: depositData?.hash,
+    onSuccess: () => {
+      notificationDialog.openDialog({
+        title: `${isApproved ? "Approve" : "Deposit"} ${inputAmount} ${
+          token.name
+        }`,
+        status: "success",
+        isClosable: true,
+        duration: 0,
+      });
+      setInputAmount("0");
+    },
+    onError: (err) => {
+      notificationDialog.openDialog({
+        title: `${err.message}`,
+        status: "error",
+        isClosable: true,
+        duration: 0,
+      });
+    },
   });
 
   // computed properties
@@ -103,12 +130,12 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   const handleMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
-  useTransaction(
-    depositData?.hash as Address,
-    `${isApproved ? "Deposit" : "Approve"} ${inputValueRef.current} ${
-      token.name
-    }`
-  );
+  // useTransaction(
+  //   depositData?.hash as Address,
+  //   `${isApproved ? "Deposit" : "Approve"} ${inputValueRef.current} ${
+  //     token.name
+  //   }`
+  // );
 
   const handleClick = async () => {
     inputValueRef.current = inputAmount;
