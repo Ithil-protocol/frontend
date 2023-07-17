@@ -23,7 +23,6 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
-import { useTransaction } from "@/hooks/useTransaction";
 import { AaveAsset } from "@/types/onchain.types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
@@ -41,7 +40,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
-  const [prevInputAmount, setPrevInputAmount] = useState<string | undefined>();
   const [leverage, setLeverage] = useState("1.5");
   const [slippage, setSlippage] = useState("0.1");
   const notificationDialog = useNotificationDialog();
@@ -97,29 +95,41 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     functionName: "open",
     args: [order],
     account: accountAddress,
-    onSuccess: (_, data) => {
-      setInputAmount("0");
-    },
-    onMutate: (variables) => {
-      setPrevInputAmount(variables.value);
-    },
-    onError: (error) => {
-      console.log("errrrrr33");
-      // notificationDialog.openDialog({
-      //   title: (error as { shortMessage: string }).shortMessage,
-      //   status: "error",
-      // });
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${
+          asset?.name
+        }`,
+        status: "loading",
+      });
     },
   });
 
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
+    onSuccess: () => {
+      notificationDialog.openDialog({
+        title: `${isApproved ? "Approve" : "Deposit"} ${inputAmount} ${
+          asset.name
+        }`,
+        status: "success",
+        isClosable: true,
+      });
+      setInputAmount("0");
+    },
+    onError: (err) => {
+      notificationDialog.openDialog({
+        title: `${err.message}`,
+        status: "error",
+        isClosable: true,
+      });
+    },
   });
 
-  useTransaction(
-    openData?.hash,
-    `${!isApproved ? "Approve" : "Deposit"} ${prevInputAmount} ${asset?.name}`
-  );
+  // useTransaction(
+  //   openData?.hash,
+  //   `${!isApproved ? "Approve" : "Deposit"} ${prevInputAmount} ${asset?.name}`
+  // );
 
   // computed properties
   const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
