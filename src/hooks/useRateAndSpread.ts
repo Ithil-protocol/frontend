@@ -28,12 +28,14 @@ interface AaveRateAndSpreadProps {
   token: Token;
   leverage: string;
   margin: string;
+  slippage: string;
 }
 
 export const useRateAndSpread = ({
   token,
   leverage,
   margin,
+  slippage,
 }: AaveRateAndSpreadProps) => {
   const loan = parseUnits(
     `${Number(margin) * Number(leverage)}`,
@@ -66,10 +68,13 @@ export const useRateAndSpread = ({
     interestAndSpread: 0n,
     displayInterestAndSpreadInPercent: 0,
     isInterestAndSpreadLoading: isLoading,
+    isInterestError: false,
   };
   if (data) {
     result.interestAndSpread = spreadToUint256(...data);
     result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
+    result.isInterestError =
+      data[0] + data[1] > BigInt(1e18) * BigInt(1 - Number(slippage));
     return result;
   }
   // or throw an error to stop user from opoenning position

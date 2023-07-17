@@ -68,10 +68,12 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
+    isInterestError,
   } = useRateAndSpread({
     token: asset,
     leverage,
     margin: inputAmount,
+    slippage,
   });
 
   const extraData = toHex("");

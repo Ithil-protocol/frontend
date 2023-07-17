@@ -64,10 +64,12 @@ const Form = ({ asset }: { asset: Asset }) => {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
     isInterestAndSpreadLoading,
+    isInterestError,
   } = useRateAndSpread({
     token: asset,
     leverage,
     margin: inputAmount,
+    slippage,
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
