@@ -29,6 +29,7 @@ import { abbreviateBigNumber } from "@/utils/input.utils";
 import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
+import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
@@ -263,6 +264,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           </Button>
         )}
       </>
+      <ServiceError
+        isFreeLiquidityError={isFreeLiquidityError}
+        isInterestError={isInterestError}
+      />
     </div>
   );
 };
