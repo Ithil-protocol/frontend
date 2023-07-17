@@ -96,6 +96,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           asset?.name
         }`,
         status: "loading",
+        duration: 0,
       });
     },
   });
@@ -109,6 +110,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         }`,
         status: "success",
         isClosable: true,
+        duration: 0,
       });
       setInputAmount("0");
     },
@@ -117,6 +119,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         title: `${err.message}`,
         status: "error",
         isClosable: true,
+        duration: 0,
       });
     },
   });

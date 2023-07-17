@@ -120,6 +120,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     } catch (error) {
       notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
+        duration: 0,
       });
     }
   };

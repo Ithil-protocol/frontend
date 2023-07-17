@@ -17,7 +17,7 @@ export const useTransaction = (
       notificationDialog.openDialog({
         title: description,
         status: "success",
-        duration: 5_000,
+        duration: 0,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,7 +29,7 @@ export const useTransaction = (
           ? error.message
           : "Somethings went wrong, please try again later.",
         status: "error",
-        duration: 5_000,
+        duration: 0,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
