@@ -11,7 +11,10 @@ import {
 import { FC } from "react";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
-import { useOpenPositions } from "@/hooks/useOpenPositions";
+import {
+  useAaveOpenPositions,
+  useGmxOpenPositions,
+} from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
 import { fixPrecision } from "@/utils";
 import { mode } from "@/utils/theme";
@@ -26,11 +29,13 @@ interface Props {
 
 const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
-  const { positions } = useOpenPositions();
+  const { positions: aavePositions } = useAaveOpenPositions();
+  const { positions: gmxPositions } = useGmxOpenPositions();
+
   const { data: closed } = useClosePositions();
   const hasItems =
     activeView === "Active"
-      ? positions && positions.length > 0
+      ? aavePositions && aavePositions.length > 0
       : closed && closed.length > 0;
 
   return (
@@ -58,8 +63,12 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {activeView === "Active" && positions && positions.length > 0 ? (
-            positions.map((item, key) =>
+          {activeView === "Active" &&
+          aavePositions &&
+          gmxPositions &&
+          gmxPositions.length > 0 &&
+          aavePositions.length > 0 ? (
+            [...aavePositions, ...gmxPositions].sort().map((item, key) =>
               item.agreement?.loans.map((loanItem) => (
                 <TRow
                   key={key}
@@ -75,6 +84,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     ).toString(),
                     id: item.id,
                     quote: item.quote,
+                    type: item.type,
                   }}
                 />
               ))

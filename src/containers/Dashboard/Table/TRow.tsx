@@ -9,13 +9,14 @@ import {
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { FC } from "react";
-import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
 
-import { aaveABI } from "@/abi";
+import { aaveABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { aaveAddress } from "@/hooks/generated/aave";
+import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
@@ -30,6 +31,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   quote: bigint | undefined;
   formattedPnl: string;
   margin: number;
+  type: string;
 }
 
 interface TRowProps {
@@ -43,13 +45,25 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   const { trackTransaction } = useTransactionFeedback();
 
+  const services = {
+    AAVE: {
+      abi: aaveABI,
+      address: aaveAddress[98745],
+    },
+    GMX: {
+      abi: gmxABI,
+      address: gmxAddress[98745],
+    },
+  } as const;
+
+  const service = services[data.type as keyof typeof services];
   const {
     writeAsync: close,
     isLoading,
     reset,
   } = useContractWrite({
-    address: aaveAddress[98745] as Address,
-    abi: aaveABI,
+    address: service.address,
+    abi: service.abi as any,
     functionName: "close",
     gas: 20000000n,
   });
@@ -139,7 +153,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        Aave
+        {data.type}
       </Td>
       <Td>
         {data.pnl !== undefined ? (
