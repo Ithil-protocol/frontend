@@ -77,6 +77,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     margin: inputAmount,
     slippage,
   });
+  console.log(isInterestError, isFreeLiquidityError, "OOO");
 
   const extraData = toHex("");
 

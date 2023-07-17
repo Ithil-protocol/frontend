@@ -10,7 +10,7 @@ const FreeLiquidityError: React.FC = () => {
     <Alert status="error">
       <AlertIcon />
       <AlertTitle>Error!</AlertTitle>
-      <AlertDescription>Interest rate above maximum.</AlertDescription>
+      <AlertDescription>Not enough liquidity in the vault.</AlertDescription>
     </Alert>
   );
 };

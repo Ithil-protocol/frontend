@@ -61,6 +61,7 @@ export const useRateAndSpread = ({
       enabled: !!vaultFreeLiquidity,
     }
   );
+  console.log("oooo", loan, bigintMargin, data);
 
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
@@ -71,13 +72,18 @@ export const useRateAndSpread = ({
     isInterestError: false,
     isFreeLiquidityError: false,
   };
-  if (data && vaultFreeLiquidity) {
+
+  if (vaultFreeLiquidity) {
+    result.isFreeLiquidityError = loan > vaultFreeLiquidity;
+  }
+
+  if (data) {
+    // console.log(data[0] + data[1],(BigInt(1e18) * BigInt(1000 - Number(slippage) * 1000)) / 1000n,"ooo");
     result.interestAndSpread = spreadToUint256(...data);
     result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
     result.isInterestError =
       data[0] + data[1] >
       (BigInt(1e18) * BigInt(1000 - Number(slippage) * 1000)) / 1000n;
-    result.isFreeLiquidityError = loan > vaultFreeLiquidity;
     return result;
   }
   // or throw an error to stop user from opoenning position
