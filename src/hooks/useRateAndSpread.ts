@@ -49,17 +49,19 @@ export const useRateAndSpread = ({
       enabled: !!vault,
     });
 
-  const { data, isLoading: isBaseRateLoading } = useGmxComputeBaseRateAndSpread(
-    {
-      args: [
-        token.tokenAddress,
-        loan,
-        bigintMargin,
-        vaultFreeLiquidity as bigint,
-      ],
-      enabled: !!vaultFreeLiquidity,
-    }
-  );
+  const {
+    data,
+    isLoading: isBaseRateLoading,
+    isError,
+  } = useGmxComputeBaseRateAndSpread({
+    args: [
+      token.tokenAddress,
+      loan,
+      bigintMargin,
+      vaultFreeLiquidity as bigint,
+    ],
+    enabled: !!vaultFreeLiquidity,
+  });
 
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
