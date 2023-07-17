@@ -101,6 +101,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           asset?.name
         }`,
         status: "loading",
+        duration: 0,
       });
     },
   });
@@ -114,6 +115,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         }`,
         status: "success",
         isClosable: true,
+        duration: 0,
       });
       setInputAmount("0");
     },
@@ -122,6 +124,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         title: `${err.message}`,
         status: "error",
         isClosable: true,
+        duration: 0,
       });
     },
   });

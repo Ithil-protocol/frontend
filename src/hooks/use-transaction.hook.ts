@@ -50,6 +50,7 @@ export const useTransactionFeedback = () => {
     notificationDialog.openDialog({
       title: description,
       status: "success",
+      duration: 0,
     });
   };
 
@@ -65,6 +66,7 @@ export const useTransactionFeedback = () => {
       description,
       status: "error",
       title: "Transaction failed",
+      duration: 0,
     });
   };
 
