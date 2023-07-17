@@ -41,11 +41,11 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         width="full"
       >
         <Thead>
-          <Tr width="48">
+          <Tr width="56">
             {hasItems &&
               columns.map((col, index) => (
                 <Th
-                  width="48"
+                  width="72"
                   color={mode(colorMode, "primary.700", "primary.700.dark")}
                   className="font-sans"
                   fontSize="18px"
@@ -65,7 +65,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   key={key}
                   data={{
                     amount: loanItem.amount,
-                    margin: loanItem.margin,
+                    margin: fixPrecision(Number(loanItem.margin), 2),
                     token: loanItem.token,
                     formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
                     pnl: item.pnl,
@@ -87,7 +87,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   data={{
                     amount: loanItem.amount,
                     createdAt: item.agreement?.createdAt,
-                    margin: loanItem.margin,
+                    margin: fixPrecision(Number(loanItem.margin), 2),
                     token: loanItem.token,
                   }}
                 />

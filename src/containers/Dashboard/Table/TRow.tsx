@@ -29,6 +29,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   id: bigint | undefined;
   quote: bigint | undefined;
   formattedPnl: string;
+  margin: number;
 }
 
 interface TRowProps {
@@ -87,7 +88,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   return (
     <Tr
-      width="48"
+      width="72"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}
@@ -168,6 +169,14 @@ const TRow: FC<TRowProps> = ({ data }) => {
         ) : (
           <Loading />
         )}
+      </Td>
+      <Td
+        color={mode(colorMode, "primary.700", "primary.700.dark")}
+        fontWeight="medium"
+        fontSize="22px"
+        lineHeight="22px"
+      >
+        {data.margin}
       </Td>
       <Td textAlign="end" width={200} height="108px">
         <Button

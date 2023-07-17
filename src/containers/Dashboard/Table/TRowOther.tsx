@@ -23,7 +23,7 @@ const TRowOther: FC<Props> = ({ data }) => {
 
   return (
     <Tr
-      width="48"
+      width="72"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}
@@ -32,7 +32,7 @@ const TRowOther: FC<Props> = ({ data }) => {
         "& > td": {
           padding: ["20px 40px", "30px 40px"],
         },
-        minWidth: "100px",
+        minWidth: "400px",
         minHeight: "200px",
       }}
     >
@@ -90,7 +90,7 @@ const TRowOther: FC<Props> = ({ data }) => {
           )}
         </Text>
       </Td>
-      <Td textAlign="end" width={200} height="108px"></Td>
+      <Td textAlign="end" width={800} height="108px"></Td>
     </Tr>
   );
 };
