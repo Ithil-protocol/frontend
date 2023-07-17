@@ -43,7 +43,6 @@ export const useRateAndSpread = ({
   );
   const bigintMargin = parseUnits(margin, token.decimals);
   const vault = getVaultByTokenAddress(token.tokenAddress);
-  // console.log("ii", vault);
   const { data: vaultFreeLiquidity, isLoading: isFreeLiquidityLoading } =
     useVaultFreeLiquidity({
       address: vault?.vaultAddress as Address,
@@ -61,7 +60,6 @@ export const useRateAndSpread = ({
       enabled: !!vaultFreeLiquidity,
     }
   );
-  console.log("oooo", loan, bigintMargin, data);
 
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
@@ -78,7 +76,6 @@ export const useRateAndSpread = ({
   }
 
   if (data) {
-    // console.log(data[0] + data[1],(BigInt(1e18) * BigInt(1000 - Number(slippage) * 1000)) / 1000n,"ooo");
     result.interestAndSpread = spreadToUint256(...data);
     result.displayInterestAndSpreadInPercent = displayInterestSpread(...data);
     result.isInterestError =
