@@ -22,7 +22,6 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
-import { useTransaction } from "@/hooks/useTransaction";
 import { Asset } from "@/types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
@@ -91,26 +90,41 @@ const Form = ({ asset }: { asset: Asset }) => {
     functionName: "open",
     args: [order],
     account: accountAddress,
-    onSuccess: () => {
-      setInputAmount("0");
-    },
-    onError: (error) => {
-      console.log("errrrrr33");
-      // notificationDialog.openDialog({
-      //   title: (error as { shortMessage: string }).shortMessage,
-      //   status: "error",
-      // });
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${
+          asset?.name
+        }`,
+        status: "loading",
+      });
     },
   });
 
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
+    onSuccess: () => {
+      notificationDialog.openDialog({
+        title: `${isApproved ? "Approve" : "Deposit"} ${inputAmount} ${
+          asset.name
+        }`,
+        status: "success",
+        isClosable: true,
+      });
+      setInputAmount("0");
+    },
+    onError: (err) => {
+      notificationDialog.openDialog({
+        title: `${err.message}`,
+        status: "error",
+        isClosable: true,
+      });
+    },
   });
 
-  useTransaction(
-    openData?.hash,
-    `${!isApproved ? "Approve" : "Deposit"} ${inputAmount} ${asset?.name}`
-  );
+  // useTransaction(
+  //   openData?.hash,
+  //   `${!isApproved ? "Approve" : "Deposit"} ${inputAmount} ${asset?.name}`
+  // );
 
   // computed properties
   const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
