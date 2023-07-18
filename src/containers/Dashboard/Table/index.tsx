@@ -8,10 +8,11 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
+import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import {
   useAaveOpenPositions,
   useGmxOpenPositions,
@@ -20,8 +21,8 @@ import { viewTypes } from "@/types";
 import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 import { mode } from "@/utils/theme";
 
-import TRow from "./TRow";
-import TRowOther from "./TRowOther";
+import ActiveTRow from "./ActiveTRow";
+import CloseTRow from "./CloseTRow";
 
 interface Props {
   columns: any[];
@@ -29,9 +30,12 @@ interface Props {
 }
 
 const Table: FC<Props> = ({ columns, activeView }) => {
+  const notificationDialog = useNotificationDialog();
   const { colorMode } = useColorMode();
-  const { positions: aavePositions } = useAaveOpenPositions();
-  const { positions: gmxPositions } = useGmxOpenPositions();
+  const { positions: aavePositions, isLoading: isLoadingAave } =
+    useAaveOpenPositions();
+  const { positions: gmxPositions, isLoading: isLoadingGmx } =
+    useGmxOpenPositions();
 
   const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
     return (
@@ -40,11 +44,24 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     );
   });
 
-  const isEmpty = positions.length === 0;
-
-  const closedPositions = useClosePositions();
+  const { positions: closedPositions, isLoading: isLoadingClosed } =
+    useClosePositions();
+  const isPositionsExist = positions.length === 0 && positions;
+  const isClosedExist = closedPositions.length === 0 && closedPositions;
   const hasItems =
     activeView === "Active" ? positions.length > 0 : closedPositions.length > 0;
+
+  useEffect(() => {
+    if (isLoadingAave || isLoadingClosed || isLoadingGmx) {
+      notificationDialog.openDialog({
+        status: "loading",
+        title: "Loading positions",
+        duration: 0,
+      });
+    } else {
+      notificationDialog.closeDialog();
+    }
+  }, [isLoadingAave, isLoadingClosed, isLoadingGmx]);
 
   return (
     <TableContainer width="full">
@@ -70,15 +87,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
               ))}
           </Tr>
         </Thead>
-        {isEmpty && (
-          <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
-            <Td>
-              {activeView === "Active"
-                ? "You don't have any recorded open positions."
-                : "You don't have any recorded closed positions."}
-            </Td>
-          </Tr>
-        )}
         <Tbody>
           {activeView === "Active"
             ? positions.map((item, key) =>
@@ -86,7 +94,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   const vault = getVaultByTokenAddress(loanItem.token);
 
                   return (
-                    <TRow
+                    <ActiveTRow
                       key={key}
                       data={{
                         amount: loanItem.amount,
@@ -110,7 +118,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
               closedPositions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
                   return (
-                    <TRowOther
+                    <CloseTRow
                       key={key}
                       data={{
                         amount: loanItem.amount,
@@ -123,6 +131,16 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   );
                 })
               )}
+          {isPositionsExist && activeView === "Active" && (
+            <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
+              <Td>You don&apos;t have any recorded open positions.</Td>
+            </Tr>
+          )}
+          {isClosedExist && activeView === "Closed" && (
+            <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
+              <Td>You don&apos;t have any recorded closed positions.</Td>
+            </Tr>
+          )}
         </Tbody>
       </DefaultTable>
     </TableContainer>

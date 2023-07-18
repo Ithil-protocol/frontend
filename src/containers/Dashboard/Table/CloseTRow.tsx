@@ -14,7 +14,7 @@ interface Props {
   data: TRowTypes;
 }
 
-const TRowOther: FC<Props> = ({ data }) => {
+const CloseTRow: FC<Props> = ({ data }) => {
   const { colorMode } = useColorMode();
   const vaultTokenData = getVaultByTokenAddress(data.token);
   const isMounted = useIsMounted();
@@ -95,4 +95,4 @@ const TRowOther: FC<Props> = ({ data }) => {
   );
 };
 
-export default TRowOther;
+export default CloseTRow;
