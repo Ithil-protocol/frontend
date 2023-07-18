@@ -33,10 +33,19 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const { positions: aavePositions } = useAaveOpenPositions();
   const { positions: gmxPositions } = useGmxOpenPositions();
 
+  const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
+    return (
+      new Date(Number(b.agreement?.createdAt)).getTime() -
+      new Date(Number(a.agreement?.createdAt)).getTime()
+    );
+  });
+
+  const isEmpty = positions.length === 0;
+
   const { data: closed } = useClosePositions();
   const hasItems =
     activeView === "Active"
-      ? aavePositions && aavePositions.length > 0
+      ? positions.length > 0
       : closed && closed.length > 0;
 
   return (
@@ -63,62 +72,60 @@ const Table: FC<Props> = ({ columns, activeView }) => {
               ))}
           </Tr>
         </Thead>
+        {isEmpty && (
+          <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
+            <Td>
+              {activeView === "Active"
+                ? "You don't have any recorded open positions."
+                : "You don't have any recorded closed positions."}
+            </Td>
+          </Tr>
+        )}
         <Tbody>
-          {activeView === "Active" &&
-          aavePositions &&
-          gmxPositions &&
-          gmxPositions.length > 0 &&
-          aavePositions.length > 0 ? (
-            [...aavePositions, ...gmxPositions].sort().map((item, key) =>
-              item.agreement?.loans.map((loanItem) => {
-                const vault = getVaultByTokenAddress(loanItem.token);
+          {activeView === "Active"
+            ? positions.map((item, key) =>
+                item.agreement?.loans.map((loanItem) => {
+                  const vault = getVaultByTokenAddress(loanItem.token);
 
-                return (
-                  <TRow
-                    key={key}
-                    data={{
-                      amount: loanItem.amount,
-                      margin: formatUnits(loanItem.margin, vault.decimals),
-                      token: loanItem.token,
-                      formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
-                      pnl: item.pnl,
-                      pnlPercentage: fixPrecision(
-                        +item.pnlPercentage!,
-                        2
-                      ).toString(),
-                      id: item.id,
-                      quote: item.quote,
-                      type: item.type,
-                    }}
-                  />
-                );
-              })
-            )
-          ) : activeView === "Closed" && closed && closed.length > 0 ? (
-            closed.map((item, key) =>
-              item.agreement?.loans.map((loanItem) => {
-                return (
-                  <TRowOther
-                    key={key}
-                    data={{
-                      amount: loanItem.amount,
-                      createdAt: item.agreement?.createdAt,
-                      margin: fixPrecision(Number(loanItem.margin), 2),
-                      token: loanItem.token,
-                    }}
-                  />
-                );
-              })
-            )
-          ) : (
-            <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
-              <Td>
-                {activeView === "Active"
-                  ? "You don't have any recorded open positions."
-                  : "You don't have any recorded closed positions."}
-              </Td>
-            </Tr>
-          )}
+                  return (
+                    <TRow
+                      key={key}
+                      data={{
+                        amount: loanItem.amount,
+                        margin: formatUnits(loanItem.margin, vault.decimals),
+                        token: loanItem.token,
+                        formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
+                        pnl: item.pnl,
+                        pnlPercentage: fixPrecision(
+                          +item.pnlPercentage!,
+                          2
+                        ).toString(),
+                        id: item.id,
+                        quote: item.quote,
+                        type: item.type,
+                      }}
+                    />
+                  );
+                })
+              )
+            : activeView === "Closed" &&
+              closed &&
+              closed.length > 0 &&
+              closed.map((item, key) =>
+                item.agreement?.loans.map((loanItem) => {
+                  return (
+                    <TRowOther
+                      key={key}
+                      data={{
+                        amount: loanItem.amount,
+                        createdAt: item.agreement?.createdAt,
+                        margin: fixPrecision(Number(loanItem.margin), 2),
+                        token: loanItem.token,
+                      }}
+                    />
+                  );
+                })
+              )}
         </Tbody>
       </DefaultTable>
     </TableContainer>

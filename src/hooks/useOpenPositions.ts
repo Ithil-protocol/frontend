@@ -6,22 +6,15 @@ import { getVaultByTokenAddress } from "@/utils";
 
 import { aaveAddress } from "./generated/aave";
 import { gmxAddress } from "./generated/gmx";
-import { useGetGmxAgreementsByUser } from "./useGetAgreementByUser";
+import {
+  useGetAaveAgreementsByUser,
+  useGetGmxAgreementsByUser,
+} from "./useGetAgreementByUser";
 
 export const useAaveOpenPositions = () => {
-  const { data, isLoading: isAgreementsLoading } = useGetGmxAgreementsByUser();
+  const { data, isLoading: isAgreementsLoading } = useGetAaveAgreementsByUser();
 
   const positions = [];
-
-  // console.log(
-  //   "data333",
-  //   data?.[0]?.map((agreement) => ({
-  //     abi: aaveABI,
-  //     address: "0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba8" as Address,
-  //     functionName: "quote",
-  //     args: [agreement],
-  //   }))
-  // );
 
   const quoteContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
@@ -41,6 +34,8 @@ export const useAaveOpenPositions = () => {
     contracts: quoteContracts,
     enabled: !!data,
   });
+
+  console.log("quotes22", quotes);
 
   const { data: fees } = useContractReads({
     contracts: feeContracts,
