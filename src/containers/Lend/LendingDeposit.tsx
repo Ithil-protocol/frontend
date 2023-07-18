@@ -1,3 +1,4 @@
+import { waitForTransaction } from "@wagmi/core";
 import { FC, useRef, useState } from "react";
 import { Address, formatUnits } from "viem";
 import {
@@ -6,7 +7,6 @@ import {
   useAccount,
   useBalance,
   useContractWrite,
-  useWaitForTransaction,
 } from "wagmi";
 
 import { useToken } from "@/hooks/use-token.hook";
@@ -48,64 +48,94 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
 
   const isApproved = (allowance ?? BigInt(0)) >= inputBigNumber;
 
-  // const {
-  //   data: approveData,
-  //   isLoading: isApproveLoading,
-  //   writeAsync: approve,
-  // } = useApprove(token.vaultAddress, inputBigNumber);
-
   const {
     data: approveData,
     isLoading: isApproveLoading,
-    writeAsync: approve,
+    write: approve,
   } = useContractWrite({
     address: token.tokenAddress as Address,
     abi: erc20ABI,
     functionName: "approve",
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: `Approving ${inputAmount} ${token.name}`,
+        status: "loading",
+        duration: 0,
+      });
+    },
+    onSuccess: async ({ hash }) => {
+      try {
+        await waitForTransaction({
+          hash,
+        });
+        notificationDialog.openDialog({
+          title: `Approved ${inputAmount} ${token.name}`,
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
+        refetchAllowance();
+      } catch (err) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: "Something went wrong",
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: () => {
+      notificationDialog.openDialog({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+        duration: 0,
+      });
+    },
   });
-
-  const { isLoading: isApproveWaiting } = useWaitForTransaction({
-    hash: approveData?.hash,
-  });
-
-  // deposit
-  // const { config: depositConfig, isFetching: isDepositFetching } =
-  //   usePrepareDeposit(inputBigNumber);
 
   const {
     data: depositData,
     isLoading: isDepositLoading,
-    writeAsync: deposit,
+    write: deposit,
   } = useContractWrite({
     address: token.vaultAddress as Address,
     abi: erc4626ABI,
     functionName: "deposit",
     onMutate: () => {
       notificationDialog.openDialog({
-        title: `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${
-          token.name
-        }`,
+        title: `Depositing ${inputAmount} ${token.name}`,
         status: "loading",
         duration: 0,
       });
     },
-  });
-  const { isLoading: isDepositWaiting } = useWaitForTransaction({
-    hash: depositData?.hash,
-    onSuccess: () => {
-      notificationDialog.openDialog({
-        title: `${isApproved ? "Approve" : "Deposit"} ${inputAmount} ${
-          token.name
-        }`,
-        status: "success",
-        isClosable: true,
-        duration: 0,
-      });
-      setInputAmount("0");
+    onSuccess: async ({ hash }) => {
+      try {
+        await waitForTransaction({
+          hash,
+        });
+        notificationDialog.openDialog({
+          title: `Deposited ${inputAmount} ${token.name}`,
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
+        setInputAmount("0");
+        refetchAllowance();
+      } catch (err) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: "Something went wrong",
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
     },
-    onError: (err) => {
+    onError: () => {
       notificationDialog.openDialog({
-        title: `${err.message}`,
+        title: "Something went wrong",
         status: "error",
         isClosable: true,
         duration: 0,
@@ -114,11 +144,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   });
 
   // computed properties
-  const isButtonLoading =
-    isApproveLoading ||
-    isApproveWaiting ||
-    isDepositLoading ||
-    isDepositWaiting;
+  const isButtonLoading = isApproveLoading || isDepositLoading;
   const isInconsistent = balance ? inputBigNumber > balance.value : true;
   const isButtonDisabled =
     isButtonLoading || isInconsistent || inputBigNumber === BigInt(0);
@@ -130,33 +156,18 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
   const handleMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
-  // useTransaction(
-  //   depositData?.hash as Address,
-  //   `${isApproved ? "Deposit" : "Approve"} ${inputValueRef.current} ${
-  //     token.name
-  //   }`
-  // );
 
   const handleClick = async () => {
-    inputValueRef.current = inputAmount;
     try {
       if (!isApproved) {
-        // after approval is successful, read again the allowance
-        await approve({
+        approve({
           args: [token.vaultAddress, inputBigNumber],
         });
-        // await trackTransaction(result, `Approve ${inputAmount} ${token.name}`);
-        await refetchAllowance();
         return;
       }
-      // if (!deposit) return;
-      await deposit({
+      deposit({
         args: [inputBigNumber, address!],
       });
-      // await trackTransaction(result, `Deposit ${inputAmount} ${token.name}`);
-      await refetchAllowance();
-      inputValueRef.current = inputAmount;
-      setInputAmount("0");
     } catch (error) {
       notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
