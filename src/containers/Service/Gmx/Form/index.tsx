@@ -132,7 +132,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isApproveLoading || isOpenLoading;
+  const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled = isButtonLoading || inputAmount === "0";
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
@@ -167,7 +167,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       label: "Borrow Interest:",
       value: displayInterestAndSpreadInPercent,
       extension: "%",
-      // isLoading={isLoading}
+      isLoading: isInterestAndSpreadLoading,
     },
     {
       label: "Final APY:",

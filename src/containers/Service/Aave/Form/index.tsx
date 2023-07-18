@@ -137,22 +137,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
   });
 
-  console.log("loadingtest isApproveLoading", isApproveLoading);
-  console.log("loadingtest isOpenLoading", isOpenLoading);
-  console.log(
-    "loadingtest isInterestAndSpreadLoading",
-    isInterestAndSpreadLoading
-  );
-
   // computed properties
-  const isButtonLoading =
-    isApproveLoading || isOpenLoading || isInterestAndSpreadLoading;
+  const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled =
-    isButtonLoading ||
-    inputAmount === "0" ||
-    isInterestAndSpreadLoading ||
-    isInterestError ||
-    isFreeLiquidityError;
+    inputAmount === "0" || isInterestError || isFreeLiquidityError;
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
   const onMaxClick = () => {
@@ -186,7 +174,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
       label: "Borrow Interest:",
       value: displayInterestAndSpreadInPercent,
       extension: "%",
-      // isLoading={isLoading}
+      isLoading: isInterestAndSpreadLoading,
     },
     {
       label: "Final APY:",
