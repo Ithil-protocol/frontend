@@ -6,12 +6,12 @@ import {
   ListItem,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 
 import { CloseButton } from "@/assets/svgs";
@@ -24,16 +24,10 @@ import TokenIcon from "./TokenIcon";
 interface Props {
   isOpen: boolean;
   onClose?: VoidNoArgs;
-  modalFooter?: JSX.Element;
-  onSelectToken: (tokenName: string) => void;
+  onSelectToken?: () => void;
 }
 
-const TokenModal: React.FC<Props> = ({
-  isOpen,
-  modalFooter,
-  onClose,
-  onSelectToken,
-}) => {
+const TokenModal: React.FC<Props> = ({ isOpen, onClose, onSelectToken }) => {
   const { colorMode } = useColorMode();
 
   const handleClose = () => {
@@ -106,60 +100,68 @@ const TokenModal: React.FC<Props> = ({
                 })
                 .map((item, key) => (
                   <React.Fragment key={key}>
-                    <ListItem>
-                      <Button
-                        onClick={() => onSelectToken(item.name.toLowerCase())}
-                        style={{
-                          border: "0px",
-                          display: "flex",
-                          gap: "15px",
-                          justifyContent: "flex-start",
-                          padding: "30px",
-                          width: "100%",
-                        }}
-                        variant="outline"
-                      >
-                        <div>
-                          <TokenIcon width={40} height={40} name={item.name} />
-                        </div>
-
-                        <div
+                    <Link
+                      onClick={onSelectToken}
+                      href={`/services/aave/${item.name.toLowerCase()}`}
+                    >
+                      <ListItem>
+                        <Button
                           style={{
-                            alignItems: "flex-start",
+                            border: "0px",
                             display: "flex",
-                            flexDirection: "column",
+                            gap: "15px",
                             justifyContent: "flex-start",
+                            padding: "30px",
+                            width: "100%",
                           }}
+                          variant="outline"
                         >
-                          <Text
-                            fontWeight="medium"
-                            color={mode(
-                              colorMode,
-                              "secondary.100",
-                              "secondary.100.dark"
-                            )}
+                          <div>
+                            <TokenIcon
+                              width={40}
+                              height={40}
+                              name={item.name}
+                            />
+                          </div>
+
+                          <div
+                            style={{
+                              alignItems: "flex-start",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "flex-start",
+                            }}
                           >
-                            {item.name}
-                          </Text>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="md"
-                            color={mode(
-                              colorMode,
-                              "primary.400.dark",
-                              "primary.400"
-                            )}
-                          >
-                            {item.description}
-                          </Text>
-                        </div>
-                      </Button>
-                    </ListItem>
+                            <Text
+                              fontWeight="medium"
+                              color={mode(
+                                colorMode,
+                                "secondary.100",
+                                "secondary.100.dark"
+                              )}
+                            >
+                              {item.name}
+                            </Text>
+                            <Text
+                              fontWeight="medium"
+                              fontSize="md"
+                              color={mode(
+                                colorMode,
+                                "primary.400.dark",
+                                "primary.400"
+                              )}
+                            >
+                              {item.description}
+                            </Text>
+                          </div>
+                        </Button>
+                      </ListItem>
+                    </Link>
                   </React.Fragment>
                 ))}
             </List>
           </ModalBody>
-          <ModalFooter>{modalFooter}</ModalFooter>
+          {/* <ModalFooter>{modalFooter}</ModalFooter> */}
         </ModalContent>
       </ChakraModal>
     </>

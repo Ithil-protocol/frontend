@@ -1,18 +1,13 @@
-import { aaveChartPools } from "@/data/defillama";
-
-interface Response {
-  timestamp: Date;
-  tvlUsd: number;
-  apyBase: number;
-}
+import { chartPools } from "@/data/defillama";
+import { ChartPoint } from "@/types";
 
 interface FetchResponse {
   status: string;
-  data: Response[];
+  data: ChartPoint[];
 }
 
-export const getChartAave = async (token: string) => {
-  const pool = aaveChartPools[token.toUpperCase()];
+export const getChart = async (token: string) => {
+  const pool = chartPools[token.toUpperCase()];
 
   if (!pool) throw new Error();
 

@@ -1,68 +1,25 @@
 import { useColorMode } from "@chakra-ui/react";
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { removeOldestQuery } from "@tanstack/react-query-persist-client";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import Script from "next/script";
-import { type FC, type PropsWithChildren, useEffect, useState } from "react";
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { type FC, type PropsWithChildren } from "react";
+import { WagmiConfig } from "wagmi";
 
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageWrapper from "@/components/page-wrapper";
-import { addTestNetworks, firstNetwork, testNetwork } from "@/config/chains";
+import { testNetwork } from "@/config/chains";
+import { queryClient } from "@/lib/react-query";
+import { chains, wagmiClient } from "@/lib/wagmi";
+import NotificationDialogProvider from "@/providers/notificationDialog";
+import TokenModalProvider from "@/providers/tokenModal";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import {
   rainbowkitDarkTheme,
   rainbowkitLightTheme,
 } from "@/styles/theme/rainbowkit";
-import { pageHeading } from "@/utils";
-
-const network = firstNetwork();
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [network], // until Ithil is not a multi-chain app, we can use only one network
-  [
-    jsonRpcProvider({
-      rpc: (_chain) => ({ http: network.rpcUrls.default.http[0] }),
-    }),
-  ]
-);
-const { connectors } = getDefaultWallets({
-  appName: "Ithil Core",
-  chains,
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-});
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      cacheTime: 0,
-    },
-  },
-});
-
-const wagmiClient = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-  queryClient,
-});
-
-// persist cache only in client mode, that's good enough for now
-const _localStoragePersister = createSyncStoragePersister({
-  storage: typeof window !== "undefined" ? window.localStorage : undefined,
-  retry: removeOldestQuery,
-});
-
-// persistQueryClient({
-//   queryClient,
-//   persister: localStoragePersister,
-// });
 
 // this wrapper is necessary, as it must be nested inside the ChakraProvider,
 // in that point can correctly read the colorMode
@@ -82,43 +39,19 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [heading, setHeading] = useState<string>("");
-  // effect only for private and testnet mode
-  useEffect(() => {
-    void addTestNetworks();
-  }, []);
-  const router = useRouter();
-  useEffect(() => {
-    setHeading("");
-    pageHeading.forEach((item) => {
-      if (router.pathname.split("/")[1] === item.pathName) {
-        return setHeading(item.heading);
-      }
-    });
-  }, [router]);
-
   return (
     <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-   
-     gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
-   
-    `}
-      </Script>
+      <GoogleAnalytics />
       <WagmiConfig config={wagmiClient}>
         <QueryClientProvider client={queryClient}>
           <Chakra>
             <RainbowWrapper>
-              <PageWrapper heading={heading} textAlign="left">
-                <Component {...pageProps} />
+              <PageWrapper>
+                <NotificationDialogProvider>
+                  <TokenModalProvider>
+                    <Component {...pageProps} />
+                  </TokenModalProvider>
+                </NotificationDialogProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
               </PageWrapper>
             </RainbowWrapper>

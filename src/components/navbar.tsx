@@ -8,11 +8,11 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Circle } from "phosphor-react";
-import { type FC, Fragment, useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
+import { type FC, Fragment } from "react";
 
 import LogoFullDark from "@/assets/ithil/logoFullDark.svg";
 import LogoFullLight from "@/assets/ithil/logoFullLight.svg";
@@ -23,11 +23,9 @@ import {
   MagicMarker as MagicMarkerIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
-import { firstNetwork } from "@/config/chains";
 import { routes, socialMedia } from "@/utils";
 import { mode } from "@/utils/theme";
 
-import ConnectButton from "./connectButton";
 import { ThemeSwitch } from "./theme-switch";
 
 interface Props {
@@ -37,45 +35,6 @@ interface Props {
 const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
   const { pathname } = useRouter();
   const { colorMode } = useColorMode();
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // remove this block of code for production. this is only for having chains with same id that can not happen in production
-  const { chains: ithilChain, chain } = useNetwork();
-  const [shouldChangeNetwork, setShouldChangeNetwork] = useState(false);
-  useEffect(() => {
-    if (chain) {
-      if (chain.rpcUrls.default !== ithilChain[0].rpcUrls.default) {
-        setShouldChangeNetwork(true);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const switchToTestNetwork = async () => {
-    // @ts-ignore
-    if (window?.ethereum) {
-      try {
-        // @ts-ignore
-        await ethereum.request({
-          method: "wallet_addEthereumChain",
-          params: [
-            {
-              chainId: "0xa4b1",
-              chainName: "ithil test network",
-              rpcUrls: firstNetwork().rpcUrls.default.http,
-              nativeCurrency: {
-                name: "ETH",
-                symbol: "ETH",
-                decimals: 18,
-              },
-            },
-          ],
-        });
-        setShouldChangeNetwork(false);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   const handleOpenSideBar = () => onSetSidebarOpen(true);
 
@@ -130,10 +89,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
           }}
         >
           <div className="w-full">
-            <ConnectButton
-              shouldChangeNetwork={shouldChangeNetwork}
-              switchToTestNetwork={switchToTestNetwork}
-            />
+            <ConnectButton chainStatus="full" />
           </div>
 
           <div className="hidden sm:flex">

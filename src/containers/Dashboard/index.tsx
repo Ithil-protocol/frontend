@@ -4,10 +4,16 @@ import Header from "@/containers/Dashboard/Header";
 import Table from "@/containers/Dashboard/Table";
 import { viewTypes } from "@/types";
 
-export type ColumnsActive = "Tokens" | "Service" | "PnL" | "";
+export type ColumnsActive = "Tokens" | "Service" | "PnL" | "Margin" | "";
 export type ColumnsOther = "Tokens" | "Service" | "Date";
 
-const columnsActive: ColumnsActive[] = ["Tokens", "Service", "PnL", ""];
+const columnsActive: ColumnsActive[] = [
+  "Tokens",
+  "Service",
+  "PnL",
+  "Margin",
+  "",
+];
 const columnsOther: ColumnsOther[] = ["Tokens", "Service", "Date"];
 const DashboardPage = () => {
   const [activeView, setActiveView] = useState<viewTypes>("Active");

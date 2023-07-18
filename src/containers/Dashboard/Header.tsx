@@ -22,7 +22,6 @@ const Header: FC<Props> = ({ currentView, setActiveView }) => {
       alignItems="center"
       justifyContent="space-between"
       width="full"
-      marginTop={["50px", "50px", "135"]}
       flexDirection={["column", "column", "column", "row"]}
       gap={["50px"]}
     >
