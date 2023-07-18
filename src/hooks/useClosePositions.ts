@@ -7,7 +7,7 @@ import { publicClient } from "@/wagmiTest/config";
 export const useAaveClosePositions = () => {
   const { address: accountAddress } = useAccount();
   const result = useQuery({
-    queryKey: ["closed-positions", accountAddress],
+    queryKey: ["aave-closed-positions", accountAddress],
     queryFn: async () => {
       const positionClosedFilter = await publicClient.createContractEventFilter(
         {
@@ -34,7 +34,7 @@ export const useAaveClosePositions = () => {
 export const useGmxClosePositions = () => {
   const { address: accountAddress } = useAccount();
   const result = useQuery({
-    queryKey: ["closed-positions", accountAddress],
+    queryKey: ["gmx-closed-positions", accountAddress],
     queryFn: async () => {
       const positionClosedFilter = await publicClient.createContractEventFilter(
         {
