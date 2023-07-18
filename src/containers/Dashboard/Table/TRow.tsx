@@ -7,7 +7,6 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
@@ -19,6 +18,7 @@ import { aaveAddress } from "@/hooks/generated/aave";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { queryClient } from "@/lib/react-query";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -67,7 +67,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
     gas: 20000000n,
   });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const isMounted = useIsMounted();
   const handelCancelBtn = async (
@@ -91,7 +91,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
       ],
     });
     await trackTransaction(result, "Position closed");
-    queryClient.clear();
+    queryClient.resetQueries();
   };
   const vaultTokenData = getVaultByTokenAddress(data.token);
 

@@ -102,10 +102,17 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     account: accountAddress,
     onMutate: () => {
       notificationDialog.openDialog({
-        title: `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${
-          asset?.name
-        }`,
+        title: isApproved ? "Opening position" : "Approving",
         status: "loading",
+        duration: 0,
+      });
+    },
+    onError: (err) => {
+      notificationDialog.openDialog({
+        title: "Failed",
+        description: "Something went wrong",
+        status: "error",
+        isClosable: true,
         duration: 0,
       });
     },
@@ -114,14 +121,16 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
     onSuccess: () => {
-      notificationDialog.openDialog({
-        title: `${isApproved ? "Approve" : "Deposit"} ${inputAmount} ${
-          asset.name
-        }`,
-        status: "success",
-        isClosable: true,
-        duration: 0,
-      });
+      if (inputAmount === "0") return;
+      console.log("Hey333"),
+        notificationDialog.openDialog({
+          title: isApproved
+            ? "Positions opened successfully"
+            : "Approved successfully",
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
       setInputAmount("0");
     },
     onError: (err) => {
@@ -194,7 +203,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
       <div className="flex flex-row justify-between w-full">
-        <Text textStyle="lg">Deposit</Text>
+        <Text textStyle="lg">Open Position</Text>
         <div className="flex flex-row items-center justify-end gap-2">
           {isBalanceLoading ? (
             <>

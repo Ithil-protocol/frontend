@@ -96,10 +96,17 @@ const Form = ({ asset }: { asset: Asset }) => {
     account: accountAddress,
     onMutate: () => {
       notificationDialog.openDialog({
-        title: `${isApproved ? "Deposit" : "Approve"} ${inputAmount} ${
-          asset?.name
-        }`,
+        title: isApproved ? "Opening position" : "Approving",
         status: "loading",
+        duration: 0,
+      });
+    },
+    onError: () => {
+      notificationDialog.openDialog({
+        title: "Failed",
+        description: "Something went wrong",
+        status: "error",
+        isClosable: true,
         duration: 0,
       });
     },
@@ -108,19 +115,21 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { isLoading: isOpenWaiting } = useWaitForTransaction({
     hash: openData?.hash,
     onSuccess: () => {
+      if (inputAmount === "0") return;
       notificationDialog.openDialog({
-        title: `${isApproved ? "Approve" : "Deposit"} ${inputAmount} ${
-          asset.name
-        }`,
+        title: isApproved
+          ? "Positions opened successfully"
+          : "Approved successfully",
         status: "success",
         isClosable: true,
         duration: 0,
       });
       setInputAmount("0");
     },
-    onError: (err) => {
+    onError: () => {
       notificationDialog.openDialog({
-        title: `${err.message}`,
+        title: "Failed",
+        description: "Something went wrong",
         status: "error",
         isClosable: true,
         duration: 0,
@@ -128,19 +137,10 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   });
 
-  // useTransaction(
-  //   openData?.hash,
-  //   `${!isApproved ? "Approve" : "Deposit"} ${inputAmount} ${asset?.name}`
-  // );
-
   // computed properties
   const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
   const isButtonDisabled = isButtonLoading || inputAmount === "0";
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
-
-  console.log("yyyy isApproveLoading", isApproveLoading);
-  console.log("yyyy isOpenLoading", isOpenLoading);
-  console.log("yyyy isOpenWaiting", isOpenWaiting);
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
@@ -187,7 +187,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
       <div className="flex flex-row justify-between w-full">
-        <Text textStyle="lg">Deposit</Text>
+        <Text textStyle="lg">Open Position</Text>
         <div className="flex flex-row items-center justify-end gap-2">
           {isBalanceLoading ? (
             <>
