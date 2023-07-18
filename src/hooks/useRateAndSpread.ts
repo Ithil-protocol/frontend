@@ -26,7 +26,7 @@ export const reverseDisplayInterestSpreadInPercent = (
 
 interface AaveRateAndSpreadProps {
   token: Token;
-  leverage: string;
+  leverage: number;
   margin: string;
   slippage: string;
 }
