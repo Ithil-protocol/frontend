@@ -36,7 +36,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
-  const [leverage, setLeverage] = useState("1.5");
+  const [leverage, setLeverage] = useState("2.5");
   const [slippage, setSlippage] = useState("0.1");
   const notificationDialog = useNotificationDialog();
 
@@ -68,7 +68,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage,
+    leverage: +leverage - 1,
     margin: inputAmount,
     slippage,
   });
@@ -79,7 +79,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { order } = usePrepareOrder({
     token: asset,
     collateralToken: asset?.collateralTokenAddress,
-    leverage,
+    leverage: +leverage - 1,
     amount: inputAmount,
     interestAndSpread,
     extraData,
@@ -153,7 +153,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
-  const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
+  const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";

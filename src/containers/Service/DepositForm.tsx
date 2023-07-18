@@ -46,7 +46,7 @@ const DepositForm: FC<Props> = ({
   } = useRouter();
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(asset as string);
-  const finalLeverage = isAdvancedOptionsOpen ? leverage : 1.5;
+  const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - interestAndSpreadInPercent).toFixed(2)
     : "";
