@@ -1,15 +1,10 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box, Button } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
-import {
-  useAccount,
-  useBalance,
-  useChainId,
-  useContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { gmxABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
@@ -94,37 +89,36 @@ const Form = ({ asset }: { asset: Asset }) => {
     functionName: "open",
     args: [order],
     account: accountAddress,
-    onMutate: () => {
+    onMutate: async () => {
       notificationDialog.openDialog({
         title: isApproved ? "Opening position" : "Approving",
         status: "loading",
         duration: 0,
       });
     },
-    onError: () => {
-      notificationDialog.openDialog({
-        title: "Failed",
-        description: "Something went wrong",
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
-  });
-
-  const { isLoading: isOpenWaiting } = useWaitForTransaction({
-    hash: openData?.hash,
-    onSuccess: () => {
-      if (inputAmount === "0") return;
-      notificationDialog.openDialog({
-        title: isApproved
-          ? "Positions opened successfully"
-          : "Approved successfully",
-        status: "success",
-        isClosable: true,
-        duration: 0,
-      });
-      setInputAmount("0");
+    onSuccess: async ({ hash }) => {
+      try {
+        await waitForTransaction({
+          hash,
+        });
+        notificationDialog.openDialog({
+          title: isApproved
+            ? "Positions opened successfully"
+            : "Approved successfully",
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
+        setInputAmount("0");
+      } catch (err) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: "Something went wrong",
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
     },
     onError: () => {
       notificationDialog.openDialog({
@@ -138,7 +132,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
+  const isButtonLoading = isApproveLoading || isOpenLoading;
   const isButtonDisabled = isButtonLoading || inputAmount === "0";
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 

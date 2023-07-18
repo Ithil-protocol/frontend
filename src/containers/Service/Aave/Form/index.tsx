@@ -1,16 +1,11 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box, Button } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
-import {
-  useAccount,
-  useBalance,
-  useChainId,
-  useContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
@@ -100,14 +95,38 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     functionName: "open",
     args: [order],
     account: accountAddress,
-    onMutate: () => {
+    onMutate: async () => {
       notificationDialog.openDialog({
         title: isApproved ? "Opening position" : "Approving",
         status: "loading",
         duration: 0,
       });
     },
-    onError: (err) => {
+    onSuccess: async ({ hash }) => {
+      try {
+        await waitForTransaction({
+          hash,
+        });
+        notificationDialog.openDialog({
+          title: isApproved
+            ? "Positions opened successfully"
+            : "Approved successfully",
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
+        setInputAmount("0");
+      } catch (err) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: "Something went wrong",
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: () => {
       notificationDialog.openDialog({
         title: "Failed",
         description: "Something went wrong",
@@ -118,38 +137,16 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
   });
 
-  const { isLoading: isOpenWaiting } = useWaitForTransaction({
-    hash: openData?.hash,
-    onSuccess: () => {
-      if (inputAmount === "0") return;
-      console.log("Hey333"),
-        notificationDialog.openDialog({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
-      setInputAmount("0");
-    },
-    onError: (err) => {
-      notificationDialog.openDialog({
-        title: `${err.message}`,
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
-  });
-
-  // useTransaction(
-  //   openData?.hash,
-  //   `${!isApproved ? "Approve" : "Deposit"} ${prevInputAmount} ${asset?.name}`
-  // );
+  console.log("loadingtest isApproveLoading", isApproveLoading);
+  console.log("loadingtest isOpenLoading", isOpenLoading);
+  console.log(
+    "loadingtest isInterestAndSpreadLoading",
+    isInterestAndSpreadLoading
+  );
 
   // computed properties
-  const isButtonLoading = isApproveLoading || isOpenLoading || isOpenWaiting;
+  const isButtonLoading =
+    isApproveLoading || isOpenLoading || isInterestAndSpreadLoading;
   const isButtonDisabled =
     isButtonLoading ||
     inputAmount === "0" ||
