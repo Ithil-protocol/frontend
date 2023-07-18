@@ -256,6 +256,12 @@ export const aaveABI = [
         type: "uint256",
       },
       {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
         components: [
           {
             components: [
@@ -339,6 +345,12 @@ export const aaveABI = [
         internalType: "uint256",
         name: "id",
         type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
       },
       {
         components: [

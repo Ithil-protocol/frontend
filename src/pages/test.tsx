@@ -3,8 +3,8 @@ import { Button } from "@chakra-ui/react";
 import { erc4626ABI, useContractWrite } from "wagmi";
 import { getContract } from "wagmi/actions";
 
-import { gmxABI } from "@/abi";
-import { gmxAddress } from "@/hooks/generated/gmx";
+import { aaveABI } from "@/abi";
+import { aaveAddress } from "@/hooks/generated/aave";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -219,8 +219,8 @@ const Test = () => {
     mode: "prepared",
     // @ts-ignore
     request: {
-      abi: gmxABI,
-      address: gmxAddress[98745],
+      abi: aaveABI,
+      address: aaveAddress[98745],
       functionName: "setRiskParams",
       args: [
         "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
@@ -228,7 +228,6 @@ const Test = () => {
         BigInt(1e16),
         BigInt(3 * 86400),
       ],
-      gas: 5_000_000n,
     },
   });
 
@@ -250,7 +249,7 @@ const Test = () => {
     abi: erc4626ABI,
   });
   const d = collateralToken.read.balanceOf([
-    "0xA352d7981Ed5b4291E4D4C86b8DA53383e84DfA6",
+    "0x8d55C13ac69f01E8ea0d616aB798265D4DF72544",
   ]);
   d.then((e) => console.log("collateralToken33", e));
 
