@@ -1,17 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
+import { useAccount } from "wagmi";
 
 import { aaveABI, gmxABI } from "@/abi";
 import { publicClient } from "@/wagmiTest/config";
 
 export const useAaveClosePositions = () => {
+  const { address: accountAddress } = useAccount();
   const result = useQuery({
-    queryKey: ["closed-positions"],
+    queryKey: ["aave-closed-positions", accountAddress],
     queryFn: async () => {
       const positionClosedFilter = await publicClient.createContractEventFilter(
         {
           abi: aaveABI,
           eventName: "PositionClosed",
           fromBlock: 0n,
+          args: { user: accountAddress },
         }
       );
       const positionClosedLogs = await publicClient.getFilterLogs({
@@ -29,14 +32,16 @@ export const useAaveClosePositions = () => {
 };
 
 export const useGmxClosePositions = () => {
+  const { address: accountAddress } = useAccount();
   const result = useQuery({
-    queryKey: ["closed-positions"],
+    queryKey: ["gmx-closed-positions", accountAddress],
     queryFn: async () => {
       const positionClosedFilter = await publicClient.createContractEventFilter(
         {
           abi: gmxABI,
           eventName: "PositionClosed",
           fromBlock: 0n,
+          args: { user: accountAddress },
         }
       );
       const positionClosedLogs = await publicClient.getFilterLogs({

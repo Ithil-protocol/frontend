@@ -1,5 +1,16 @@
 export const vaultABI = [
   {
+    inputs: [
+      {
+        internalType: "contract IERC20Metadata",
+        name: "_token",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
     inputs: [],
     name: "FeeUnlockTimeOutOfRange",
     type: "error",
@@ -218,6 +229,19 @@ export const vaultABI = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "DOMAIN_SEPARATOR",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -271,7 +295,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "address",
-        name: "assetTokenAddress",
+        name: "",
         type: "address",
       },
     ],
@@ -343,7 +367,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "assets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -362,7 +386,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "shares",
+        name: "",
         type: "uint256",
       },
     ],
@@ -424,8 +448,32 @@ export const vaultABI = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
         internalType: "uint256",
-        name: "assets",
+        name: "subtractedValue",
+        type: "uint256",
+      },
+    ],
+    name: "decreaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_assets",
         type: "uint256",
       },
       {
@@ -438,7 +486,51 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "shares",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "assets",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "receiver",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "v",
+        type: "uint8",
+      },
+      {
+        internalType: "bytes32",
+        name: "r",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "depositWithPermit",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
         type: "uint256",
       },
     ],
@@ -500,6 +592,30 @@ export const vaultABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "addedValue",
+        type: "uint256",
+      },
+    ],
+    name: "increaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "isLocked",
     outputs: [
@@ -526,10 +642,23 @@ export const vaultABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "manager",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
-        name: "receiver",
+        name: "",
         type: "address",
       },
     ],
@@ -537,7 +666,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "maxAssets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -548,7 +677,7 @@ export const vaultABI = [
     inputs: [
       {
         internalType: "address",
-        name: "receiver",
+        name: "",
         type: "address",
       },
     ],
@@ -556,7 +685,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "maxShares",
+        name: "",
         type: "uint256",
       },
     ],
@@ -575,7 +704,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "maxShares",
+        name: "",
         type: "uint256",
       },
     ],
@@ -594,7 +723,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "maxAssets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -618,7 +747,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "assets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -654,6 +783,68 @@ export const vaultABI = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "nonces",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "v",
+        type: "uint8",
+      },
+      {
+        internalType: "bytes32",
+        name: "r",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "permit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "assets",
         type: "uint256",
@@ -663,7 +854,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "shares",
+        name: "",
         type: "uint256",
       },
     ],
@@ -682,7 +873,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "assets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -701,7 +892,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "assets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -720,7 +911,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "shares",
+        name: "",
         type: "uint256",
       },
     ],
@@ -749,7 +940,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "assets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -836,7 +1027,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "totalManagedAssets",
+        name: "",
         type: "uint256",
       },
     ],
@@ -931,7 +1122,7 @@ export const vaultABI = [
     outputs: [
       {
         internalType: "uint256",
-        name: "shares",
+        name: "",
         type: "uint256",
       },
     ],
