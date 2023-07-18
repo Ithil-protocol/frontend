@@ -74,7 +74,7 @@ const TRowOther: FC<Props> = ({ data }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        Aave
+        {data.type}
       </Td>
       <Td>
         <Text

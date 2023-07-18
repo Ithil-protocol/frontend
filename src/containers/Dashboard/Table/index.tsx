@@ -42,11 +42,9 @@ const Table: FC<Props> = ({ columns, activeView }) => {
 
   const isEmpty = positions.length === 0;
 
-  const { data: closed } = useClosePositions();
+  const closedPositions = useClosePositions();
   const hasItems =
-    activeView === "Active"
-      ? positions.length > 0
-      : closed && closed.length > 0;
+    activeView === "Active" ? positions.length > 0 : closedPositions.length > 0;
 
   return (
     <TableContainer width="full">
@@ -109,9 +107,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                 })
               )
             : activeView === "Closed" &&
-              closed &&
-              closed.length > 0 &&
-              closed.map((item, key) =>
+              closedPositions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
                   return (
                     <TRowOther
@@ -121,6 +117,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         createdAt: item.agreement?.createdAt,
                         margin: fixPrecision(Number(loanItem.margin), 2),
                         token: loanItem.token,
+                        type: item.type,
                       }}
                     />
                   );

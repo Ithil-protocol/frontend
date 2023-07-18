@@ -64,6 +64,7 @@ export interface TRowTypes {
   amount: bigint;
   margin: string | number;
   createdAt: bigint | undefined;
+  type: string;
 }
 
 export interface PageHeading {
