@@ -59,7 +59,9 @@ const ServiceCard: FC<ServiceCardProps> = ({
             icon="ph:lightning-fill"
             color={colorMode === "dark" ? "white" : "black"}
           ></Icon>
-          <Text textStyle="slender-sm">{multiplier}</Text>
+          <Text textStyle="slender-sm" className="whitespace-nowrap">
+            {multiplier}
+          </Text>
         </Box>
       </HStack>
       <Heading size="h3" className="mb-6">
