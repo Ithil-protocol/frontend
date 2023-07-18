@@ -1,11 +1,10 @@
-import { FC, useRef, useState } from "react";
+import { waitForTransaction } from "@wagmi/core";
+import { FC, useState } from "react";
 import { formatUnits } from "viem";
 import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { useVault } from "@/hooks/use-vault.hook";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
-import { useTransaction } from "@/hooks/useTransaction";
-import { Address } from "@/types";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,
@@ -20,7 +19,7 @@ interface LendingProps {
 }
 export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // state
-  const inputValueRef = useRef("0");
+  // const inputValueRef = useRef("0");
 
   const [inputAmount, setInputAmount] = useState<string>("0");
   // in Withdraw, this represents Shares, not Assets
@@ -50,11 +49,49 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   const {
     data: withdrawData,
     isLoading: isWithdrawLoading,
-    writeAsync: withdraw,
+    write: withdraw,
   } = useContractWrite({
     address: token.vaultAddress,
     abi: erc4626ABI,
     functionName: "redeem",
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: `Withdrawing ${inputAmount} ${token.name}`,
+        status: "loading",
+        duration: 0,
+      });
+    },
+    onSuccess: async ({ hash }) => {
+      try {
+        await waitForTransaction({
+          hash,
+        });
+        notificationDialog.openDialog({
+          title: `Withdrawn ${inputAmount} ${token.name}`,
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
+        setInputAmount("0");
+        setInputBigNumber(BigInt(0));
+      } catch (err) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: "Something went wrong",
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: () => {
+      notificationDialog.openDialog({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+        duration: 0,
+      });
+    },
   });
   const { data: assetsRatioData, isLoading: isAssetsRatioLoading } =
     useConvertToAssets();
@@ -68,7 +105,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     assetsRatioData,
     token.decimals
   );
-  const isButtonLoading = isWithdrawLoading || isMaxRedeemLoading;
+  const isButtonLoading = isMaxRedeemLoading;
   const isRequiredInfoLoading = isAssetsRatioLoading || isSharesRatioLoading;
   // const isPrepareError = isPrRedeemError;
   const isInconsistent = balance ? inputBigNumber > balance.value : true;
@@ -101,22 +138,11 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     setInputBigNumber(maxRedeem ?? BigInt(0));
   };
 
-  useTransaction(
-    withdrawData?.hash as Address,
-    `Withdraw ${inputValueRef.current} ${token.name}`
-  );
-
   const handleClick = async () => {
-    inputValueRef.current = inputAmount;
-
     try {
-      await withdraw({
+      withdraw({
         args: [inputBigNumber, address!, address!],
       });
-      // await trackTransaction(result, `Withdraw ${inputAmount} ${token.name}`);
-      inputValueRef.current = inputAmount;
-      setInputAmount("0");
-      setInputBigNumber(BigInt(0));
     } catch (error) {
       notificationDialog.openDialog({
         title: (error as { shortMessage: string }).shortMessage,
