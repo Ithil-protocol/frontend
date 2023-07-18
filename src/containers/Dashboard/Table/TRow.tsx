@@ -86,7 +86,8 @@ const TRow: FC<TRowProps> = ({ data }) => {
       args: [
         data.id,
         encodeAbiParameters(parseAbiParameters("uint256"), [
-          (data.quote * 999n) / 1000n,
+          // (data.quote * 999n) / 1000n,
+          0n,
         ]),
       ],
     });
