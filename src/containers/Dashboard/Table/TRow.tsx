@@ -30,7 +30,6 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   id: bigint | undefined;
   quote: bigint | undefined;
   formattedPnl: string;
-  margin: number;
   type: string;
 }
 

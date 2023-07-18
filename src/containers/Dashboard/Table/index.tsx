@@ -9,6 +9,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { FC } from "react";
+import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
 import {
@@ -16,7 +17,7 @@ import {
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
-import { fixPrecision } from "@/utils";
+import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 import { mode } from "@/utils/theme";
 
 import TRow from "./TRow";
@@ -69,39 +70,45 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           gmxPositions.length > 0 &&
           aavePositions.length > 0 ? (
             [...aavePositions, ...gmxPositions].sort().map((item, key) =>
-              item.agreement?.loans.map((loanItem) => (
-                <TRow
-                  key={key}
-                  data={{
-                    amount: loanItem.amount,
-                    margin: fixPrecision(Number(loanItem.margin), 2),
-                    token: loanItem.token,
-                    formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
-                    pnl: item.pnl,
-                    pnlPercentage: fixPrecision(
-                      +item.pnlPercentage!,
-                      2
-                    ).toString(),
-                    id: item.id,
-                    quote: item.quote,
-                    type: item.type,
-                  }}
-                />
-              ))
+              item.agreement?.loans.map((loanItem) => {
+                const vault = getVaultByTokenAddress(loanItem.token);
+
+                return (
+                  <TRow
+                    key={key}
+                    data={{
+                      amount: loanItem.amount,
+                      margin: formatUnits(loanItem.margin, vault.decimals),
+                      token: loanItem.token,
+                      formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
+                      pnl: item.pnl,
+                      pnlPercentage: fixPrecision(
+                        +item.pnlPercentage!,
+                        2
+                      ).toString(),
+                      id: item.id,
+                      quote: item.quote,
+                      type: item.type,
+                    }}
+                  />
+                );
+              })
             )
           ) : activeView === "Closed" && closed && closed.length > 0 ? (
             closed.map((item, key) =>
-              item.agreement?.loans.map((loanItem) => (
-                <TRowOther
-                  key={key}
-                  data={{
-                    amount: loanItem.amount,
-                    createdAt: item.agreement?.createdAt,
-                    margin: fixPrecision(Number(loanItem.margin), 2),
-                    token: loanItem.token,
-                  }}
-                />
-              ))
+              item.agreement?.loans.map((loanItem) => {
+                return (
+                  <TRowOther
+                    key={key}
+                    data={{
+                      amount: loanItem.amount,
+                      createdAt: item.agreement?.createdAt,
+                      margin: fixPrecision(Number(loanItem.margin), 2),
+                      token: loanItem.token,
+                    }}
+                  />
+                );
+              })
             )
           ) : (
             <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
