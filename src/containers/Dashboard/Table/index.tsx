@@ -2,17 +2,22 @@ import {
   Table as DefaultTable,
   TableContainer,
   Tbody,
+  Td,
   Th,
   Thead,
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
 import { FC } from "react";
+import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
-import { useOpenPositions } from "@/hooks/useOpenPositions";
+import {
+  useAaveOpenPositions,
+  useGmxOpenPositions,
+} from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
-import { fixPrecision } from "@/utils";
+import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 import { mode } from "@/utils/theme";
 
 import TRow from "./TRow";
@@ -25,8 +30,21 @@ interface Props {
 
 const Table: FC<Props> = ({ columns, activeView }) => {
   const { colorMode } = useColorMode();
-  const { positions } = useOpenPositions();
-  const { data: closed } = useClosePositions();
+  const { positions: aavePositions } = useAaveOpenPositions();
+  const { positions: gmxPositions } = useGmxOpenPositions();
+
+  const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
+    return (
+      new Date(Number(b.agreement?.createdAt)).getTime() -
+      new Date(Number(a.agreement?.createdAt)).getTime()
+    );
+  });
+
+  const isEmpty = positions.length === 0;
+
+  const closedPositions = useClosePositions();
+  const hasItems =
+    activeView === "Active" ? positions.length > 0 : closedPositions.length > 0;
 
   return (
     <TableContainer width="full">
@@ -36,59 +54,75 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         width="full"
       >
         <Thead>
-          <Tr width="48">
-            {columns.map((col, index) => (
-              <Th
-                width="48"
-                color={mode(colorMode, "primary.700", "primary.700.dark")}
-                className="font-sans"
-                fontSize="18px"
-                fontWeight="medium"
-                key={col + index}
-              >
-                {col}
-              </Th>
-            ))}
+          <Tr width="56">
+            {hasItems &&
+              columns.map((col, index) => (
+                <Th
+                  width="72"
+                  color={mode(colorMode, "primary.700", "primary.700.dark")}
+                  className="font-sans"
+                  fontSize="18px"
+                  fontWeight="medium"
+                  key={col + index}
+                >
+                  {col}
+                </Th>
+              ))}
           </Tr>
         </Thead>
+        {isEmpty && (
+          <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
+            <Td>
+              {activeView === "Active"
+                ? "You don't have any recorded open positions."
+                : "You don't have any recorded closed positions."}
+            </Td>
+          </Tr>
+        )}
         <Tbody>
-          {activeView === "Active" &&
-            positions &&
-            positions.map((item, key) =>
-              item.agreement?.loans.map((loanItem) => (
-                <TRow
-                  key={key}
-                  data={{
-                    amount: loanItem.amount,
-                    margin: loanItem.margin,
-                    token: loanItem.token,
-                    formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
-                    pnl: item.pnl,
-                    pnlPercentage: fixPrecision(
-                      +item.pnlPercentage!,
-                      2
-                    ).toString(),
-                    id: item.id,
-                    quote: item.quote,
-                  }}
-                />
-              ))
-            )}
-          {activeView === "Closed" &&
-            closed &&
-            closed.map((item, key) =>
-              item.agreement?.loans.map((loanItem) => (
-                <TRowOther
-                  key={key}
-                  data={{
-                    amount: loanItem.amount,
-                    createdAt: item.agreement?.createdAt,
-                    margin: loanItem.margin,
-                    token: loanItem.token,
-                  }}
-                />
-              ))
-            )}
+          {activeView === "Active"
+            ? positions.map((item, key) =>
+                item.agreement?.loans.map((loanItem) => {
+                  const vault = getVaultByTokenAddress(loanItem.token);
+
+                  return (
+                    <TRow
+                      key={key}
+                      data={{
+                        amount: loanItem.amount,
+                        margin: formatUnits(loanItem.margin, vault.decimals),
+                        token: loanItem.token,
+                        formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
+                        pnl: item.pnl,
+                        pnlPercentage: fixPrecision(
+                          +item.pnlPercentage!,
+                          2
+                        ).toString(),
+                        id: item.id,
+                        quote: item.quote,
+                        type: item.type,
+                      }}
+                    />
+                  );
+                })
+              )
+            : activeView === "Closed" &&
+              closedPositions.map((item, key) =>
+                item.agreement?.loans.map((loanItem) => {
+                  return (
+                    <TRowOther
+                      key={key}
+                      data={{
+                        amount: loanItem.amount,
+                        createdAt: item.agreement?.createdAt,
+                        margin: fixPrecision(Number(loanItem.margin), 2),
+                        token: loanItem.token,
+                        type: item.type,
+                      }}
+                    />
+                  );
+                })
+              )}
         </Tbody>
       </DefaultTable>
     </TableContainer>

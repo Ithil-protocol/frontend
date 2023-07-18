@@ -31,7 +31,7 @@ const ToolTip: FC<TooltipProps<ValueType, NameType>> = ({
         </HStack>
         <HStack>
           <Text>{payload?.[0]?.name}:</Text>
-          <Text>{`${payload?.[0].value?.toString()}`}</Text>
+          <Text>{`${payload?.[0]?.value?.toString()}`}</Text>
         </HStack>
       </Box>
     );

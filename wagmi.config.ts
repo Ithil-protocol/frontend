@@ -1,6 +1,7 @@
 import { defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
 import { Address } from "viem";
+import { erc20ABI } from "wagmi";
 
 import { aaveABI, gmxABI, vaultABI } from "@/abi";
 import contracts from "@/deploy/contracts.json";
@@ -19,17 +20,12 @@ export default defineConfig([
         //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
         // },
         address: {
-          42161: contracts.aaveService as Address,
+          98745: contracts.aaveService as Address,
         },
         abi: aaveABI,
       },
     ],
-    plugins: [
-      react({
-        useContractWrite: false,
-        useContractFunctionWrite: false,
-      }),
-    ],
+    plugins: [react()],
   },
   {
     out: "src/hooks/generated/vault.ts",
@@ -39,12 +35,7 @@ export default defineConfig([
         abi: vaultABI,
       },
     ],
-    plugins: [
-      react({
-        useContractWrite: false,
-        useContractFunctionWrite: false,
-      }),
-    ],
+    plugins: [react()],
   },
   {
     out: "src/hooks/generated/gmx.ts",
@@ -53,15 +44,20 @@ export default defineConfig([
         name: "Gmx",
         abi: gmxABI,
         address: {
-          42161: contracts.gmxService as Address,
+          98745: contracts.gmxService as Address,
         },
       },
     ],
-    plugins: [
-      react({
-        useContractWrite: false,
-        useContractFunctionWrite: false,
-      }),
+    plugins: [react()],
+  },
+  {
+    out: "src/hooks/generated/token.ts",
+    contracts: [
+      {
+        abi: erc20ABI,
+        name: "Token",
+      },
     ],
+    plugins: [react()],
   },
 ]);

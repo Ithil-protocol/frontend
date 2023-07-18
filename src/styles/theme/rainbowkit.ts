@@ -20,7 +20,7 @@ export const rainbowkitDarkTheme: Theme = merge(midnightTheme(), {
 
 export const rainbowkitLightTheme: Theme = merge(lightTheme(), {
   colors: {
-    connectButtonInnerBackground: "#151A29",
+    connectButtonInnerBackground: palette.colors.primary[200],
     modalText: palette.colors.primary["main.dark"],
   },
   fonts: {

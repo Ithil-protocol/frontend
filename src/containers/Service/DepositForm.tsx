@@ -10,8 +10,10 @@ import { useRouter } from "next/router";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
+import { getDecimalRegex } from "@/data/regex";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { palette } from "@/styles/theme/palette";
+import { AaveAsset } from "@/types/onchain.types";
 import { mode, pickColor } from "@/utils/theme";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -19,16 +21,22 @@ import FormDescriptionItem from "./FormDescriptionItem";
 
 interface Props {
   leverage: string;
+  slippage: string;
   setLeverage: Dispatch<SetStateAction<string>>;
+  setSlippage: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
   interestAndSpreadInPercent: number;
+  assetDecimal?: AaveAsset["decimals"];
 }
 
 const DepositForm: FC<Props> = ({
+  assetDecimal = 6,
+  interestAndSpreadInPercent,
+  isLoading,
   leverage,
   setLeverage,
-  isLoading,
-  interestAndSpreadInPercent,
+  setSlippage,
+  slippage,
 }) => {
   const { colorMode } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
@@ -46,7 +54,6 @@ const DepositForm: FC<Props> = ({
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
   };
-  console.log(interestAndSpreadInPercent);
 
   return (
     <Box width="full" gap="30px">
@@ -131,7 +138,10 @@ const DepositForm: FC<Props> = ({
               <NumberInput
                 width="100%"
                 value={leverage}
-                onChange={setLeverage}
+                onChange={(value) => {
+                  if (getDecimalRegex(assetDecimal).test(value) || value === "")
+                    setLeverage(value);
+                }}
                 step={0.01}
                 precision={2}
                 min={1.01}
@@ -146,6 +156,11 @@ const DepositForm: FC<Props> = ({
               <NumberInput
                 width="100%"
                 step={0.1}
+                value={slippage}
+                onChange={(value) => {
+                  if (getDecimalRegex(assetDecimal).test(value) || value === "")
+                    setSlippage(value);
+                }}
                 precision={1}
                 min={0.1}
                 defaultValue={0.1}

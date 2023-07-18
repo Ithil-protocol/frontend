@@ -1,7 +1,7 @@
-import { toHex } from "viem";
+import { parseUnits } from "viem";
 import { type Address } from "wagmi";
 
-import { useRateAndSpread } from "@/hooks/useRateAndSpread";
+import { Token } from "@/types/onchain.types";
 
 interface ServiceLoan {
   token: Address;
@@ -35,33 +35,39 @@ const leverageConverter = (amount: bigint, leverage: number) => {
   return result / BigInt(100);
 };
 
-export const usePrepareOrder = (
-  token: Address,
-  aToken: Address,
-  amount: bigint,
-  leverage: number
-) => {
-  const amountInLeverage = leverageConverter(amount, leverage);
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-  } = useRateAndSpread({
-    tokenAddress: token,
-    loan: amountInLeverage,
-    margin: amount,
-  });
+interface PrepareOrderProps {
+  token: Token;
+  collateralToken: Address;
+  amount: string;
+  leverage: string;
+  interestAndSpread: bigint;
+  extraData: Address;
+}
+
+export const usePrepareOrder = ({
+  token,
+  collateralToken,
+  amount,
+  leverage,
+  interestAndSpread,
+  extraData,
+}: PrepareOrderProps) => {
+  const amountInLeverage = parseUnits(
+    `${Number(amount) * Number(leverage)}`,
+    token.decimals
+  );
+  const bigintAmount = parseUnits(amount, token.decimals);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
-    token: aToken,
+    token: collateralToken,
     identifier: BigInt(0),
-    amount: amount + amountInLeverage,
+    amount: bigintAmount + amountInLeverage,
   };
   const loan: ServiceLoan = {
-    token,
+    token: token.tokenAddress,
     amount: amountInLeverage,
-    margin: amount,
+    margin: bigintAmount,
     interestAndSpread,
   };
   const agreement: ServiceAgreement = {
@@ -73,12 +79,12 @@ export const usePrepareOrder = (
 
   const order: IServiceOrder = {
     agreement,
-    data: toHex(""),
+    data: extraData,
   };
+
+  console.log("ii", order);
 
   return {
     order,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
   };
 };

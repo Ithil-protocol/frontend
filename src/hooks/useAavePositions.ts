@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { aaveABI } from "@/abi";
 import { publicClient } from "@/wagmiTest/config";
-
-import { aaveABI } from "./generated/aave";
 
 interface Positions {
   open: any[];

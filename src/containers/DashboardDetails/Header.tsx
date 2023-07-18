@@ -3,14 +3,14 @@ import Link from "next/link";
 
 import { Aave, ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
-import { useGetAgreementsByUser } from "@/hooks/useGetAgreementByUser";
+import { useGetGmxAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { palette } from "@/styles/theme/palette";
 import { getVaultByTokenAddress } from "@/utils";
 import { pickColor } from "@/utils/theme";
 
 const Header = () => {
   const { colorMode } = useColorMode();
-  const { data } = useGetAgreementsByUser();
+  const { data } = useGetGmxAgreementsByUser();
   console.log(data);
 
   const tokenData = getVaultByTokenAddress(

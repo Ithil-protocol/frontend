@@ -32,6 +32,16 @@ export const gmxABI = [
   },
   {
     inputs: [],
+    name: "InterestRateOverflow",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidInitParams",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidStatus",
     type: "error",
   },
@@ -528,25 +538,6 @@ export const gmxABI = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "baseRisks",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint256",
         name: "tokenID",
         type: "uint256",
@@ -566,6 +557,45 @@ export const gmxABI = [
       },
     ],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "loan",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "margin",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "freeLiquidity",
+        type: "uint256",
+      },
+    ],
+    name: "computeBaseRateAndSpread",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -989,6 +1019,25 @@ export const gmxABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "halvingTime",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "id",
     outputs: [
@@ -1020,6 +1069,25 @@ export const gmxABI = [
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "latestAndBase",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -1502,7 +1570,12 @@ export const gmxABI = [
       },
       {
         internalType: "uint256",
-        name: "baseRisk",
+        name: "baseRate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "halfTime",
         type: "uint256",
       },
     ],

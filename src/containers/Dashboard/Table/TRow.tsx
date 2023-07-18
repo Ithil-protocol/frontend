@@ -7,17 +7,18 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { FC } from "react";
-import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
 
+import { aaveABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
-import { aaveABI, aaveAddress } from "@/hooks/generated/aave";
+import { aaveAddress } from "@/hooks/generated/aave";
+import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { queryClient } from "@/lib/react-query";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
@@ -29,6 +30,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   id: bigint | undefined;
   quote: bigint | undefined;
   formattedPnl: string;
+  type: string;
 }
 
 interface TRowProps {
@@ -37,24 +39,35 @@ interface TRowProps {
 
 const TRow: FC<TRowProps> = ({ data }) => {
   const { colorMode } = useColorMode();
-  const router = useRouter();
 
-  const { name } = getVaultByTokenAddress(data.token);
+  // const { name } = getVaultByTokenAddress(data.token);
 
-  const { trackTransaction, reportException } = useTransactionFeedback();
+  const { trackTransaction } = useTransactionFeedback();
 
+  const services = {
+    AAVE: {
+      abi: aaveABI,
+      address: aaveAddress[98745],
+    },
+    GMX: {
+      abi: gmxABI,
+      address: gmxAddress[98745],
+    },
+  } as const;
+
+  const service = services[data.type as keyof typeof services];
   const {
     writeAsync: close,
     isLoading,
     reset,
   } = useContractWrite({
-    address: aaveAddress[42161] as Address,
-    abi: aaveABI,
+    address: service.address,
+    abi: service.abi as any,
     functionName: "close",
     gas: 20000000n,
   });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const isMounted = useIsMounted();
   const handelCancelBtn = async (
@@ -74,11 +87,12 @@ const TRow: FC<TRowProps> = ({ data }) => {
         data.id,
         encodeAbiParameters(parseAbiParameters("uint256"), [
           (data.quote * 999n) / 1000n,
+          // 0n,
         ]),
       ],
     });
     await trackTransaction(result, "Position closed");
-    queryClient.clear();
+    queryClient.resetQueries();
   };
   const vaultTokenData = getVaultByTokenAddress(data.token);
 
@@ -88,7 +102,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
 
   return (
     <Tr
-      width="48"
+      width="72"
       bgColor={pickColor(colorMode, palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}
@@ -139,7 +153,7 @@ const TRow: FC<TRowProps> = ({ data }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        Aave
+        {data.type}
       </Td>
       <Td>
         {data.pnl !== undefined ? (
@@ -169,6 +183,14 @@ const TRow: FC<TRowProps> = ({ data }) => {
         ) : (
           <Loading />
         )}
+      </Td>
+      <Td
+        color={mode(colorMode, "primary.700", "primary.700.dark")}
+        fontWeight="medium"
+        fontSize="22px"
+        lineHeight="22px"
+      >
+        {data.margin}
       </Td>
       <Td textAlign="end" width={200} height="108px">
         <Button

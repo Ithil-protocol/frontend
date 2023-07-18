@@ -19,6 +19,7 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
   const router = useRouter();
   useEffect(() => {
     closeSidebar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   return (
