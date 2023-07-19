@@ -33,11 +33,11 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   type: string;
 }
 
-interface TRowProps {
+interface Props {
   data: Data;
 }
 
-const TRow: FC<TRowProps> = ({ data }) => {
+const ActiveTRow: FC<Props> = ({ data }) => {
   const { colorMode } = useColorMode();
 
   // const { name } = getVaultByTokenAddress(data.token);
@@ -206,4 +206,4 @@ const TRow: FC<TRowProps> = ({ data }) => {
   );
 };
 
-export default TRow;
+export default ActiveTRow;

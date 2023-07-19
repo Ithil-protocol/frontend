@@ -59,8 +59,8 @@ export const useGmxClosePositions = () => {
 };
 
 export const useClosePositions = () => {
-  const { data: aave = [] } = useAaveClosePositions();
-  const { data: gmx = [] } = useGmxClosePositions();
+  const { data: aave = [], isLoading: isLoadingAave } = useAaveClosePositions();
+  const { data: gmx = [], isLoading: isLoadingGmx } = useGmxClosePositions();
 
   const aaveWithTypes = aave.map((item) => ({
     ...item,
@@ -81,5 +81,8 @@ export const useClosePositions = () => {
 
   console.log("postions44", positions);
 
-  return positions;
+  return {
+    positions,
+    isLoading: isLoadingAave || isLoadingGmx,
+  };
 };

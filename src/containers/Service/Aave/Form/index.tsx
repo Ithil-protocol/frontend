@@ -140,7 +140,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   // computed properties
   const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled =
-    inputAmount === "0" || isInterestError || isFreeLiquidityError;
+    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
   const onMaxClick = () => {
