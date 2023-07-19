@@ -52,7 +52,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     activeView === "Active" ? positions.length > 0 : closedPositions.length > 0;
 
   useEffect(() => {
-    if (isLoadingAave || isLoadingClosed || isLoadingGmx) {
+    if (isLoadingAave || isLoadingGmx) {
       notificationDialog.openDialog({
         status: "loading",
         title: "Loading positions",
@@ -61,7 +61,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     } else {
       notificationDialog.closeDialog();
     }
-  }, [isLoadingAave, isLoadingClosed, isLoadingGmx]);
+  }, [isLoadingAave, isLoadingGmx]);
 
   return (
     <TableContainer width="full">
