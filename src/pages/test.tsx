@@ -1,10 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { Button } from "@chakra-ui/react";
-import { erc4626ABI, useContractWrite } from "wagmi";
-import { getContract } from "wagmi/actions";
-
-import { aaveABI } from "@/abi";
-import { aaveAddress } from "@/hooks/generated/aave";
+import { Address, erc20ABI, useContractWrite } from "wagmi";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -215,21 +211,21 @@ const Test = () => {
   // });
   // console.log("ii2", vaultFreeLiquidity);
 
-  const { write: setRiskParam } = useContractWrite({
-    mode: "prepared",
-    // @ts-ignore
-    request: {
-      abi: aaveABI,
-      address: aaveAddress[98745],
-      functionName: "setRiskParams",
-      args: [
-        "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
-        BigInt(3e15),
-        BigInt(1e16),
-        BigInt(3 * 86400),
-      ],
-    },
-  });
+  // const { write: setRiskParam } = useContractWrite({
+  //   mode: "prepared",
+  //   // @ts-ignore
+  //   request: {
+  //     abi: aaveABI,
+  //     address: aaveAddress[98745],
+  //     functionName: "setRiskParams",
+  //     args: [
+  //       "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+  //       BigInt(3e15),
+  //       BigInt(1e16),
+  //       BigInt(3 * 86400),
+  //     ],
+  //   },
+  // });
 
   // const {data:ss} = useGetAgreementsByUser();
   // console.log("ssss", ss);
@@ -244,16 +240,64 @@ const Test = () => {
 
   // return <p>{formatUnits(undefined,4)}</p>
 
-  const collateralToken = getContract({
-    address: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
-    abi: erc4626ABI,
-  });
-  const d = collateralToken.read.balanceOf([
-    "0x8d55C13ac69f01E8ea0d616aB798265D4DF72544",
-  ]);
-  d.then((e) => console.log("collateralToken33", e));
+  // const collateralToken = getContract({
+  //   address: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+  //   abi: erc4626ABI,
+  // });
+  // const d = collateralToken.read.balanceOf([
+  //   "0x8d55C13ac69f01E8ea0d616aB798265D4DF72544",
+  // ]);
+  // d.then((e) => console.log("collateralToken33", e));
 
-  return <Button onClick={() => setRiskParam?.()}>write</Button>;
+  const { isLoading: isApproveLoading, write: approve } = useContractWrite({
+    address: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9" as Address,
+    abi: erc20ABI,
+    functionName: "approve",
+    args: ["0xDB338034fE951cDFEdd0A1abAab43e5C1Efd0bCd", 1000n],
+    // onMutate: () => {
+    //   notificationDialog.openDialog({
+    //     title: `Approving ${inputAmount} ${token.name}`,
+    //     status: "loading",
+    //     duration: 0,
+    //   });
+    // },
+    // onSuccess: async ({ hash }) => {
+    //   try {
+    //     await waitForTransaction({
+    //       hash,
+    //     });
+    //     notificationDialog.openDialog({
+    //       title: `Approved ${inputAmount} ${token.name}`,
+    //       status: "success",
+    //       isClosable: true,
+    //       duration: 0,
+    //     });
+    //     refetchAllowance();
+    //   } catch (err) {
+    //     notificationDialog.openDialog({
+    //       title: "Failed",
+    //       description: "Something went wrong",
+    //       status: "error",
+    //       isClosable: true,
+    //       duration: 0,
+    //     });
+    //   }
+    // },
+    // onError: () => {
+    //   notificationDialog.openDialog({
+    //     title: "Something went wrong",
+    //     status: "error",
+    //     isClosable: true,
+    //     duration: 0,
+    //   });
+    // },
+  });
+
+  return (
+    <Button onClick={() => approve()}>
+      {isApproveLoading ? "approving..." : "approve"}
+    </Button>
+  );
 };
 
 export default Test;

@@ -1,15 +1,16 @@
-import { useLayoutEffect, useState } from "react";
+import { waitForTransaction } from "@wagmi/core";
 import { Address, formatUnits } from "viem";
-import { useAccount, useWaitForTransaction } from "wagmi";
+import { parseUnits } from "viem";
+import { useAccount } from "wagmi";
 
 import { Token } from "@/types/onchain.types";
-import { MAX_UINT256 } from "@/utils/constants";
 
 import {
   usePrepareTokenApprove,
   useTokenAllowance,
   useTokenApprove,
 } from "./generated/token";
+import { useNotificationDialog } from "./useNotificationDialog";
 
 interface AllowanceProps {
   amount: string | undefined;
@@ -21,7 +22,7 @@ export const useAllowance = ({
   spender,
   token,
 }: AllowanceProps) => {
-  const [isApproved, setIsApproved] = useState(false);
+  const notificationDialog = useNotificationDialog();
   const { address } = useAccount();
   const { data: allowanceValue, refetch: refetchAllowance } = useTokenAllowance(
     {
@@ -36,42 +37,61 @@ export const useAllowance = ({
     ? Number(formatUnits(allowanceValue, token.decimals))
     : 0;
 
+  console.log("currentAllowance", currentAllowance);
+
   const needAllowance = currentAllowance < Number(amount);
 
   const { config } = usePrepareTokenApprove({
     address: token.tokenAddress,
-    args: [spender, MAX_UINT256],
+    args: [spender, parseUnits(amount, token.decimals)],
     enabled: needAllowance,
     cacheTime: 0,
   });
 
-  const {
-    writeAsync,
-    write,
-    data: writeData,
-    isLoading: writeLoading,
-  } = useTokenApprove({
+  const mutation = useTokenApprove({
     ...config,
+    onMutate: ({ args }) => {
+      console.log("args33", args);
+      notificationDialog.openDialog({
+        title: "Approving",
+        status: "loading",
+        duration: 0,
+      });
+    },
+    onSuccess: async ({ hash }) => {
+      try {
+        await waitForTransaction({
+          hash,
+        });
+        notificationDialog.openDialog({
+          title: `Approved ${amount} ${token.name}`,
+          status: "success",
+          isClosable: true,
+          duration: 0,
+        });
+        refetchAllowance();
+      } catch (err) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: "Something went wrong",
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: () => {
+      notificationDialog.openDialog({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+        duration: 0,
+      });
+    },
   });
-
-  const { isLoading: waitLoading, isSuccess } = useWaitForTransaction({
-    hash: writeData?.hash,
-  });
-  useLayoutEffect(() => {
-    if (isSuccess) {
-      refetchAllowance();
-    }
-    if (needAllowance) {
-      setIsApproved(false);
-    } else {
-      setIsApproved(true);
-    }
-  }, [needAllowance, isSuccess, refetchAllowance]);
 
   return {
-    write,
-    writeAsync,
-    isApproved,
-    isLoading: writeLoading || waitLoading,
+    ...mutation,
+    isApproved: !needAllowance,
   };
 };
