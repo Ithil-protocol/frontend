@@ -133,7 +133,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   // computed properties
   const isButtonLoading = isInterestAndSpreadLoading;
-  const isButtonDisabled = isButtonLoading || inputAmount === "0";
+  const isButtonDisabled = isButtonLoading || +inputAmount === 0;
   const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
 
   const onMaxClick = () => {
