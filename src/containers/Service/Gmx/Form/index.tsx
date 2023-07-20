@@ -64,7 +64,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage: +leverage - 1,
+    leverage,
     margin: inputAmount,
     slippage,
   });
@@ -73,7 +73,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { order } = usePrepareOrder({
     token: asset,
     collateralToken: asset?.collateralTokenAddress,
-    leverage: +leverage - 1,
+    leverage,
     amount: inputAmount,
     interestAndSpread,
     extraData,
