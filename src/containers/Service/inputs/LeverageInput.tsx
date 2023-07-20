@@ -1,5 +1,10 @@
-import { InputGroup, NumberInput, NumberInputField } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  InputGroup,
+  NumberInput,
+  NumberInputField,
+  UseCounterProps,
+} from "@chakra-ui/react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import AdvancedFormLabel from "../AdvancedFormLabel";
 
@@ -10,14 +15,12 @@ interface Props {
 
 const LeverageInput: React.FC<Props> = ({ leverage, setLeverage }) => {
   const [value, setValue] = useState(`${Number(leverage) + 1}`);
-  const [once, setOnce] = useState(false);
-  useEffect(() => {
-    if (!once) {
-      setOnce(true);
-      return;
-    }
-    setLeverage(`${Number(value) - 1}`);
-  }, [value]);
+
+  const onInputChange: UseCounterProps["onChange"] = (value) => {
+    setValue(value);
+    setLeverage((+value - 1).toString());
+  };
+
   return (
     <>
       <AdvancedFormLabel label="Leverage" tooltip="Leverage" />
@@ -25,7 +28,7 @@ const LeverageInput: React.FC<Props> = ({ leverage, setLeverage }) => {
         <NumberInput
           width="100%"
           value={value}
-          onChange={setValue}
+          onChange={onInputChange}
           step={0.01}
           precision={2}
           min={1.01}
