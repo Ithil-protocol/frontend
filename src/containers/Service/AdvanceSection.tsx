@@ -12,6 +12,7 @@ import { CloseButtonWithCircle } from "@/assets/svgs";
 import { mode } from "@/utils/theme";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
+import LeverageInput from "./inputs/LeverageInput";
 
 interface Props {
   isAdvancedOptionsOpen: boolean;
@@ -31,6 +32,7 @@ const AdvanceSection: FC<Props> = ({
   setSlippage,
 }) => {
   const { colorMode } = useColorMode();
+  console.log("OOOO", leverage);
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
@@ -78,20 +80,7 @@ const AdvanceSection: FC<Props> = ({
 
       {isAdvancedOptionsOpen && (
         <>
-          <AdvancedFormLabel label="Leverage" tooltip="Leverage" />
-          <InputGroup size="md">
-            <NumberInput
-              width="100%"
-              value={leverage}
-              onChange={setLeverage}
-              step={0.01}
-              precision={2}
-              min={1.01}
-              variant="filled"
-            >
-              <NumberInputField />
-            </NumberInput>
-          </InputGroup>
+          <LeverageInput leverage={leverage} setLeverage={setLeverage} />
 
           <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
           <InputGroup size="md">
