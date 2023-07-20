@@ -13,6 +13,7 @@ import { mode } from "@/utils/theme";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
 import LeverageInput from "./inputs/LeverageInput";
+import SlippageInput from "./inputs/SlippageInput";
 
 interface Props {
   isAdvancedOptionsOpen: boolean;
@@ -32,7 +33,7 @@ const AdvanceSection: FC<Props> = ({
   setSlippage,
 }) => {
   const { colorMode } = useColorMode();
-  console.log("OOOO", leverage);
+  console.log("OOOO", slippage);
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
@@ -82,23 +83,7 @@ const AdvanceSection: FC<Props> = ({
         <>
           <LeverageInput leverage={leverage} setLeverage={setLeverage} />
 
-          <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
-          <InputGroup size="md">
-            <NumberInput
-              width="100%"
-              step={0.1}
-              value={`${Number(slippage) * 100}`}
-              onChange={(_, valueAsNumber) =>
-                setSlippage(`${valueAsNumber / 100}`)
-              }
-              precision={1}
-              min={0.1}
-              defaultValue={0.1}
-              variant="filled"
-            >
-              <NumberInputField />
-            </NumberInput>
-          </InputGroup>
+          <SlippageInput setSlippage={setSlippage} slippage={slippage} />
         </>
       )}
     </Box>
