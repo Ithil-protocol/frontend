@@ -10,6 +10,7 @@ import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 import { aaveABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
+import { appConfig } from "@/config";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -36,10 +37,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
-  const [leverage, setLeverage] = useState("1.5");
-  const [slippage, setSlippage] = useState("0.001");
+  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
+  const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const notificationDialog = useNotificationDialog();
-console.log("leverage:",leverage,"slippage:",slippage);
+  console.log("leverage:", leverage, "slippage:", slippage);
   // web3 hooks
   const { trackTransaction } = useTransactionFeedback();
 
