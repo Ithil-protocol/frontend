@@ -1,5 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
@@ -26,6 +26,7 @@ import AdvanceSection from "../../AdvanceSection";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
+import SubmitButton from "../../inputs/SubmitButton";
 
 // import DepositForm from "./DepositForm"
 
@@ -241,27 +242,16 @@ const Form = ({ asset }: { asset: Asset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <>
-        {isConnected ? (
-          <Button
-            mt="20px"
-            onClick={isApproved ? () => openPosition() : approve}
-            isDisabled={isButtonDisabled}
-            isLoading={isButtonLoading}
-            loadingText={isButtonLoading ? "Waiting" : undefined}
-          >
-            {!asset
-              ? "Loading..."
-              : isApproved
-              ? "Open position"
-              : `Approve ${asset?.name}`}
-          </Button>
-        ) : (
-          <Button mt="20px" onClick={openConnectModal}>
-            Connect Wallet
-          </Button>
-        )}
-      </>
+      <SubmitButton
+        approve={approve}
+        asset={asset}
+        isApproved={isApproved}
+        isButtonDisabled={isButtonDisabled}
+        isButtonLoading={isButtonLoading}
+        isConnected={isConnected}
+        openConnectModal={openConnectModal}
+        openPosition={openPosition}
+      />
     </div>
   );
 };
