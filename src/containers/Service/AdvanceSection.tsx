@@ -98,7 +98,7 @@ const AdvanceSection: FC<Props> = ({
             <NumberInput
               width="100%"
               step={0.1}
-              value={slippage}
+              value={`${Number(slippage) * 100}`}
               onChange={(_, valueAsNumber) =>
                 setSlippage(`${valueAsNumber / 100}`)
               }
