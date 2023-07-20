@@ -83,7 +83,9 @@ const AdvanceSection: FC<Props> = ({
             <NumberInput
               width="100%"
               value={leverage}
-              onChange={setLeverage}
+              onChange={(_, valueAsNumber) =>
+                setLeverage(`${valueAsNumber / 100}`)
+              }
               step={0.01}
               precision={2}
               min={1.01}
