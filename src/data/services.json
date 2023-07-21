@@ -57,7 +57,7 @@
     "apyRange": "1-3",
     "bestApy": 12,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC"],
+    "tokens": ["USDC"],
     "tvl": 158.86,
     "url": "/ithil-staking",
     "safety_score": {
