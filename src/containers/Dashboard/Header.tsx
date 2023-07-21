@@ -1,7 +1,8 @@
-import { Box, Link, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Link, Text } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { ArrowLeft } from "@/assets/svgs";
+import { useColorMode } from "@/hooks/useColorMode";
 import { viewTypes } from "@/types";
 
 import Views from "./Views";
@@ -13,8 +14,6 @@ interface Props {
 
 const Header: FC<Props> = ({ currentView, setActiveView }) => {
   const { colorMode } = useColorMode();
-
-  console.log("currentView33", currentView);
 
   return (
     <Box

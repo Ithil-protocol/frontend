@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Td,
-  Text,
-  Tr,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Td, Text, Tr } from "@chakra-ui/react";
 import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
@@ -17,12 +9,12 @@ import { Loading } from "@/components/loading";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { queryClient } from "@/lib/react-query";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getVaultByTokenAddress } from "@/utils";
-import { mode, pickColor } from "@/utils/theme";
 
 interface Data extends Omit<TRowTypes, "createdAt"> {
   pnlPercentage: string | undefined;
@@ -38,7 +30,7 @@ interface Props {
 }
 
 const ActiveTRow: FC<Props> = ({ data }) => {
-  const { colorMode } = useColorMode();
+  const { colorMode, mode, pickColor } = useColorMode();
 
   // const { name } = getVaultByTokenAddress(data.token);
 
@@ -56,11 +48,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   } as const;
 
   const service = services[data.type as keyof typeof services];
-  const {
-    writeAsync: close,
-    isLoading,
-    reset,
-  } = useContractWrite({
+  const { isLoading, writeAsync: close } = useContractWrite({
     address: service.address,
     abi: service.abi as any,
     functionName: "close",
@@ -102,7 +90,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   return (
     <Tr
       width="72"
-      bgColor={pickColor(colorMode, palette.colors.primary, "100")}
+      bgColor={pickColor(palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}
       // cursor="pointer"
@@ -114,7 +102,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         minHeight: "200px",
       }}
     >
-      <Td color={mode(colorMode, "primary.main.dark", "primary.main")}>
+      <Td color={mode("primary.main.dark", "primary.main")}>
         <HStack spacing="20px" alignItems="center">
           <Box>
             <HStack>
@@ -147,7 +135,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         </HStack>
       </Td>
       <Td
-        color={mode(colorMode, "primary.700", "primary.700.dark")}
+        color={mode("primary.700", "primary.700.dark")}
         fontWeight="medium"
         fontSize="22px"
         lineHeight="22px"
@@ -171,7 +159,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
               fontWeight="bold"
               fontFamily="18px"
               lineHeight="24px"
-              textColor={mode(colorMode, "primary.100", "primary.100.dark")}
+              textColor={mode("primary.100", "primary.100.dark")}
               paddingX="8px"
               paddingY="4px"
               fontSize="18px"
@@ -184,7 +172,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         )}
       </Td>
       <Td
-        color={mode(colorMode, "primary.700", "primary.700.dark")}
+        color={mode("primary.700", "primary.700.dark")}
         fontWeight="medium"
         fontSize="22px"
         lineHeight="22px"

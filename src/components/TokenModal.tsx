@@ -9,15 +9,14 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 
 import { CloseButton } from "@/assets/svgs";
 import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
+import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
-import { mode } from "@/utils/theme";
 
 import TokenIcon from "./TokenIcon";
 
@@ -34,7 +33,7 @@ const TokenModal: React.FC<Props> = ({
   onSelectToken,
   serviceName,
 }) => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   const handleClose = () => {
     if (onClose) onClose();
@@ -47,11 +46,11 @@ const TokenModal: React.FC<Props> = ({
     <>
       <ChakraModal onClose={handleClose} isCentered isOpen={isOpen}>
         <ModalOverlay backdropFilter="blur(10px)" />
-        <ModalContent bg={mode(colorMode, "primary.100", "primary.100.dark")}>
+        <ModalContent bg={mode("primary.100", "primary.100.dark")}>
           <ModalHeader
             style={{
-              display: "flex",
               alignItems: "center",
+              display: "flex",
               justifyContent: "space-between",
             }}
           >
@@ -141,7 +140,6 @@ const TokenModal: React.FC<Props> = ({
                             <Text
                               fontWeight="medium"
                               color={mode(
-                                colorMode,
                                 "secondary.100",
                                 "secondary.100.dark"
                               )}
@@ -151,11 +149,7 @@ const TokenModal: React.FC<Props> = ({
                             <Text
                               fontWeight="medium"
                               fontSize="md"
-                              color={mode(
-                                colorMode,
-                                "primary.400.dark",
-                                "primary.400"
-                              )}
+                              color={mode("primary.400.dark", "primary.400")}
                             >
                               {item.description}
                             </Text>

@@ -1,9 +1,10 @@
-import { useColorMode } from "@chakra-ui/react";
+import "@chakra-ui/react";
 import { type FC } from "react";
 import Switch from "react-switch";
 
 import SwitchDark from "@/assets/ithil/switchDark.svg";
 import SwitchLight from "@/assets/ithil/switchLight.svg";
+import { useColorMode } from "@/hooks/useColorMode";
 import { type PropsWithClassName } from "@/types/components.types";
 
 export const ThemeSwitch: FC<PropsWithClassName> = ({ className }) => {

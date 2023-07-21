@@ -1,12 +1,12 @@
-import { GridItem, Heading, VStack, useColorMode } from "@chakra-ui/react";
+import { GridItem, Heading, VStack } from "@chakra-ui/react";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { pickColor } from "@/utils/theme";
 
 import PositionsDetailItem from "./PositionsDetailItem";
 
 const PositionsDetails = () => {
-  const { colorMode } = useColorMode();
+  const { pickColor } = useColorMode();
 
   return (
     <GridItem
@@ -21,7 +21,7 @@ const PositionsDetails = () => {
         md: "30px",
         lg: "40px",
       }}
-      bg={pickColor(colorMode, palette.colors.primary, "100")}
+      bg={pickColor(palette.colors.primary, "100")}
     >
       <VStack alignItems="start" spacing="40px" height="full">
         <Heading

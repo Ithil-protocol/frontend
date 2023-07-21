@@ -1,6 +1,6 @@
-import { SkeletonText, Text, useColorMode } from "@chakra-ui/react";
+import { SkeletonText, Text } from "@chakra-ui/react";
 
-import { mode } from "@/utils/theme";
+import { useColorMode } from "@/hooks/useColorMode";
 
 interface Props {
   leftPart: string;
@@ -15,7 +15,7 @@ const FormDescriptionItem: React.FC<Props> = ({
   rightPart,
   isLoading = false,
 }) => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   return (
     <>
@@ -33,7 +33,7 @@ const FormDescriptionItem: React.FC<Props> = ({
             fontWeight: "400",
             lineHeight: "24px",
           }}
-          color={mode(colorMode, "primary.200.dark", "primary.700.dark")}
+          color={mode("primary.200.dark", "primary.700.dark")}
         >
           {leftPart}
         </Text>
