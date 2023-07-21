@@ -15,7 +15,7 @@ const ServiceIcon: FC<Props> = ({ name, width = 28, height = 28 }) => {
     GMX: Gmx,
   };
 
-  const Icon = icons[name];
+  const Icon = icons[name] || icons.AAVE;
   return <Icon width={width} height={height} />;
 };
 

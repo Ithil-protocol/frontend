@@ -1,9 +1,10 @@
 import { Address, formatEther, parseUnits } from "viem";
+import { useContractRead } from "wagmi";
 
+import { aaveABI } from "@/abi";
 import { Token } from "@/types/onchain.types";
 import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 
-import { useGmxComputeBaseRateAndSpread } from "./generated/gmx";
 import { useVaultFreeLiquidity } from "./generated/vault";
 
 const spreadToUint256 = (base: bigint, spread: bigint) => {
@@ -26,9 +27,10 @@ export const reverseDisplayInterestSpreadInPercent = (
 
 interface AaveRateAndSpreadProps {
   token: Token;
-  leverage: number;
+  leverage: string;
   margin: string;
   slippage: string;
+  serviceAddress: Address;
 }
 
 export const useRateAndSpread = ({
@@ -36,6 +38,7 @@ export const useRateAndSpread = ({
   leverage,
   margin,
   slippage,
+  serviceAddress,
 }: AaveRateAndSpreadProps) => {
   const loan = parseUnits(
     `${Number(margin) * Number(leverage)}`,
@@ -53,7 +56,10 @@ export const useRateAndSpread = ({
     data,
     isLoading: isBaseRateLoading,
     isError,
-  } = useGmxComputeBaseRateAndSpread({
+  } = useContractRead({
+    abi: aaveABI,
+    address: serviceAddress,
+    functionName: "computeBaseRateAndSpread",
     args: [
       token.tokenAddress,
       loan,
@@ -62,6 +68,8 @@ export const useRateAndSpread = ({
     ],
     enabled: !!vaultFreeLiquidity,
   });
+
+  console.log("BaseRateAndSpread", data);
 
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
