@@ -51,7 +51,7 @@ const SingleAssetAmount: FC<Props> = ({
           style={{
             cursor: "pointer",
           }}
-          onClick={switchableAsset ? tokenModal.openDialog : undefined}
+          onClick={() => switchableAsset && tokenModal.openDialog()}
           className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
         >
           {asset === null ? (
