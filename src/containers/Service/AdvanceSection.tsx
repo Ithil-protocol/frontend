@@ -1,17 +1,11 @@
-import {
-  Box,
-  Button,
-  InputGroup,
-  NumberInput,
-  NumberInputField,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Button, useColorMode } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
 import { mode } from "@/utils/theme";
 
-import AdvancedFormLabel from "./AdvancedFormLabel";
+import LeverageInput from "./inputs/LeverageInput";
+import SlippageInput from "./inputs/SlippageInput";
 
 interface Props {
   isAdvancedOptionsOpen: boolean;
@@ -78,36 +72,8 @@ const AdvanceSection: FC<Props> = ({
 
       {isAdvancedOptionsOpen && (
         <>
-          <AdvancedFormLabel label="Leverage" tooltip="Leverage" />
-          <InputGroup size="md">
-            <NumberInput
-              width="100%"
-              value={leverage}
-              onChange={setLeverage}
-              step={0.01}
-              precision={2}
-              min={1.01}
-              variant="filled"
-            >
-              <NumberInputField />
-            </NumberInput>
-          </InputGroup>
-
-          <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
-          <InputGroup size="md">
-            <NumberInput
-              width="100%"
-              step={0.1}
-              value={slippage}
-              onChange={setSlippage}
-              precision={1}
-              min={0.1}
-              defaultValue={0.1}
-              variant="filled"
-            >
-              <NumberInputField />
-            </NumberInput>
-          </InputGroup>
+          <LeverageInput leverage={leverage} setLeverage={setLeverage} />
+          <SlippageInput setSlippage={setSlippage} slippage={slippage} />
         </>
       )}
     </Box>

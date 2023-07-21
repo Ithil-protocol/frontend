@@ -136,6 +136,42 @@ export const fixPrecision = (value: number, precision: number) => {
   return value;
 };
 
+export const convertToString = (num: number) => {
+  // Convert to exponential notation
+  const exponentialStr = num.toExponential();
+
+  // Extract the exponent
+  const exponent = parseInt(exponentialStr.split("e")[1]);
+
+  // Convert the exponent to a positive integer, and add 1 to account for potential non-zero integer part
+  const decimals = Math.abs(exponent);
+
+  // Convert to fixed-point notation with the calculated decimals
+  return num.toFixed(decimals);
+};
+
+export const countDecimals = (value: number) => {
+  return value.toString().split(".")[1]?.length || 0;
+};
+
+export const multiplyBigInt = (bigNum: bigint, multiplier: number) => {
+  // Determine the count of decimal places in the multiplier
+  const decimals = countDecimals(multiplier);
+
+  // If the multiplier is an integer
+  if (decimals === 0) {
+    return bigNum * BigInt(multiplier);
+  }
+
+  // Adjust the multiplier by shifting the decimal places and convert to a BigInt
+  const bigMultiplier = BigInt(Math.floor(multiplier * 10 ** decimals));
+
+  // Perform the multiplication and division
+  const result = (bigNum * bigMultiplier) / BigInt(10 ** decimals);
+
+  return result;
+};
+
 export const pageHeading: PageHeading[] = [
   {
     pathName: "lend",
