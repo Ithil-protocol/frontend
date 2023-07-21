@@ -25,9 +25,15 @@ interface Props {
   isOpen: boolean;
   onClose?: VoidNoArgs;
   onSelectToken?: () => void;
+  serviceName: string;
 }
 
-const TokenModal: React.FC<Props> = ({ isOpen, onClose, onSelectToken }) => {
+const TokenModal: React.FC<Props> = ({
+  isOpen,
+  onClose,
+  onSelectToken,
+  serviceName,
+}) => {
   const { colorMode } = useColorMode();
 
   const handleClose = () => {
@@ -102,7 +108,7 @@ const TokenModal: React.FC<Props> = ({ isOpen, onClose, onSelectToken }) => {
                   <React.Fragment key={key}>
                     <Link
                       onClick={onSelectToken}
-                      href={`/services/aave/${item.name.toLowerCase()}`}
+                      href={`/services/${serviceName}/${item.name.toLowerCase()}`}
                     >
                       <ListItem>
                         <Button
