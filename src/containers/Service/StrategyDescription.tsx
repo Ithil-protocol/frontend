@@ -59,7 +59,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
         <div className="flex flex-col gap-2 p-5 rounded-xl bg-primary-200">
           <Heading size="h4">APY Breakdown</Heading>
           <div className="flex flex-row justify-between w-full">
-            <div className="flex flex-row items-baseline flex-grow gap-4">
+            <div className="flex flex-row items-baseline justify-center flex-grow gap-4">
               <Heading
                 size="h5"
                 color={pickColor(palette.colors.primary, "800")}

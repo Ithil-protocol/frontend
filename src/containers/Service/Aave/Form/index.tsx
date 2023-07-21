@@ -5,6 +5,7 @@ import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
+import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -73,7 +74,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     leverage,
     margin: inputAmount,
     slippage,
-    serviceAddress:aaveAddress[chainId]
+    serviceAddress: aaveAddress[chainId],
   });
   console.log(isInterestError, isFreeLiquidityError, "OOO");
 
@@ -97,7 +98,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     address: aaveAddress[98745],
     functionName: "open",
     args: [order],
-    account: accountAddress,
+    account: accountAddress as Address,
     onMutate: async () => {
       notificationDialog.openDialog({
         title: isApproved ? "Opening position" : "Approving",

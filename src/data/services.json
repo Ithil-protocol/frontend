@@ -57,7 +57,7 @@
     "apyRange": "1-3",
     "bestApy": 12,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC"],
+    "tokens": ["USDC"],
     "tvl": 158.86,
     "url": "/ithil-staking",
     "safety_score": {
@@ -89,7 +89,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
-    "url": "/aave",
+    "url": "/call-option",
     "safety_score": {
       "score": 9.3,
       "features": [
@@ -119,7 +119,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
-    "url": "/aave",
+    "url": "/fixed-yield",
     "safety_score": {
       "score": 9.3,
       "features": [

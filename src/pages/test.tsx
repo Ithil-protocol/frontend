@@ -10,7 +10,7 @@ const Test = () => {
   // const { data } = useVaultDetails("wbtc");
   // console.log("useVaultDetails", data);
 
-  // this order is usless (and not working.don't know why). but I dont remove it for future test
+  // this order is useless (and not working.don't know why). but I don't remove it for future test
   // const order = {
   //   agreement: {
   //     collaterals: [
@@ -63,7 +63,7 @@ const Test = () => {
   //   }
   // });
 
-  // this is for downloading events. it doesn't work I dont know why
+  // this is for downloading events. it doesn't work I don't know why
 
   // const yy = async () => {
   //   const filter = await publicClient.createContractEventFilter({

@@ -52,7 +52,6 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     address: service.address,
     abi: service.abi as any,
     functionName: "close",
-    gas: 20000000n,
   });
 
   // const queryClient = useQueryClient();
