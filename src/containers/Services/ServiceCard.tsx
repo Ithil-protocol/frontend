@@ -41,7 +41,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
   const { colorMode } = useColorMode();
 
   const handleEnterClick = (e: ButtonEvent) => {
-    if (to.includes("aave")) {
+    if (to.includes("aave") || to.includes("call-option")) {
       e.preventDefault();
       tokenModal.openDialog();
     }
