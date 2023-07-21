@@ -5,6 +5,8 @@ import { fixPrecision, getVaultByTokenAddress } from "@/utils";
 
 import { useGmxComputeBaseRateAndSpread } from "./generated/gmx";
 import { useVaultFreeLiquidity } from "./generated/vault";
+import { useContractRead } from "wagmi";
+import { aaveABI } from "@/abi";
 
 const spreadToUint256 = (base: bigint, spread: bigint) => {
   return ((base * 101n) / 100n) * BigInt(2 ** 128) + (spread * 101n) / 100n;
@@ -29,6 +31,7 @@ interface AaveRateAndSpreadProps {
   leverage: string;
   margin: string;
   slippage: string;
+  serviceAddress:Address;
 }
 
 export const useRateAndSpread = ({
@@ -36,6 +39,7 @@ export const useRateAndSpread = ({
   leverage,
   margin,
   slippage,
+  serviceAddress
 }: AaveRateAndSpreadProps) => {
   const loan = parseUnits(
     `${Number(margin) * Number(leverage)}`,
@@ -53,7 +57,10 @@ export const useRateAndSpread = ({
     data,
     isLoading: isBaseRateLoading,
     isError,
-  } = useGmxComputeBaseRateAndSpread({
+  } = useContractRead({
+    abi:aaveABI,
+    address:serviceAddress,
+    functionName:"computeBaseRateAndSpread",
     args: [
       token.tokenAddress,
       loan,
