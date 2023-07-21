@@ -74,7 +74,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     leverage,
     margin: inputAmount,
     slippage,
-    serviceAddress:aaveAddress[chainId]
+    serviceAddress: aaveAddress[chainId],
   });
   console.log(isInterestError, isFreeLiquidityError, "OOO");
 
@@ -94,16 +94,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    mode: "prepared",
-    request: {
-      abi: aaveABI,
-      address: aaveAddress[98745],
-      functionName: "open",
-      args: [order],
-      account: accountAddress as Address,
-      gas: 2_000_000n,
-      chain: undefined,
-    },
+    abi: aaveABI,
+    address: aaveAddress[98745],
+    functionName: "open",
+    args: [order],
+    account: accountAddress as Address,
     onMutate: async () => {
       notificationDialog.openDialog({
         title: isApproved ? "Opening position" : "Approving",
