@@ -69,6 +69,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     leverage,
     margin: inputAmount,
     slippage,
+    serviceAddress: gmxAddress[chainId],
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 

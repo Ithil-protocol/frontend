@@ -74,6 +74,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     leverage,
     margin: inputAmount,
     slippage,
+    serviceAddress:aaveAddress[chainId]
   });
   console.log(isInterestError, isFreeLiquidityError, "OOO");
 
