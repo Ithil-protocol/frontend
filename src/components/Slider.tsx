@@ -1,4 +1,5 @@
 import {
+  Badge,
   Slider as ChakraSlider,
   SliderFilledTrack,
   SliderMark,
@@ -13,27 +14,6 @@ interface Props {
 }
 
 const Slider: React.FC<Props> = ({ value, onChange }) => {
-  const numberBarItems = [];
-
-  for (let index = 1; index <= 12; index += 1) {
-    numberBarItems.push(
-      <SliderMark
-        style={{
-          borderRadius: "25%",
-          backgroundColor: index === value ? "#077CE0" : "cyan",
-          padding: "2px 10px",
-        }}
-        key={index}
-        mt={"20px"}
-        value={index}
-        fontSize="18px"
-        color={index === value ? "white" : "black"}
-      >
-        <span style={{}}>{index}</span>
-      </SliderMark>
-    );
-  }
-
   return (
     <>
       <ChakraSlider
@@ -46,7 +26,19 @@ const Slider: React.FC<Props> = ({ value, onChange }) => {
         step={1}
         style={{ width: "100%" }}
       >
-        {numberBarItems}
+        <SliderMark mt={5} value={value}>
+          <Badge
+            style={{
+              borderRadius: "25%",
+              padding: "2px 10px",
+            }}
+            ml="-3"
+            fontSize="18px"
+            colorScheme="cyan"
+          >
+            {value}
+          </Badge>
+        </SliderMark>
         <SliderTrack bg="white">
           <SliderFilledTrack bg="transparent" />
         </SliderTrack>
