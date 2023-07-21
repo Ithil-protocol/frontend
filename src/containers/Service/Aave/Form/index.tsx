@@ -5,6 +5,7 @@ import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
+import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -92,11 +93,16 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress[98745],
-    functionName: "open",
-    args: [order],
-    account: accountAddress,
+    mode: "prepared",
+    request: {
+      abi: aaveABI,
+      address: aaveAddress[98745],
+      functionName: "open",
+      args: [order],
+      account: accountAddress as Address,
+      gas: 2_000_000n,
+      chain: undefined,
+    },
     onMutate: async () => {
       notificationDialog.openDialog({
         title: isApproved ? "Opening position" : "Approving",
