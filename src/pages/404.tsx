@@ -1,12 +1,12 @@
-import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { IthilWizard } from "@/assets/svgs";
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { mode } from "@/utils/theme";
 
 const Page404 = () => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   return (
     <Box
@@ -52,7 +52,6 @@ const Page404 = () => {
           <Link style={{ width: "100%" }} href="/lend">
             <Button
               bg={mode(
-                colorMode,
                 palette.variants.primary.action,
                 palette.variants.primary["action.dark"]
               )}

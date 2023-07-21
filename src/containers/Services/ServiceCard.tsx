@@ -1,20 +1,12 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Heading,
-  Text,
-  VStack,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { FC } from "react";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { useTokenModal } from "@/hooks/useTokenModal";
 import { palette } from "@/styles/theme/palette";
 import { ButtonEvent, ServiceType } from "@/types";
-import { pickColor } from "@/utils/theme";
 
 import ServiceIcon from "../Service/ServiceIcon";
 
@@ -38,7 +30,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
   tvl,
 }) => {
   const tokenModal = useTokenModal();
-  const { colorMode } = useColorMode();
+  const { colorMode, pickColor } = useColorMode();
 
   const handleEnterClick = (e: ButtonEvent) => {
     if (to.includes("aave")) {
@@ -86,10 +78,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
       </Text>
       <VStack className="mt-auto" align="start">
         <HStack spacing="8px" marginBottom="16px">
-          <Text
-            textStyle="sm"
-            color={pickColor(colorMode, palette.colors.primary, "700")}
-          >
+          <Text textStyle="sm" color={pickColor(palette.colors.primary, "700")}>
             TVL:
           </Text>
           <Text textStyle="slender-sm2">{tvl}</Text>

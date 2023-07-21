@@ -7,15 +7,14 @@ import {
   Heading,
   Text,
   Tooltip,
-  useColorMode,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { FC } from "react";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { PropsWithClassName } from "@/types/components.types";
 import { SafetyScoreValue } from "@/utils";
-import { pickColor } from "@/utils/theme";
 
 interface SafetyScoreProps extends PropsWithClassName {
   score: number;
@@ -32,7 +31,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
   features,
   description,
 }) => {
-  const { colorMode } = useColorMode();
+  const { pickColor } = useColorMode();
 
   const safetyScoreToIcon: Record<SafetyScoreValue, string> = {
     [SafetyScoreValue.positive]: "tabler:arrow-badge-up",
@@ -41,9 +40,9 @@ const SafetyScore: FC<SafetyScoreProps> = ({
   };
 
   const safetyScoreToColor: Record<SafetyScoreValue, string> = {
-    [SafetyScoreValue.positive]: pickColor(colorMode, palette.safety, "green"),
-    [SafetyScoreValue.neutral]: pickColor(colorMode, palette.safety, "neutral"),
-    [SafetyScoreValue.negative]: pickColor(colorMode, palette.safety, "red"),
+    [SafetyScoreValue.positive]: pickColor(palette.safety, "green"),
+    [SafetyScoreValue.neutral]: pickColor(palette.safety, "neutral"),
+    [SafetyScoreValue.negative]: pickColor(palette.safety, "red"),
   };
 
   return (
@@ -54,7 +53,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
           <Text
             textStyle="slender-md"
             fontWeight={700}
-            color={pickColor(colorMode, palette.safety, "green")}
+            color={pickColor(palette.safety, "green")}
           >
             {score.toFixed(1)}
           </Text>
@@ -63,7 +62,7 @@ const SafetyScore: FC<SafetyScoreProps> = ({
               icon="ph:crown-duotone"
               width="28px"
               height="28px"
-              color={pickColor(colorMode, palette.safety, "green")}
+              color={pickColor(palette.safety, "green")}
             />
           )}
         </div>

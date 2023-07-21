@@ -6,20 +6,18 @@ import {
   Th,
   Thead,
   Tr,
-  useColorMode,
 } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
+import { useColorMode } from "@/hooks/useColorMode";
 import {
   useAaveOpenPositions,
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
 import { fixPrecision, getVaultByTokenAddress } from "@/utils";
-import { mode } from "@/utils/theme";
 
 import ActiveTRow from "./ActiveTRow";
 import CloseTRow from "./CloseTRow";
@@ -31,8 +29,7 @@ interface Props {
 }
 
 const Table: FC<Props> = ({ columns, activeView }) => {
-  const notificationDialog = useNotificationDialog();
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
   const { positions: aavePositions, isLoading: isLoadingAave } =
     useAaveOpenPositions();
   const { positions: gmxPositions, isLoading: isLoadingGmx } =
@@ -74,7 +71,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
               columns.map((col, index) => (
                 <Th
                   width="72"
-                  color={mode(colorMode, "primary.700", "primary.700.dark")}
+                  color={mode("primary.700", "primary.700.dark")}
                   className="font-sans"
                   fontSize="18px"
                   fontWeight="medium"

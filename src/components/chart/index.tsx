@@ -1,4 +1,4 @@
-import { useColorMode } from "@chakra-ui/react";
+import "@chakra-ui/react";
 import { FC } from "react";
 import {
   Area,
@@ -10,8 +10,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { pickColor } from "@/utils/theme";
 
 import ToolTip from "./ToolTip";
 
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const Chart: FC<Props> = ({ data, xKey, yKey, dataKey, xTickFormatter }) => {
-  const { colorMode } = useColorMode();
+  const { pickColor } = useColorMode();
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -45,7 +45,7 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey, xTickFormatter }) => {
         <Area
           type="basis"
           dataKey={dataKey}
-          stroke={pickColor(colorMode, palette.variants.primary, "action")}
+          stroke={pickColor(palette.variants.primary, "action")}
           fill="url(#chartFill)"
           activeDot={{ fill: "#077ce0", r: 4 }}
           strokeWidth={3}

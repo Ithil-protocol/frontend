@@ -1,15 +1,15 @@
-import { Box, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
+import { Box, SkeletonText, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { formatUnits } from "viem";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { useVaultDetails } from "@/hooks/useVaultDetails";
 import { VaultName } from "@/types";
 import { fixPrecision, getVaultByTokenName } from "@/utils";
-import { mode } from "@/utils/theme";
 
 const Content = () => {
   const router = useRouter();
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   const token = (router.query.token || "") as string;
 
@@ -62,7 +62,7 @@ const Content = () => {
         return (
           <Box
             key={item.title + index}
-            bg={mode(colorMode, "primary.100", "primary.100.dark")}
+            bg={mode("primary.100", "primary.100.dark")}
             style={{
               alignItems: "center",
               borderRadius: "10px",

@@ -6,7 +6,6 @@ import {
   MenuItem,
   MenuList,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
@@ -23,8 +22,8 @@ import {
   MagicMarker as MagicMarkerIcon,
   ThreeDot as ThreeDotIcon,
 } from "@/assets/svgs";
+import { useColorMode } from "@/hooks/useColorMode";
 import { routes, socialMedia } from "@/utils";
-import { mode } from "@/utils/theme";
 
 import { ThemeSwitch } from "./theme-switch";
 
@@ -34,7 +33,7 @@ interface Props {
 
 const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
   const { pathname } = useRouter();
-  const { colorMode } = useColorMode();
+  const { mode, colorMode } = useColorMode();
 
   const handleOpenSideBar = () => onSetSidebarOpen(true);
 
@@ -119,7 +118,6 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
                       }}
                       _hover={{
                         backgroundColor: mode(
-                          colorMode,
                           "primary.200",
                           "primary.200.dark"
                         ),
@@ -151,11 +149,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
                     borderRadius: "5px",
                   }}
                   _hover={{
-                    backgroundColor: mode(
-                      colorMode,
-                      "primary.200",
-                      "primary.200.dark"
-                    ),
+                    backgroundColor: mode("primary.200", "primary.200.dark"),
                   }}
                 >
                   <div
@@ -181,7 +175,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
         </div>
 
         <Box
-          bg={mode(colorMode, "primary.200", "primary.200.dark")}
+          bg={mode("primary.200", "primary.200.dark")}
           style={{
             borderRadius: "50%",
             marginLeft: "10px",

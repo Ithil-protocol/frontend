@@ -1,17 +1,10 @@
-import {
-  Button,
-  GridItem,
-  HStack,
-  Text,
-  VStack,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Button, GridItem, HStack, Text, VStack } from "@chakra-ui/react";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { mode, pickColor } from "@/utils/theme";
 
 const ClosePosition = () => {
-  const { colorMode } = useColorMode();
+  const { mode, pickColor } = useColorMode();
 
   return (
     <GridItem
@@ -26,7 +19,7 @@ const ClosePosition = () => {
         md: "30px",
         lg: "40px",
       }}
-      bg={pickColor(colorMode, palette.colors.primary, "100")}
+      bg={pickColor(palette.colors.primary, "100")}
       className="font-sans"
     >
       <VStack spacing="40px">
@@ -35,7 +28,7 @@ const ClosePosition = () => {
             fontWeight="light"
             fontSize="16px"
             lineHeight="24px"
-            color={pickColor(colorMode, palette.colors.primary, "700")}
+            color={pickColor(palette.colors.primary, "700")}
           >
             Position Value
           </Text>
@@ -44,7 +37,7 @@ const ClosePosition = () => {
               fontWeight="black"
               fontSize="16px"
               lineHeight="24px"
-              color={pickColor(colorMode, palette.colors.primary, "800")}
+              color={pickColor(palette.colors.primary, "800")}
             >
               USDC
             </Text>
@@ -52,15 +45,15 @@ const ClosePosition = () => {
               fontWeight="black"
               fontSize="16px"
               lineHeight="24px"
-              color={mode(colorMode, "primary.main.dark", "primary.main")}
+              color={mode("primary.main.dark", "primary.main")}
             >
               500
             </Text>
           </HStack>
         </HStack>
         <Button
-          bg={pickColor(colorMode, palette.colors.primary, "500")}
-          color={pickColor(colorMode, palette.safety, "red")}
+          bg={pickColor(palette.colors.primary, "500")}
+          color={pickColor(palette.safety, "red")}
         >
           Close Position
         </Button>

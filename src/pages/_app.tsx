@@ -1,4 +1,4 @@
-import { useColorMode } from "@chakra-ui/react";
+import "@chakra-ui/react";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import { WagmiConfig } from "wagmi";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageWrapper from "@/components/page-wrapper";
 import { testNetwork } from "@/config/chains";
+import { useColorMode } from "@/hooks/useColorMode";
 import { queryClient } from "@/lib/react-query";
 import { chains, wagmiClient } from "@/lib/wagmi";
 import NotificationDialogProvider from "@/providers/notificationDialog";

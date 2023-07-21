@@ -1,8 +1,8 @@
-import { Box, Button, useColorMode } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { CloseButtonWithCircle } from "@/assets/svgs";
-import { mode } from "@/utils/theme";
+import { useColorMode } from "@/hooks/useColorMode";
 
 import LeverageInput from "./inputs/LeverageInput";
 import SlippageInput from "./inputs/SlippageInput";
@@ -24,7 +24,7 @@ const AdvanceSection: FC<Props> = ({
   slippage,
   setSlippage,
 }) => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   const handleAdvancedOptionClick = (condition: boolean) => () => {
     setIsAdvancedOptionsOpen(condition);
@@ -53,8 +53,8 @@ const AdvanceSection: FC<Props> = ({
             padding: "10px",
           }}
           onClick={handleAdvancedOptionClick(true)}
-          color={mode(colorMode, "primary.100.dark", "primary.100")}
-          bg={mode(colorMode, "primary.400", "primary.500.dark")}
+          color={mode("primary.100.dark", "primary.100")}
+          bg={mode("primary.400", "primary.500.dark")}
         >
           <span
             style={{
