@@ -39,7 +39,7 @@ interface PrepareOrderProps {
   token: Token;
   collateralToken: Address;
   amount: string;
-  leverage: number;
+  leverage: string;
   interestAndSpread: bigint;
   extraData: Address;
 }

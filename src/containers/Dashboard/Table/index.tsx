@@ -8,7 +8,7 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
@@ -23,6 +23,7 @@ import { mode } from "@/utils/theme";
 
 import ActiveTRow from "./ActiveTRow";
 import CloseTRow from "./CloseTRow";
+import TRowLoading from "./TRowLoading";
 
 interface Props {
   columns: any[];
@@ -36,13 +37,14 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     useAaveOpenPositions();
   const { positions: gmxPositions, isLoading: isLoadingGmx } =
     useGmxOpenPositions();
-
   const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
     return (
       new Date(Number(b.agreement?.createdAt)).getTime() -
       new Date(Number(a.agreement?.createdAt)).getTime()
     );
   });
+
+  const [isLoadingPositions, setIsLoadingPositions] = useState<boolean>(false);
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
     useClosePositions();
@@ -53,13 +55,9 @@ const Table: FC<Props> = ({ columns, activeView }) => {
 
   useEffect(() => {
     if (isLoadingAave || isLoadingGmx) {
-      notificationDialog.openDialog({
-        status: "loading",
-        title: "Loading positions",
-        duration: 0,
-      });
+      setIsLoadingPositions(true);
     } else {
-      notificationDialog.closeDialog();
+      setIsLoadingPositions(false);
     }
   }, [isLoadingAave, isLoadingGmx]);
 
@@ -131,12 +129,25 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   );
                 })
               )}
-          {isPositionsExist && activeView === "Active" && (
-            <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
-              <Td>You don&apos;t have any recorded open positions.</Td>
-            </Tr>
-          )}
-          {isClosedExist && activeView === "Closed" && (
+
+          {isLoadingPositions &&
+            activeView === "Active" &&
+            Array.from({ length: 1 }).map((_, index) => (
+              <TRowLoading tdCount={5} key={index} />
+            ))}
+          {isLoadingClosed &&
+            activeView === "Closed" &&
+            Array.from({ length: 1 }).map((_, index) => (
+              <TRowLoading tdCount={4} key={index} />
+            ))}
+          {isPositionsExist &&
+            !isLoadingPositions &&
+            activeView === "Active" && (
+              <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
+                <Td>You don&apos;t have any recorded open positions.</Td>
+              </Tr>
+            )}
+          {isClosedExist && !isLoadingClosed && activeView === "Closed" && (
             <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
               <Td>You don&apos;t have any recorded closed positions.</Td>
             </Tr>

@@ -1,15 +1,17 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
+import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
+import { appConfig } from "@/config";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -26,6 +28,7 @@ import AdvanceSection from "../../AdvanceSection";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
+import SubmitButton from "../../inputs/SubmitButton";
 
 // import DepositForm from "./DepositForm"
 
@@ -36,10 +39,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState<string>("0");
-  const [leverage, setLeverage] = useState("2.5");
-  const [slippage, setSlippage] = useState("0.1");
+  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
+  const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const notificationDialog = useNotificationDialog();
-
+  console.log("leverage:", leverage, "slippage:", slippage);
   // web3 hooks
   const { trackTransaction } = useTransactionFeedback();
 
@@ -68,9 +71,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage: +leverage - 1,
+    leverage,
     margin: inputAmount,
     slippage,
+    serviceAddress: aaveAddress[chainId],
   });
   console.log(isInterestError, isFreeLiquidityError, "OOO");
 
@@ -79,7 +83,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { order } = usePrepareOrder({
     token: asset,
     collateralToken: asset?.collateralTokenAddress,
-    leverage: +leverage - 1,
+    leverage,
     amount: inputAmount,
     interestAndSpread,
     extraData,
@@ -94,7 +98,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     address: aaveAddress[98745],
     functionName: "open",
     args: [order],
-    account: accountAddress,
+    account: accountAddress as Address,
     onMutate: async () => {
       notificationDialog.openDialog({
         title: isApproved ? "Opening position" : "Approving",
@@ -153,7 +157,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
-  const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
+  const finalLeverage = isAdvancedOptionsOpen ? leverage : "1.5";
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";
@@ -247,27 +251,16 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <>
-        {isConnected ? (
-          <Button
-            mt="20px"
-            onClick={isApproved ? () => openPosition() : approve}
-            isDisabled={isButtonDisabled}
-            isLoading={isButtonLoading}
-            loadingText={isButtonLoading ? "Waiting" : undefined}
-          >
-            {!asset
-              ? "Loading..."
-              : isApproved
-              ? "Open position"
-              : `Approve ${asset?.name}`}
-          </Button>
-        ) : (
-          <Button mt="20px" onClick={openConnectModal}>
-            Connect Wallet
-          </Button>
-        )}
-      </>
+      <SubmitButton
+        approve={approve}
+        asset={asset}
+        isApproved={isApproved}
+        isButtonDisabled={isButtonDisabled}
+        isButtonLoading={isButtonLoading}
+        isConnected={isConnected}
+        openConnectModal={openConnectModal}
+        openPosition={openPosition}
+      />
     </div>
   );
 };
