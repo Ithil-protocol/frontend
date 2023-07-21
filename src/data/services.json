@@ -119,7 +119,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
-    "url": "/aave",
+    "url": "/fixed-yield",
     "safety_score": {
       "score": 9.3,
       "features": [
