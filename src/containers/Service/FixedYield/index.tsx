@@ -19,7 +19,7 @@ const FixedYield = () => {
 
   console.log("chartData", chartData);
 
-  const service = servicesJson.find((item) => item.name === "Call Option");
+  const service = servicesJson.find((item) => item.name === "Fixed Yield");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">
