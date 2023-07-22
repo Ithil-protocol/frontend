@@ -12,6 +12,7 @@ import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
 import { useColorMode } from "@/hooks/useColorMode";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import {
   useAaveOpenPositions,
   useGmxOpenPositions,
@@ -40,6 +41,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       new Date(Number(a.agreement?.createdAt)).getTime()
     );
   });
+  const isMounted = useIsMounted();
 
   const [isLoadingPositions, setIsLoadingPositions] = useState<boolean>(false);
 
@@ -47,8 +49,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     useClosePositions();
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
-  const hasItems =
-    activeView === "Active" ? positions.length > 0 : closedPositions.length > 0;
+  const hasItems = {
+    Active: positions.length > 0 || isLoadingAave || isLoadingGmx,
+    Closed: closedPositions.length > 0 || isLoadingClosed,
+  };
 
   useEffect(() => {
     if (isLoadingAave || isLoadingGmx) {
@@ -57,6 +61,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       setIsLoadingPositions(false);
     }
   }, [isLoadingAave, isLoadingGmx]);
+
+  if (!isMounted) return null;
 
   return (
     <TableContainer width="full">
@@ -67,7 +73,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       >
         <Thead>
           <Tr width="56">
-            {hasItems &&
+            {hasItems["Active"] &&
               columns.map((col, index) => (
                 <Th
                   width="72"
@@ -129,12 +135,12 @@ const Table: FC<Props> = ({ columns, activeView }) => {
 
           {isLoadingPositions &&
             activeView === "Active" &&
-            Array.from({ length: 1 }).map((_, index) => (
+            Array.from({ length: 4 }).map((_, index) => (
               <TRowLoading tdCount={5} key={index} />
             ))}
           {isLoadingClosed &&
             activeView === "Closed" &&
-            Array.from({ length: 1 }).map((_, index) => (
+            Array.from({ length: 4 }).map((_, index) => (
               <TRowLoading tdCount={4} key={index} />
             ))}
           {isPositionsExist &&
