@@ -102,6 +102,7 @@ export type OpenTokenDialogFn = (serviceName?: string) => void;
 export interface TokenModalOptions {
   isClosable: boolean;
   onSelectTokenCallback: () => void;
+  returnPath: string;
 }
 
 export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;

@@ -5,9 +5,10 @@ import TokenModalComponent from "@/components/TokenModal";
 import TokenModalContext from "@/contexts/tokenModal";
 import { OpenTokenDialogFn, TokenModalOptions } from "@/types";
 
-export const getDefaultOptions = () => ({
+export const getDefaultOptions = (): TokenModalOptions => ({
   isClosable: true,
   onSelectTokenCallback: () => undefined,
+  returnPath: "",
 });
 
 const TokenModal: React.FC<PropsWithChildren> = ({ children }) => {
@@ -23,14 +24,19 @@ const TokenModal: React.FC<PropsWithChildren> = ({ children }) => {
   const handleSelectToken = () => {
     if (options.isClosable) {
       options.onSelectTokenCallback();
-      onClose();
+      handleClose();
     }
+  };
+
+  const handleClose = () => {
+    setOptions(getDefaultOptions());
+    onClose();
   };
 
   return (
     <TokenModalContext.Provider
       value={{
-        closeDialog: onClose,
+        closeDialog: handleClose,
         openDialog: handleOpen,
         setOptions,
         onSelectToken: handleSelectToken,
@@ -39,8 +45,9 @@ const TokenModal: React.FC<PropsWithChildren> = ({ children }) => {
       <TokenModalComponent
         isOpen={isOpen}
         serviceName={serviceName}
-        onClose={onClose}
+        onClose={handleClose}
         onSelectToken={handleSelectToken}
+        returnPath={options.returnPath}
       />
 
       {children}
