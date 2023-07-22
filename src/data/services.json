@@ -10,6 +10,7 @@
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
     "url": "/aave",
+    "hasIndex": true,
     "safety_score": {
       "score": 9.3,
       "features": [
@@ -41,6 +42,7 @@
     "tokens": ["WETH"],
     "tvl": 100,
     "url": "/gmx",
+    "hasIndex": false,
     "safety_score": {
       "score": 8,
       "features": [
@@ -63,6 +65,7 @@
     "tokens": ["USDC"],
     "tvl": 158.86,
     "url": "/ithil-staking",
+    "hasIndex": false,
     "safety_score": {
       "score": 9.3,
       "features": [
@@ -94,6 +97,7 @@
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
     "url": "/call-option",
+    "hasIndex": true,
     "safety_score": {
       "score": 9.3,
       "features": [
@@ -125,6 +129,7 @@
     "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 158.86,
     "url": "/fixed-yield",
+    "hasIndex": true,
     "safety_score": {
       "score": 9.3,
       "features": [
