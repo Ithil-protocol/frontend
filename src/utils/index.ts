@@ -194,3 +194,7 @@ export enum SafetyScoreValue {
 }
 
 export type serviceType = "aave";
+
+export const displayLeverage = (leverage: string) => {
+  return (Number(leverage) + 1).toString();
+};
