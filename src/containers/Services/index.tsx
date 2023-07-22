@@ -11,6 +11,7 @@ const ServicesPage = () => {
           assets={item.tokens}
           description={item.description}
           to={item.url}
+          hasIndex={item.hasIndex}
           multiplier={`${item.apyRange}%`}
           name={item.name}
           apy={`${item.bestApy}%`}

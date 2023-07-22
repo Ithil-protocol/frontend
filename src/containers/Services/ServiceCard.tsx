@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { FC } from "react";
@@ -6,9 +6,10 @@ import { FC } from "react";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useTokenModal } from "@/hooks/useTokenModal";
 import { palette } from "@/styles/theme/palette";
-import { ButtonEvent, ServiceType } from "@/types";
+import { ServiceType } from "@/types";
 
 import ServiceIcon from "../Service/ServiceIcon";
+import EnterButton from "./EnterButton";
 
 interface ServiceCardProps {
   assets: string[];
@@ -18,26 +19,23 @@ interface ServiceCardProps {
   name: string;
   apy: string;
   tvl: string;
+  hasIndex: boolean;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
+  apy,
   assets,
   description,
-  to,
+  hasIndex,
   multiplier,
   name,
-  apy,
+  to,
   tvl,
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode, pickColor } = useColorMode();
 
-  const handleEnterClick = (e: ButtonEvent) => {
-    if (assets.length > 1) {
-      e.preventDefault();
-      tokenModal.openDialog(to);
-    }
-  };
+  const handleEnterClick = () => tokenModal.openDialog(to);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
@@ -101,11 +99,13 @@ const ServiceCard: FC<ServiceCardProps> = ({
           ))}
         </Box>
       </VStack>
-      <Link href={`/services/${to}`}>
-        <Button onClick={handleEnterClick} size="lg" className="w-full">
-          Enter
-        </Button>
-      </Link>
+      {hasIndex ? (
+        <EnterButton onClick={handleEnterClick} />
+      ) : (
+        <Link href={`/services/${to}`}>
+          <EnterButton />
+        </Link>
+      )}
     </Box>
   );
 };
