@@ -160,7 +160,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
   const finalLeverage = isAdvancedOptionsOpen
     ? displayLeverage(leverage)
-    : appConfig.DEFAULT_LEVERAGE;
+    : displayLeverage(appConfig.DEFAULT_LEVERAGE);
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";

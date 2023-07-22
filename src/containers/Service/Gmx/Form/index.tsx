@@ -152,7 +152,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
   const finalLeverage = isAdvancedOptionsOpen
     ? displayLeverage(leverage)
-    : appConfig.DEFAULT_LEVERAGE;
+    : displayLeverage(appConfig.DEFAULT_LEVERAGE);
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";
