@@ -145,7 +145,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled =
     +inputAmount === 0 || isInterestError || isFreeLiquidityError;
-  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "");
+  const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "");
