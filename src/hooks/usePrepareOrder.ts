@@ -2,6 +2,7 @@ import { parseUnits } from "viem";
 import { type Address } from "wagmi";
 
 import { Token } from "@/types/onchain.types";
+import { multiplyBigInt } from "@/utils";
 
 interface ServiceLoan {
   token: Address;
@@ -29,12 +30,6 @@ interface IServiceOrder {
   data: Address;
 }
 
-const leverageConverter = (amount: bigint, leverage: number) => {
-  const bigLeverage = BigInt(leverage * 100);
-  const result = amount * bigLeverage;
-  return result / BigInt(100);
-};
-
 interface PrepareOrderProps {
   token: Token;
   collateralToken: Address;
@@ -52,11 +47,9 @@ export const usePrepareOrder = ({
   interestAndSpread,
   extraData,
 }: PrepareOrderProps) => {
-  const amountInLeverage = parseUnits(
-    `${Number(amount) * Number(leverage)}`,
-    token.decimals
-  );
   const bigintAmount = parseUnits(amount, token.decimals);
+
+  const amountInLeverage = multiplyBigInt(bigintAmount, +leverage);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
@@ -81,8 +74,6 @@ export const usePrepareOrder = ({
     agreement,
     data: extraData,
   };
-
-  console.log("ii", order);
 
   return {
     order,
