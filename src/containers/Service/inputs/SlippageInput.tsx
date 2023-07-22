@@ -18,7 +18,11 @@ const SlippageInput: React.FC<Props> = ({ slippage, setSlippage }) => {
 
   const onInputChange: UseCounterProps["onChange"] = (value) => {
     setValue(value);
-    setSlippage((+value / 100).toString());
+    if (!isNaN(Number(value))) {
+      setSlippage((+value / 100).toString());
+    } else {
+      setSlippage("0");
+    }
   };
 
   return (
