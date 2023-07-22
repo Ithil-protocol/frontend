@@ -8,6 +8,7 @@ import { type FC, type PropsWithChildren } from "react";
 import { WagmiConfig } from "wagmi";
 
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Head from "@/components/Head";
 import PageWrapper from "@/components/page-wrapper";
 import { testNetwork } from "@/config/chains";
 import { useColorMode } from "@/hooks/useColorMode";
@@ -43,6 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GoogleAnalytics />
+      <Head />
       <WagmiConfig config={wagmiClient}>
         <QueryClientProvider client={queryClient}>
           <Chakra>
