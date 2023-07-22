@@ -49,10 +49,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     useClosePositions();
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
-  const hasItems =
-    activeView === "Active"
-      ? positions.length > 0 || isLoadingAave || isLoadingGmx
-      : closedPositions.length > 0 || isLoadingClosed;
+  const hasItems = {
+    Active: positions.length > 0 || isLoadingAave || isLoadingGmx,
+    Closed: closedPositions.length > 0 || isLoadingClosed,
+  };
 
   useEffect(() => {
     if (isLoadingAave || isLoadingGmx) {
@@ -73,7 +73,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       >
         <Thead>
           <Tr width="56">
-            {hasItems &&
+            {hasItems["Active"] &&
               columns.map((col, index) => (
                 <Th
                   width="72"
