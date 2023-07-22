@@ -57,6 +57,7 @@ export interface Service {
   url: string;
   safety_score: SafetyScore;
   explanation: string;
+  type: "debit" | "credit";
 }
 
 export interface TRowTypes {
