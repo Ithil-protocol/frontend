@@ -19,6 +19,7 @@ import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
+import { displayLeverage } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -149,7 +150,9 @@ const Form = ({ asset }: { asset: Asset }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
-  const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
+  const finalLeverage = isAdvancedOptionsOpen
+    ? displayLeverage(leverage)
+    : appConfig.DEFAULT_LEVERAGE;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
     : "";
