@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import Ithil from "@/assets/ithil/logoSymbolLight.svg";
 import { Aave, Gmx } from "@/assets/svgs";
 import { ServiceType } from "@/types";
 
@@ -15,7 +16,7 @@ const ServiceIcon: FC<Props> = ({ name, width = 28, height = 28 }) => {
     GMX: Gmx,
   };
 
-  const Icon = icons[name] || icons.AAVE;
+  const Icon = icons[name] || Ithil;
   return <Icon width={width} height={height} />;
 };
 
