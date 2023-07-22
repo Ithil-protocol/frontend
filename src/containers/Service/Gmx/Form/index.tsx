@@ -34,7 +34,7 @@ import SubmitButton from "../../inputs/SubmitButton";
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
-  const [inputAmount, setInputAmount] = useState<string>("0");
+  const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const notificationDialog = useNotificationDialog();
@@ -113,7 +113,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           isClosable: true,
           duration: 0,
         });
-        setInputAmount("0");
+        setInputAmount("");
       } catch (err) {
         notificationDialog.openDialog({
           title: "Failed",
@@ -138,7 +138,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   // computed properties
   const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled = isButtonLoading || +inputAmount === 0;
-  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
+  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "");
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");

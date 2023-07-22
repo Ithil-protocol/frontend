@@ -13,7 +13,6 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { aaveAddress } from "@/hooks/generated/aave";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -39,13 +38,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   } = useRouter();
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
-  const [inputAmount, setInputAmount] = useState<string>("0");
+  const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const notificationDialog = useNotificationDialog();
   console.log("leverage:", leverage, "slippage:", slippage);
-  // web3 hooks
-  const { trackTransaction } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -77,7 +74,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     slippage,
     serviceAddress: aaveAddress[chainId],
   });
-  console.log(isInterestError, isFreeLiquidityError, "OOO");
+  console.log(interestAndSpread, "OOO");
 
   const extraData = toHex("");
 
@@ -89,6 +86,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     interestAndSpread,
     extraData,
   });
+
+  console.log("aave form prepare order", order);
 
   const {
     data: openData,
@@ -120,7 +119,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           isClosable: true,
           duration: 0,
         });
-        setInputAmount("0");
+        setInputAmount("");
       } catch (err) {
         notificationDialog.openDialog({
           title: "Failed",
@@ -146,10 +145,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled =
     +inputAmount === 0 || isInterestError || isFreeLiquidityError;
-  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
+  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "");
 
   const onMaxClick = () => {
-    setInputAmount(balance?.formatted ?? "0");
+    setInputAmount(balance?.formatted ?? "");
   };
 
   const { openConnectModal } = useConnectModal();
