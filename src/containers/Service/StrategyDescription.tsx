@@ -74,35 +74,39 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
               )}
             </div>
 
-            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
-              <Heading
-                size="h5"
-                color={pickColor(palette.colors.primary, "800")}
-                textTransform="uppercase"
-              >
-                Boost APY
-              </Heading>
-              {isLoading ? (
-                <SkeletonText width={30} noOfLines={1} />
-              ) : (
-                <Text textStyle="slender-sm2">{boostApy?.toFixed(2)} %</Text>
-              )}
-            </div>
+            {boostApy && (
+              <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
+                <Heading
+                  size="h5"
+                  color={pickColor(palette.colors.primary, "800")}
+                  textTransform="uppercase"
+                >
+                  Boost APY
+                </Heading>
+                {isLoading ? (
+                  <SkeletonText width={30} noOfLines={1} />
+                ) : (
+                  <Text textStyle="slender-sm2">{boostApy?.toFixed(2)} %</Text>
+                )}
+              </div>
+            )}
 
-            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
-              <Heading
-                size="h5"
-                color={pickColor(palette.colors.primary, "800")}
-                textTransform="uppercase"
-              >
-                Total APY
-              </Heading>
-              {isLoading ? (
-                <SkeletonText width={30} noOfLines={1} />
-              ) : (
-                <Text textStyle="slender-sm2">{totalApy?.toFixed(2)} %</Text>
-              )}
-            </div>
+            {boostApy && (
+              <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
+                <Heading
+                  size="h5"
+                  color={pickColor(palette.colors.primary, "800")}
+                  textTransform="uppercase"
+                >
+                  Total APY
+                </Heading>
+                {isLoading ? (
+                  <SkeletonText width={30} noOfLines={1} />
+                ) : (
+                  <Text textStyle="slender-sm2">{totalApy?.toFixed(2)} %</Text>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
