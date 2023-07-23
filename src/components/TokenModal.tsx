@@ -6,6 +6,7 @@ import {
   ListItem,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
@@ -25,12 +26,14 @@ interface Props {
   onClose?: VoidNoArgs;
   onSelectToken?: () => void;
   serviceName: string;
+  returnPath?: string;
 }
 
 const TokenModal: React.FC<Props> = ({
   isOpen,
   onClose,
   onSelectToken,
+  returnPath,
   serviceName,
 }) => {
   const { mode } = useColorMode();
@@ -161,7 +164,18 @@ const TokenModal: React.FC<Props> = ({
                 ))}
             </List>
           </ModalBody>
-          {/* <ModalFooter>{modalFooter}</ModalFooter> */}
+
+          {returnPath && (
+            <ModalFooter>
+              <Link
+                onClick={onClose}
+                style={{ width: "100%" }}
+                href={returnPath}
+              >
+                <Button>Back</Button>
+              </Link>
+            </ModalFooter>
+          )}
         </ModalContent>
       </ChakraModal>
     </>
