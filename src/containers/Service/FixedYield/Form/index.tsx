@@ -23,7 +23,6 @@ import { AaveAsset } from "@/types/onchain.types";
 import { displayLeverage } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
-import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
@@ -41,6 +40,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [month, setMonth] = useState(1);
   const notificationDialog = useNotificationDialog();
   console.log("leverage:", leverage, "slippage:", slippage);
 
@@ -169,23 +169,25 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
       label: "Base APY:",
       value: baseApy?.toFixed(2),
       extension: "%",
-      isLoading: apyLoading,
+      isLoading: true,
     },
     {
       label: "Best Leverage:",
-      value: finalLeverage,
+      // value: finalLeverage,
       extension: "x",
+      isLoading: true,
     },
     {
       label: "Borrow Interest:",
       value: displayInterestAndSpreadInPercent,
       extension: "%",
-      isLoading: isInterestAndSpreadLoading,
+      isLoading: true,
     },
     {
       label: "Final APY:",
       value: finalApy,
       extension: "%",
+      isLoading: true,
     },
   ];
 
@@ -237,15 +239,19 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
         <Box width="full" gap="30px">
           <FormInfo items={formInfoItems} />
+          {/* <FormLabel marginTop={4}>Maturity time in months</FormLabel> */}
+          {/* <Box margin="10px 10px 20px">
+            <Slider value={month} onChange={setMonth} />
+          </Box> */}
 
-          <AdvanceSection
+          {/* <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
             setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
             leverage={leverage}
             setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
-          />
+          /> */}
         </Box>
       </div>
 

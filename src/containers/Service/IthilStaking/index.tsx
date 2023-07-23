@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
+import { ithil } from "@/data/ithil-token";
 import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -8,6 +9,7 @@ import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
 import StrategyDescription from "../StrategyDescription";
 import { Graph } from "../graph";
+import Form from "./Form";
 
 const IthilStaking = () => {
   const { data: chartData } = useChart("");
@@ -34,7 +36,7 @@ const IthilStaking = () => {
         />
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
-        {/* <Form asset={gmxData} /> */}
+        <Form asset={ithil} />
       </Box>
     </Box>
   );

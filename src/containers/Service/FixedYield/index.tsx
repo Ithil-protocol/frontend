@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+import { aaveData } from "@/data/aave";
 import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -9,6 +10,7 @@ import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
 import StrategyDescription from "../StrategyDescription";
 import { Graph } from "../graph";
+import Form from "./Form";
 
 const FixedYield = () => {
   const {
@@ -17,7 +19,9 @@ const FixedYield = () => {
   const { data: chartData } = useChart("");
   const { baseApy, isLoading } = useBaseApy(token as string);
 
-  console.log("chartData", chartData);
+  const asset = aaveData.assets.find(
+    (asset) => asset.name.toLowerCase() === token
+  );
 
   const service = servicesJson.find((item) => item.name === "Fixed Yield");
   if (!service) return null;
@@ -41,7 +45,7 @@ const FixedYield = () => {
         />
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
-        {/* {asset && <Form asset={asset} />} */}
+        {asset && <Form asset={asset} />}
       </Box>
     </Box>
   );

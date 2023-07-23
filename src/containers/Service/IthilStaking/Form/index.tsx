@@ -1,14 +1,12 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { FormLabel, HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
-import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useChainId } from "wagmi";
 
-import { aaveABI } from "@/abi";
+import Slider from "@/components/Slider";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
@@ -17,16 +15,12 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useNotificationDialog } from "@/hooks/useNotificationDialog";
-import { usePrepareOrder } from "@/hooks/usePrepareOrder";
-import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { AaveAsset } from "@/types/onchain.types";
 import { displayLeverage } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
-import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
-import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 import SubmitButton from "../../inputs/SubmitButton";
 
@@ -41,6 +35,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [month, setMonth] = useState(1);
   const notificationDialog = useNotificationDialog();
   console.log("leverage:", leverage, "slippage:", slippage);
 
@@ -61,91 +56,92 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     token: asset,
   });
 
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-    isInterestError,
-    isFreeLiquidityError,
-  } = useRateAndSpread({
-    token: asset,
-    leverage,
-    margin: inputAmount,
-    slippage,
-    serviceAddress: aaveAddress[chainId],
-  });
-  console.log(interestAndSpread, "OOO");
+  // const {
+  //   interestAndSpread,
+  //   displayInterestAndSpreadInPercent,
+  //   isInterestAndSpreadLoading,
+  //   isInterestError,
+  //   isFreeLiquidityError,
+  // } = useRateAndSpread({
+  //   token: asset,
+  //   leverage,
+  //   margin: inputAmount,
+  //   slippage,
+  //   serviceAddress: aaveAddress[chainId],
+  // });
 
   const extraData = toHex("");
 
-  const { order } = usePrepareOrder({
-    token: asset,
-    collateralToken: asset?.collateralTokenAddress,
-    leverage,
-    amount: inputAmount,
-    interestAndSpread,
-    extraData,
-  });
+  // const { order } = usePrepareOrder({
+  //   token: asset,
+  //   collateralToken: asset?.collateralTokenAddress,
+  //   leverage,
+  //   amount: inputAmount,
+  //   interestAndSpread,
+  //   extraData,
+  // });
 
-  console.log("aave form prepare order", order);
-
-  const {
-    data: openData,
-    isLoading: isOpenLoading,
-    write: openPosition,
-  } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress[98745],
-    functionName: "open",
-    args: [order],
-    account: accountAddress as Address,
-    onMutate: async () => {
-      notificationDialog.openDialog({
-        title: isApproved ? "Opening position" : "Approving",
-        status: "loading",
-        duration: 0,
-      });
-    },
-    onSuccess: async ({ hash }) => {
-      try {
-        await waitForTransaction({
-          hash,
-        });
-        notificationDialog.openDialog({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
-        setInputAmount("");
-      } catch (err) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: "Something went wrong",
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
-      }
-    },
-    onError: () => {
-      notificationDialog.openDialog({
-        title: "Failed",
-        description: "Something went wrong",
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
-  });
+  // const {
+  //   data: openData,
+  //   isLoading: isOpenLoading,
+  //   write: openPosition,
+  // } = useContractWrite({
+  //   abi: aaveABI,
+  //   address: aaveAddress[98745],
+  //   functionName: "open",
+  //   args: [order],
+  //   account: accountAddress as Address,
+  //   onMutate: async () => {
+  //     notificationDialog.openDialog({
+  //       title: isApproved ? "Opening position" : "Approving",
+  //       status: "loading",
+  //       duration: 0,
+  //     });
+  //   },
+  //   onSuccess: async ({ hash }) => {
+  //     try {
+  //       await waitForTransaction({
+  //         hash,
+  //       });
+  //       notificationDialog.openDialog({
+  //         title: isApproved
+  //           ? "Positions opened successfully"
+  //           : "Approved successfully",
+  //         status: "success",
+  //         isClosable: true,
+  //         duration: 0,
+  //       });
+  //       setInputAmount("");
+  //     } catch (err) {
+  //       notificationDialog.openDialog({
+  //         title: "Failed",
+  //         description: "Something went wrong",
+  //         status: "error",
+  //         isClosable: true,
+  //         duration: 0,
+  //       });
+  //     }
+  //   },
+  //   onError: () => {
+  //     notificationDialog.openDialog({
+  //       title: "Failed",
+  //       description: "Something went wrong",
+  //       status: "error",
+  //       isClosable: true,
+  //       duration: 0,
+  //     });
+  //   },
+  // });
 
   // computed properties
-  const isButtonLoading = isInterestAndSpreadLoading;
-  const isButtonDisabled =
-    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
-  const isMaxDisabled = inputAmount === balance?.value.toString();
+  // const isButtonLoading = isInterestAndSpreadLoading;
+  const isButtonLoading = false;
+  // const isButtonDisabled =
+  //   +inputAmount === 0 || isInterestError || isFreeLiquidityError;
+
+  const isButtonDisabled = false;
+  // const isMaxDisabled = inputAmount === balance?.value.toString();
+  const isMaxDisabled = true;
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "");
@@ -160,32 +156,36 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const finalLeverage = isAdvancedOptionsOpen
     ? displayLeverage(leverage)
     : displayLeverage(appConfig.DEFAULT_LEVERAGE);
-  const finalApy = baseApy
-    ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
-    : "";
+  // const finalApy = baseApy
+  //   ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
+  //   : "";
 
   const formInfoItems = [
     {
       label: "Base APY:",
       value: baseApy?.toFixed(2),
       extension: "%",
-      isLoading: apyLoading,
+      isLoading: true,
     },
     {
       label: "Best Leverage:",
-      value: finalLeverage,
+      // value: finalLeverage,
       extension: "x",
+      isLoading: true,
     },
     {
       label: "Borrow Interest:",
-      value: displayInterestAndSpreadInPercent,
+      // value: displayInterestAndSpreadInPercent,
+      value: "",
       extension: "%",
-      isLoading: isInterestAndSpreadLoading,
+      isLoading: true,
     },
     {
       label: "Final APY:",
-      value: finalApy,
+      value: "",
+      // value: finalApy,
       extension: "%",
+      isLoading: true,
     },
   ];
 
@@ -232,27 +232,31 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={true}
+          switchableAsset={false}
         />
 
         <Box width="full" gap="30px">
           <FormInfo items={formInfoItems} />
+          <FormLabel marginTop={4}>Maturity time in months</FormLabel>
+          <Box margin="10px 10px 20px">
+            <Slider value={month} onChange={setMonth} />
+          </Box>
 
-          <AdvanceSection
+          {/* <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
             setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
             leverage={leverage}
             setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
-          />
+          /> */}
         </Box>
       </div>
 
-      <ServiceError
+      {/* <ServiceError
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
-      />
+      /> */}
       <SubmitButton
         approve={approve}
         asset={asset}
@@ -261,7 +265,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         isButtonLoading={isButtonLoading}
         isConnected={isConnected}
         openConnectModal={openConnectModal}
-        openPosition={openPosition}
+        // openPosition={openPosition}
+        openPosition={() => undefined}
       />
     </div>
   );

@@ -32,7 +32,7 @@ const SingleAssetAmount: FC<Props> = ({
 }) => {
   const tokenModal = useTokenModal({
     onSelectTokenCallback: () => {
-      onChange("0");
+      onChange("");
     },
   });
 
