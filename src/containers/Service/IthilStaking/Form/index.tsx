@@ -20,7 +20,6 @@ import { displayLeverage } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
-import FormInfo from "../../FormInfo";
 import SingleAssetAmount from "../../SingleAssetAmount";
 import SubmitButton from "../../inputs/SubmitButton";
 
@@ -160,35 +159,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //   ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
   //   : "";
 
-  const formInfoItems = [
-    {
-      label: "Base APY:",
-      value: baseApy?.toFixed(2),
-      extension: "%",
-      isLoading: true,
-    },
-    {
-      label: "Best Leverage:",
-      // value: finalLeverage,
-      extension: "x",
-      isLoading: true,
-    },
-    {
-      label: "Borrow Interest:",
-      // value: displayInterestAndSpreadInPercent,
-      value: "",
-      extension: "%",
-      isLoading: true,
-    },
-    {
-      label: "Final APY:",
-      value: "",
-      // value: finalApy,
-      extension: "%",
-      isLoading: true,
-    },
-  ];
-
   if (!isMounted) return null;
 
   return (
@@ -236,7 +206,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         />
 
         <Box width="full" gap="30px">
-          <FormInfo items={formInfoItems} />
+          {/* <FormInfo items={formInfoItems} /> */}
           <FormLabel marginTop={4}>Maturity time in months</FormLabel>
           <Box margin="10px 10px 20px">
             <Slider value={month} onChange={setMonth} />
@@ -267,6 +237,19 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         openConnectModal={openConnectModal}
         // openPosition={openPosition}
         openPosition={() => undefined}
+        text={"Deposit"}
+      />
+      <SubmitButton
+        approve={approve}
+        asset={asset}
+        isApproved={isApproved}
+        isButtonDisabled={isButtonDisabled}
+        isButtonLoading={isButtonLoading}
+        isConnected={isConnected}
+        openConnectModal={openConnectModal}
+        // openPosition={openPosition}
+        openPosition={() => undefined}
+        text={"Claim 0 WETH"}
       />
     </div>
   );

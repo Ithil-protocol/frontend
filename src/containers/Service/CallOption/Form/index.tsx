@@ -2,6 +2,7 @@ import { FormLabel, HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
+import { addMonths } from "date-fns";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
@@ -21,7 +22,7 @@ import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { usePrepareOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { AaveAsset } from "@/types/onchain.types";
-import { displayLeverage } from "@/utils";
+import { displayLeverage, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -167,28 +168,20 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const formInfoItems = [
     {
-      label: "Base APY:",
+      label: " veITHIL obtained:",
       value: baseApy?.toFixed(2),
       extension: "%",
       isLoading: true,
     },
     {
-      label: "Best Leverage:",
+      label: "redeem price:",
       // value: finalLeverage,
       extension: "x",
       isLoading: true,
     },
     {
-      label: "Borrow Interest:",
-      value: displayInterestAndSpreadInPercent,
-      extension: "%",
-      isLoading: true,
-    },
-    {
-      label: "Final APY:",
-      value: finalApy,
-      extension: "%",
-      isLoading: true,
+      label: "maturity date:",
+      value: toFullDate(addMonths(new Date(), month)),
     },
   ];
 
@@ -239,11 +232,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         />
 
         <Box width="full" gap="30px">
-          <FormInfo items={formInfoItems} />
-          <FormLabel marginTop={4}>Maturity time in months</FormLabel>
-          <Box margin="10px 10px 20px">
+          <FormLabel marginTop={4}>Lock time in months</FormLabel>
+          <Box margin="10px 10px 50px">
             <Slider value={month} onChange={setMonth} />
           </Box>
+          <FormInfo items={formInfoItems} />
 
           {/* <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}

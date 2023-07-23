@@ -26,7 +26,7 @@ const IthilStaking = () => {
         <StrategyDescription
           description={service.explanation}
           address={"0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba80"}
-          baseApy={baseApy}
+          baseApy={0}
           isLoading={isLoading}
         />
         <SafetyScore

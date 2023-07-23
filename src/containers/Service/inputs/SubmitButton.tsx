@@ -11,6 +11,7 @@ interface Props {
   openPosition: any;
   asset: Asset;
   openConnectModal: (() => void) | undefined;
+  text?: string;
 }
 
 const SubmitButton: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const SubmitButton: React.FC<Props> = ({
   openConnectModal,
   openPosition,
   asset,
+  text = "Open position",
 }) => {
   return (
     <>
@@ -33,11 +35,7 @@ const SubmitButton: React.FC<Props> = ({
           isLoading={isButtonLoading}
           loadingText={isButtonLoading ? "Waiting" : undefined}
         >
-          {!asset
-            ? "Loading..."
-            : isApproved
-            ? "Open position"
-            : `Approve ${asset?.name}`}
+          {!asset ? "Loading..." : isApproved ? text : `Approve ${asset?.name}`}
         </Button>
       ) : (
         <Button mt="20px" onClick={openConnectModal}>

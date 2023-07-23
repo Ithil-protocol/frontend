@@ -5,7 +5,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 export interface Props {
   label: string;
   value?: string | number;
-  extension: string;
+  extension?: string;
   isLoading?: boolean;
 }
 
