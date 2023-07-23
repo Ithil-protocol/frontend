@@ -237,6 +237,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         openConnectModal={openConnectModal}
         // openPosition={openPosition}
         openPosition={() => undefined}
+        text={"Deposit"}
       />
       <SubmitButton
         approve={approve}
