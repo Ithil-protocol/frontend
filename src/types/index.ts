@@ -50,6 +50,7 @@ export interface Service {
   long_name: string;
   description: string;
   apyRange: string;
+  hasIndex: boolean;
   bestApy: number;
   boostApy: number;
   tokens: string[];
