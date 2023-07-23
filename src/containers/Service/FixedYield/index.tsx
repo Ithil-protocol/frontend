@@ -31,7 +31,7 @@ const FixedYield = () => {
         <ServiceHeading
           data={{ name: service.name, description: service.description }}
         />
-        <Graph data={chartData} />
+        <Graph data={chartData} tab="apy" />
         <StrategyDescription
           description={service.explanation}
           address={"0x9F1C69E1874d44Ad4ce79079C0b7Bd35E7882Ba80"}

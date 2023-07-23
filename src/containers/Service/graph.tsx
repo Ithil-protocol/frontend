@@ -9,12 +9,22 @@ import { formatDate } from "@/utils/date.utils";
 
 type graphWindows = "All" | "1M" | "1W";
 type graphSections = "TVL" | "APY";
+type Tab = "apy" | "tvl" | "all";
 
 interface Props {
   data?: ChartDataPoint[];
+  tab?: Tab;
 }
 
-export const Graph = ({ data }: Props) => {
+const tabObj: {
+  [key: string]: graphSections[];
+} = {
+  apy: ["APY"],
+  tvl: ["TVL"],
+  all: ["TVL", "APY"],
+};
+
+export const Graph = ({ data, tab = "all" }: Props) => {
   const [graphWindow, setGraphWindow] = useState<graphWindows>("All");
   const [graphSection, setGraphSection] = useState<graphSections>("APY");
 
@@ -23,6 +33,7 @@ export const Graph = ({ data }: Props) => {
 
   const sectionClassnames = "p-2.5 rounded-xl cursor-pointer";
   const sectionChoices: graphSections[] = ["TVL", "APY"];
+  const tabs = tabObj[tab];
 
   const filteredData =
     graphWindow === "1W"
@@ -56,7 +67,7 @@ export const Graph = ({ data }: Props) => {
             ))}
           </div>
           <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
-            {sectionChoices.map((choice) => (
+            {tabs.map((choice) => (
               <span
                 className={classNames(sectionClassnames, {
                   "bg-primary-300": graphSection === choice,
