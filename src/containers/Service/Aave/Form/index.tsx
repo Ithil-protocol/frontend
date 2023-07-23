@@ -160,9 +160,11 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const finalLeverage = isAdvancedOptionsOpen
     ? displayLeverage(leverage)
     : displayLeverage(appConfig.DEFAULT_LEVERAGE);
+
   const finalApy = baseApy
-    ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
-    : "";
+    ? +baseApy * +finalLeverage -
+      (+finalLeverage - 1) * displayInterestAndSpreadInPercent
+    : 0;
 
   const formInfoItems = [
     {
@@ -173,8 +175,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
     {
       label: "Best Leverage:",
-      value: finalLeverage,
+      value: "",
       extension: "x",
+      isLoading: true,
     },
     {
       label: "Borrow Interest:",
@@ -184,7 +187,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
     {
       label: "Final APY:",
-      value: finalApy,
+      value: finalApy?.toFixed(2),
       extension: "%",
     },
   ];
