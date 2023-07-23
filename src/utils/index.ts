@@ -1,5 +1,6 @@
 import Generic from "cryptocurrency-icons/svg/icon/generic.svg";
 import {
+  format,
   isSameDay,
   isWithinInterval,
   parse,
@@ -197,4 +198,11 @@ export type serviceType = "aave";
 
 export const displayLeverage = (leverage: string) => {
   return (Number(leverage) + 1).toString();
+};
+
+export const toFullDate = (timestamp: Date) => {
+  const date = new Date(timestamp);
+  const formatType = "dd/MM/yyyy";
+  const formattedDate = format(date, formatType);
+  return formattedDate;
 };
