@@ -3,8 +3,8 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { FC } from "react";
 
+import { useTokenModal } from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
-import { useTokenModal } from "@/hooks/useTokenModal";
 import { palette } from "@/styles/theme/palette";
 import { ServiceType } from "@/types";
 

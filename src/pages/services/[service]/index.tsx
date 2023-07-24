@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useTokenModal } from "@/contexts/TokenModal";
 import servicesJson from "@/data/services";
-import { useTokenModal } from "@/hooks/useTokenModal";
 
 const Service = () => {
   const tokenModal = useTokenModal({

@@ -3,6 +3,7 @@ import { Address, formatUnits } from "viem";
 import { parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { Token } from "@/types/onchain.types";
 
 import {
@@ -10,7 +11,6 @@ import {
   useTokenAllowance,
   useTokenApprove,
 } from "./generated/token";
-import { useNotificationDialog } from "./useNotificationDialog";
 
 interface AllowanceProps {
   amount: string | undefined;
