@@ -22,8 +22,7 @@ const Service = () => {
 
     if (isServiceHasIndexPage) tokenModal.openDialog(serviceName);
     else router.push("/404");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [serviceName]);
+  }, [router, serviceName, tokenModal]);
 
   return <></>;
 };
