@@ -52,8 +52,7 @@ export const useTokenModal = (
       ...getDefaultOptions(),
       ...options,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [options, value]);
 
   return value;
 };
