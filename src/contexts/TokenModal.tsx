@@ -19,6 +19,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import React from "react";
@@ -46,13 +47,15 @@ export const useTokenModal = (
   options: Partial<TokenModalOptions> = getDefaultOptions()
 ) => {
   const value = useContext(TokenModalContext);
+  const memoedValue = useRef(value);
+  const memoedOptions = useRef(options);
 
   useEffect(() => {
-    value.setOptions({
+    memoedValue.current.setOptions({
       ...getDefaultOptions(),
-      ...options,
+      ...memoedOptions.current,
     });
-  }, [options, value]);
+  }, [memoedValue, memoedOptions]);
 
   return value;
 };
