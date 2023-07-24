@@ -1,8 +1,12 @@
-import { parseUnits } from "viem";
+import { encodeAbiParameters, parseAbiParameters, parseUnits } from "viem";
 import { type Address } from "wagmi";
 
+import { ithil } from "@/data/ithil-token";
 import { Token } from "@/types/onchain.types";
 import { multiplyBigInt } from "@/utils";
+
+import { useCallOptionCurrentPrice } from "./generated/callOption";
+import { useVaultConvertToShares } from "./generated/vault";
 
 interface ServiceLoan {
   token: Address;
@@ -30,7 +34,7 @@ interface IServiceOrder {
   data: Address;
 }
 
-interface PrepareOrderProps {
+interface PrepareDebitOrderProps {
   token: Token;
   collateralToken: Address;
   amount: string;
@@ -46,7 +50,7 @@ export const usePrepareDebitOrder = ({
   leverage,
   interestAndSpread,
   extraData,
-}: PrepareOrderProps) => {
+}: PrepareDebitOrderProps) => {
   const bigintAmount = parseUnits(amount, token.decimals);
 
   const amountInLeverage = multiplyBigInt(bigintAmount, +leverage);
@@ -73,6 +77,77 @@ export const usePrepareDebitOrder = ({
   const order: IServiceOrder = {
     agreement,
     data: extraData,
+  };
+
+  return {
+    order,
+  };
+};
+
+interface PrepareCreditOrderProps {
+  token: Token;
+  vaultAddress: Address;
+  amount: string;
+  slippage: string;
+  extraData: Address;
+  monthsLocked: number;
+}
+
+export const usePrepareCreditOrder = ({
+  token,
+  vaultAddress,
+  amount,
+  slippage,
+  extraData,
+  monthsLocked,
+}: PrepareCreditOrderProps) => {
+  const loanAmount = parseUnits(amount, token.decimals);
+
+  const { data: shares } = useVaultConvertToShares({
+    args: [loanAmount],
+  });
+
+  const { data: currentPrice } = useCallOptionCurrentPrice();
+
+  const amount0 = shares ? multiplyBigInt(shares, 0.99) : 0n;
+
+  const amount1 = currentPrice
+    ? multiplyBigInt(
+        multiplyBigInt(loanAmount, 2 ** (monthsLocked / 12)) / currentPrice,
+        1 - Number(slippage)
+      )
+    : 0n;
+
+  const collateral0: ServiceCollateral = {
+    itemType: 0,
+    token: vaultAddress,
+    identifier: 0n,
+    amount: amount0,
+  };
+  const collateral1: ServiceCollateral = {
+    itemType: 0,
+    token: ithil.tokenAddress,
+    identifier: 0n,
+    amount: amount1,
+  };
+  const loan: ServiceLoan = {
+    token: token.tokenAddress,
+    amount: loanAmount,
+    margin: 0n,
+    interestAndSpread: 0n,
+  };
+  const agreement: ServiceAgreement = {
+    loans: [loan],
+    collaterals: [collateral0, collateral1],
+    createdAt: BigInt(0),
+    status: 0,
+  };
+
+  const order: IServiceOrder = {
+    agreement,
+    data: encodeAbiParameters(parseAbiParameters("uint256"), [
+      BigInt(monthsLocked - 1),
+    ]),
   };
 
   return {
