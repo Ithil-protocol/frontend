@@ -1,7 +1,7 @@
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { CloseButton } from "@/assets/svgs";
 import { useColorMode } from "@/hooks/useColorMode";
@@ -15,12 +15,14 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
   const { mode } = useColorMode();
 
-  const closeSidebar = () => onSetSidebarOpen(false);
+  const closeSidebar = useCallback(
+    () => onSetSidebarOpen(false),
+    [onSetSidebarOpen]
+  );
   const router = useRouter();
   useEffect(() => {
     closeSidebar();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [closeSidebar, router]);
 
   return (
     <Box
