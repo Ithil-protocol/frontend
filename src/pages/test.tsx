@@ -46,7 +46,7 @@ const Test = () => {
   // serviceTest(order);
 
   // this order works fine. if you want to test "open" function. (token, collateralToken, amount, _leverage)
-  // const { order: workedOrder } = usePrepareOrder(
+  // const { order: workedOrder } = usePrepareDebitOrder(
   //   "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
   //   "0x078f358208685046a11C85e8ad32895DED33A249",
   //   parseUnits("0.000241", 8),

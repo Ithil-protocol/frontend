@@ -16,7 +16,7 @@ import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
 import { displayLeverage } from "@/utils";
@@ -74,7 +74,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
-  const { order } = usePrepareOrder({
+  const { order } = usePrepareDebitOrder({
     token: asset,
     collateralToken: asset?.collateralTokenAddress,
     leverage,

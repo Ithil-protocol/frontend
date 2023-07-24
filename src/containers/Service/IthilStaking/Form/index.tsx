@@ -71,7 +71,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const extraData = toHex("");
 
-  // const { order } = usePrepareOrder({
+  // const { order } = usePrepareDebitOrder({
   //   token: asset,
   //   collateralToken: asset?.collateralTokenAddress,
   //   leverage,

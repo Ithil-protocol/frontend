@@ -17,7 +17,7 @@ import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { AaveAsset } from "@/types/onchain.types";
 import { displayLeverage } from "@/utils";
@@ -77,7 +77,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const extraData = toHex("");
 
-  const { order } = usePrepareOrder({
+  const { order } = usePrepareDebitOrder({
     token: asset,
     collateralToken: asset?.collateralTokenAddress,
     leverage,

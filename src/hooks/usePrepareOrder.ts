@@ -39,7 +39,7 @@ interface PrepareOrderProps {
   extraData: Address;
 }
 
-export const usePrepareOrder = ({
+export const usePrepareDebitOrder = ({
   token,
   collateralToken,
   amount,
