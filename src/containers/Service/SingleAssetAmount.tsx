@@ -9,8 +9,8 @@ import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
-import { useTokenModal } from "@/hooks/useTokenModal";
 import { AaveAsset } from "@/types/onchain.types";
 
 interface Props {

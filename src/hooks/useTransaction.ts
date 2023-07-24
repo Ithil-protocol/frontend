@@ -1,6 +1,6 @@
 import { Address, useWaitForTransaction } from "wagmi";
 
-import { useNotificationDialog } from "./useNotificationDialog";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 
 export const useTransaction = (
   hash: Address | undefined,

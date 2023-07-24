@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {
   Button,
   Modal as ChakraModal,
@@ -10,16 +11,58 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import React from "react";
 
 import { CloseButton } from "@/assets/svgs";
+import TokenIcon from "@/components/TokenIcon";
 import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
 import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
+import { CloseDialogFn, OpenTokenDialogFn, TokenModalOptions } from "@/types";
 
-import TokenIcon from "./TokenIcon";
+const TokenModalContext = createContext<{
+  closeDialog: CloseDialogFn;
+  onSelectToken: CloseDialogFn;
+  openDialog: OpenTokenDialogFn;
+  setOptions: (o: TokenModalOptions) => void;
+}>({
+  closeDialog: () => {},
+  onSelectToken: () => {},
+  openDialog: () => {},
+  setOptions: () => {},
+});
+
+export const useTokenModal = (
+  options: Partial<TokenModalOptions> = getDefaultOptions()
+) => {
+  const value = useContext(TokenModalContext);
+
+  useEffect(() => {
+    value.setOptions({
+      ...getDefaultOptions(),
+      ...options,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return value;
+};
+
+export const getDefaultOptions = (): TokenModalOptions => ({
+  isClosable: true,
+  onSelectTokenCallback: () => undefined,
+  returnPath: "",
+});
 
 interface Props {
   isOpen: boolean;
@@ -29,7 +72,7 @@ interface Props {
   returnPath?: string;
 }
 
-const TokenModal: React.FC<Props> = ({
+const TokenModalComponent: React.FC<Props> = ({
   isOpen,
   onClose,
   onSelectToken,
@@ -182,4 +225,48 @@ const TokenModal: React.FC<Props> = ({
   );
 };
 
-export default TokenModal;
+const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [options, setOptions] = useState<TokenModalOptions>(getDefaultOptions);
+  const [serviceName, setServiceName] = useState("aave");
+
+  const handleOpen: OpenTokenDialogFn = (sn = serviceName) => {
+    setServiceName(sn);
+    onOpen();
+  };
+
+  const handleSelectToken = () => {
+    if (options.isClosable) {
+      options.onSelectTokenCallback();
+      handleClose();
+    }
+  };
+
+  const handleClose = () => {
+    setOptions(getDefaultOptions());
+    onClose();
+  };
+
+  return (
+    <TokenModalContext.Provider
+      value={{
+        closeDialog: handleClose,
+        openDialog: handleOpen,
+        setOptions,
+        onSelectToken: handleSelectToken,
+      }}
+    >
+      <TokenModalComponent
+        isOpen={isOpen}
+        serviceName={serviceName}
+        onClose={handleClose}
+        onSelectToken={handleSelectToken}
+        returnPath={options.returnPath}
+      />
+
+      {children}
+    </TokenModalContext.Provider>
+  );
+};
+
+export default TokenModalProvider;

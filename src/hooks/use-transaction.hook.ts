@@ -2,7 +2,7 @@ import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { type SendTransactionResult } from "@wagmi/core";
 import { waitForTransaction } from "@wagmi/core";
 
-import { useNotificationDialog } from "./useNotificationDialog";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 
 interface EthersError extends Error {
   reason: string;

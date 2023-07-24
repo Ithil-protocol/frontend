@@ -3,8 +3,8 @@ import { FC, useState } from "react";
 import { formatUnits } from "viem";
 import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useVault } from "@/hooks/use-vault.hook";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,

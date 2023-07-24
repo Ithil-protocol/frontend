@@ -9,8 +9,8 @@ import {
   useContractWrite,
 } from "wagmi";
 
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useToken } from "@/hooks/use-token.hook";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { LendingToken } from "@/types/onchain.types";
 import {
   bigNumberPercentage,
