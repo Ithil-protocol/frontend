@@ -3,7 +3,7 @@ import { react } from "@wagmi/cli/plugins";
 import { Address } from "viem";
 import { erc20ABI } from "wagmi";
 
-import { aaveABI, gmxABI, vaultABI } from "@/abi";
+import { aaveABI, callOptionABI, fixedYieldABI, gmxABI, vaultABI } from "@/abi";
 import contracts from "@/deploy/contracts.json";
 
 export default defineConfig([
@@ -45,6 +45,32 @@ export default defineConfig([
         abi: gmxABI,
         address: {
           98745: contracts.gmxService as Address,
+        },
+      },
+    ],
+    plugins: [react()],
+  },
+  {
+    out: "src/hooks/generated/callOption.ts",
+    contracts: [
+      {
+        name: "CallOption",
+        abi: callOptionABI,
+        address: {
+          98745: contracts.callOptionService as Address,
+        },
+      },
+    ],
+    plugins: [react()],
+  },
+  {
+    out: "src/hooks/generated/fixedYield.ts",
+    contracts: [
+      {
+        name: "FixedYield",
+        abi: fixedYieldABI,
+        address: {
+          98745: contracts.fixedYieldService as Address,
         },
       },
     ],
