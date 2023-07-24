@@ -1,6 +1,13 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { Button } from "@chakra-ui/react";
+import { formatUnits } from "viem";
 import { Address, erc20ABI, useContractWrite } from "wagmi";
+
+import {
+  useCallOptionCurrentPrice,
+  useCallOptionTotalAllocation,
+} from "@/hooks/generated/callOption";
+import { multiplyBigInt } from "@/utils";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -292,6 +299,27 @@ const Test = () => {
     //   });
     // },
   });
+  const { data } = useCallOptionCurrentPrice();
+  const { data: ttl, isSuccess } = useCallOptionTotalAllocation();
+  data && console.log("virtualAmount", formatUnits(data, 6), ttl);
+
+  function callOptionFinalAmount(initialPrice: bigint, allocation: bigint) {
+    const loan = 150000000n;
+    const monthsLocked = 12;
+
+    const virtualAmount =
+      multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / initialPrice;
+
+    const finalPrice =
+      (initialPrice * allocation) / (allocation - virtualAmount);
+
+    const finalAmount =
+      multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / finalPrice;
+
+    console.log("virtualAmount", finalAmount);
+  }
+
+  // (data && isSuccess) && callOptionFinalAmount(data, ttl)
 
   return (
     <Button onClick={() => approve()}>
