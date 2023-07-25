@@ -64,6 +64,7 @@ export const getDefaultOptions = (): TokenModalOptions => ({
   isClosable: true,
   onSelectTokenCallback: () => undefined,
   returnPath: "",
+  excludes: [],
 });
 
 interface Props {
@@ -72,6 +73,7 @@ interface Props {
   onSelectToken?: () => void;
   serviceName: string;
   returnPath?: string;
+  excludes: string[];
 }
 
 const TokenModalComponent: React.FC<Props> = ({
@@ -80,6 +82,7 @@ const TokenModalComponent: React.FC<Props> = ({
   onSelectToken,
   returnPath,
   serviceName,
+  excludes,
 }) => {
   const { mode } = useColorMode();
 
@@ -89,6 +92,7 @@ const TokenModalComponent: React.FC<Props> = ({
 
   const { data: vaultData } = useVaults();
   const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
+  console.log(excludes);
 
   return (
     <>
@@ -135,6 +139,7 @@ const TokenModalComponent: React.FC<Props> = ({
           >
             <List p="10px" bg="transparent">
               {vaultDataWithFallback
+                .filter((item) => !excludes.includes(item.token.name))
                 .map((item) => {
                   const descriptions = {
                     USDC: "USD Coin",
@@ -231,9 +236,9 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [options, setOptions] = useState<TokenModalOptions>(getDefaultOptions);
   const [serviceName, setServiceName] = useState("aave");
-
-  const handleOpen: OpenTokenDialogFn = (sn = serviceName) => {
+  const handleOpen: OpenTokenDialogFn = (sn = serviceName, excludes = []) => {
     setServiceName(sn);
+    setOptions((prev) => ({ ...prev, excludes }));
     onOpen();
   };
 
@@ -264,6 +269,7 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         onClose={handleClose}
         onSelectToken={handleSelectToken}
         returnPath={options.returnPath}
+        excludes={options.excludes}
       />
 
       {children}

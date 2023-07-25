@@ -16,6 +16,7 @@ const ServicesPage = () => {
           name={item.name}
           apy={`${item.bestApy}%`}
           tvl={`${item.tvl}m`}
+          excludes={item.excludes}
         />
       ))}
     </div>

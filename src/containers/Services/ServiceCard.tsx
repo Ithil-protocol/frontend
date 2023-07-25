@@ -20,6 +20,7 @@ interface ServiceCardProps {
   apy: string;
   tvl: string;
   hasIndex: boolean;
+  excludes: string[];
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -31,11 +32,12 @@ const ServiceCard: FC<ServiceCardProps> = ({
   name,
   to,
   tvl,
+  excludes,
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode, pickColor } = useColorMode();
 
-  const handleEnterClick = () => tokenModal.openDialog(to);
+  const handleEnterClick = () => tokenModal.openDialog(to, excludes);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
