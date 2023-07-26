@@ -4,6 +4,7 @@ import {
   formatUnits,
   parseAbiParameters,
   parseUnits,
+  toHex,
 } from "viem";
 import { type Address } from "wagmi";
 
@@ -186,5 +187,55 @@ export const usePrepareCreditOrder = ({
   return {
     order,
     isLoading,
+  };
+};
+
+interface PrepareFixedYieldOrder {
+  token: Token;
+  amount: string;
+}
+
+export const usePrepareFixedYieldOrder = ({
+  token,
+  amount,
+}: PrepareFixedYieldOrder) => {
+  const loanAmount = parseUnits(amount, token.decimals);
+
+  const vault = getVaultByTokenName(token.name as VaultName);
+
+  const { data: shares, isLoading: isSharesLoading } = useVaultConvertToShares({
+    address: vault?.vaultAddress as Address,
+    args: [loanAmount],
+    enabled: !!vault?.vaultAddress,
+  });
+
+  const collateral: ServiceCollateral = {
+    itemType: 0,
+    token: vault?.vaultAddress as Address,
+    identifier: 0n,
+    amount: multiplyBigInt(shares || 0n, 0.99),
+  };
+
+  const loan: ServiceLoan = {
+    token: token.tokenAddress,
+    amount: loanAmount,
+    margin: 0n,
+    interestAndSpread: 0n,
+  };
+  const agreement: ServiceAgreement = {
+    loans: [loan],
+    collaterals: [collateral],
+    createdAt: BigInt(0),
+    status: 0,
+  };
+
+  const order: IServiceOrder = {
+    agreement,
+    data: toHex(""),
+  };
+
+  return {
+    order,
+    isLoading: isSharesLoading,
   };
 };
