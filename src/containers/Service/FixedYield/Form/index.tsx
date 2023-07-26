@@ -1,30 +1,24 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { toHex } from "viem";
 import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
-import { aaveABI } from "@/abi";
+import { fixedYieldABI } from "@/abi";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
+import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
-import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
-import { useRateAndSpread } from "@/hooks/useRateAndSpread";
+import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { AaveAsset } from "@/types/onchain.types";
-import { displayLeverage } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
-import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 import SubmitButton from "../../inputs/SubmitButton";
 
@@ -37,11 +31,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
-  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
-  const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
-  const [month, setMonth] = useState(1);
   const notificationDialog = useNotificationDialog();
-  console.log("leverage:", leverage, "slippage:", slippage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -50,51 +40,22 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     watch: true,
   });
 
-  const {
-    isApproved,
-    isLoading: isApproveLoading,
-    write: approve,
-  } = useAllowance({
+  const { isApproved, write: approve } = useAllowance({
     amount: inputAmount,
     spender: aaveAddress[chainId],
     token: asset,
   });
 
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-    isInterestError,
-    isFreeLiquidityError,
-  } = useRateAndSpread({
+  const { order, isLoading } = usePrepareFixedYieldOrder({
     token: asset,
-    leverage,
-    margin: inputAmount,
-    slippage,
-    serviceAddress: aaveAddress[chainId],
-  });
-  console.log(interestAndSpread, "OOO");
-
-  const extraData = toHex("");
-
-  const { order } = usePrepareDebitOrder({
-    token: asset,
-    collateralToken: asset?.collateralTokenAddress,
-    leverage,
     amount: inputAmount,
-    interestAndSpread,
-    extraData,
   });
 
-  console.log("aave form prepare order", order);
+  console.log("order33", order);
 
-  const {
-    data: openData,
-    isLoading: isOpenLoading,
-    write: openPosition,
-  } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress[98745],
+  const { write: openPosition } = useContractWrite({
+    abi: fixedYieldABI,
+    address: fixedYieldAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress as Address,
@@ -141,9 +102,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isInterestAndSpreadLoading;
-  const isButtonDisabled =
-    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
+  const isButtonLoading = isLoading;
+  const isButtonDisabled = +inputAmount === 0;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
@@ -152,16 +112,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const { openConnectModal } = useConnectModal();
   const isMounted = useIsMounted();
-
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
-  const finalLeverage = isAdvancedOptionsOpen
-    ? displayLeverage(leverage)
-    : displayLeverage(appConfig.DEFAULT_LEVERAGE);
-  const finalApy = baseApy
-    ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
-    : "";
 
   if (!isMounted) return null;
 
@@ -208,28 +158,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           onChange={setInputAmount}
           switchableAsset={true}
         />
-
-        <Box width="full" gap="30px">
-          {/* <FormLabel marginTop={4}>Maturity time in months</FormLabel> */}
-          {/* <Box margin="10px 10px 20px">
-            <Slider value={month} onChange={setMonth} />
-          </Box> */}
-
-          {/* <AdvanceSection
-            isAdvancedOptionsOpen={isAdvancedOptionsOpen}
-            setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
-            leverage={leverage}
-            setLeverage={setLeverage}
-            setSlippage={setSlippage}
-            slippage={slippage}
-          /> */}
-        </Box>
       </div>
 
-      <ServiceError
-        isFreeLiquidityError={isFreeLiquidityError}
-        isInterestError={isInterestError}
-      />
       <SubmitButton
         approve={approve}
         asset={asset}

@@ -209,6 +209,8 @@ export const usePrepareFixedYieldOrder = ({
     enabled: !!vault?.vaultAddress,
   });
 
+  console.log("order33 - shares", shares);
+
   const collateral: ServiceCollateral = {
     itemType: 0,
     token: vault?.vaultAddress as Address,
