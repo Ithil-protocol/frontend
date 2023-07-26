@@ -95,8 +95,8 @@ export const usePrepareDebitOrder = ({
 interface PrepareCreditOrderProps {
   token: Token;
   amount: string;
+  amount1: Decimal;
   slippage: string;
-  extraData: Address;
   monthsLocked: number;
 }
 
@@ -104,6 +104,7 @@ export const usePrepareCreditOrder = ({
   token,
   amount,
   slippage,
+  amount1,
   monthsLocked,
 }: PrepareCreditOrderProps) => {
   const vault = getVaultByTokenName(token.name as VaultName);
@@ -127,17 +128,21 @@ export const usePrepareCreditOrder = ({
 
   const amount0d = sharesDecimal.mul(new Decimal("0.99"));
 
-  const amount1 = currentPrice
-    ? multiplyBigInt(
-        multiplyBigInt(loanAmount, 2 ** (monthsLocked / 12)) / currentPrice,
-        1 - Number(slippage)
-      )
-    : 0n;
+  // const amount1 = currentPrice
+  //   ? multiplyBigInt(
+  //       multiplyBigInt(loanAmount, 2 ** (monthsLocked / 12)) / currentPrice,
+  //       1 - Number(slippage)
+  //     )
+  //   : 0n;
 
-  const amount1d = loanDecimal
-    .mul(new Decimal(2).pow(monthsLockedDecimal.div(new Decimal(12))))
-    .div(currentPriceDecimal)
-    .mul(new Decimal(1 - +slippage));
+  // const amount1d = loanDecimal
+  //   .mul(new Decimal(2).pow(monthsLockedDecimal.div(new Decimal(12))))
+  //   .div(currentPriceDecimal)
+  //   .mul(new Decimal(1 - 0.05));
+
+  const amount1Str = amount1.floor().toString();
+
+  const finalAmount1 = amount1.isNaN() ? 0n : BigInt(amount1Str);
 
   const collateral0: ServiceCollateral = {
     itemType: 0,
@@ -149,7 +154,7 @@ export const usePrepareCreditOrder = ({
     itemType: 0,
     token: ithil.tokenAddress,
     identifier: 0n,
-    amount: BigInt(amount1d.floor().toString() || 0),
+    amount: finalAmount1,
   };
   const loan: ServiceLoan = {
     token: token.tokenAddress,

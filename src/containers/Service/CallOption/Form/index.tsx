@@ -7,7 +7,6 @@ import { Decimal } from "decimal.js";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Address, formatUnits } from "viem";
-import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
@@ -59,6 +58,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { data: allocation, isLoading: isAllocationLoading } =
     useCallOptionTotalAllocation();
 
+  console.log("currentPrice22", currentPrice);
+
   const isInfoLoading = isCurrentPriceLoading || isAllocationLoading;
 
   const inputDecimal = new Decimal(inputAmount || 0),
@@ -69,10 +70,13 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     virtualAmount = new Decimal(0),
     finalPrice = new Decimal(0),
     finalAmount = new Decimal(0),
-    redeem = new Decimal(0);
+    redeem = new Decimal(0),
+    amount1 = new Decimal(0);
 
   currentPriceDecimal = new Decimal(formatUnits(currentPrice || 0n, 18));
+  // currentPriceDecimal = new Decimal(currentPrice || 0);
   allocationDecimal = new Decimal(formatUnits(allocation || 0n, 18));
+  // allocationDecimal = new Decimal(allocation || 0);
   virtualAmount = inputDecimal
     .mul(new Decimal(2).pow(monthDecimal.div(12)))
     .div(currentPriceDecimal);
@@ -85,17 +89,24 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     .mul(new Decimal(2).pow(monthDecimal.div(12)))
     .div(finalPrice);
 
+  amount1 = finalAmount
+    .mul(new Decimal("0.95"))
+    .mul(new Decimal(10).pow(new Decimal(18)));
+
   redeem = inputDecimal.div(finalAmount);
 
   console.log(
-    "decimal result",
-    allocationDecimal.toString(),
-    currentPriceDecimal.toString(),
-    virtualAmount.toString(),
-    finalPrice.toString(),
-    finalAmount.toString(),
-    redeem.toString()
+    "checking calculation - allocationDecimal",
+    allocationDecimal.toString()
   );
+  console.log(
+    "checking calculation - currentPriceDecimal",
+    currentPriceDecimal.toString()
+  );
+  console.log("checking calculation - virtualAmount", virtualAmount.toString());
+  console.log("checking calculation - finalPrice", finalPrice.toString());
+  console.log("checking calculation - finalAmount", finalAmount.toString());
+  console.log("checking calculation - redeem", redeem.toString());
 
   const {
     isApproved,
@@ -107,18 +118,12 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     token: asset,
   });
 
-  const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [
-    BigInt(month),
-  ]);
-
-  console.log("extraData33", extraData);
-
   const { order, isLoading } = usePrepareCreditOrder({
     token: asset,
     amount: inputAmount,
-    extraData,
     monthsLocked: month,
     slippage,
+    amount1,
   });
 
   const {
@@ -190,12 +195,12 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const formInfoItems = [
     {
       label: " ITHIL obtained:",
-      value: finalAmount.toString(),
+      value: finalAmount.toFixed(2),
       isLoading: isInfoLoading,
     },
     {
       label: "redeem price:",
-      value: redeem.toString(),
+      value: redeem.toFixed(2),
       extension: "$",
       isLoading: isInfoLoading,
     },
