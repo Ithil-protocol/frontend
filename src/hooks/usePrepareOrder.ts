@@ -1,4 +1,10 @@
-import { encodeAbiParameters, parseAbiParameters, parseUnits } from "viem";
+import Decimal from "decimal.js";
+import {
+  encodeAbiParameters,
+  formatUnits,
+  parseAbiParameters,
+  parseUnits,
+} from "viem";
 import { type Address } from "wagmi";
 
 import { ithil } from "@/data/ithil-token";
@@ -111,7 +117,14 @@ export const usePrepareCreditOrder = ({
   const { data: currentPrice, isLoading: isCallOptionsLoading } =
     useCallOptionCurrentPrice();
 
+  const currentPriceDecimal = new Decimal(formatUnits(currentPrice || 0n, 18));
+  const sharesDecimal = new Decimal(shares?.toString() || "0");
+  const loanDecimal = new Decimal(loanAmount.toString() || "0");
+  const monthsLockedDecimal = new Decimal(monthsLocked);
+
   const amount0 = shares ? multiplyBigInt(shares, 0.99) : 0n;
+
+  const amount0d = sharesDecimal.mul(new Decimal("0.99"));
 
   const amount1 = currentPrice
     ? multiplyBigInt(
@@ -120,17 +133,33 @@ export const usePrepareCreditOrder = ({
       )
     : 0n;
 
+  const amount1d = loanDecimal
+    .mul(new Decimal(2).pow(monthsLockedDecimal.div(new Decimal(12))))
+    .div(currentPriceDecimal)
+    .mul(new Decimal(1 - +slippage));
+
+  console.log("important amount0", amount0.toString());
+  console.log("important amount0d", amount0d.toString());
+  console.log("important amount1", amount1.toString());
+  console.log("important amount1d", amount1d.toString());
+  console.log(
+    "zzz22",
+    loanDecimal
+      .mul(new Decimal(2).pow(monthsLockedDecimal.div(new Decimal(12))))
+      .toString()
+  );
+
   const collateral0: ServiceCollateral = {
     itemType: 0,
     token: vault?.vaultAddress as Address,
     identifier: 0n,
-    amount: amount0,
+    amount: BigInt(amount0d.floor().toString()),
   };
   const collateral1: ServiceCollateral = {
     itemType: 0,
     token: ithil.tokenAddress,
     identifier: 0n,
-    amount: amount1,
+    amount: BigInt(amount1d.floor().toString()),
   };
   const loan: ServiceLoan = {
     token: token.tokenAddress,
