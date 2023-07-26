@@ -2,8 +2,9 @@ import { encodeAbiParameters, parseAbiParameters, parseUnits } from "viem";
 import { type Address } from "wagmi";
 
 import { ithil } from "@/data/ithil-token";
+import { VaultName } from "@/types";
 import { Token } from "@/types/onchain.types";
-import { multiplyBigInt } from "@/utils";
+import { getVaultByTokenName, multiplyBigInt } from "@/utils";
 
 import { useCallOptionCurrentPrice } from "./generated/callOption";
 import { useVaultConvertToShares } from "./generated/vault";
@@ -86,7 +87,6 @@ export const usePrepareDebitOrder = ({
 
 interface PrepareCreditOrderProps {
   token: Token;
-  vaultAddress: Address;
   amount: string;
   slippage: string;
   extraData: Address;
@@ -95,19 +95,21 @@ interface PrepareCreditOrderProps {
 
 export const usePrepareCreditOrder = ({
   token,
-  vaultAddress,
   amount,
   slippage,
-  extraData,
   monthsLocked,
 }: PrepareCreditOrderProps) => {
+  const vault = getVaultByTokenName(token.name as VaultName);
   const loanAmount = parseUnits(amount, token.decimals);
 
-  const { data: shares } = useVaultConvertToShares({
+  const { data: shares, isLoading: isSharesLoading } = useVaultConvertToShares({
+    address: vault?.vaultAddress as Address,
     args: [loanAmount],
+    enabled: !!vault?.vaultAddress,
   });
 
-  const { data: currentPrice } = useCallOptionCurrentPrice();
+  const { data: currentPrice, isLoading: isCallOptionsLoading } =
+    useCallOptionCurrentPrice();
 
   const amount0 = shares ? multiplyBigInt(shares, 0.99) : 0n;
 
@@ -120,7 +122,7 @@ export const usePrepareCreditOrder = ({
 
   const collateral0: ServiceCollateral = {
     itemType: 0,
-    token: vaultAddress,
+    token: vault?.vaultAddress as Address,
     identifier: 0n,
     amount: amount0,
   };
@@ -150,7 +152,10 @@ export const usePrepareCreditOrder = ({
     ]),
   };
 
+  const isLoading = isSharesLoading || isCallOptionsLoading;
+
   return {
     order,
+    isLoading,
   };
 };

@@ -5,8 +5,8 @@ import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { toHex } from "viem";
-import { Address } from "viem";
+import { Address, parseEther } from "viem";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -16,18 +16,19 @@ import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
+import {
+  useCallOptionCurrentPrice,
+  useCallOptionTotalAllocation,
+} from "@/hooks/generated/callOption";
 import { useAllowance } from "@/hooks/useAllowance";
-import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
-import { useRateAndSpread } from "@/hooks/useRateAndSpread";
+import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { AaveAsset } from "@/types/onchain.types";
-import { displayLeverage, toFullDate } from "@/utils";
+import { multiplyBigInt, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
-import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 import SubmitButton from "../../inputs/SubmitButton";
 
@@ -40,11 +41,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
-  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [month, setMonth] = useState(1);
   const notificationDialog = useNotificationDialog();
-  console.log("leverage:", leverage, "slippage:", slippage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -52,6 +51,41 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     cacheTime: 5_000,
     watch: true,
   });
+
+  const { data: currentPrice, isLoading: isCurrentPriceLoading } =
+    useCallOptionCurrentPrice();
+  const { data: allocation, isLoading: isAllocationLoading } =
+    useCallOptionTotalAllocation();
+
+  const isInfoLoading = isCurrentPriceLoading || isAllocationLoading;
+
+  const bigIntAmount = parseEther(inputAmount);
+
+  const virtualAmount = currentPrice
+    ? multiplyBigInt(bigIntAmount, 2 ** (month / 12)) / currentPrice
+    : 0n;
+
+  const finalPrice =
+    !!currentPrice && !!allocation
+      ? (currentPrice * allocation) / (allocation - virtualAmount)
+      : 0n;
+
+  const finalAmount = finalPrice
+    ? multiplyBigInt(bigIntAmount, 2 ** (month / 12)) / finalPrice
+    : 0n;
+
+  console.log("test--- : loan", bigIntAmount);
+  console.log("test--- : currentPrice", currentPrice);
+  console.log(
+    "test--- : virtualAmount part 1",
+    multiplyBigInt(bigIntAmount, 2 ** (month / 12))
+  );
+  console.log("test--- : virtualAmount", virtualAmount);
+  console.log("test--- : allocation", allocation);
+  console.log("test--- : finalPrice", finalPrice);
+  console.log("test--- : finalAmount", finalAmount);
+
+  const redeem = finalAmount ? bigIntAmount / finalAmount : 0n;
 
   const {
     isApproved,
@@ -63,33 +97,19 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     token: asset,
   });
 
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-    isInterestError,
-    isFreeLiquidityError,
-  } = useRateAndSpread({
-    token: asset,
-    leverage,
-    margin: inputAmount,
-    slippage,
-    serviceAddress: aaveAddress[chainId],
-  });
-  console.log(interestAndSpread, "OOO");
+  const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [
+    BigInt(month),
+  ]);
 
-  const extraData = toHex("");
+  console.log("extraData33", extraData);
 
-  const { order } = usePrepareDebitOrder({
+  const { order, isLoading } = usePrepareCreditOrder({
     token: asset,
-    collateralToken: asset?.collateralTokenAddress,
-    leverage,
     amount: inputAmount,
-    interestAndSpread,
     extraData,
+    monthsLocked: month,
+    slippage,
   });
-
-  console.log("aave form prepare order", order);
 
   const {
     data: openData,
@@ -144,9 +164,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isInterestAndSpreadLoading;
-  const isButtonDisabled =
-    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
+  const isButtonLoading = isLoading;
+  const isButtonDisabled = +inputAmount === 0;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
@@ -158,32 +177,25 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
-  const finalLeverage = isAdvancedOptionsOpen
-    ? displayLeverage(leverage)
-    : displayLeverage(appConfig.DEFAULT_LEVERAGE);
-  const finalApy = baseApy
-    ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
-    : "";
-
   const formInfoItems = [
     {
-      label: " veITHIL obtained:",
-      value: baseApy?.toFixed(2),
-      extension: "%",
-      isLoading: true,
+      label: " ITHIL obtained:",
+      value: finalAmount.toString(),
+      isLoading: isInfoLoading,
     },
     {
       label: "redeem price:",
-      // value: finalLeverage,
-      extension: "x",
-      isLoading: true,
+      value: redeem.toString(),
+      extension: "$",
+      isLoading: isInfoLoading,
     },
     {
       label: "maturity date:",
       value: toFullDate(addMonths(new Date(), month)),
     },
   ];
+
+  console.log("order99", order);
 
   if (!isMounted) return null;
 
@@ -228,7 +240,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={true}
+          switchableAsset={false}
         />
 
         <Box width="full" gap="30px">
@@ -249,10 +261,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         </Box>
       </div>
 
-      <ServiceError
-        isFreeLiquidityError={isFreeLiquidityError}
-        isInterestError={isInterestError}
-      />
       <SubmitButton
         approve={approve}
         asset={asset}
