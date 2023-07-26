@@ -3,9 +3,10 @@ import { Box } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
+import { Decimal } from "decimal.js";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Address, parseEther } from "viem";
+import { Address, formatUnits } from "viem";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
@@ -24,7 +25,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { AaveAsset } from "@/types/onchain.types";
-import { multiplyBigInt, toFullDate } from "@/utils";
+import { toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -59,33 +60,41 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const isInfoLoading = isCurrentPriceLoading || isAllocationLoading;
 
-  const bigIntAmount = parseEther(inputAmount);
+  const inputDecimal = new Decimal(inputAmount || 0),
+    monthDecimal = new Decimal(month);
 
-  const virtualAmount = currentPrice
-    ? multiplyBigInt(bigIntAmount, 2 ** (month / 12)) / currentPrice
-    : 0n;
+  let allocationDecimal = new Decimal(0),
+    currentPriceDecimal = new Decimal(0),
+    virtualAmount = new Decimal(0),
+    finalPrice = new Decimal(0),
+    finalAmount = new Decimal(0),
+    redeem = new Decimal(0);
 
-  const finalPrice =
-    !!currentPrice && !!allocation
-      ? (currentPrice * allocation) / (allocation - virtualAmount)
-      : 0n;
+  currentPriceDecimal = new Decimal(formatUnits(currentPrice || 0n, 18));
+  allocationDecimal = new Decimal(formatUnits(allocation || 0n, 18));
+  virtualAmount = inputDecimal
+    .mul(new Decimal(2).pow(monthDecimal.div(12)))
+    .div(currentPriceDecimal);
 
-  const finalAmount = finalPrice
-    ? multiplyBigInt(bigIntAmount, 2 ** (month / 12)) / finalPrice
-    : 0n;
+  finalPrice = currentPriceDecimal
+    .mul(allocationDecimal)
+    .div(allocationDecimal.minus(virtualAmount));
 
-  console.log("test--- : loan", bigIntAmount);
-  console.log("test--- : currentPrice", currentPrice);
+  finalAmount = inputDecimal
+    .mul(new Decimal(2).pow(monthDecimal.div(12)))
+    .div(finalPrice);
+
+  redeem = inputDecimal.div(finalAmount);
+
   console.log(
-    "test--- : virtualAmount part 1",
-    multiplyBigInt(bigIntAmount, 2 ** (month / 12))
+    "decimal result",
+    allocationDecimal.toString(),
+    currentPriceDecimal.toString(),
+    virtualAmount.toString(),
+    finalPrice.toString(),
+    finalAmount.toString(),
+    redeem.toString()
   );
-  console.log("test--- : virtualAmount", virtualAmount);
-  console.log("test--- : allocation", allocation);
-  console.log("test--- : finalPrice", finalPrice);
-  console.log("test--- : finalAmount", finalAmount);
-
-  const redeem = finalAmount ? bigIntAmount / finalAmount : 0n;
 
   const {
     isApproved,
