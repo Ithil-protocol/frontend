@@ -10,7 +10,7 @@ import { Address, formatUnits } from "viem";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
-import { aaveABI } from "@/abi";
+import { callOptionABI } from "@/abi";
 import Slider from "@/components/Slider";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
@@ -18,6 +18,7 @@ import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
 import {
+  callOptionAddress,
   useCallOptionCurrentPrice,
   useCallOptionTotalAllocation,
 } from "@/hooks/generated/callOption";
@@ -125,8 +126,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress[98745],
+    abi: callOptionABI,
+    address: callOptionAddress[98745],
     functionName: "open",
     args: [order],
     account: accountAddress as Address,
