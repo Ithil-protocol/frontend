@@ -11,7 +11,6 @@ import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
-import tokens from "@/data/tokens.json";
 import { AaveAsset } from "@/types/onchain.types";
 
 interface Props {
@@ -21,6 +20,7 @@ interface Props {
   onMaxClick: () => void;
   isMaxDisabled: boolean;
   switchableAsset?: boolean;
+  tokens: string[];
 }
 
 const SingleAssetAmount: FC<Props> = ({
@@ -30,6 +30,7 @@ const SingleAssetAmount: FC<Props> = ({
   onMaxClick,
   isMaxDisabled,
   switchableAsset = true,
+  tokens,
 }) => {
   const tokenModal = useTokenModal({
     onSelectTokenCallback: () => {

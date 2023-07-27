@@ -35,7 +35,7 @@ const TokenModalContext = createContext<{
   onSelectToken: CloseDialogFn;
   openDialog: OpenTokenDialogFn;
   setOptions: (o: TokenModalOptions) => void;
-  tokens: any[];
+  tokens: string[];
 }>({
   closeDialog: () => {},
   onSelectToken: () => {},
@@ -74,7 +74,7 @@ interface Props {
   onSelectToken?: () => void;
   serviceName: string;
   returnPath?: string;
-  tokens: any[];
+  tokens: string[];
 }
 
 const TokenModalComponent: React.FC<Props> = ({
@@ -90,8 +90,6 @@ const TokenModalComponent: React.FC<Props> = ({
   const handleClose = () => {
     if (onClose) onClose();
   };
-  console.log("Tokens", tokens);
-
   return (
     <>
       <ChakraModal onClose={handleClose} isCentered isOpen={isOpen}>
@@ -140,7 +138,7 @@ const TokenModalComponent: React.FC<Props> = ({
                 <React.Fragment key={key}>
                   <Link
                     onClick={onSelectToken}
-                    href={`/services/${serviceName}/${item.name.toLowerCase()}`}
+                    href={`/services/${serviceName}/${item.toLowerCase()}`}
                   >
                     <ListItem>
                       <Button
@@ -155,7 +153,7 @@ const TokenModalComponent: React.FC<Props> = ({
                         variant="outline"
                       >
                         <div>
-                          <TokenIcon width={40} height={40} name={item.name} />
+                          <TokenIcon width={40} height={40} name={item} />
                         </div>
 
                         <div
@@ -170,14 +168,14 @@ const TokenModalComponent: React.FC<Props> = ({
                             fontWeight="medium"
                             color={mode("secondary.100", "secondary.100.dark")}
                           >
-                            {item.name}
+                            {item}
                           </Text>
                           <Text
                             fontWeight="medium"
                             fontSize="md"
                             color={mode("primary.400.dark", "primary.400")}
                           >
-                            {item.description}
+                            {item} token
                           </Text>
                         </div>
                       </Button>

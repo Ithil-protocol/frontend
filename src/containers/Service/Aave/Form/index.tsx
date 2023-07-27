@@ -60,7 +60,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     spender: aaveAddress[chainId],
     token: asset,
   });
-
   const {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
@@ -236,6 +235,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
+          tokens={[]}
         />
 
         <Box width="full" gap="30px">

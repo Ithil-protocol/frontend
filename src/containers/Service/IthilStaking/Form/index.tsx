@@ -11,6 +11,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -44,7 +45,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     cacheTime: 5_000,
     watch: true,
   });
-
+  const tokens = servicesJson.find(
+    (token) => token.name.toLowerCase() === asset.name
+  );
   const {
     isApproved,
     isLoading: isApproveLoading,
@@ -203,6 +206,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={false}
+          tokens={tokens ? tokens.tokens : []}
         />
 
         <Box width="full" gap="30px">

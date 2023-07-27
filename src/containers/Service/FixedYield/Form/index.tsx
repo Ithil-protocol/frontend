@@ -207,6 +207,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
+          tokens={[""]}
         />
 
         <Box width="full" gap="30px">
