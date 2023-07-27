@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
+import tokens from "@/data/tokens.json";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { ServiceType } from "@/types";
@@ -36,8 +37,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode, pickColor } = useColorMode();
-
-  const handleEnterClick = () => tokenModal.openDialog(to, excludes);
+  const handleEnterClick = () => tokenModal.openDialog(tokens, to, excludes);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
