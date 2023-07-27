@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
 import servicesJson from "@/data/services";
+import tokens from "@/data/tokens.json";
 
 const Service = () => {
   const tokenModal = useTokenModal({
@@ -20,7 +21,7 @@ const Service = () => {
       (i) => i.url === `/${serviceName}` && i.hasIndex
     );
 
-    if (isServiceHasIndexPage) tokenModal.openDialog(serviceName);
+    if (isServiceHasIndexPage) tokenModal.openDialog(tokens, serviceName);
     else router.push("/404");
   }, [router, serviceName, tokenModal]);
 
