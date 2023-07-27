@@ -11,6 +11,7 @@ import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
+import tokens from "@/data/tokens.json";
 import { AaveAsset } from "@/types/onchain.types";
 
 interface Props {
@@ -43,6 +44,7 @@ const SingleAssetAmount: FC<Props> = ({
       onChange(value);
     }
   };
+  // const { data: vaultData } = useVaults();
 
   return (
     <>
@@ -51,7 +53,7 @@ const SingleAssetAmount: FC<Props> = ({
           style={{
             cursor: "pointer",
           }}
-          onClick={() => switchableAsset && tokenModal.openDialog()}
+          onClick={() => switchableAsset && tokenModal.openDialog(tokens)}
           className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
         >
           {asset === null ? (
