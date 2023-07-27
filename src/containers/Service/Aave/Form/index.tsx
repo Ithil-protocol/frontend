@@ -13,6 +13,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -191,6 +192,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
   ];
 
+  const tokens = servicesJson
+    .filter((item) => item.name === "AAVE")
+    .flatMap((item) => item.tokens);
   if (!isMounted) return null;
 
   return (
@@ -235,7 +239,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
-          tokens={[]}
+          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
