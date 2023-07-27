@@ -1,6 +1,5 @@
 import { FormLabel, HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import { Decimal } from "decimal.js";
@@ -11,6 +10,7 @@ import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
+import PrivateButton from "@/components/PrivateButton";
 import Slider from "@/components/Slider";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
@@ -32,7 +32,6 @@ import { abbreviateBigNumber } from "@/utils/input.utils";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
 import SingleAssetAmount from "../../SingleAssetAmount";
-import SubmitButton from "../../inputs/SubmitButton";
 
 // import DepositForm from "./DepositForm"
 
@@ -40,7 +39,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     query: { asset: token },
   } = useRouter();
-  const { address: accountAddress, isConnected } = useAccount();
+  const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
@@ -182,7 +181,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     setInputAmount(balance?.formatted ?? "");
   };
 
-  const { openConnectModal } = useConnectModal();
   const isMounted = useIsMounted();
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
@@ -271,14 +269,12 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         </Box>
       </div>
 
-      <SubmitButton
+      <PrivateButton
         approve={approve}
-        asset={asset}
+        assetName={asset.name}
         isApproved={isApproved}
-        isButtonDisabled={isButtonDisabled}
-        isButtonLoading={isButtonLoading}
-        isConnected={isConnected}
-        openConnectModal={openConnectModal}
+        isDisabled={isButtonDisabled}
+        isLoading={isButtonLoading}
         openPosition={openPosition}
       />
     </div>
