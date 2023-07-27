@@ -1,16 +1,54 @@
 import { Button, ButtonProps } from "@chakra-ui/react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
-const PrivateButton: React.FC<ButtonProps> = (props) => {
+import { VoidNoArgs } from "@/types";
+
+interface Props extends ButtonProps {
+  approve?: VoidNoArgs;
+  assetName?: string;
+  isApproved?: boolean;
+  openPosition?: VoidNoArgs;
+  text?: string;
+}
+
+const PrivateButton: React.FC<Props> = ({
+  approve,
+  assetName = "",
+  isApproved,
+  isDisabled,
+  isLoading,
+  onClick,
+  openPosition,
+  text = "Open position",
+  ...rest
+}) => {
   const { isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
+
+  const children = !assetName
+    ? "Loading..."
+    : isApproved
+    ? text
+    : `Approve ${assetName}`;
 
   return (
     <>
       {isConnected ? (
-        <Button {...props} />
+        <Button
+          {...rest}
+          mt="20px"
+          onClick={(isApproved ? openPosition : approve) || onClick}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          loadingText={isLoading && "Waiting"}
+        >
+          {children}
+        </Button>
       ) : (
-        <ConnectButton chainStatus="full" />
+        <Button mt="20px" onClick={openConnectModal}>
+          Connect Wallet
+        </Button>
       )}
     </>
   );
