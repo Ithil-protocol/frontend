@@ -255,13 +255,18 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         isInterestError={isInterestError}
       />
       <PrivateButton
-        approve={approve}
-        assetName={asset.name}
-        isApproved={isApproved}
         isDisabled={isButtonDisabled}
+        loadingText="Waiting"
+        mt="20px"
         isLoading={isButtonLoading}
-        openPosition={openPosition}
-      />
+        onClick={() => (isApproved ? openPosition() : approve?.())}
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Open position"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };

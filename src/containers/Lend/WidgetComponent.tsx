@@ -104,13 +104,14 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
       />
 
       <PrivateButton
-        assetName={asset.name}
-        text={`${title} ${asset.name}`}
         onClick={onActionClick}
         isDisabled={isButtonDisabled}
         isLoading={isButtonLoading}
         loadingText="Awaiting"
-      />
+        mt="20px"
+      >
+        {!asset.name ? "Loading..." : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };

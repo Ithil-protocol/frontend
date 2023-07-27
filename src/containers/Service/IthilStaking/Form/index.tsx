@@ -226,23 +226,32 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         isInterestError={isInterestError}
       /> */}
       <PrivateButton
-        approve={approve}
-        assetName={asset.name}
-        isApproved={isApproved}
         isDisabled={isButtonDisabled}
         isLoading={isButtonLoading}
-        // openPosition={openPosition}
-        text="Deposit"
-      />
+        loadingText="Waiting"
+        onClick={approve}
+        mt="20px"
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Deposit"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
+
       <PrivateButton
-        approve={approve}
-        assetName={asset.name}
-        isApproved={isApproved}
         isDisabled={isButtonDisabled}
         isLoading={isButtonLoading}
-        // openPosition={openPosition}
-        text="Claim 0 WETH"
-      />
+        loadingText="Waiting"
+        onClick={approve}
+        mt="20px"
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Claim 0 WETH"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };
