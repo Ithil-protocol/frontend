@@ -7,6 +7,7 @@ import {
   useCallOptionCurrentPrice,
   useCallOptionTotalAllocation,
 } from "@/hooks/generated/callOption";
+import { useManagerCaps, useManagerVaults } from "@/hooks/generated/manager";
 import { multiplyBigInt } from "@/utils";
 
 const Test = () => {
@@ -321,6 +322,17 @@ const Test = () => {
 
   // (data && isSuccess) && callOptionFinalAmount(data, ttl)
 
+  const { data: caps } = useManagerCaps({
+    args: [
+      "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
+      "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+    ],
+  });
+  const { data: vaults } = useManagerVaults({
+    args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
+  });
+
+  console.log("caps", caps, "vaults", vaults);
   return (
     <Button onClick={() => approve()}>
       {isApproveLoading ? "approving..." : "approve"}

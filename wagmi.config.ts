@@ -3,7 +3,14 @@ import { react } from "@wagmi/cli/plugins";
 import { Address } from "viem";
 import { erc20ABI } from "wagmi";
 
-import { aaveABI, callOptionABI, fixedYieldABI, gmxABI, vaultABI } from "@/abi";
+import {
+  aaveABI,
+  callOptionABI,
+  fixedYieldABI,
+  gmxABI,
+  managerABI,
+  vaultABI,
+} from "@/abi";
 import contracts from "@/deploy/contracts.json";
 
 export default defineConfig([
@@ -33,6 +40,19 @@ export default defineConfig([
       {
         name: "Vault",
         abi: vaultABI,
+      },
+    ],
+    plugins: [react()],
+  },
+  {
+    out: "src/hooks/generated/manager.ts",
+    contracts: [
+      {
+        name: "Manager",
+        abi: managerABI,
+        address: {
+          98745: contracts.manager as Address,
+        },
       },
     ],
     plugins: [react()],
