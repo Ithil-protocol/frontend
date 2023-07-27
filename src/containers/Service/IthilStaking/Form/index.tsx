@@ -45,9 +45,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const tokens = servicesJson.find(
-    (token) => token.name.toLowerCase() === asset.name
-  );
+  const tokens = servicesJson
+    .filter((item) => item.name === "ITHIL Staking")
+    .flatMap((item) => item.tokens);
   const {
     isApproved,
     isLoading: isApproveLoading,
@@ -206,7 +206,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={false}
-          tokens={tokens ? tokens.tokens : []}
+          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
