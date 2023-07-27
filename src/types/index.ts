@@ -99,12 +99,12 @@ export type OpenNotificationDialogFn = (o: OpenDialogFnOptions) => void;
 export type CloseDialogFn = VoidNoArgs;
 
 export type OpenTokenDialogFn = (
-  tokens: any[],
+  tokens: string[],
   serviceName?: string,
   excludes?: string[]
 ) => void;
 export interface TokenModalOptions {
-  tokens: any[];
+  tokens: string[];
   isClosable: boolean;
   onSelectTokenCallback: () => void;
   returnPath: string;
