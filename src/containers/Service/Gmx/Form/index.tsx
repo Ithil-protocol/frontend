@@ -1,12 +1,12 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { gmxABI } from "@/abi";
+import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
@@ -27,7 +27,6 @@ import AdvanceSection from "../../AdvanceSection";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
-import SubmitButton from "../../inputs/SubmitButton";
 
 // import DepositForm from "./DepositForm"
 
@@ -144,7 +143,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     setInputAmount(balance?.formatted ?? "0");
   };
 
-  const { openConnectModal } = useConnectModal();
   const isMounted = useIsMounted();
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
@@ -249,16 +247,19 @@ const Form = ({ asset }: { asset: Asset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <SubmitButton
-        approve={approve}
-        asset={asset}
-        isApproved={isApproved}
-        isButtonDisabled={isButtonDisabled}
-        isButtonLoading={isButtonLoading}
-        isConnected={isConnected}
-        openConnectModal={openConnectModal}
-        openPosition={openPosition}
-      />
+      <PrivateButton
+        onClick={() => (isApproved ? openPosition() : approve?.())}
+        isDisabled={isButtonDisabled}
+        loadingText="Waiting"
+        mt="20px"
+        isLoading={isButtonLoading}
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Open position"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };

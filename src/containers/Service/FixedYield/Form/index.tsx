@@ -1,5 +1,4 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -7,6 +6,7 @@ import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { fixedYieldABI } from "@/abi";
+import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
@@ -20,7 +20,6 @@ import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import SingleAssetAmount from "../../SingleAssetAmount";
-import SubmitButton from "../../inputs/SubmitButton";
 
 // import DepositForm from "./DepositForm"
 
@@ -28,7 +27,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const {
     query: { asset: token },
   } = useRouter();
-  const { address: accountAddress, isConnected } = useAccount();
+  const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const notificationDialog = useNotificationDialog();
@@ -110,7 +109,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     setInputAmount(balance?.formatted ?? "");
   };
 
-  const { openConnectModal } = useConnectModal();
   const isMounted = useIsMounted();
 
   if (!isMounted) return null;
@@ -160,16 +158,19 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         />
       </div>
 
-      <SubmitButton
-        approve={approve}
-        asset={asset}
-        isApproved={isApproved}
-        isButtonDisabled={isButtonDisabled}
-        isButtonLoading={isButtonLoading}
-        isConnected={isConnected}
-        openConnectModal={openConnectModal}
-        openPosition={openPosition}
-      />
+      <PrivateButton
+        onClick={() => (isApproved ? openPosition() : approve?.())}
+        isDisabled={isButtonDisabled}
+        loadingText="Waiting"
+        mt="20px"
+        isLoading={isButtonLoading}
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Open position"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };
