@@ -27,7 +27,7 @@ const Header: FC<Props> = ({ currentView, setActiveView }) => {
       <Box display="flex" alignItems={["start", "center"]} gap="15">
         <Link href="/">
           <ArrowLeft
-            className={`${colorMode === "light" && "fill-[#070b0f]"}`}
+            className={`${colorMode === "light" && "fill-[#070b0f]"} w-6 h-6`}
           />
         </Link>
         <Text fontWeight="bold" fontSize="24px">
