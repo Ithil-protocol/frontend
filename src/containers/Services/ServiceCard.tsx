@@ -34,8 +34,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode, pickColor } = useColorMode();
-
-  const handleEnterClick = () => tokenModal.openDialog(to);
+  const handleEnterClick = () => tokenModal.openDialog(assets, to);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">

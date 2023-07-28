@@ -19,13 +19,13 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import React from "react";
 
 import { CloseButton } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
-import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
 import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
 import { CloseDialogFn, OpenTokenDialogFn, TokenModalOptions } from "@/types";
@@ -35,25 +35,28 @@ const TokenModalContext = createContext<{
   onSelectToken: CloseDialogFn;
   openDialog: OpenTokenDialogFn;
   setOptions: (o: TokenModalOptions) => void;
+  tokens: string[];
 }>({
   closeDialog: () => {},
   onSelectToken: () => {},
   openDialog: () => {},
   setOptions: () => {},
+  tokens: [],
 });
 
 export const useTokenModal = (
   options: Partial<TokenModalOptions> = getDefaultOptions()
 ) => {
   const value = useContext(TokenModalContext);
+  const memoedValue = useRef(value);
+  const memoedOptions = useRef(options);
 
   useEffect(() => {
-    value.setOptions({
+    memoedValue.current.setOptions({
       ...getDefaultOptions(),
-      ...options,
+      ...memoedOptions.current,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [memoedValue, memoedOptions]);
 
   return value;
 };
@@ -62,6 +65,7 @@ export const getDefaultOptions = (): TokenModalOptions => ({
   isClosable: true,
   onSelectTokenCallback: () => undefined,
   returnPath: "",
+  tokens: [],
 });
 
 interface Props {
@@ -70,6 +74,7 @@ interface Props {
   onSelectToken?: () => void;
   serviceName: string;
   returnPath?: string;
+  tokens: string[];
 }
 
 const TokenModalComponent: React.FC<Props> = ({
@@ -78,16 +83,13 @@ const TokenModalComponent: React.FC<Props> = ({
   onSelectToken,
   returnPath,
   serviceName,
+  tokens,
 }) => {
   const { mode } = useColorMode();
 
   const handleClose = () => {
     if (onClose) onClose();
   };
-
-  const { data: vaultData } = useVaults();
-  const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
-
   return (
     <>
       <ChakraModal onClose={handleClose} isCentered isOpen={isOpen}>
@@ -132,79 +134,55 @@ const TokenModalComponent: React.FC<Props> = ({
             }}
           >
             <List p="10px" bg="transparent">
-              {vaultDataWithFallback
-                .map((item) => {
-                  const descriptions = {
-                    USDC: "USD Coin",
-                    USDT: "USD Tether",
-                    WETH: "Wrapped Ether",
-                    WBTC: "Wrapped BTC",
-                  };
+              {tokens.map((item, key) => (
+                <React.Fragment key={key}>
+                  <Link
+                    onClick={onSelectToken}
+                    href={`/services/${serviceName}/${item.toLowerCase()}`}
+                  >
+                    <ListItem>
+                      <Button
+                        style={{
+                          border: "0px",
+                          display: "flex",
+                          gap: "15px",
+                          justifyContent: "flex-start",
+                          padding: "30px",
+                          width: "100%",
+                        }}
+                        variant="outline"
+                      >
+                        <div>
+                          <TokenIcon width={40} height={40} name={item} />
+                        </div>
 
-                  return {
-                    ...item.token,
-                    description:
-                      descriptions[
-                        item.token.name as keyof typeof descriptions
-                      ],
-                  };
-                })
-                .map((item, key) => (
-                  <React.Fragment key={key}>
-                    <Link
-                      onClick={onSelectToken}
-                      href={`/services/${serviceName}/${item.name.toLowerCase()}`}
-                    >
-                      <ListItem>
-                        <Button
+                        <div
                           style={{
-                            border: "0px",
+                            alignItems: "flex-start",
                             display: "flex",
-                            gap: "15px",
+                            flexDirection: "column",
                             justifyContent: "flex-start",
-                            padding: "30px",
-                            width: "100%",
                           }}
-                          variant="outline"
                         >
-                          <div>
-                            <TokenIcon
-                              width={40}
-                              height={40}
-                              name={item.name}
-                            />
-                          </div>
-
-                          <div
-                            style={{
-                              alignItems: "flex-start",
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "flex-start",
-                            }}
+                          <Text
+                            fontWeight="medium"
+                            color={mode("secondary.100", "secondary.100.dark")}
                           >
-                            <Text
-                              fontWeight="medium"
-                              color={mode(
-                                "secondary.100",
-                                "secondary.100.dark"
-                              )}
-                            >
-                              {item.name}
-                            </Text>
-                            <Text
-                              fontWeight="medium"
-                              fontSize="md"
-                              color={mode("primary.400.dark", "primary.400")}
-                            >
-                              {item.description}
-                            </Text>
-                          </div>
-                        </Button>
-                      </ListItem>
-                    </Link>
-                  </React.Fragment>
-                ))}
+                            {item}
+                          </Text>
+                          <Text
+                            fontWeight="medium"
+                            fontSize="md"
+                            color={mode("primary.400.dark", "primary.400")}
+                          >
+                            {item} token
+                          </Text>
+                        </div>
+                      </Button>
+                    </ListItem>
+                  </Link>
+                </React.Fragment>
+              ))}
             </List>
           </ModalBody>
 
@@ -229,9 +207,9 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [options, setOptions] = useState<TokenModalOptions>(getDefaultOptions);
   const [serviceName, setServiceName] = useState("aave");
-
-  const handleOpen: OpenTokenDialogFn = (sn = serviceName) => {
+  const handleOpen: OpenTokenDialogFn = (tokens, sn = serviceName) => {
     setServiceName(sn);
+    setOptions((prev) => ({ ...prev, tokens }));
     onOpen();
   };
 
@@ -254,6 +232,7 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         openDialog: handleOpen,
         setOptions,
         onSelectToken: handleSelectToken,
+        tokens: options.tokens,
       }}
     >
       <TokenModalComponent
@@ -262,6 +241,7 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         onClose={handleClose}
         onSelectToken={handleSelectToken}
         returnPath={options.returnPath}
+        tokens={options.tokens}
       />
 
       {children}

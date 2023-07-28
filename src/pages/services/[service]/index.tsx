@@ -20,10 +20,9 @@ const Service = () => {
       (i) => i.url === `/${serviceName}` && i.hasIndex
     );
 
-    if (isServiceHasIndexPage) tokenModal.openDialog(serviceName);
+    if (isServiceHasIndexPage) tokenModal.openDialog([], serviceName);
     else router.push("/404");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [serviceName]);
+  }, [router, serviceName, tokenModal]);
 
   return <></>;
 };

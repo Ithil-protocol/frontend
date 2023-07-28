@@ -11,6 +11,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import servicesJson from "@/data/services";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -182,7 +183,9 @@ const Form = ({ asset }: { asset: Asset }) => {
       extension: "%",
     },
   ];
-
+  const tokens = servicesJson
+    .filter((item) => item.name === "GMX")
+    .flatMap((item) => item.tokens);
   if (!isMounted) return null;
 
   return (
@@ -227,6 +230,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={false}
+          tokens={tokens}
         />
 
         <Box width="full" gap="30px">

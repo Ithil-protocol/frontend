@@ -10,6 +10,7 @@ import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -111,6 +112,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const isMounted = useIsMounted();
 
+  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
+  const tokens = servicesJson
+    .filter((item) => item.name === "Fixed Yield")
+    .flatMap((item) => item.tokens);
   if (!isMounted) return null;
 
   return (
@@ -155,6 +160,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
+          tokens={tokens}
         />
       </div>
 

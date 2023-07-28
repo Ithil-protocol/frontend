@@ -15,6 +15,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import {
   callOptionAddress,
@@ -208,7 +209,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
   ];
 
-  console.log("order99", order);
+  const tokens = servicesJson
+    .filter((item) => item.name === "Call Option")
+    .flatMap((item) => item.tokens);
 
   if (!isMounted) return null;
 
@@ -253,7 +256,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={false}
+          switchableAsset={true}
+          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
