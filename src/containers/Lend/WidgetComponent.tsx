@@ -5,9 +5,8 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
 
+import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
@@ -37,7 +36,6 @@ interface WidgetComponentProps {
 const WidgetComponent: React.FC<WidgetComponentProps> = ({
   balance,
   inputAmount,
-  isApproved,
   isBalanceLoading,
   isButtonDisabled,
   isButtonLoading,
@@ -47,10 +45,8 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
   onMaxClick,
   onPercentageClick,
   title,
-  token,
+  token: asset,
 }) => {
-  const { isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
   return (
     <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300 bg-primary-contrast">
       <div className="flex flex-row justify-between w-full">
@@ -61,10 +57,10 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
           ) : (
             <>
               <Text textStyle="lg">
-                {abbreviateBigNumber(balance, token.decimals)}
+                {abbreviateBigNumber(balance, asset.decimals)}
               </Text>
               <Text textStyle="lg">
-                (<EstimatedValue value={balance} token={token} />)
+                (<EstimatedValue value={balance} token={asset} />)
               </Text>
             </>
           )}
@@ -79,7 +75,7 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
           value={inputAmount}
           onChange={(event) => {
             const { value } = event.target;
-            if (getDecimalRegex(token.decimals).test(value) || value === "")
+            if (getDecimalRegex(asset.decimals).test(value) || value === "")
               onInputChange(value);
           }}
         />
@@ -107,18 +103,15 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
         }))}
       />
 
-      {isConnected ? (
-        <Button
-          onClick={onActionClick}
-          isDisabled={isButtonDisabled}
-          isLoading={isButtonLoading}
-          loadingText={isButtonLoading ? "Awaiting" : undefined}
-        >
-          {isApproved ? `${title} ${token.name}` : `Approve ${token.name}`}
-        </Button>
-      ) : (
-        <Button onClick={openConnectModal}>Connect Wallet</Button>
-      )}
+      <PrivateButton
+        onClick={onActionClick}
+        isDisabled={isButtonDisabled}
+        isLoading={isButtonLoading}
+        loadingText="Awaiting"
+        mt="20px"
+      >
+        {!asset.name ? "Loading..." : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };

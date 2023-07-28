@@ -1,6 +1,14 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { Button } from "@chakra-ui/react";
+import { formatUnits } from "viem";
 import { Address, erc20ABI, useContractWrite } from "wagmi";
+
+import {
+  useCallOptionCurrentPrice,
+  useCallOptionTotalAllocation,
+} from "@/hooks/generated/callOption";
+import { useManagerCaps, useManagerVaults } from "@/hooks/generated/manager";
+import { multiplyBigInt } from "@/utils";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -39,7 +47,7 @@ const Test = () => {
   // serviceTest(order);
 
   // this order works fine. if you want to test "open" function. (token, collateralToken, amount, _leverage)
-  // const { order: workedOrder } = usePrepareOrder(
+  // const { order: workedOrder } = usePrepareDebitOrder(
   //   "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
   //   "0x078f358208685046a11C85e8ad32895DED33A249",
   //   parseUnits("0.000241", 8),
@@ -292,7 +300,39 @@ const Test = () => {
     //   });
     // },
   });
+  const { data } = useCallOptionCurrentPrice();
+  const { data: ttl, isSuccess } = useCallOptionTotalAllocation();
+  data && console.log("virtualAmount", formatUnits(data, 6), ttl);
 
+  function callOptionFinalAmount(initialPrice: bigint, allocation: bigint) {
+    const loan = 150000000n;
+    const monthsLocked = 12;
+
+    const virtualAmount =
+      multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / initialPrice;
+
+    const finalPrice =
+      (initialPrice * allocation) / (allocation - virtualAmount);
+
+    const finalAmount =
+      multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / finalPrice;
+
+    console.log("virtualAmount", finalAmount);
+  }
+
+  // (data && isSuccess) && callOptionFinalAmount(data, ttl)
+
+  const { data: caps } = useManagerCaps({
+    args: [
+      "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
+      "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+    ],
+  });
+  const { data: vaults } = useManagerVaults({
+    args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
+  });
+
+  console.log("caps", caps, "vaults", vaults);
   return (
     <Button onClick={() => approve()}>
       {isApproveLoading ? "approving..." : "approve"}
