@@ -96,7 +96,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
               <MenuButton
                 as={IconButton}
                 aria-label="Options"
-                icon={<ThreeDotIcon />}
+                icon={<ThreeDotIcon width={34} height={34} />}
                 variant="solid"
               />
               <MenuList
