@@ -196,20 +196,17 @@ export const toFullDate = (timestamp: Date) => {
   return formattedDate;
 };
 
-export const convertArrayByKeyToOBJ = <
+export function convertArrayByKeyToOBJ<
   T extends Record<string | number | symbol, any>,
   K extends keyof T
->(
-  options: T[],
-  keyName: K
-): Record<T[K], T> => {
+>(options: T[], keyName: K): Record<T[K], T> {
   const obj = {} as Record<T[K], T>;
   options.forEach((option) => {
     const key = option[keyName];
     obj[key] = option;
   });
   return obj;
-};
+}
 
 export const getAssetByName = (name: string): Asset | undefined => {
   const asset = assetsObjByName[name];
