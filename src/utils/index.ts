@@ -209,7 +209,7 @@ export function convertArrayByKeyToOBJ<
 }
 
 export const getAssetByName = (name: string): Asset | undefined => {
-  const asset = assetsObjByName[name];
+  const asset = assetsObjByName[name.toUpperCase()];
   return asset;
 };
 
