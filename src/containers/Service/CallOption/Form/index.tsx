@@ -14,7 +14,6 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import {
   callOptionAddress,
@@ -25,7 +24,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { toFullDate } from "@/utils";
+import { getServiceTokensByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -192,9 +191,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = servicesJson
-    .filter((item) => item.name === "Call Option")
-    .flatMap((item) => item.tokens);
+  const tokens = getServiceTokensByName("Call Option");
 
   if (!isMounted) return null;
 
