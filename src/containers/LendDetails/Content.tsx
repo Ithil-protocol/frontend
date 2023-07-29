@@ -5,19 +5,21 @@ import { formatUnits } from "viem";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useVaultDetails } from "@/hooks/useVaultDetails";
 import { VaultName } from "@/types";
-import { fixPrecision, getVaultByTokenName } from "@/utils";
+import { fixPrecision, getAssetByName, getSingleQueryParam } from "@/utils";
 
 const Content = () => {
-  const router = useRouter();
+  const {
+    query: { token },
+  } = useRouter();
   const { mode } = useColorMode();
 
-  const token = (router.query.token || "") as string;
+  const normalizedToken = getSingleQueryParam(token);
 
-  const { data, isLoading } = useVaultDetails(token.toUpperCase() as VaultName);
+  const { data, isLoading } = useVaultDetails(
+    normalizedToken.toUpperCase() as VaultName
+  );
 
-  const vault = getVaultByTokenName(token as VaultName);
-
-  console.log("vaultVault", vault);
+  const asset = getAssetByName(normalizedToken);
 
   return (
     <Box
@@ -32,16 +34,16 @@ const Content = () => {
         {
           title: "Borrowable Balance",
           value: `${fixPrecision(
-            +formatUnits(data.freeLiquidity ?? 0n, vault?.decimals ?? 0),
+            +formatUnits(data.freeLiquidity ?? 0n, asset?.decimals ?? 0),
             2
-          )} ${vault?.name}`,
+          )} ${asset?.name}`,
         },
         {
           title: "Loaned out",
           value: `${fixPrecision(
-            +formatUnits(data.netLoans ?? 0n, vault?.decimals ?? 0),
+            +formatUnits(data.netLoans ?? 0n, asset?.decimals ?? 0),
             2
-          )}  ${vault?.name}`,
+          )}  ${asset?.name}`,
         },
         {
           title: "Current Profits",
@@ -49,12 +51,12 @@ const Content = () => {
             !!data.currentProfits && !!data.currentLosses
               ? data.currentProfits - data.currentLosses
               : 0n
-          } ${vault?.name}`,
+          } ${asset?.name}`,
         },
         {
           title: "Share price",
           value: fixPrecision(
-            +formatUnits(data?.convertToShares ?? 0n, vault?.decimals ?? 0),
+            +formatUnits(data?.convertToShares ?? 0n, asset?.decimals ?? 0),
             2
           ),
         },

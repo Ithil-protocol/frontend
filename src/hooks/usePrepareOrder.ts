@@ -9,9 +9,9 @@ import {
 import { type Address } from "wagmi";
 
 import { ithil } from "@/data/ithil-token";
-import { VaultName } from "@/types";
+import { Asset } from "@/types";
 import { Token } from "@/types/onchain.types";
-import { getVaultByTokenName, multiplyBigInt } from "@/utils";
+import { multiplyBigInt } from "@/utils";
 
 import { useCallOptionCurrentPrice } from "./generated/callOption";
 import { useVaultConvertToShares } from "./generated/vault";
@@ -93,7 +93,7 @@ export const usePrepareDebitOrder = ({
 };
 
 interface PrepareCreditOrderProps {
-  token: Token;
+  asset: Asset;
   amount: string;
   amount1: Decimal;
   slippage: string;
@@ -101,19 +101,18 @@ interface PrepareCreditOrderProps {
 }
 
 export const usePrepareCreditOrder = ({
-  token,
+  asset,
   amount,
   slippage,
   amount1,
   monthsLocked,
 }: PrepareCreditOrderProps) => {
-  const vault = getVaultByTokenName(token.name as VaultName);
-  const loanAmount = parseUnits(amount, token.decimals);
+  const loanAmount = parseUnits(amount, asset.decimals);
 
   const { data: shares, isLoading: isSharesLoading } = useVaultConvertToShares({
-    address: vault?.vaultAddress as Address,
+    address: asset?.vaultAddress as Address,
     args: [loanAmount],
-    enabled: !!vault?.vaultAddress,
+    enabled: !!asset?.vaultAddress,
   });
 
   const { data: currentPrice, isLoading: isCallOptionsLoading } =
@@ -146,7 +145,7 @@ export const usePrepareCreditOrder = ({
 
   const collateral0: ServiceCollateral = {
     itemType: 0,
-    token: vault?.vaultAddress as Address,
+    token: asset?.vaultAddress as Address,
     identifier: 0n,
     amount: BigInt(amount0d.floor().toString() || 0),
   };
@@ -157,7 +156,7 @@ export const usePrepareCreditOrder = ({
     amount: finalAmount1,
   };
   const loan: ServiceLoan = {
-    token: token.tokenAddress,
+    token: asset.tokenAddress,
     amount: loanAmount,
     margin: 0n,
     interestAndSpread: 0n,
@@ -185,35 +184,33 @@ export const usePrepareCreditOrder = ({
 };
 
 interface PrepareFixedYieldOrder {
-  token: Token;
+  asset: Asset;
   amount: string;
 }
 
 export const usePrepareFixedYieldOrder = ({
-  token,
+  asset,
   amount,
 }: PrepareFixedYieldOrder) => {
-  const loanAmount = parseUnits(amount, token.decimals);
-
-  const vault = getVaultByTokenName(token.name as VaultName);
+  const loanAmount = parseUnits(amount, asset.decimals);
 
   const { data: shares, isLoading: isSharesLoading } = useVaultConvertToShares({
-    address: vault?.vaultAddress as Address,
+    address: asset?.vaultAddress as Address,
     args: [loanAmount],
-    enabled: !!vault?.vaultAddress,
+    enabled: !!asset?.vaultAddress,
   });
 
   console.log("order33 - shares", shares);
 
   const collateral: ServiceCollateral = {
     itemType: 0,
-    token: vault?.vaultAddress as Address,
+    token: asset?.vaultAddress as Address,
     identifier: 0n,
     amount: multiplyBigInt(shares || 0n, 0.99),
   };
 
   const loan: ServiceLoan = {
-    token: token.tokenAddress,
+    token: asset.tokenAddress,
     amount: loanAmount,
     margin: 0n,
     interestAndSpread: 0n,

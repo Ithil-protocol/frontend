@@ -47,15 +47,9 @@ export const getVaultByTokenAddress = (tokenAddress: string): VaultsTypes => {
   return vault;
 };
 
-export const getVaultByTokenName = (
-  name: VaultName
-): VaultsTypes | undefined => {
-  return vaults.find((item) => item.name === name.toUpperCase());
-};
-
 export const formatToken = (name: VaultName, value: bigint) => {
   try {
-    const token = getVaultByTokenName(name);
+    const token = getAssetByName(name);
     console.log("token:::", token);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
@@ -66,7 +60,7 @@ export const formatToken = (name: VaultName, value: bigint) => {
 };
 export const parseToken = (name: VaultName, value: number | string) => {
   try {
-    const token = getVaultByTokenName(name);
+    const token = getAssetByName(name);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
     const val = typeof value === "string" ? value : value.toString();

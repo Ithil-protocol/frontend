@@ -102,7 +102,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   const { order, isLoading } = usePrepareCreditOrder({
-    token: asset,
+    asset,
     amount: inputAmount,
     monthsLocked: month,
     slippage,

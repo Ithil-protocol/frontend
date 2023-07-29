@@ -43,7 +43,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   const { order, isLoading } = usePrepareFixedYieldOrder({
-    token: asset,
+    asset,
     amount: inputAmount,
   });
 
