@@ -9,13 +9,13 @@ import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
+import { getServiceTokensByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -109,9 +109,8 @@ const Form = ({ asset }: { asset: Asset }) => {
   const isMounted = useIsMounted();
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-  const tokens = servicesJson
-    .filter((item) => item.name === "Fixed Yield")
-    .flatMap((item) => item.tokens);
+  const tokens = getServiceTokensByName("Fixed Yield");
+
   if (!isMounted) return null;
 
   return (
