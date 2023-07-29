@@ -11,7 +11,6 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import servicesJson from "@/data/services";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -20,7 +19,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { displayLeverage } from "@/utils";
+import { displayLeverage, getServiceTokensByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -183,9 +182,8 @@ const Form = ({ asset }: { asset: Asset }) => {
       extension: "%",
     },
   ];
-  const tokens = servicesJson
-    .filter((item) => item.name === "GMX")
-    .flatMap((item) => item.tokens);
+  const tokens = getServiceTokensByName("GMX");
+
   if (!isMounted) return null;
 
   return (
