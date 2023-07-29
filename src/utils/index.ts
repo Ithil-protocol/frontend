@@ -231,9 +231,6 @@ export const getSingleQueryParam = (
   }
 };
 
-export const getServiceTokensByName = (name: string): string[] => {
-  return serviceByName[name].tokens;
-};
 export const getServiceByName = (name: string): Service => {
   return serviceByName[name] as Service;
 };
