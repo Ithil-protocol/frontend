@@ -1,14 +1,11 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { Button } from "@chakra-ui/react";
-import { formatUnits } from "viem";
 import { Address, erc20ABI, useContractWrite } from "wagmi";
 
 import {
-  useCallOptionCurrentPrice,
-  useCallOptionTotalAllocation,
-} from "@/hooks/generated/callOption";
-import { useManagerCaps, useManagerVaults } from "@/hooks/generated/manager";
-import { multiplyBigInt } from "@/utils";
+  useAaveLatestAndBase,
+  useAaveRiskSpreads,
+} from "@/hooks/generated/aave";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -300,39 +297,52 @@ const Test = () => {
     //   });
     // },
   });
-  const { data } = useCallOptionCurrentPrice();
-  const { data: ttl, isSuccess } = useCallOptionTotalAllocation();
-  data && console.log("virtualAmount", formatUnits(data, 6), ttl);
+  // const { data } = useCallOptionCurrentPrice();
+  // const { data: ttl, isSuccess } = useCallOptionTotalAllocation();
+  // data && console.log("virtualAmount", formatUnits(data, 6), ttl);
 
-  function callOptionFinalAmount(initialPrice: bigint, allocation: bigint) {
-    const loan = 150000000n;
-    const monthsLocked = 12;
+  // function callOptionFinalAmount(initialPrice: bigint, allocation: bigint) {
+  //   const loan = 150000000n;
+  //   const monthsLocked = 12;
 
-    const virtualAmount =
-      multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / initialPrice;
+  //   const virtualAmount =
+  //     multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / initialPrice;
 
-    const finalPrice =
-      (initialPrice * allocation) / (allocation - virtualAmount);
+  //   const finalPrice =
+  //     (initialPrice * allocation) / (allocation - virtualAmount);
 
-    const finalAmount =
-      multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / finalPrice;
+  //   const finalAmount =
+  //     multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / finalPrice;
 
-    console.log("virtualAmount", finalAmount);
-  }
+  //   console.log("virtualAmount", finalAmount);
+  // }
 
   // (data && isSuccess) && callOptionFinalAmount(data, ttl)
 
-  const { data: caps } = useManagerCaps({
-    args: [
-      "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
-      "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
-    ],
-  });
-  const { data: vaults } = useManagerVaults({
-    args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
+  // const { data: caps } = useManagerCaps({
+  //   args: [
+  //     "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
+  //     "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+  //   ],
+  // });
+  // const { data: vaults } = useManagerVaults({
+  //   args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
+  // });
+
+  const { data: B } = useAaveLatestAndBase({
+    args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],
   });
 
-  console.log("caps", caps, "vaults", vaults);
+  const { data: C } = useAaveRiskSpreads({
+    args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],
+  });
+
+  console.log("BBBBBBBB", B, "CCCCCCCCCCCC", C);
+
+  if (B) {
+    console.log("pppppppppppppp", B % BigInt(2) ** BigInt(128));
+  }
+
   return (
     <Button onClick={() => approve()}>
       {isApproveLoading ? "approving..." : "approve"}
