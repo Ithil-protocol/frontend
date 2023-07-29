@@ -9,7 +9,6 @@ import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -38,7 +37,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { isApproved, write: approve } = useAllowance({
     amount: inputAmount,
-    spender: aaveAddress[chainId],
+    spender: fixedYieldAddress[98745],
     token: asset,
   });
 
