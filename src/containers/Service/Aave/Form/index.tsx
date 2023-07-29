@@ -12,7 +12,6 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import servicesJson from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -20,7 +19,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { displayLeverage } from "@/utils";
+import { displayLeverage, getServiceTokensByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -184,9 +183,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = servicesJson
-    .filter((item) => item.name === "AAVE")
-    .flatMap((item) => item.tokens);
+  const tokens = getServiceTokensByName("AAVE");
   if (!isMounted) return null;
 
   return (
