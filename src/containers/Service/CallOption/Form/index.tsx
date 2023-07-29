@@ -24,7 +24,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceTokensByName, toFullDate } from "@/utils";
+import { getServiceByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -191,7 +191,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = getServiceTokensByName("Call Option");
+  const tokens = getServiceByName("Call Option").tokens;
 
   if (!isMounted) return null;
 
