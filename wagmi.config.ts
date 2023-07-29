@@ -76,9 +76,6 @@ export default defineConfig([
       {
         name: "CallOption",
         abi: callOptionABI,
-        address: {
-          98745: contracts.callOptionService as Address,
-        },
       },
     ],
     plugins: [react()],
