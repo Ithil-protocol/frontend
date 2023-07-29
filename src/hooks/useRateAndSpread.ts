@@ -3,7 +3,7 @@ import { useContractRead } from "wagmi";
 
 import { aaveABI } from "@/abi";
 import { Token } from "@/types/onchain.types";
-import { fixPrecision, getVaultByTokenAddress, multiplyBigInt } from "@/utils";
+import { fixPrecision, getAssetByAddress, multiplyBigInt } from "@/utils";
 
 import { useVaultFreeLiquidity } from "./generated/vault";
 
@@ -43,11 +43,11 @@ export const useRateAndSpread = ({
   const bigintMargin = parseUnits(margin, token.decimals);
   const loan = multiplyBigInt(bigintMargin, +leverage);
 
-  const vault = getVaultByTokenAddress(token.tokenAddress);
+  const asset = getAssetByAddress(token.tokenAddress);
   const { data: vaultFreeLiquidity, isLoading: isFreeLiquidityLoading } =
     useVaultFreeLiquidity({
-      address: vault?.vaultAddress as Address,
-      enabled: !!vault,
+      address: asset?.vaultAddress as Address,
+      enabled: !!asset,
     });
 
   const {

@@ -2,7 +2,7 @@ import { formatUnits } from "viem";
 import { Address, useContractReads } from "wagmi";
 
 import { aaveABI, gmxABI } from "@/abi";
-import { getVaultByTokenAddress } from "@/utils";
+import { getAssetByAddress } from "@/utils";
 
 import { aaveAddress } from "./generated/aave";
 import { gmxAddress } from "./generated/gmx";
@@ -62,9 +62,10 @@ export const useAaveOpenPositions = () => {
         : undefined;
 
     const tokenAddress = agreement?.loans[0].token;
-    const decimals = tokenAddress
-      ? getVaultByTokenAddress(tokenAddress).decimals
-      : 1;
+
+    const asset = tokenAddress && getAssetByAddress(tokenAddress);
+
+    const decimals = asset ? asset.decimals : 1;
 
     positions.push({
       agreement,
@@ -141,9 +142,9 @@ export const useGmxOpenPositions = () => {
         : undefined;
 
     const tokenAddress = agreement?.loans[0].token;
-    const decimals = tokenAddress
-      ? getVaultByTokenAddress(tokenAddress).decimals
-      : 1;
+    const asset = tokenAddress && getAssetByAddress(tokenAddress);
+
+    const decimals = asset ? asset.decimals : 1;
 
     positions.push({
       agreement,

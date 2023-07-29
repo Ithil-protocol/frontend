@@ -18,7 +18,7 @@ import {
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
-import { fixPrecision, getVaultByTokenAddress } from "@/utils";
+import { fixPrecision, getAssetByAddress } from "@/utils";
 
 import ActiveTRow from "./ActiveTRow";
 import CloseTRow from "./CloseTRow";
@@ -92,14 +92,16 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           {activeView === "Active"
             ? positions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
-                  const vault = getVaultByTokenAddress(loanItem.token);
+                  const asset = getAssetByAddress(loanItem.token);
+
+                  if (!asset) return null;
 
                   return (
                     <ActiveTRow
                       key={key}
                       data={{
                         amount: loanItem.amount,
-                        margin: formatUnits(loanItem.margin, vault.decimals),
+                        margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
                         formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
                         pnl: item.pnl,
