@@ -1,9 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
-import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
-import { getAssetByName } from "@/utils";
+import { getAssetByName, getServiceByName } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -17,7 +16,7 @@ const Gmx = () => {
 
   const asset = getAssetByName("WETH");
 
-  const service = servicesJson.find((item) => item.name === "GMX");
+  const service = getServiceByName("GMX");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">
