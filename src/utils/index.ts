@@ -22,6 +22,7 @@ import {
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
 import { assetsObjByAddress, assetsObjByName } from "@/data/assets";
+import servicesJson from "@/data/services";
 import { Asset, PageHeading, VaultName } from "@/types";
 
 export const getTokenIcon = (key: string) => {
@@ -227,5 +228,14 @@ export const getSingleQueryParam = (
     return queryParam[0]; // ignore other query params
   } else {
     return queryParam;
+  }
+};
+
+export const getServiceTokensByName = (name: string): string[] => {
+  const serviceByName = convertArrayByKeyToOBJ(servicesJson, "name");
+  if (name in serviceByName) {
+    return serviceByName[name].tokens;
+  } else {
+    throw new Error(`Service with name "${name}" not found.`);
   }
 };
