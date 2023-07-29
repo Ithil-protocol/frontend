@@ -2,6 +2,7 @@
 import { Button } from "@chakra-ui/react";
 import { Address, erc20ABI, useContractWrite } from "wagmi";
 
+import { assetsObjByAddress } from "@/data/assets";
 import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
@@ -328,6 +329,8 @@ const Test = () => {
   // const { data: vaults } = useManagerVaults({
   //   args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
   // });
+
+  console.log("assets33", assetsObjByAddress);
 
   const { data: B } = useAaveLatestAndBase({
     args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],

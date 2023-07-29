@@ -3,7 +3,6 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import { Decimal } from "decimal.js";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Address, formatUnits } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
@@ -25,7 +24,7 @@ import {
 import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
-import { AaveAsset } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
@@ -35,10 +34,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: AaveAsset }) => {
-  const {
-    query: { asset: token },
-  } = useRouter();
+const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
@@ -94,19 +90,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     .mul(new Decimal(10).pow(new Decimal(18)));
 
   redeem = inputDecimal.div(finalAmount);
-
-  console.log(
-    "checking calculation - allocationDecimal",
-    allocationDecimal.toString()
-  );
-  console.log(
-    "checking calculation - currentPriceDecimal",
-    currentPriceDecimal.toString()
-  );
-  console.log("checking calculation - virtualAmount", virtualAmount.toString());
-  console.log("checking calculation - finalPrice", finalPrice.toString());
-  console.log("checking calculation - finalAmount", finalAmount.toString());
-  console.log("checking calculation - redeem", redeem.toString());
 
   const {
     isApproved,

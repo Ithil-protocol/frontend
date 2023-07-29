@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 
-import { gmxData } from "@/data/gmx";
 import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { getAssetByName } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -15,7 +15,7 @@ const Gmx = () => {
   const { data: chartData } = useChart("GMX");
   const { baseApy, isLoading } = useBaseApy("GMX");
 
-  console.log("chartData", chartData);
+  const asset = getAssetByName("WETH");
 
   const service = servicesJson.find((item) => item.name === "GMX");
   if (!service) return null;
@@ -40,7 +40,7 @@ const Gmx = () => {
         />
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
-        <Form asset={gmxData} />
+        {asset && <Form asset={asset} />}
       </Box>
     </Box>
   );

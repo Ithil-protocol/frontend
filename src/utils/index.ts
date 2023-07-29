@@ -9,6 +9,7 @@ import {
   subWeeks,
 } from "date-fns";
 import { formatUnits, parseUnits } from "viem";
+import { Address } from "viem";
 
 import {
   About as AboutIcon,
@@ -20,8 +21,9 @@ import {
   Star as StarIcon,
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
+import { assetsObjByAddress, assetsObjByName } from "@/data/assets";
 import vaults from "@/deploy/vaults.json";
-import { PageHeading, VaultName, VaultsTypes } from "@/types";
+import { Asset, PageHeading, VaultName, VaultsTypes } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -205,4 +207,41 @@ export const toFullDate = (timestamp: Date) => {
   const formatType = "dd/MM/yyyy";
   const formattedDate = format(date, formatType);
   return formattedDate;
+};
+
+export const convertArrayByKeyToOBJ = <
+  T extends Record<string | number | symbol, any>,
+  K extends keyof T
+>(
+  options: T[],
+  keyName: K
+): Record<T[K], T> => {
+  const obj = {} as Record<T[K], T>;
+  options.forEach((option) => {
+    const key = option[keyName];
+    obj[key] = option;
+  });
+  return obj;
+};
+
+export const getAssetByName = (name: string): Asset | undefined => {
+  const asset = assetsObjByName[name];
+  return asset;
+};
+
+export const getAssetByAddress = (address: Address): Asset | undefined => {
+  const asset = assetsObjByAddress[address];
+  return asset;
+};
+
+export const getSingleQueryParam = (
+  queryParam: string | string[] | undefined
+): string => {
+  if (typeof queryParam === "undefined") {
+    return ""; // return empty string when queryParam is undefined
+  } else if (Array.isArray(queryParam)) {
+    return queryParam[0]; // ignore other query params
+  } else {
+    return queryParam;
+  }
 };

@@ -11,12 +11,12 @@ import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
-import { AaveAsset } from "@/types/onchain.types";
+import { Asset } from "@/types";
 
 interface Props {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  asset: AaveAsset;
+  asset: Pick<Asset, "name" | "decimals">;
   onMaxClick: () => void;
   isMaxDisabled: boolean;
   switchableAsset?: boolean;

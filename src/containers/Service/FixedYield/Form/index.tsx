@@ -1,6 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
@@ -16,7 +15,7 @@ import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
-import { AaveAsset } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -24,10 +23,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: AaveAsset }) => {
-  const {
-    query: { asset: token },
-  } = useRouter();
+const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");

@@ -118,5 +118,9 @@ export type Asset = {
   iconName: string;
   decimals: number;
   tokenAddress: Address;
-  collateralTokenAddress: Address;
+  oracleAddress: Address;
+  vaultAddress: Address;
+  callOptionAddress: Address;
+  aaveCollateralTokenAddress: Address;
+  gmxCollateralTokenAddress: Address;
 };
