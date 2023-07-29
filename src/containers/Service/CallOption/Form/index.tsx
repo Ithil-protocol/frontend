@@ -14,9 +14,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { aaveAddress } from "@/hooks/generated/aave";
 import {
-  callOptionAddress,
   useCallOptionCurrentPrice,
   useCallOptionTotalAllocation,
 } from "@/hooks/generated/callOption";
@@ -49,9 +47,13 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   const { data: currentPrice, isLoading: isCurrentPriceLoading } =
-    useCallOptionCurrentPrice();
+    useCallOptionCurrentPrice({
+      address: asset.callOptionAddress,
+    });
   const { data: allocation, isLoading: isAllocationLoading } =
-    useCallOptionTotalAllocation();
+    useCallOptionTotalAllocation({
+      address: asset.callOptionAddress,
+    });
 
   console.log("currentPrice22", currentPrice);
 
@@ -68,7 +70,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     redeem = new Decimal(0),
     amount1 = new Decimal(0);
 
-  currentPriceDecimal = new Decimal(formatUnits(currentPrice || 0n, 18));
+  currentPriceDecimal = new Decimal(
+    formatUnits(currentPrice || 0n, asset.decimals)
+  );
   // currentPriceDecimal = new Decimal(currentPrice || 0);
   allocationDecimal = new Decimal(formatUnits(allocation || 0n, 18));
   // allocationDecimal = new Decimal(allocation || 0);
@@ -80,15 +84,21 @@ const Form = ({ asset }: { asset: Asset }) => {
     .mul(allocationDecimal)
     .div(allocationDecimal.minus(virtualAmount));
 
+  console.log("finalPrice33", finalPrice.toString());
+
   finalAmount = inputDecimal
     .mul(new Decimal(2).pow(monthDecimal.div(12)))
     .div(finalPrice);
 
+  console.log("finalAmount33", finalPrice.toString());
+
   amount1 = finalAmount
     .mul(new Decimal("0.95"))
-    .mul(new Decimal(10).pow(new Decimal(18)));
+    .mul(new Decimal(10).pow(new Decimal(asset.decimals)));
 
   redeem = inputDecimal.div(finalAmount);
+
+  console.log("amount133", amount1.toString());
 
   const {
     isApproved,
@@ -96,7 +106,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: approve,
   } = useAllowance({
     amount: inputAmount,
-    spender: aaveAddress[chainId],
+    spender: asset.callOptionAddress,
     token: asset,
   });
 
@@ -114,7 +124,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: openPosition,
   } = useContractWrite({
     abi: callOptionABI,
-    address: callOptionAddress[98745],
+    address: asset.callOptionAddress,
     functionName: "open",
     args: [order],
     account: accountAddress as Address,

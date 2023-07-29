@@ -139,9 +139,10 @@ export const usePrepareCreditOrder = ({
   //   .div(currentPriceDecimal)
   //   .mul(new Decimal(1 - 0.05));
 
-  const amount1Str = amount1.floor().toString();
+  const amount1Num = amount1.floor().toNumber();
 
-  const finalAmount1 = amount1.isNaN() ? 0n : BigInt(amount1Str);
+  const finalAmount1 =
+    amount1.isNaN() || !amount1.isFinite() ? 0n : BigInt(amount1Num);
 
   const collateral0: ServiceCollateral = {
     itemType: 0,
