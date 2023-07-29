@@ -1,7 +1,6 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
 import { Address } from "viem";
@@ -20,7 +19,7 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
-import { AaveAsset } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { displayLeverage } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
@@ -30,12 +29,7 @@ import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 
-// import DepositForm from "./DepositForm"
-
-const Form = ({ asset }: { asset: AaveAsset }) => {
-  const {
-    query: { asset: token },
-  } = useRouter();
+const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
@@ -79,7 +73,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const { order } = usePrepareDebitOrder({
     token: asset,
-    collateralToken: asset?.collateralTokenAddress,
+    collateralToken: asset.aaveCollateralTokenAddress,
     leverage,
     amount: inputAmount,
     interestAndSpread,
@@ -154,7 +148,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
   const finalLeverage = isAdvancedOptionsOpen
     ? displayLeverage(leverage)
     : displayLeverage(appConfig.DEFAULT_LEVERAGE);

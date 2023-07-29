@@ -62,7 +62,7 @@ export interface Service {
 }
 
 export interface TRowTypes {
-  token: string;
+  token: Address;
   amount: bigint;
   margin: string | number;
   createdAt: bigint | undefined;
@@ -118,5 +118,9 @@ export type Asset = {
   iconName: string;
   decimals: number;
   tokenAddress: Address;
-  collateralTokenAddress: Address;
+  oracleAddress: Address;
+  vaultAddress: Address;
+  callOptionAddress: Address;
+  aaveCollateralTokenAddress: Address;
+  gmxCollateralTokenAddress: Address;
 };

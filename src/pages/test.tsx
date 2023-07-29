@@ -2,6 +2,7 @@
 import { Button } from "@chakra-ui/react";
 import { Address, erc20ABI, useContractWrite } from "wagmi";
 
+import { assetsObjByAddress } from "@/data/assets";
 import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
@@ -209,13 +210,6 @@ const Test = () => {
 
   // useRateAndSpread({tokenAddress:"0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"});
 
-  // const vault = getVaultByTokenAddress("0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f");
-  // console.log("ii", vault);
-  // const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
-  //   address: "0x8e39010dC8f11aD087Ba377f605c122d8dd4C72E" as Address,
-  // });
-  // console.log("ii2", vaultFreeLiquidity);
-
   // const { write: setRiskParam } = useContractWrite({
   //   mode: "prepared",
   //   // @ts-ignore
@@ -328,6 +322,8 @@ const Test = () => {
   // const { data: vaults } = useManagerVaults({
   //   args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
   // });
+
+  console.log("assets33", assetsObjByAddress);
 
   const { data: B } = useAaveLatestAndBase({
     args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],

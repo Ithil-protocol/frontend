@@ -7,7 +7,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
-import { getVaultByTokenAddress } from "@/utils";
+import { getAssetByAddress } from "@/utils";
 import { formatFullDate } from "@/utils/date.utils";
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 
 const CloseTRow: FC<Props> = ({ data }) => {
   const { colorMode, mode, pickColor } = useColorMode();
-  const vaultTokenData = getVaultByTokenAddress(data.token);
+  const asset = getAssetByAddress(data.token);
   const isMounted = useIsMounted();
 
   if (!isMounted) return null;
@@ -57,12 +57,12 @@ const CloseTRow: FC<Props> = ({ data }) => {
                     }}
                     width={42}
                     height={42}
-                    name={vaultTokenData?.name || ""}
+                    name={asset?.name || ""}
                   />
                 </Box>
               </Box>
               <Text fontSize="22px" lineHeight="22px">
-                {vaultTokenData?.name}
+                {asset?.name}
               </Text>
             </HStack>
           </Box>

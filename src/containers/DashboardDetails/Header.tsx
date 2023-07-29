@@ -1,20 +1,21 @@
 import { Box, GridItem, HStack, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import { Address } from "viem";
 
 import { Aave, ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useGetGmxAgreementsByUser } from "@/hooks/useGetAgreementByUser";
 import { palette } from "@/styles/theme/palette";
-import { getVaultByTokenAddress } from "@/utils";
+import { getAssetByAddress } from "@/utils";
 
 const Header = () => {
   const { colorMode, pickColor } = useColorMode();
   // const { data } =
   useGetGmxAgreementsByUser();
 
-  const tokenData = getVaultByTokenAddress(
-    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"
+  const asset = getAssetByAddress(
+    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f" as Address
   );
   return (
     <GridItem
@@ -73,7 +74,7 @@ const Header = () => {
                 }}
                 width={42}
                 height={42}
-                name={tokenData!.name}
+                name={asset!.name}
               />
             </Box>
           </Box>

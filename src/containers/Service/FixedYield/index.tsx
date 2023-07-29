@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { aaveData } from "@/data/aave";
 import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { getAssetByName, getSingleQueryParam } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -19,9 +19,9 @@ const FixedYield = () => {
   const { data: chartData } = useChart("");
   const { baseApy, isLoading } = useBaseApy(token as string);
 
-  const asset = aaveData.assets.find(
-    (asset) => asset.name.toLowerCase() === token
-  );
+  const normalizedToken = getSingleQueryParam(token);
+
+  const asset = getAssetByName(normalizedToken);
 
   const service = servicesJson.find((item) => item.name === "Fixed Yield");
   if (!service) return null;

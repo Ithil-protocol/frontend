@@ -76,7 +76,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { order } = usePrepareDebitOrder({
     token: asset,
-    collateralToken: asset?.collateralTokenAddress,
+    collateralToken: asset.gmxCollateralTokenAddress,
     leverage,
     amount: inputAmount,
     interestAndSpread,
