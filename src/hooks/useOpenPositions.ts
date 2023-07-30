@@ -1,13 +1,15 @@
 import { formatUnits } from "viem";
 import { Address, useContractReads } from "wagmi";
 
-import { aaveABI, gmxABI } from "@/abi";
+import { aaveABI, fixedYieldABI, gmxABI } from "@/abi";
 import { getAssetByAddress } from "@/utils";
 
 import { aaveAddress } from "./generated/aave";
+import { fixedYieldAddress } from "./generated/fixedYield";
 import { gmxAddress } from "./generated/gmx";
 import {
   useGetAaveAgreementsByUser,
+  useGetFixedYieldAgreementsByUser,
   useGetGmxAgreementsByUser,
 } from "./useGetAgreementByUser";
 
@@ -154,6 +156,77 @@ export const useGmxOpenPositions = () => {
       pnlPercentage:
         pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
       type: "GMX",
+    });
+  }
+
+  return {
+    positions,
+    isLoading: isAgreementsLoading,
+  };
+};
+export const useFixedYieldOpenPositions = () => {
+  const { data, isLoading: isAgreementsLoading } =
+    useGetFixedYieldAgreementsByUser();
+
+  const positions = [];
+
+  const quoteContracts = data?.[0]?.map((agreement) => ({
+    abi: fixedYieldABI,
+    address: fixedYieldAddress[98745] as Address,
+    functionName: "quote",
+    args: [agreement],
+  }));
+
+  const feeContracts = data?.[0]?.map((agreement) => ({
+    abi: fixedYieldABI,
+    address: fixedYieldAddress[98745] as Address,
+    functionName: "computeDueFees",
+    args: [agreement],
+  }));
+
+  const { data: quotes } = useContractReads({
+    contracts: quoteContracts,
+    enabled: !!data,
+  });
+
+  const { data: fees } = useContractReads({
+    contracts: feeContracts,
+    enabled: !!data,
+  });
+
+  const length = data?.[0].length || 0;
+
+  for (let i = 0; i < length; i++) {
+    const agreement = data?.[0][i];
+    const amount = agreement?.loans[0].amount;
+    const margin = agreement?.loans[0].margin;
+    const quoteResult = quotes?.[i].result as unknown[] as bigint[];
+    const quote = quoteResult?.[0];
+    const feeResult = fees?.[i].result as unknown[] as bigint[];
+    const fee = feeResult?.[0];
+
+    const pnl =
+      quote !== undefined &&
+      fee !== undefined &&
+      amount !== undefined &&
+      margin !== undefined
+        ? quote - fee - amount - margin
+        : undefined;
+
+    const tokenAddress = agreement?.loans[0].token;
+
+    const asset = tokenAddress && getAssetByAddress(tokenAddress);
+
+    const decimals = asset ? asset.decimals : 1;
+
+    positions.push({
+      agreement,
+      id: data?.[1][i],
+      quote,
+      pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
+      pnlPercentage:
+        pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
+      type: "FixedYield",
     });
   }
 
