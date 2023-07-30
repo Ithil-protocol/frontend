@@ -183,7 +183,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = getServiceByName("AAVE").tokens;
+  const tokens = getServiceByName("aave").tokens;
   if (!isMounted) return null;
 
   return (

@@ -182,7 +182,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       extension: "%",
     },
   ];
-  const tokens = getServiceByName("GMX").tokens;
+  const tokens = getServiceByName("gmx").tokens;
 
   if (!isMounted) return null;
 

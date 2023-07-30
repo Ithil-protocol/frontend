@@ -6,7 +6,7 @@ import { FC } from "react";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { ServiceType } from "@/types";
+import { ServiceName } from "@/types";
 
 import ServiceIcon from "../Service/ServiceIcon";
 import EnterButton from "./EnterButton";
@@ -16,7 +16,8 @@ interface ServiceCardProps {
   description: string | ((assets: string[]) => string);
   to: string;
   multiplier: string;
-  name: string;
+  label: string;
+  name: ServiceName;
   apy: string;
   tvl: string;
   hasIndex: boolean;
@@ -28,9 +29,10 @@ const ServiceCard: FC<ServiceCardProps> = ({
   description,
   hasIndex,
   multiplier,
-  name,
+  label,
   to,
   tvl,
+  name,
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode, pickColor } = useColorMode();
@@ -40,7 +42,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <HStack className="flex justify-between w-full mb-6">
         <Box>
-          <ServiceIcon name={name as ServiceType} width="full" />
+          <ServiceIcon name={name} width="full" />
         </Box>
         {/* 1 - 10% multiplier */}
         <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
@@ -54,7 +56,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
         </Box>
       </HStack>
       <Heading size="h3" className="mb-6">
-        {name}
+        {label}
       </Heading>
       <HStack
         alignItems="center"

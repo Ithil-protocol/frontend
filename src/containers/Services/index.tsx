@@ -1,4 +1,5 @@
 import services from "@/data/services.json";
+import { ServiceName } from "@/types";
 
 import ServiceCard from "./ServiceCard";
 
@@ -15,7 +16,8 @@ const ServicesPage = () => {
             to={item.url}
             hasIndex={item.hasIndex}
             multiplier={`${item.apyRange}%`}
-            name={item.name}
+            label={item.label}
+            name={item.name as ServiceName}
             apy={`${item.bestApy}%`}
             tvl={`${item.tvl}m`}
           />

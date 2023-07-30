@@ -16,7 +16,7 @@ const Gmx = () => {
 
   const asset = getAssetByName("WETH");
 
-  const service = getServiceByName("GMX");
+  const service = getServiceByName("gmx");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">
