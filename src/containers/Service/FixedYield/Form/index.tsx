@@ -14,7 +14,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceTokensByName } from "@/utils";
+import { getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -108,7 +108,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const isMounted = useIsMounted();
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-  const tokens = getServiceTokensByName("Fixed Yield");
+  const tokens = getServiceByName("Fixed Yield").tokens;
 
   if (!isMounted) return null;
 

@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 
 import { ithil } from "@/data/ithil-token";
-import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { getServiceByName } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -14,7 +14,7 @@ import Form from "./Form";
 const IthilStaking = () => {
   const { data: chartData } = useChart("");
   const { baseApy, isLoading } = useBaseApy("");
-  const service = servicesJson.find((item) => item.name === "ITHIL Staking");
+  const service = getServiceByName("ITHIL Staking");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

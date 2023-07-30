@@ -11,7 +11,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import servicesJson from "@/data/services";
+import { services } from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
@@ -44,7 +44,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const tokens = servicesJson
+  const tokens = services
     .filter((item) => item.name === "ITHIL Staking")
     .flatMap((item) => item.tokens);
   const {
