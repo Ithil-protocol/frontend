@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
-import servicesJson from "@/data/services";
+import { services } from "@/data/services";
 
 const Service = () => {
   const tokenModal = useTokenModal({
@@ -16,7 +16,7 @@ const Service = () => {
   useEffect(() => {
     if (!serviceName) return;
 
-    const isServiceHasIndexPage = servicesJson.some(
+    const isServiceHasIndexPage = services.some(
       (i) => i.url === `/${serviceName}` && i.hasIndex
     );
 

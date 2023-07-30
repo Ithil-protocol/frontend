@@ -3,6 +3,6 @@ import { convertArrayByKeyToOBJ } from "@/utils";
 
 import servicesJson from "./services.json";
 
-export const serviceByName = convertArrayByKeyToOBJ(servicesJson, "name");
+export const services = servicesJson as Service[];
 
-export default servicesJson as Service[];
+export const servicesByName = convertArrayByKeyToOBJ(services, "name");
