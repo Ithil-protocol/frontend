@@ -3,10 +3,11 @@ import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
 
-import { aaveABI, gmxABI } from "@/abi";
+import { aaveABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { aaveAddress } from "@/hooks/generated/aave";
+import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useColorMode } from "@/hooks/useColorMode";
@@ -42,6 +43,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     GMX: {
       abi: gmxABI,
       address: gmxAddress[98745],
+    },
+    FixedYield: {
+      abi: fixedYieldABI,
+      address: fixedYieldAddress[98745],
     },
   } as const;
 
