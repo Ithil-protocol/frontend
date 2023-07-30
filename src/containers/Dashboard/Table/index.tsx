@@ -15,6 +15,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import {
   useAaveOpenPositions,
+  useFixedYieldOpenPositions,
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
@@ -35,12 +36,16 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     useAaveOpenPositions();
   const { positions: gmxPositions, isLoading: isLoadingGmx } =
     useGmxOpenPositions();
-  const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
-    return (
-      new Date(Number(b.agreement?.createdAt)).getTime() -
-      new Date(Number(a.agreement?.createdAt)).getTime()
-    );
-  });
+  const { positions: fixedYieldPositions, isLoading: isLoadingFixedYield } =
+    useFixedYieldOpenPositions();
+  const positions = [aavePositions, gmxPositions, fixedYieldPositions]
+    .flat()
+    .sort((a, b) => {
+      return (
+        new Date(Number(b.agreement?.createdAt)).getTime() -
+        new Date(Number(a.agreement?.createdAt)).getTime()
+      );
+    });
   const isMounted = useIsMounted();
 
   const [isLoadingPositions, setIsLoadingPositions] = useState<boolean>(false);
@@ -50,17 +55,21 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
   const hasItems = {
-    Active: positions.length > 0 || isLoadingAave || isLoadingGmx,
+    Active:
+      positions.length > 0 ||
+      isLoadingAave ||
+      isLoadingGmx ||
+      isLoadingFixedYield,
     Closed: closedPositions.length > 0 || isLoadingClosed,
   };
 
   useEffect(() => {
-    if (isLoadingAave || isLoadingGmx) {
+    if (isLoadingAave || isLoadingGmx || isLoadingFixedYield) {
       setIsLoadingPositions(true);
     } else {
       setIsLoadingPositions(false);
     }
-  }, [isLoadingAave, isLoadingGmx]);
+  }, [isLoadingAave, isLoadingGmx, isLoadingFixedYield]);
 
   if (!isMounted) return null;
 
