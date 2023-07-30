@@ -39,10 +39,10 @@
     "apyRange": "5-10",
     "bestApy": 40,
     "boostApy": 3,
-    "tokens": ["WETH"],
+    "tokens": ["USDC", "USDT", "WETH", "WBTC"],
     "tvl": 100,
     "url": "/gmx",
-    "hasIndex": false,
+    "hasIndex": true,
     "safety_score": {
       "score": 8,
       "features": [

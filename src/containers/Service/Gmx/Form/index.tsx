@@ -227,7 +227,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={false}
+          switchableAsset
           tokens={tokens}
         />
 
