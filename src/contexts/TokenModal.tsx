@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import {
   Button,
   Modal as ChakraModal,
@@ -27,8 +26,12 @@ import React from "react";
 import { CloseButton } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { useColorMode } from "@/hooks/useColorMode";
-import { VoidNoArgs } from "@/types";
-import { CloseDialogFn, OpenTokenDialogFn, TokenModalOptions } from "@/types";
+import {
+  CloseDialogFn,
+  OpenTokenDialogFn,
+  TokenModalOptions,
+  VoidNoArgs,
+} from "@/types";
 
 const TokenModalContext = createContext<{
   closeDialog: CloseDialogFn;
@@ -37,10 +40,10 @@ const TokenModalContext = createContext<{
   setOptions: (o: TokenModalOptions) => void;
   tokens: string[];
 }>({
-  closeDialog: () => {},
-  onSelectToken: () => {},
-  openDialog: () => {},
-  setOptions: () => {},
+  closeDialog: () => undefined,
+  onSelectToken: () => undefined,
+  openDialog: () => undefined,
+  setOptions: () => undefined,
   tokens: [],
 });
 
@@ -69,15 +72,17 @@ export const getDefaultOptions = (): TokenModalOptions => ({
 });
 
 interface Props {
+  isClosable: boolean;
   isOpen: boolean;
-  onClose?: VoidNoArgs;
+  onClose: VoidNoArgs;
   onSelectToken?: () => void;
-  serviceName: string;
   returnPath?: string;
+  serviceName: string;
   tokens: string[];
 }
 
 const TokenModalComponent: React.FC<Props> = ({
+  isClosable,
   isOpen,
   onClose,
   onSelectToken,
@@ -87,9 +92,8 @@ const TokenModalComponent: React.FC<Props> = ({
 }) => {
   const { mode } = useColorMode();
 
-  const handleClose = () => {
-    if (onClose) onClose();
-  };
+  const handleClose = () => isClosable && onClose();
+
   return (
     <>
       <ChakraModal onClose={handleClose} isCentered isOpen={isOpen}>
@@ -104,7 +108,7 @@ const TokenModalComponent: React.FC<Props> = ({
           >
             <span></span>
             <span>Select a token</span>
-            {onClose ? (
+            {isClosable ? (
               <Text
                 style={{
                   cursor: "pointer",
@@ -214,10 +218,8 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleSelectToken = () => {
-    if (options.isClosable) {
-      options.onSelectTokenCallback();
-      handleClose();
-    }
+    options.onSelectTokenCallback();
+    handleClose();
   };
 
   const handleClose = () => {
@@ -229,14 +231,15 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <TokenModalContext.Provider
       value={{
         closeDialog: handleClose,
+        onSelectToken: handleSelectToken,
         openDialog: handleOpen,
         setOptions,
-        onSelectToken: handleSelectToken,
         tokens: options.tokens,
       }}
     >
       <TokenModalComponent
         isOpen={isOpen}
+        isClosable={options.isClosable}
         serviceName={serviceName}
         onClose={handleClose}
         onSelectToken={handleSelectToken}
