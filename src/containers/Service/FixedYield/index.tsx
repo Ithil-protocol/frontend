@@ -1,10 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
-import { getAssetByName, getSingleQueryParam } from "@/utils";
+import { getAssetByName, getServiceByName, getSingleQueryParam } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -23,7 +22,7 @@ const FixedYield = () => {
 
   const asset = getAssetByName(normalizedToken);
 
-  const service = servicesJson.find((item) => item.name === "Fixed Yield");
+  const service = getServiceByName("fixed-yield");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

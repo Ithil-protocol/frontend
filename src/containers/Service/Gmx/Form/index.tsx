@@ -19,7 +19,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { displayLeverage, getServiceTokensByName } from "@/utils";
+import { displayLeverage, getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -182,7 +182,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       extension: "%",
     },
   ];
-  const tokens = getServiceTokensByName("GMX");
+  const tokens = getServiceByName("gmx").tokens;
 
   if (!isMounted) return null;
 

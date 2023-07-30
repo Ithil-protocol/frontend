@@ -1,10 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import services from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
-import { getAssetByName, getSingleQueryParam } from "@/utils";
+import { getAssetByName, getServiceByName, getSingleQueryParam } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -25,7 +24,7 @@ const Aave = () => {
 
   const { baseApy, isLoading } = useBaseApy(token as string);
 
-  const service = services[0];
+  const service = getServiceByName("aave");
 
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

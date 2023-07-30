@@ -1,10 +1,9 @@
 import { Box } from "@chakra-ui/react";
 
-import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
 import { useAssetName } from "@/hooks/useAssetName";
 import { useBaseApy } from "@/hooks/useBaseApy";
-import { getAssetByName } from "@/utils";
+import { getAssetByName, getServiceByName } from "@/utils";
 
 import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
@@ -17,7 +16,7 @@ const Gmx = () => {
   const { baseApy, isLoading } = useBaseApy("GMX");
   const assetName = useAssetName();
 
-  const service = servicesJson.find((item) => item.name === "GMX");
+  const service = getServiceByName("gmx");
   if (!service) return null;
 
   const asset = getAssetByName(assetName);
