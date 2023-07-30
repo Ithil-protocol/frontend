@@ -11,6 +11,7 @@ import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
+import { useServiceName } from "@/hooks/useServiceName";
 import { Asset } from "@/types";
 
 interface Props {
@@ -32,6 +33,8 @@ const SingleAssetAmount: FC<Props> = ({
   switchableAsset = true,
   tokens,
 }) => {
+  const serviceName = useServiceName();
+
   const tokenModal = useTokenModal({
     onSelectTokenCallback: () => {
       onChange("");
@@ -54,7 +57,9 @@ const SingleAssetAmount: FC<Props> = ({
           style={{
             cursor: "pointer",
           }}
-          onClick={() => switchableAsset && tokenModal.openDialog(tokens)}
+          onClick={() =>
+            switchableAsset && tokenModal.openDialog(tokens, serviceName)
+          }
           className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
         >
           {asset === null ? (
