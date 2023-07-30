@@ -206,7 +206,7 @@ const TokenModalComponent: React.FC<Props> = ({
 const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [options, setOptions] = useState<TokenModalOptions>(getDefaultOptions);
-  const [serviceName, setServiceName] = useState("aave");
+  const [serviceName, setServiceName] = useState("");
   const handleOpen: OpenTokenDialogFn = (tokens, sn = serviceName) => {
     setServiceName(sn);
     setOptions((prev) => ({ ...prev, tokens }));
