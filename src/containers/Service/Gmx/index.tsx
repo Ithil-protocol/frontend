@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import servicesJson from "@/data/services";
 import { useChart } from "@/hooks/defillama";
+import { useAssetName } from "@/hooks/useAssetName";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { getAssetByName } from "@/utils";
 
@@ -14,11 +15,13 @@ import Form from "./Form";
 const Gmx = () => {
   const { data: chartData } = useChart("GMX");
   const { baseApy, isLoading } = useBaseApy("GMX");
-
-  const asset = getAssetByName("WETH");
+  const assetName = useAssetName();
 
   const service = servicesJson.find((item) => item.name === "GMX");
   if (!service) return null;
+
+  const asset = getAssetByName(assetName);
+
   return (
     <Box className="grid w-full grid-cols-10 gap-6">
       <Box className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">
