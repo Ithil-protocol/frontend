@@ -14,7 +14,7 @@ import Form from "./Form";
 const IthilStaking = () => {
   const { data: chartData } = useChart("");
   const { baseApy, isLoading } = useBaseApy("");
-  const service = getServiceByName("ITHIL Staking");
+  const service = getServiceByName("ithil-staking");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

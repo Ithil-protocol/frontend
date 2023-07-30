@@ -108,7 +108,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const isMounted = useIsMounted();
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-  const tokens = getServiceByName("Fixed Yield").tokens;
+  const tokens = getServiceByName("fixed-yield").tokens;
 
   if (!isMounted) return null;
 

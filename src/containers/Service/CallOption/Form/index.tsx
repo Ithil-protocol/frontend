@@ -201,7 +201,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = getServiceByName("Call Option").tokens;
+  const tokens = getServiceByName("call-option").tokens;
 
   if (!isMounted) return null;
 

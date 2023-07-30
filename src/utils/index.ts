@@ -23,7 +23,7 @@ import {
 import { icons } from "@/config/icons";
 import { assetsObjByAddress, assetsObjByName } from "@/data/assets";
 import { servicesByName } from "@/data/services";
-import { Asset, PageHeading, Service, VaultName } from "@/types";
+import { Asset, PageHeading, Service, ServiceName, VaultName } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -231,6 +231,6 @@ export const getSingleQueryParam = (
   }
 };
 
-export const getServiceByName = (name: string): Service => {
+export const getServiceByName = (name: ServiceName): Service => {
   return servicesByName[name];
 };

@@ -1,6 +1,7 @@
 [
   {
-    "name": "AAVE",
+    "name": "aave",
+    "label": "AAVE",
     "type": "debit",
     "long_name": "Aave leveraged lending",
     "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
@@ -33,7 +34,8 @@
   },
 
   {
-    "name": "GMX",
+    "name": "gmx",
+    "label": "GMX",
     "type": "debit",
     "description": "Earn a part of the protocol trading fees and get exposure to ETH",
     "apyRange": "5-10",
@@ -55,7 +57,8 @@
     }
   },
   {
-    "name": "Call Option",
+    "name": "call-option",
+    "label": "Call Option",
     "type": "credit",
     "long_name": "Aave leveraged lending",
     "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
@@ -87,7 +90,8 @@
     "explanation": "This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
   },
   {
-    "name": "Fixed Yield",
+    "name": "fixed-yield",
+    "label": "Fixed Yield",
     "type": "credit",
     "long_name": "Aave leveraged lending",
     "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",

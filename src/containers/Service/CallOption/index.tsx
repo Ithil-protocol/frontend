@@ -22,7 +22,7 @@ const CallOption = () => {
 
   const asset = getAssetByName(normalizedToken);
 
-  const service = getServiceByName("Call Option");
+  const service = getServiceByName("call-option");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

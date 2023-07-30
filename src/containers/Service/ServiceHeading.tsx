@@ -1,7 +1,7 @@
 import { Box, HStack, Heading, Text } from "@chakra-ui/react";
 import { FC } from "react";
 
-import { ServiceType } from "@/types";
+import { ServiceName } from "@/types";
 
 import ServiceIcon from "./ServiceIcon";
 
@@ -21,7 +21,7 @@ const ServiceHeading: FC<Props> = ({ data }) => {
             {data.name}
           </Heading>
           <Box className="relative flex justify-end">
-            <ServiceIcon name={data.name as ServiceType} width="50" />
+            <ServiceIcon name={data.name as ServiceName} width="50" />
           </Box>
         </HStack>
         <Text textStyle="sm">{data.description}</Text>

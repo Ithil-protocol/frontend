@@ -30,7 +30,6 @@ export interface VaultsTypes {
 }
 
 export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
-export type ServiceType = "AAVE" | "GMX";
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;
@@ -45,8 +44,17 @@ export interface SafetyScore {
   }[];
   description: string;
 }
+
+export type ServiceName =
+  | "aave"
+  | "call-option"
+  | "fixed-yield"
+  | "gmx"
+  | "ithil-staking";
+
 export interface Service {
-  name: string;
+  label: string;
+  name: ServiceName;
   long_name: string;
   description: string;
   apyRange: string;

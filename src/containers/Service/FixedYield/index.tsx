@@ -22,7 +22,7 @@ const FixedYield = () => {
 
   const asset = getAssetByName(normalizedToken);
 
-  const service = getServiceByName("Fixed Yield");
+  const service = getServiceByName("fixed-yield");
   if (!service) return null;
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

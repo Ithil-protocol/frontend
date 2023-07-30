@@ -24,7 +24,7 @@ const Aave = () => {
 
   const { baseApy, isLoading } = useBaseApy(token as string);
 
-  const service = getServiceByName("AAVE");
+  const service = getServiceByName("aave");
 
   return (
     <Box className="grid w-full grid-cols-10 gap-6">

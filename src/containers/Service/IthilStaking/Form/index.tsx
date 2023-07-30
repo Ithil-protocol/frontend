@@ -11,13 +11,12 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { services } from "@/data/services";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { AaveAsset } from "@/types/onchain.types";
-import { displayLeverage } from "@/utils";
+import { displayLeverage, getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -44,9 +43,8 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     cacheTime: 5_000,
     watch: true,
   });
-  const tokens = services
-    .filter((item) => item.name === "ITHIL Staking")
-    .flatMap((item) => item.tokens);
+  const tokens = getServiceByName("ithil-staking").tokens;
+
   const {
     isApproved,
     isLoading: isApproveLoading,
