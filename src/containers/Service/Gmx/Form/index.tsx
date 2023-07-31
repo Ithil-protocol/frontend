@@ -11,15 +11,20 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { gmxAddress } from "@/hooks/generated/gmx";
+import {
+  gmxAddress,
+  useGmxLatestAndBase,
+  useGmxRiskSpreads,
+} from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { displayLeverage, getServiceByName } from "@/utils";
+import { getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -143,14 +148,29 @@ const Form = ({ asset }: { asset: Asset }) => {
     setInputAmount(balance?.formatted ?? "0");
   };
 
-  const isMounted = useIsMounted();
-
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
+
+  const { data: latestAndBase } = useGmxLatestAndBase({
+    args: [asset.tokenAddress],
+  });
+
+  const { data: riskSpreads } = useGmxRiskSpreads({
+    args: [asset.tokenAddress],
+  });
+
+  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
+    baseApy,
+    latestAndBase,
+    riskSpreads,
+  });
+
   const finalLeverage = isAdvancedOptionsOpen
-    ? displayLeverage(leverage)
-    : displayLeverage(appConfig.DEFAULT_LEVERAGE);
+    ? leverage
+    : (+bestLeverage - 1).toString();
+
+  const isMounted = useIsMounted();
 
   const finalApy = baseApy
     ? +baseApy * +finalLeverage -
@@ -166,9 +186,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Best Leverage:",
-      value: "",
+      value: bestLeverage,
       extension: "x",
-      isLoading: true,
+      isLoading: isBestLeverageLoading,
     },
     {
       label: "Borrow Interest:",
@@ -180,6 +200,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       label: "Final APY:",
       value: finalApy?.toFixed(2),
       extension: "%",
+      isLoading: isInterestAndSpreadLoading,
     },
   ];
   const tokens = getServiceByName("gmx").tokens;
