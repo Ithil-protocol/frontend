@@ -46,17 +46,5 @@
     "callOptionAddress": "0xe913BA6cAfEA396A13610860F25a6124f75ede39",
     "aaveCollateralTokenAddress": "0x078f358208685046a11C85e8ad32895DED33A249",
     "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
-  },
-  {
-    "name": "DAI",
-    "coingeckoId": "dai",
-    "iconName": "dai",
-    "decimals": 8,
-    "tokenAddress": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-    "oracleAddress": "0xd0c7101eacbb49f3decccc166d238410d6d46d57",
-    "vaultAddress": "0x8fDEEABC6b8e1D352F8D3529b97a64D32834b71a",
-    "callOptionAddress": "0xe913BA6cAfEA396A13610860F25a6124f75ede39",
-    "aaveCollateralTokenAddress": "0x078f358208685046a11C85e8ad32895DED33A249",
-    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
   }
 ]
