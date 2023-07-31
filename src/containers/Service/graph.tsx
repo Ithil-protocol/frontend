@@ -66,7 +66,7 @@ export const Graph = ({ data, tab = "all" }: Props) => {
               </span>
             ))}
           </div>
-          <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
+          {/* <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
             {tabs.map((choice) => (
               <span
                 className={classNames(sectionClassnames, {
@@ -78,7 +78,7 @@ export const Graph = ({ data, tab = "all" }: Props) => {
                 {choice}
               </span>
             ))}
-          </div>
+          </div> */}
         </Box>
       </Box>
 
