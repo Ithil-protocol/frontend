@@ -18,11 +18,12 @@ import { TRowTypes } from "@/types";
 import { getAssetByAddress } from "@/utils";
 
 interface Data extends Omit<TRowTypes, "createdAt"> {
-  pnlPercentage: string | undefined;
-  pnl: string | undefined;
-  id: bigint | undefined;
-  quote: bigint | undefined;
-  formattedPnl: string;
+  pnlPercentage?: string;
+  pnl?: string;
+  isPnlLoading?: boolean;
+  id?: bigint;
+  quote?: bigint;
+  formattedPnl?: string;
   type: string;
 }
 
@@ -66,19 +67,17 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     e.stopPropagation();
     e.preventDefault();
     console.log("data.quote", data.quote);
-    if (
-      data.id === undefined ||
-      data.amount === undefined ||
-      data.quote === undefined
-    )
-      return;
+    if (data.isPnlLoading) return;
+    const initialQuote = data?.quote || 0n;
+    const qoutes: Record<string, bigint> = {
+      AAVE: (initialQuote * 999n) / 1000n,
+      GMX: (initialQuote * 9n) / 10n,
+    };
+    const quote = qoutes[data?.type] || 0n;
     const result = await close({
       args: [
         data.id,
-        encodeAbiParameters(parseAbiParameters("uint256"), [
-          (data.quote * 999n) / 1000n,
-          // 0n,
-        ]),
+        encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
       ],
     });
     await trackTransaction(result, "Position closed");
@@ -146,30 +145,32 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         {data.type}
       </Td>
       <Td>
-        {data.pnl !== undefined ? (
-          <HStack>
-            <Text
-              fontWeight="medium"
-              color={isPnlPositive ? "#15ac89" : "#f35959"}
-              fontSize="22px"
-              lineHeight="22px"
-            >
-              {data.formattedPnl}
-            </Text>
-            <Text
-              bg={isPnlPositive ? "#15ac89" : "#f35959"}
-              borderRadius="8px"
-              fontWeight="bold"
-              fontFamily="18px"
-              lineHeight="24px"
-              textColor={mode("primary.100", "primary.100.dark")}
-              paddingX="8px"
-              paddingY="4px"
-              fontSize="18px"
-            >
-              {data.pnlPercentage} %
-            </Text>
-          </HStack>
+        {!data.isPnlLoading ? (
+          data?.formattedPnl && (
+            <HStack>
+              <Text
+                fontWeight="medium"
+                color={isPnlPositive ? "#15ac89" : "#f35959"}
+                fontSize="22px"
+                lineHeight="22px"
+              >
+                {data.formattedPnl}
+              </Text>
+              <Text
+                bg={isPnlPositive ? "#15ac89" : "#f35959"}
+                borderRadius="8px"
+                fontWeight="bold"
+                fontFamily="18px"
+                lineHeight="24px"
+                textColor={mode("primary.100", "primary.100.dark")}
+                paddingX="8px"
+                paddingY="4px"
+                fontSize="18px"
+              >
+                {data.pnlPercentage} %
+              </Text>
+            </HStack>
+          )
         ) : (
           <Loading />
         )}

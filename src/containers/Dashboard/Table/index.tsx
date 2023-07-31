@@ -7,7 +7,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
@@ -48,8 +48,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     });
   const isMounted = useIsMounted();
 
-  const [isLoadingPositions, setIsLoadingPositions] = useState<boolean>(false);
-
   const { positions: closedPositions, isLoading: isLoadingClosed } =
     useClosePositions();
   const isPositionsExist = positions.length === 0 && positions;
@@ -63,13 +61,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     Closed: closedPositions.length > 0 || isLoadingClosed,
   };
 
-  useEffect(() => {
-    if (isLoadingAave || isLoadingGmx || isLoadingFixedYield) {
-      setIsLoadingPositions(true);
-    } else {
-      setIsLoadingPositions(false);
-    }
-  }, [isLoadingAave, isLoadingGmx, isLoadingFixedYield]);
+  const isLoadingPositions =
+    isLoadingAave || isLoadingGmx || isLoadingFixedYield;
 
   if (!isMounted) return null;
 
@@ -103,6 +96,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                 item.agreement?.loans.map((loanItem) => {
                   const asset = getAssetByAddress(loanItem.token);
 
+                  if (item.type === "FixedYield") {
+                    console.log("loanItem.margin", loanItem.margin);
+                  }
+
                   if (!asset) return null;
 
                   return (
@@ -112,12 +109,13 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         amount: loanItem.amount,
                         margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
-                        formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
-                        pnl: item.pnl,
-                        pnlPercentage: fixPrecision(
-                          +item.pnlPercentage!,
-                          2
-                        ).toString(),
+                        formattedPnl:
+                          item?.pnl && fixPrecision(+item?.pnl, 2).toString(),
+                        isPnlLoading: item?.isPnlLoading,
+                        pnl: item?.pnl,
+                        pnlPercentage:
+                          item?.pnlPercentage &&
+                          fixPrecision(+item?.pnlPercentage, 2).toString(),
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
