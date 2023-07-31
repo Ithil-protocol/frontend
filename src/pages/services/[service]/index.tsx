@@ -20,9 +20,11 @@ const Service = () => {
       (i) => i.url === `/${serviceName}` && i.hasIndex
     );
 
-    if (isServiceHasIndexPage) tokenModal.openDialog([], serviceName);
+    const { tokens = [] } = services.find((i) => i.name === serviceName) || {};
+
+    if (isServiceHasIndexPage) tokenModal.openDialog(tokens, serviceName);
     else router.push("/404");
-  }, [router, serviceName, tokenModal]);
+  }, [router, serviceName]);
 
   return <></>;
 };
