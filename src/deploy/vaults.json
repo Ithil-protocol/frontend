@@ -6,8 +6,10 @@
     "decimals": 6,
     "tokenAddress": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
     "oracleAddress": "0x50834f3163758fcc1df9973b6e91f0f0f0434ad3",
-    "vaultAddress": "0xD917a27E8b18956dc4b22Eed7cB0582A469A804D",
-    "callOptionAddress": "0xdEaf4cA0ceDa38600efa871Dc0DA56621d83808F"
+    "vaultAddress": "0x6329CC7A366A6d7749453eeCDd272A74cEeB4925",
+    "callOptionAddress": "0x77EB0eD39d9163A7c7AC86E50Fd2256055862c63",
+    "aaveCollateralTokenAddress": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
   },
   {
     "name": "USDT",
@@ -16,8 +18,22 @@
     "decimals": 6,
     "tokenAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
     "oracleAddress": "0x3f3f5df88dc9f13eac63df89ec16ef6e7e25dde7",
-    "vaultAddress": "0x2F5e6bD6D2F829859A48aea3Bf8148b3A3067D4B",
-    "callOptionAddress": "0x6C2F720bCE0BEAf3c332305C10F01232041Db0D4"
+    "vaultAddress": "0xA525e4aD6b6D1476608FA485c6e5c12DC0a303E3",
+    "callOptionAddress": "0xF1A4693a20ECA73505172aa5E4Ad6f322Ed7F02c",
+    "aaveCollateralTokenAddress": "0x6ab707Aca953eDAeFBc4fD23bA73294241490620",
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
+  },
+  {
+    "name": "DAI",
+    "coingeckoId": "dai",
+    "iconName": "dai",
+    "decimals": 18,
+    "tokenAddress": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    "oracleAddress": "0xc5c8e77b397e531b8ec06bfb0048328b30e9ecfb",
+    "vaultAddress": "0xF1dF5abd92B5622748c19D9c3fF8adA13Bc17a96",
+    "callOptionAddress": "0x3181b67ffF985977b2b99118cd30aeDEa5F0646C",
+    "aaveCollateralTokenAddress": "0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE",
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
   },
   {
     "name": "WETH",
@@ -26,8 +42,10 @@
     "decimals": 18,
     "tokenAddress": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
     "oracleAddress": "0x639fe6ab55c921f74e7fac1ee960c0b6293ba612",
-    "vaultAddress": "0x6dEB5EbdA156048208EF966221e24618B4cF5560",
-    "callOptionAddress": "0xd442314375a01a935D621AFe8CA61C1D903a67F8"
+    "vaultAddress": "0x6c00003E02E8760CeD087F1870b05801d2313Fe0",
+    "callOptionAddress": "0x3D5917Dff1E259E7F270034F5d2A88FA82edBcb6",
+    "aaveCollateralTokenAddress": "0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8",
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
   },
   {
     "name": "WBTC",
@@ -36,7 +54,9 @@
     "decimals": 8,
     "tokenAddress": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
     "oracleAddress": "0xd0c7101eacbb49f3decccc166d238410d6d46d57",
-    "vaultAddress": "0x8fDEEABC6b8e1D352F8D3529b97a64D32834b71a",
-    "callOptionAddress": "0xe913BA6cAfEA396A13610860F25a6124f75ede39"
+    "vaultAddress": "0x84a3f03a296D1385F27cF4a8d9F442BDc18fEb90",
+    "callOptionAddress": "0x3C18D4225aB86eFa3717485Ec68Ae78A68F9C20c",
+    "aaveCollateralTokenAddress": "0x078f358208685046a11C85e8ad32895DED33A249",
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
   }
 ]

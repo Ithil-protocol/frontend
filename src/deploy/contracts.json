@@ -1,10 +1,12 @@
 {
   "networkUrl": "https://rpc.tenderly.co/fork/0ed39173-cd71-46d9-bf31-e09411bf54d4",
-  "ithil": "0x0f9685427ce2De35154864592bc21FD72680B380",
-  "manager": "0x123f3Ebe26C9FfcE201C981E4c0D0f60B1E53755",
-  "aaveService": "0xDB338034fE951cDFEdd0A1abAab43e5C1Efd0bCd",
-  "gmxService": "0x6387b63a95A39341f9f1e16Df93893330E7240DB",
-  "feeCollectorService": "0x7329c0a6F1ded9860bF7B3046e63136ec1FbbC85",
+  "ithil": "0x368e8F1F10cF6D3ed6dA98724566010f0DA29953",
+  "manager": "0x6b54cC0bc0605CbDFb5127aB79A7c8D46D00B807",
+  "aaveService": "0x96903eA45e6ADDFD0a6F302720386a06Be743a02",
+  "gmxService": "0x6eFD65CED904571BD992225c49a224B32320243A",
+  "feeCollectorService": "0xd51fBfa13A06a974E3Ce4d0337BEa402d04f8793",
   "callOptionService": "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
-  "fixedYieldService": "0x42767fe00c3283553cC42D0609BF56b3A5a5b63e"
+  "fixedYieldService": "0xB8B40b1aB06D54Af4b1613f4495d9cEDc5a73c4a",
+  "managerBlockNumber": "111134828",
+  "oracle": "0x25ff8DD7dA64682b0B5602749140601F55b9b183"
 }
