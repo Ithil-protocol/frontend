@@ -15,11 +15,10 @@ const ServicesPage = () => {
             description={item.description}
             to={item.url}
             hasIndex={item.hasIndex}
-            multiplier={`${item.apyRange}%`}
+            multiplier={item.apyRange}
             label={item.label}
             name={item.name as ServiceName}
             apy={`${item.bestApy}%`}
-            tvl={`${item.tvl}m`}
           />
         ))}
     </div>
