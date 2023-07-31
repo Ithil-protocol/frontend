@@ -3,7 +3,7 @@ import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite } from "wagmi";
 
-import { aaveABI, fixedYieldABI, gmxABI } from "@/abi";
+import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { aaveAddress } from "@/hooks/generated/aave";
@@ -48,6 +48,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     FixedYield: {
       abi: fixedYieldABI,
       address: fixedYieldAddress[98745],
+    },
+    CallOption: {
+      abi: callOptionABI,
+      address: getAssetByAddress(data.token)?.callOptionAddress,
     },
   } as const;
 

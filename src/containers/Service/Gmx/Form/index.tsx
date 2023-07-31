@@ -152,6 +152,8 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
 
+  console.log("baseApyGMX", baseApy);
+
   const { data: latestAndBase } = useGmxLatestAndBase({
     args: [asset.tokenAddress],
   });
@@ -165,6 +167,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     latestAndBase,
     riskSpreads,
   });
+
+  console.log("latestAndBase", latestAndBase);
+  console.log("riskSpreads", riskSpreads);
 
   const finalLeverage = isAdvancedOptionsOpen
     ? leverage

@@ -15,6 +15,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import {
   useAaveOpenPositions,
+  useCallOptionOpenPositions,
   useFixedYieldOpenPositions,
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
@@ -38,7 +39,14 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     useGmxOpenPositions();
   const { positions: fixedYieldPositions, isLoading: isLoadingFixedYield } =
     useFixedYieldOpenPositions();
-  const positions = [aavePositions, gmxPositions, fixedYieldPositions]
+  const { positions: CallOptionsPositions, isLoading: isLoadingCallOption } =
+    useCallOptionOpenPositions();
+  const positions = [
+    aavePositions,
+    gmxPositions,
+    fixedYieldPositions,
+    CallOptionsPositions,
+  ]
     .flat()
     .sort((a, b) => {
       return (
@@ -62,7 +70,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   };
 
   const isLoadingPositions =
-    isLoadingAave || isLoadingGmx || isLoadingFixedYield;
+    isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
 
   if (!isMounted) return null;
 
