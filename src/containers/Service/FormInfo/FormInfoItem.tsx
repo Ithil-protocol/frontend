@@ -47,8 +47,8 @@ const FormInfoItem: React.FC<Props> = ({
               lineHeight: "24px",
             }}
           >
-            <span>{value}</span>
             <span>{extension}</span>
+            <span>{value}</span>
           </Text>
         )}
       </div>
