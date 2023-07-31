@@ -14,6 +14,7 @@ import { useBaseApy } from "@/hooks/useBaseApy";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { AaveAsset } from "@/types/onchain.types";
+import { getSingleQueryParam } from "@/utils";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormDescriptionItem from "./FormDescriptionItem";
@@ -44,7 +45,9 @@ const DepositForm: FC<Props> = ({
     query: { asset },
   } = useRouter();
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(asset as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy(
+    getSingleQueryParam(asset)
+  );
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - interestAndSpreadInPercent).toFixed(2)
