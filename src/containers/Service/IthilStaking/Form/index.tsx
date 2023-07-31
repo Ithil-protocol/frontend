@@ -16,7 +16,11 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { AaveAsset } from "@/types/onchain.types";
-import { displayLeverage, getServiceByName } from "@/utils";
+import {
+  displayLeverage,
+  getServiceByName,
+  getSingleQueryParam,
+} from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -150,7 +154,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy(
+    getSingleQueryParam(token)
+  );
   const _finalLeverage = isAdvancedOptionsOpen
     ? displayLeverage(leverage)
     : displayLeverage(appConfig.DEFAULT_LEVERAGE);

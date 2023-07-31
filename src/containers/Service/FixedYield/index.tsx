@@ -16,7 +16,7 @@ const FixedYield = () => {
     query: { asset: token },
   } = useRouter();
   const { data: chartData } = useChart("");
-  const { baseApy, isLoading } = useBaseApy(token as string);
+  const { isLoading } = useBaseApy(getSingleQueryParam(token));
 
   const normalizedToken = getSingleQueryParam(token);
 
@@ -24,6 +24,7 @@ const FixedYield = () => {
 
   const service = getServiceByName("fixed-yield");
   if (!service) return null;
+
   return (
     <Box className="grid w-full grid-cols-10 gap-6">
       <Box className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">

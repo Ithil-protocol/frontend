@@ -16,7 +16,7 @@ const CallOption = () => {
     query: { asset: token },
   } = useRouter();
   const { data: chartData } = useChart("");
-  const { baseApy, isLoading } = useBaseApy(token as string);
+  const { isLoading } = useBaseApy(getSingleQueryParam(token));
 
   const normalizedToken = getSingleQueryParam(token);
 
