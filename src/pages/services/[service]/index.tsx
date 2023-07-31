@@ -16,7 +16,10 @@ const Service = () => {
   const serviceName = useServiceName();
 
   useEffect(() => {
-    if (!serviceName) return;
+    if (!serviceName) {
+      pushTo404();
+      return;
+    }
 
     const isServiceHasIndexPage = services.some(
       (i) => i.url === `/${serviceName}` && i.hasIndex
@@ -25,8 +28,10 @@ const Service = () => {
     const { tokens = [] } = getServiceByName(serviceName);
 
     if (isServiceHasIndexPage) tokenModal.openDialog(tokens, serviceName);
-    else router.push("/404");
+    else pushTo404();
   }, [router, serviceName]);
+
+  const pushTo404 = () => router.push("/404");
 
   return <></>;
 };

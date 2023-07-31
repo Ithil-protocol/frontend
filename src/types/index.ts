@@ -1,4 +1,4 @@
-import { SafetyScoreValue } from "@/utils";
+import { SafetyScoreValue, getServiceNames } from "@/utils";
 
 export type viewTypes = "Active" | "Closed";
 
@@ -45,12 +45,8 @@ export interface SafetyScore {
   description: string;
 }
 
-export type ServiceName =
-  | "aave"
-  | "call-option"
-  | "fixed-yield"
-  | "gmx"
-  | "ithil-staking";
+const serviceNames = getServiceNames();
+export type ServiceName = (typeof serviceNames)[number];
 
 export interface Service {
   label: string;
