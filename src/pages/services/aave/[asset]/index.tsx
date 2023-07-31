@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import Aave from "@/containers/Service/Aave";
-import vaults from "@/deploy/vaults.json";
+import vaults from "@/deploy/assets.json";
 
 const Service = () => {
   return <Aave />;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "wagmi";
 
-import vaults from "@/deploy/vaults.json";
+import vaults from "@/deploy/assets.json";
 import { type LendingTokenList } from "@/types/onchain.types";
 
 export const lendingTokens = vaults as LendingTokenList;

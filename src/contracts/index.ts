@@ -1,7 +1,7 @@
 import { Address } from "viem";
 
 import { vaultABI } from "@/abi/";
-import vaults from "@/deploy/vaults.json";
+import vaults from "@/deploy/assets.json";
 
 interface Contract {
   address: Address;
