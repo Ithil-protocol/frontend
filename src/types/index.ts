@@ -104,8 +104,7 @@ export type CloseDialogFn = VoidNoArgs;
 
 export type OpenTokenDialogFn = (
   tokens: string[],
-  serviceName?: string,
-  excludes?: string[]
+  serviceName: ServiceName
 ) => void;
 export interface TokenModalOptions {
   tokens: string[];

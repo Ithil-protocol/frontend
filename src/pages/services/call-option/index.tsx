@@ -3,8 +3,11 @@ import { useEffect } from "react";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getServiceByName } from "@/utils";
 
-const AavePage = () => {
-  const tokenModal = useTokenModal();
+const CallOptionPage = () => {
+  const tokenModal = useTokenModal({
+    isClosable: false,
+    returnPath: "/services",
+  });
 
   useEffect(() => {
     const tokens = getServiceByName("call-option").tokens;
@@ -14,4 +17,4 @@ const AavePage = () => {
   return null;
 };
 
-export default AavePage;
+export default CallOptionPage;

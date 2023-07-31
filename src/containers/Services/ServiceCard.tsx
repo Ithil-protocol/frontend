@@ -11,14 +11,14 @@ import ServiceIcon from "../Service/ServiceIcon";
 import EnterButton from "./EnterButton";
 
 interface ServiceCardProps {
+  apy: string;
   assets: string[];
   description: string | ((assets: string[]) => string);
-  to: string;
-  multiplier: string | undefined;
-  label: string;
-  name: ServiceName;
-  apy: string;
   hasIndex: boolean;
+  label: string;
+  multiplier: string | undefined;
+  name: ServiceName;
+  to: string;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -26,14 +26,14 @@ const ServiceCard: FC<ServiceCardProps> = ({
   assets,
   description,
   hasIndex,
-  multiplier,
   label,
-  to,
+  multiplier,
   name,
+  to,
 }) => {
   const tokenModal = useTokenModal();
-  const { colorMode, pickColor } = useColorMode();
-  const handleEnterClick = () => tokenModal.openDialog(assets, to);
+  const { colorMode } = useColorMode();
+  const handleEnterClick = () => tokenModal.openDialog(assets, name);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">

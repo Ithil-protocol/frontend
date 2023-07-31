@@ -29,6 +29,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 import {
   CloseDialogFn,
   OpenTokenDialogFn,
+  ServiceName,
   TokenModalOptions,
   VoidNoArgs,
 } from "@/types";
@@ -210,8 +211,8 @@ const TokenModalComponent: React.FC<Props> = ({
 const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [options, setOptions] = useState<TokenModalOptions>(getDefaultOptions);
-  const [serviceName, setServiceName] = useState("");
-  const handleOpen: OpenTokenDialogFn = (tokens, sn = serviceName) => {
+  const [serviceName, setServiceName] = useState<ServiceName | "">("");
+  const handleOpen: OpenTokenDialogFn = (tokens, sn: ServiceName) => {
     setServiceName(sn);
     setOptions((prev) => ({ ...prev, tokens }));
     onOpen();
