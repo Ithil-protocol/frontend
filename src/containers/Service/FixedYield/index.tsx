@@ -5,7 +5,6 @@ import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { getAssetByName, getServiceByName, getSingleQueryParam } from "@/utils";
 
-import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
 import StrategyDescription from "../StrategyDescription";
 import { Graph } from "../graph";
@@ -38,11 +37,11 @@ const FixedYield = () => {
           baseApy={0}
           isLoading={isLoading}
         />
-        <SafetyScore
+        {/* <SafetyScore
           score={service.safety_score.score}
           features={service.safety_score.features}
           description={service.safety_score.description}
-        />
+        /> */}
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
         {asset && <Form asset={asset} />}

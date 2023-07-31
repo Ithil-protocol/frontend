@@ -12,14 +12,19 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { aaveAddress } from "@/hooks/generated/aave";
+import {
+  aaveAddress,
+  useAaveLatestAndBase,
+  useAaveRiskSpreads,
+} from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { displayLeverage, getServiceByName } from "@/utils";
+import { getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -34,8 +39,8 @@ const Form = ({ asset }: { asset: Asset }) => {
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
-  console.log("leverage:", leverage, "slippage:", slippage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -66,7 +71,32 @@ const Form = ({ asset }: { asset: Asset }) => {
     slippage,
     serviceAddress: aaveAddress[chainId],
   });
-  console.log(interestAndSpread, "OOO");
+
+  const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
+
+  const { data: latestAndBase } = useAaveLatestAndBase({
+    args: [asset.tokenAddress],
+  });
+
+  const { data: riskSpreads } = useAaveRiskSpreads({
+    args: [asset.tokenAddress],
+  });
+
+  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
+    baseApy,
+    latestAndBase,
+    riskSpreads,
+  });
+
+  const finalLeverage = isAdvancedOptionsOpen
+    ? leverage
+    : (+bestLeverage - 1).toString();
+
+  // useEffect(() => {
+  //   setLeverage(finalLeverage);
+  // }, [finalLeverage]);
+
+  console.log("finalLeverage", leverage);
 
   const extraData = toHex("");
 
@@ -145,13 +175,6 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const isMounted = useIsMounted();
 
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-
-  const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
-  const finalLeverage = isAdvancedOptionsOpen
-    ? displayLeverage(leverage)
-    : displayLeverage(appConfig.DEFAULT_LEVERAGE);
-
   const finalApy = baseApy
     ? +baseApy * +finalLeverage -
       (+finalLeverage - 1) * displayInterestAndSpreadInPercent
@@ -166,9 +189,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Best Leverage:",
-      value: "",
+      value: bestLeverage,
       extension: "x",
-      isLoading: true,
+      isLoading: isBestLeverageLoading,
     },
     {
       label: "Borrow Interest:",
@@ -180,6 +203,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       label: "Final APY:",
       value: finalApy?.toFixed(2),
       extension: "%",
+      isLoading: isInterestAndSpreadLoading,
     },
   ];
 
