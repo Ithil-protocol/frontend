@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 
+import { ServiceName } from "@/types";
 import { getSingleQueryParam } from "@/utils";
 
 export const useServiceName = () => {
@@ -13,5 +14,6 @@ export const useServiceName = () => {
     return router.pathname.split("/").at(-2) || "";
   };
 
-  return getSingleQueryParam(serviceName) || getServiceNameByUrl();
+  return (getSingleQueryParam(serviceName) ||
+    getServiceNameByUrl()) as ServiceName;
 };

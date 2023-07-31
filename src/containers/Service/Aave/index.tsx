@@ -22,7 +22,7 @@ const Aave = () => {
 
   const asset = getAssetByName(normalizedToken);
 
-  const { baseApy, isLoading } = useBaseApy(token as string);
+  const { baseApy, isLoading } = useBaseApy(normalizedToken);
 
   const service = getServiceByName("aave");
 
