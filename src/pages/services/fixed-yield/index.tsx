@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getServiceByName } from "@/utils";
 
-const AavePage = () => {
+const FixedYieldPage = () => {
   const tokenModal = useTokenModal({
     isClosable: false,
     returnPath: "/services",
@@ -17,4 +17,4 @@ const AavePage = () => {
   return null;
 };
 
-export default AavePage;
+export default FixedYieldPage;
