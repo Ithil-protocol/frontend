@@ -103,7 +103,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { order } = usePrepareDebitOrder({
     token: asset,
     collateralToken: asset.aaveCollateralTokenAddress,
-    leverage,
+    leverage: finalLeverage,
     amount: inputAmount,
     interestAndSpread,
     extraData,

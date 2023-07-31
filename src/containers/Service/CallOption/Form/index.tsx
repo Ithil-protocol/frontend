@@ -191,7 +191,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "redeem price:",
-      value: redeem.toFixed(2),
+      value: redeem.isNaN() ? "0.00" : redeem.toFixed(2),
       extension: "$",
       isLoading: isInfoLoading,
     },

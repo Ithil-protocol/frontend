@@ -26,9 +26,7 @@ const CallOption = () => {
   return (
     <Box className="grid w-full grid-cols-10 gap-6">
       <Box className="flex flex-col flex-grow gap-6 col-span-full lg:col-span-7">
-        <ServiceHeading
-          data={{ name: service.name, description: service.description }}
-        />
+        <ServiceHeading service={service} />
         <Graph data={chartData} tab="apy" />
         {/* <StrategyDescription
           description={service.explanation}

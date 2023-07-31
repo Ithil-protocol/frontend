@@ -1,7 +1,8 @@
 import { formatUnits } from "viem";
-import { Address, useContractReads } from "wagmi";
+import { Address, useAccount, useContractRead, useContractReads } from "wagmi";
 
-import { aaveABI, gmxABI } from "@/abi";
+import { aaveABI, callOptionABI, gmxABI } from "@/abi";
+import { assets } from "@/data/assets";
 import { OpenPosition } from "@/types";
 import { getAssetByAddress } from "@/utils";
 
@@ -151,8 +152,6 @@ export const useFixedYieldOpenPositions = () => {
   const { data, isLoading: isAgreementsLoading } =
     useGetFixedYieldAgreementsByUser();
 
-  console.log("data333", data);
-
   const positions: OpenPosition[] = [];
 
   const length = data?.[0].length || 0;
@@ -169,5 +168,83 @@ export const useFixedYieldOpenPositions = () => {
   return {
     positions,
     isLoading: isAgreementsLoading,
+  };
+};
+
+export const useCallOptionOpenPositions = () => {
+  const { address } = useAccount();
+
+  const { data: userAgreements0, isLoading: isLoading0 } = useContractRead({
+    account: address,
+    abi: callOptionABI,
+    address: assets[0].callOptionAddress,
+    functionName: "getUserAgreements",
+    enabled: !!address,
+  });
+
+  const { data: userAgreements1, isLoading: isLoading1 } = useContractRead({
+    account: address,
+    abi: callOptionABI,
+    address: assets[1].callOptionAddress,
+    functionName: "getUserAgreements",
+    enabled: !!address,
+  });
+
+  const { data: userAgreements2, isLoading: isLoading2 } = useContractRead({
+    account: address,
+    abi: callOptionABI,
+    address: assets[2].callOptionAddress,
+    functionName: "getUserAgreements",
+    enabled: !!address,
+  });
+
+  const { data: userAgreements3, isLoading: isLoading3 } = useContractRead({
+    account: address,
+    abi: callOptionABI,
+    address: assets[3].callOptionAddress,
+    functionName: "getUserAgreements",
+    enabled: !!address,
+  });
+
+  const userAgreements = [
+    userAgreements0,
+    userAgreements1,
+    userAgreements2,
+    userAgreements3,
+  ];
+
+  const isLoading = isLoading0 || isLoading1 || isLoading2 || isLoading3;
+
+  const positions: OpenPosition[] = [];
+
+  userAgreements?.forEach((service) => {
+    if (!service) return;
+    const [agreements, ids] = service;
+    agreements?.forEach((agreement, index) => {
+      positions.push({
+        agreement,
+        id: ids?.[index],
+        type: "CallOption",
+      });
+    });
+  });
+
+  console.log("userAgreements", userAgreements);
+  console.log("positionsss", positions);
+
+  // const length = data?.[0].length! || 0;
+
+  // for (let i = 0; i < length; i++) {
+  //   const agreement = data?.[0][i]!;
+  //   positions.push({
+  //     agreement,
+  //     id: data?.[1][i]!,
+  //     type: "CallOption",
+  //   });
+  // }
+
+  return {
+    positions,
+    isLoading,
   };
 };
