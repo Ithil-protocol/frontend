@@ -128,3 +128,30 @@ export type Asset = {
   aaveCollateralTokenAddress: Address;
   gmxCollateralTokenAddress: Address;
 };
+
+export interface Agreement {
+  loans: readonly {
+    token: Address;
+    amount: bigint;
+    margin: bigint;
+    interestAndSpread: bigint;
+  }[];
+  collaterals: readonly {
+    itemType: number;
+    token: Address;
+    identifier: bigint;
+    amount: bigint;
+  }[];
+  createdAt: bigint;
+  status: number;
+}
+
+export interface OpenPosition {
+  agreement?: Agreement;
+  pnlPercentage?: string;
+  pnl?: string;
+  isPnlLoading?: boolean;
+  id?: bigint;
+  quote?: bigint;
+  type: string;
+}

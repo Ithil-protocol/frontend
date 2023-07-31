@@ -46,8 +46,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     amount: inputAmount,
   });
 
-  console.log("order33", order);
-
   const { write: openPosition } = useContractWrite({
     abi: fixedYieldABI,
     address: fixedYieldAddress[98745],

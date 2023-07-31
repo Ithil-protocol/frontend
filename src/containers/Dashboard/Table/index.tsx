@@ -7,7 +7,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
@@ -15,6 +15,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import {
   useAaveOpenPositions,
+  useFixedYieldOpenPositions,
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
@@ -35,32 +36,33 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     useAaveOpenPositions();
   const { positions: gmxPositions, isLoading: isLoadingGmx } =
     useGmxOpenPositions();
-  const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
-    return (
-      new Date(Number(b.agreement?.createdAt)).getTime() -
-      new Date(Number(a.agreement?.createdAt)).getTime()
-    );
-  });
+  const { positions: fixedYieldPositions, isLoading: isLoadingFixedYield } =
+    useFixedYieldOpenPositions();
+  const positions = [aavePositions, gmxPositions, fixedYieldPositions]
+    .flat()
+    .sort((a, b) => {
+      return (
+        new Date(Number(b.agreement?.createdAt)).getTime() -
+        new Date(Number(a.agreement?.createdAt)).getTime()
+      );
+    });
   const isMounted = useIsMounted();
-
-  const [isLoadingPositions, setIsLoadingPositions] = useState<boolean>(false);
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
     useClosePositions();
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
   const hasItems = {
-    Active: positions.length > 0 || isLoadingAave || isLoadingGmx,
+    Active:
+      positions.length > 0 ||
+      isLoadingAave ||
+      isLoadingGmx ||
+      isLoadingFixedYield,
     Closed: closedPositions.length > 0 || isLoadingClosed,
   };
 
-  useEffect(() => {
-    if (isLoadingAave || isLoadingGmx) {
-      setIsLoadingPositions(true);
-    } else {
-      setIsLoadingPositions(false);
-    }
-  }, [isLoadingAave, isLoadingGmx]);
+  const isLoadingPositions =
+    isLoadingAave || isLoadingGmx || isLoadingFixedYield;
 
   if (!isMounted) return null;
 
@@ -94,6 +96,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                 item.agreement?.loans.map((loanItem) => {
                   const asset = getAssetByAddress(loanItem.token);
 
+                  if (item.type === "FixedYield") {
+                    console.log("loanItem.margin", loanItem.margin);
+                  }
+
                   if (!asset) return null;
 
                   return (
@@ -103,12 +109,13 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         amount: loanItem.amount,
                         margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
-                        formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
-                        pnl: item.pnl,
-                        pnlPercentage: fixPrecision(
-                          +item.pnlPercentage!,
-                          2
-                        ).toString(),
+                        formattedPnl:
+                          item?.pnl && fixPrecision(+item?.pnl, 2).toString(),
+                        isPnlLoading: item?.isPnlLoading,
+                        pnl: item?.pnl,
+                        pnlPercentage:
+                          item?.pnlPercentage &&
+                          fixPrecision(+item?.pnlPercentage, 2).toString(),
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
