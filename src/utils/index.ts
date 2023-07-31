@@ -234,3 +234,6 @@ export const getSingleQueryParam = (
 export const getServiceByName = (name: ServiceName): Service => {
   return servicesByName[name];
 };
+
+export const getServiceNames = () =>
+  ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;

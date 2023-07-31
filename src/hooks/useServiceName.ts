@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 
-import { getSingleQueryParam } from "@/utils";
+import { ServiceName } from "@/types";
+import { getServiceNames, getSingleQueryParam } from "@/utils";
 
 export const useServiceName = () => {
   const router = useRouter();
@@ -9,9 +10,24 @@ export const useServiceName = () => {
     query: { service: serviceName },
   } = router;
 
-  const getServiceNameByUrl = () => {
-    return router.pathname.split("/").at(-2) || "";
+  const normalizedServiceName = getSingleQueryParam(serviceName);
+
+  const getServiceNameByUrl = (): ServiceName | "" => {
+    if (typeof window === "undefined") return "";
+
+    const queries = history.state.as.split("/").filter(Boolean);
+
+    for (const query of queries) {
+      if (isQueryExistInServiceNames(query)) return query;
+    }
+
+    return "";
   };
 
-  return getSingleQueryParam(serviceName) || getServiceNameByUrl();
+  const isQueryExistInServiceNames = (query: string) =>
+    getServiceNames().includes(query as ServiceName);
+
+  return isQueryExistInServiceNames(normalizedServiceName)
+    ? (normalizedServiceName as ServiceName)
+    : getServiceNameByUrl();
 };
