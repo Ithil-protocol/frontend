@@ -14,7 +14,7 @@ interface ServiceCardProps {
   assets: string[];
   description: string | ((assets: string[]) => string);
   to: string;
-  multiplier: string | null;
+  multiplier: string | undefined;
   label: string;
   name: ServiceName;
   apy: string;
