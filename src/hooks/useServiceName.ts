@@ -12,8 +12,8 @@ export const useServiceName = () => {
 
   const normalizedServiceName = getSingleQueryParam(serviceName);
 
-  const getServiceNameByUrl = (): ServiceName | "" => {
-    if (typeof window === "undefined") return "";
+  const getServiceNameByUrl = (): ServiceName | undefined => {
+    if (typeof window === "undefined") return undefined;
 
     const queries = history.state.as.split("/").filter(Boolean);
 
@@ -21,7 +21,7 @@ export const useServiceName = () => {
       if (isQueryExistInServiceNames(query)) return query;
     }
 
-    return "";
+    return undefined;
   };
 
   const isQueryExistInServiceNames = (query: string) =>
