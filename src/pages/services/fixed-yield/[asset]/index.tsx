@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import FixedYield from "@/containers/Service/FixedYield";
-import assets from "@/deploy/assets.json";
+import { assets } from "@/data/assets";
 
 const FixedYieldPage = () => {
   return <FixedYield />;

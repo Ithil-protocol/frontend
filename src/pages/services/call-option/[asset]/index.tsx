@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import CallOption from "@/containers/Service/CallOption";
-import assets from "@/deploy/assets.json";
+import { assets } from "@/data/assets";
 
 const CallOptionPage = () => {
   return <CallOption />;
