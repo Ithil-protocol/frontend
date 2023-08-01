@@ -56,9 +56,11 @@ type OpenFn = (o: OpenFnDefaultOptions) => void;
 
 type CustomOpenFn = (
   description: Description | any,
-  title: Title,
-  options: OpenFnBaseOptions
+  title?: Title,
+  options?: OpenFnBaseOptions
 ) => void;
+
+type CustomOpenFnCreator = (status: DialogStatus) => CustomOpenFn;
 
 const icons: {
   [key in DialogStatus]:
@@ -98,31 +100,20 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
   );
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const openSuccess: CustomOpenFn = (
-    description,
-    title = "",
-    options = getDialogDefaultOptions()
-  ) => {
-    openDialog({
-      ...options,
-      description: resolveDescription(description),
-      status: "success",
-      title,
-    });
-  };
+  const createCustomOpenFn: CustomOpenFnCreator =
+    (status) =>
+    (description, title = "", options = getDialogDefaultOptions()) => {
+      openDialog({
+        ...options,
+        description: resolveDescription(description),
+        status,
+        title,
+      });
+    };
 
-  const openError: CustomOpenFn = (
-    description,
-    title = "",
-    options = getDialogDefaultOptions()
-  ) => {
-    openDialog({
-      ...options,
-      description: resolveDescription(description),
-      status: "error",
-      title,
-    });
-  };
+  const openError = createCustomOpenFn("error");
+  const openLoading = createCustomOpenFn("loading");
+  const openSuccess = createCustomOpenFn("success");
 
   const openDialog: OpenFn = (options) => {
     const newOptions = mergeOptions(options);
@@ -149,8 +140,10 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
   const resolveDescription = (d: any) =>
     typeof d === "string" ? d : getDescriptionFromObject(d) || "";
 
-  const getDescriptionFromObject = (o: { shortMessage?: string }) =>
-    o.shortMessage;
+  const getDescriptionFromObject = (o: {
+    shortMessage?: string;
+    message?: string;
+  }) => o.shortMessage || o.message;
 
   return (
     <NotificationDialogContext.Provider
@@ -158,6 +151,7 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
         close: closeDialog,
         open: openDialog,
         openError,
+        openLoading,
         openSuccess,
       }}
     >
@@ -296,11 +290,13 @@ const NotificationDialogContext = createContext<{
   close: CloseDialogFn;
   open: OpenFn;
   openError: CustomOpenFn;
+  openLoading: CustomOpenFn;
   openSuccess: CustomOpenFn;
 }>({
   close: () => undefined,
   open: () => undefined,
   openError: () => undefined,
+  openLoading: () => undefined,
   openSuccess: () => undefined,
 });
 
