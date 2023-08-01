@@ -1,7 +1,7 @@
 import { Address } from "viem";
 
 import { vaultABI } from "@/abi/";
-import vaults from "@/deploy/assets.json";
+import { assets } from "@/data/assets";
 
 interface Contract {
   address: Address;
@@ -15,7 +15,7 @@ interface VaultContracts {
 
 export const vaultContracts: VaultContracts = {};
 
-vaults.forEach((vault) => {
+assets.forEach((vault) => {
   vaultContracts[vault.name] = {
     address: vault.vaultAddress as Address,
     abi: vaultABI,

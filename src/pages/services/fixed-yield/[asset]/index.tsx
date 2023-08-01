@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import FixedYield from "@/containers/Service/FixedYield";
-import vaults from "@/deploy/assets.json";
+import { assets } from "@/data/assets";
 
 const FixedYieldPage = () => {
   return <FixedYield />;
@@ -9,7 +9,7 @@ const FixedYieldPage = () => {
 export const getStaticPaths: GetStaticPaths<{
   asset: string;
 }> = async () => {
-  const paths = vaults.map((vault) => ({
+  const paths = assets.map((vault) => ({
     params: {
       asset: vault.name.toLowerCase(),
     },
