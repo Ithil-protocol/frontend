@@ -26,7 +26,7 @@ const LineChart = ({ price }: Props) => {
           axisLine={false}
           tickMargin={10}
           ticks={Array.from({ length: 5 }, (_, i) => i * (domainMax / 4))}
-          tickFormatter={(tick: number) => tick.toFixed(2)}
+          tickFormatter={(tick: number) => "$" + tick.toFixed(2)}
           // domain={[0, (dataMax: number) => dataMax * 2]}
           style={{
             fontFamily: "var(--font-heading)",
