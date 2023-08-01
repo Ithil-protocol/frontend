@@ -6,6 +6,7 @@ export interface Props {
   label: string;
   value?: string | number;
   extension?: string;
+  prefix?: string;
   isLoading?: boolean;
 }
 
@@ -14,6 +15,7 @@ const FormInfoItem: React.FC<Props> = ({
   label,
   value,
   isLoading = false,
+  prefix,
 }) => {
   const { mode } = useColorMode();
 
@@ -47,8 +49,9 @@ const FormInfoItem: React.FC<Props> = ({
               lineHeight: "24px",
             }}
           >
-            <span>{extension}</span>
+            {prefix && <span>{prefix}</span>}
             <span>{value}</span>
+            {extension && <span>{extension}</span>}
           </Text>
         )}
       </div>
