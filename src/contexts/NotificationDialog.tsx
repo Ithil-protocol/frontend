@@ -125,6 +125,7 @@ const NotificationDialogModal: React.FC<Props> = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              padding: "5px",
             }}
           >
             <span></span>
@@ -134,6 +135,7 @@ const NotificationDialogModal: React.FC<Props> = ({
               style={{
                 cursor: "pointer",
                 borderRadius: "8px",
+                padding: "5px",
               }}
               onClick={handleClose}
             >
