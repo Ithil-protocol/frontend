@@ -46,6 +46,7 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
   onPercentageClick,
   title,
   token: asset,
+  isApproved,
 }) => {
   return (
     <div className="flex flex-col items-center gap-2 p-3 border md:p-4 lg:p-6 rounded-xl border-primary-300 bg-primary-contrast">
@@ -110,7 +111,7 @@ const WidgetComponent: React.FC<WidgetComponentProps> = ({
         loadingText="Awaiting"
         mt="20px"
       >
-        {!asset.name ? "Loading..." : `Approve ${asset.name}`}
+        {isApproved ? `${title} ${asset.name}` : `Approve ${asset.name}`}
       </PrivateButton>
     </div>
   );
