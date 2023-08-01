@@ -115,20 +115,20 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //         duration: 0,
   //       });
   //       setInputAmount("");
-  //     } catch (err) {
+  //     } catch (error) {
   //       notificationDialog.openDialog({
   //         title: "Failed",
-  //         description: "Something went wrong",
+  //         description: getMetaError(error),
   //         status: "error",
   //         isClosable: true,
   //         duration: 0,
   //       });
   //     }
   //   },
-  //   onError: () => {
+  //   onError: (error) => {
   //     notificationDialog.openDialog({
   //       title: "Failed",
-  //       description: "Something went wrong",
+  //       description: getMetaError(error),
   //       status: "error",
   //       isClosable: true,
   //       duration: 0,
