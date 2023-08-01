@@ -145,7 +145,6 @@ const Form = ({ asset, setRedeem }: Props) => {
       notificationDialog.open({
         title: isApproved ? "Opening position" : "Approving",
         status: "loading",
-        duration: 0,
       });
     },
     onSuccess: async ({ hash }) => {
@@ -159,7 +158,6 @@ const Form = ({ asset, setRedeem }: Props) => {
             : "Approved successfully",
           status: "success",
           isClosable: true,
-          duration: 0,
         });
         setInputAmount("");
       } catch (error) {
@@ -168,7 +166,6 @@ const Form = ({ asset, setRedeem }: Props) => {
           description: getMetaError(error),
           status: "error",
           isClosable: true,
-          duration: 0,
         });
       }
     },
@@ -178,7 +175,6 @@ const Form = ({ asset, setRedeem }: Props) => {
         description: getMetaError(error),
         status: "error",
         isClosable: true,
-        duration: 0,
       });
     },
   });

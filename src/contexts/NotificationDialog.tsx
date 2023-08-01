@@ -59,8 +59,8 @@ const iconClassNames: {
 
 const getDialogDefaultOptions = (): DialogOptions => ({
   description: "",
-  duration: 5000,
-  isClosable: true,
+  duration: 0,
+  isClosable: false,
   status: "error",
   title: "",
 });

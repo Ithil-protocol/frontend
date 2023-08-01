@@ -98,7 +98,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //     notificationDialog.openDialog({
   //       title: isApproved ? "Opening position" : "Approving",
   //       status: "loading",
-  //       duration: 0,
   //     });
   //   },
   //   onSuccess: async ({ hash }) => {
@@ -112,7 +111,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //           : "Approved successfully",
   //         status: "success",
   //         isClosable: true,
-  //         duration: 0,
   //       });
   //       setInputAmount("");
   //     } catch (error) {
@@ -121,7 +119,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //         description: getMetaError(error),
   //         status: "error",
   //         isClosable: true,
-  //         duration: 0,
   //       });
   //     }
   //   },
@@ -131,7 +128,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //       description: getMetaError(error),
   //       status: "error",
   //       isClosable: true,
-  //       duration: 0,
   //     });
   //   },
   // });

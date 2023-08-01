@@ -257,7 +257,6 @@ const Test = () => {
     //   notificationDialog.openDialog({
     //     title: `Approving ${inputAmount} ${token.name}`,
     //     status: "loading",
-    //     duration: 0,
     //   });
     // },
     // onSuccess: async ({ hash }) => {
@@ -269,7 +268,6 @@ const Test = () => {
     //       title: `Approved ${inputAmount} ${token.name}`,
     //       status: "success",
     //       isClosable: true,
-    //       duration: 0,
     //     });
     //     refetchAllowance();
     //   } catch (err) {
@@ -278,7 +276,6 @@ const Test = () => {
     //       description: getMetaError(error),
     //       status: "error",
     //       isClosable: true,
-    //       duration: 0,
     //     });
     //   }
     // },
@@ -287,7 +284,6 @@ const Test = () => {
     //     title: getMetaError(error),
     //     status: "error",
     //     isClosable: true,
-    //     duration: 0,
     //   });
     // },
   });

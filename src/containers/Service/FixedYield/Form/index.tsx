@@ -56,7 +56,6 @@ const Form = ({ asset }: { asset: Asset }) => {
       notificationDialog.open({
         title: isApproved ? "Opening position" : "Approving",
         status: "loading",
-        duration: 0,
       });
     },
     onSuccess: async ({ hash }) => {
@@ -70,7 +69,6 @@ const Form = ({ asset }: { asset: Asset }) => {
             : "Approved successfully",
           status: "success",
           isClosable: true,
-          duration: 0,
         });
         setInputAmount("");
       } catch (error) {
@@ -79,7 +77,6 @@ const Form = ({ asset }: { asset: Asset }) => {
           description: getMetaError(error),
           status: "error",
           isClosable: true,
-          duration: 0,
         });
       }
     },
@@ -89,7 +86,6 @@ const Form = ({ asset }: { asset: Asset }) => {
         description: getMetaError(error),
         status: "error",
         isClosable: true,
-        duration: 0,
       });
     },
   });

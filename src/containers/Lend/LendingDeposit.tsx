@@ -61,7 +61,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
       notificationDialog.open({
         title: `Approving ${inputAmount} ${token.name}`,
         status: "loading",
-        duration: 0,
       });
     },
     onSuccess: async ({ hash }) => {
@@ -73,7 +72,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
           title: `Approved ${inputAmount} ${token.name}`,
           status: "success",
           isClosable: true,
-          duration: 0,
         });
         refetchAllowance();
       } catch (error) {
@@ -82,7 +80,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
           description: getMetaError(error),
           status: "error",
           isClosable: true,
-          duration: 0,
         });
       }
     },
@@ -91,7 +88,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         title: getMetaError(error),
         status: "error",
         isClosable: true,
-        duration: 0,
       });
     },
   });
@@ -108,7 +104,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
       notificationDialog.open({
         title: `Depositing ${inputAmount} ${token.name}`,
         status: "loading",
-        duration: 0,
       });
     },
     onSuccess: async ({ hash }) => {
@@ -120,7 +115,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
           title: `Deposited ${inputAmount} ${token.name}`,
           status: "success",
           isClosable: true,
-          duration: 0,
         });
         setInputAmount("0");
         refetchAllowance();
@@ -130,7 +124,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
           description: getMetaError(error),
           status: "error",
           isClosable: true,
-          duration: 0,
         });
       }
     },
@@ -139,7 +132,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         title: getMetaError(error),
         status: "error",
         isClosable: true,
-        duration: 0,
       });
     },
   });
@@ -172,7 +164,6 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     } catch (error) {
       notificationDialog.open({
         title: getMetaError(error),
-        duration: 0,
       });
     }
   };

@@ -59,7 +59,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
       notificationDialog.open({
         title: `Withdrawing ${inputAmount} ${token.name}`,
         status: "loading",
-        duration: 0,
       });
     },
     onSuccess: async ({ hash }) => {
@@ -71,7 +70,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
           title: `Withdrawn ${inputAmount} ${token.name}`,
           status: "success",
           isClosable: true,
-          duration: 0,
         });
         setInputAmount("0");
         setInputBigNumber(BigInt(0));
@@ -81,7 +79,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
           description: getMetaError(error),
           status: "error",
           isClosable: true,
-          duration: 0,
         });
       }
     },
@@ -90,7 +87,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         title: getMetaError(error),
         status: "error",
         isClosable: true,
-        duration: 0,
       });
     },
   });
@@ -147,7 +143,6 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     } catch (error) {
       notificationDialog.open({
         title: getMetaError(error),
-        duration: 0,
       });
     }
   };

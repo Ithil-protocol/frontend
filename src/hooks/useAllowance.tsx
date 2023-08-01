@@ -56,7 +56,6 @@ export const useAllowance = ({
       notificationDialog.open({
         title: "Approving",
         status: "loading",
-        duration: 0,
       });
     },
     onSuccess: async ({ hash }) => {
@@ -68,7 +67,6 @@ export const useAllowance = ({
           title: `Approved ${amount} ${token.name}`,
           status: "success",
           isClosable: true,
-          duration: 0,
         });
         refetchAllowance();
       } catch (error) {
@@ -77,7 +75,6 @@ export const useAllowance = ({
           description: getMetaError(error),
           status: "error",
           isClosable: true,
-          duration: 0,
         });
       }
     },
@@ -86,7 +83,6 @@ export const useAllowance = ({
         title: getMetaError(error),
         status: "error",
         isClosable: true,
-        duration: 0,
       });
     },
   });

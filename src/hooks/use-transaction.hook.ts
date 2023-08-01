@@ -42,7 +42,6 @@ export const useTransactionFeedback = () => {
     notificationDialog.open({
       title: description,
       status: "loading",
-      duration: 0,
     });
 
     await waitForTransaction({ hash: txResult.hash });
@@ -50,7 +49,6 @@ export const useTransactionFeedback = () => {
     notificationDialog.open({
       title: description,
       status: "success",
-      duration: 0,
     });
   };
 
@@ -66,7 +64,6 @@ export const useTransactionFeedback = () => {
       description,
       status: "error",
       title: "Transaction failed",
-      duration: 0,
     });
   };
 

@@ -16,7 +16,6 @@ export const useTransaction = (
   //     notificationDialog.openDialog({
   //       title: description,
   //       status: "success",
-  //       duration: 0,
   //     });
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,7 +27,6 @@ export const useTransaction = (
   //         ? error.message
   //         : "Somethings went wrong, please try again later.",
   //       status: "error",
-  //       duration: 0,
   //     });
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,7 +36,6 @@ export const useTransaction = (
   //     notificationDialog.openDialog({
   //       title: description,
   //       status: "loading",
-  //       duration: 0,
   //     });
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
