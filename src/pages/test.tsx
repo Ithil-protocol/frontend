@@ -275,7 +275,7 @@ const Test = () => {
     //   } catch (err) {
     //     notificationDialog.openDialog({
     //       title: "Failed",
-    //       description: "Something went wrong",
+    //       description: getMetaError(error),
     //       status: "error",
     //       isClosable: true,
     //       duration: 0,
@@ -284,7 +284,7 @@ const Test = () => {
     // },
     // onError: () => {
     //   notificationDialog.openDialog({
-    //     title: "Something went wrong",
+    //     title: getMetaError(error),
     //     status: "error",
     //     isClosable: true,
     //     duration: 0,

@@ -22,7 +22,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceByName, toFullDate } from "@/utils";
+import { getMetaError, getServiceByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -149,20 +149,20 @@ const Form = ({ asset }: { asset: Asset }) => {
           duration: 0,
         });
         setInputAmount("");
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
         title: "Failed",
-        description: "Something went wrong",
+        description: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
