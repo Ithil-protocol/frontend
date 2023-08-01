@@ -243,11 +243,21 @@ const NotificationDialogComponent: React.FC<{
               className={`w-16 h-16 ${classNames}`}
             />
 
-            <Text fontSize={24} textAlign="center" fontWeight={"bold"}>
+            <Text
+              fontSize={24}
+              fontWeight={"bold"}
+              overflowWrap="anywhere"
+              textAlign="center"
+            >
               {title}
             </Text>
 
-            <Text fontWeight={"light"} textAlign="center" fontSize={17}>
+            <Text
+              fontSize={17}
+              fontWeight={"light"}
+              overflowWrap="anywhere"
+              textAlign="center"
+            >
               {description}
             </Text>
 
