@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import { Decimal } from "decimal.js";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Address, formatUnits } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
@@ -31,7 +31,12 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: Asset }) => {
+interface Props {
+  asset: Asset;
+  setRedeem: Dispatch<SetStateAction<number>>;
+}
+
+const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
@@ -99,6 +104,10 @@ const Form = ({ asset }: { asset: Asset }) => {
   redeem = inputDecimal.div(finalAmount);
 
   console.log("amount133", amount1.toString());
+
+  useEffect(() => {
+    if (redeem.isFinite()) setRedeem(redeem.toNumber());
+  }, [redeem, setRedeem]);
 
   const {
     isApproved,
