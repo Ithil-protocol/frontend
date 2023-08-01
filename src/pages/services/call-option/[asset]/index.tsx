@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import CallOption from "@/containers/Service/CallOption";
-import vaults from "@/deploy/vaults.json";
+import { assets } from "@/data/assets";
 
 const CallOptionPage = () => {
   return <CallOption />;
@@ -9,9 +9,9 @@ const CallOptionPage = () => {
 export const getStaticPaths: GetStaticPaths<{
   asset: string;
 }> = async () => {
-  const paths = vaults.map((vault) => ({
+  const paths = assets.map((item) => ({
     params: {
-      asset: vault.name.toLowerCase(),
+      asset: item.name.toLowerCase(),
     },
   }));
 

@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import Aave from "@/containers/Service/Aave";
-import vaults from "@/deploy/vaults.json";
+import { assets } from "@/data/assets";
 
 const Service = () => {
   return <Aave />;
@@ -10,9 +10,9 @@ const Service = () => {
 export const getStaticPaths: GetStaticPaths<{
   asset: string;
 }> = async () => {
-  const paths = vaults.map((vault) => ({
+  const paths = assets.map((item) => ({
     params: {
-      asset: vault.name.toLowerCase(),
+      asset: item.name.toLowerCase(),
     },
   }));
 

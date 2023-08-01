@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { Token } from "@/types/onchain.types";
+import { getMetaError } from "@/utils";
 
 import {
   usePrepareTokenApprove,
@@ -70,19 +71,19 @@ export const useAllowance = ({
           duration: 0,
         });
         refetchAllowance();
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
-        title: "Something went wrong",
+        title: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,

@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import { Decimal } from "decimal.js";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Address, formatUnits } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
@@ -22,7 +22,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceByName, toFullDate } from "@/utils";
+import { getMetaError, getServiceByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -31,7 +31,12 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: Asset }) => {
+interface Props {
+  asset: Asset;
+  setRedeem: Dispatch<SetStateAction<number>>;
+}
+
+const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
@@ -100,6 +105,14 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   console.log("amount133", amount1.toString());
 
+  useEffect(() => {
+    if (redeem.isNaN()) {
+      setRedeem(0);
+    } else {
+      setRedeem(redeem.toNumber());
+    }
+  }, [redeem, setRedeem]);
+
   const {
     isApproved,
     isLoading: isApproveLoading,
@@ -149,20 +162,20 @@ const Form = ({ asset }: { asset: Asset }) => {
           duration: 0,
         });
         setInputAmount("");
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
         title: "Failed",
-        description: "Something went wrong",
+        description: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
@@ -192,7 +205,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     {
       label: "redeem price:",
       value: redeem.isNaN() ? "0.00" : redeem.toFixed(2),
-      extension: "$",
+      prefix: "$",
       isLoading: isInfoLoading,
     },
     {

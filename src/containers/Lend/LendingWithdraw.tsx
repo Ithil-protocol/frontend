@@ -6,6 +6,7 @@ import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useVault } from "@/hooks/use-vault.hook";
 import { LendingToken } from "@/types/onchain.types";
+import { getMetaError } from "@/utils";
 import {
   bigNumberPercentage,
   multiplyBigNumbers,
@@ -74,19 +75,19 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         });
         setInputAmount("0");
         setInputBigNumber(BigInt(0));
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
-        title: "Something went wrong",
+        title: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
@@ -145,7 +146,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
       });
     } catch (error) {
       notificationDialog.openDialog({
-        title: (error as { shortMessage: string }).shortMessage,
+        title: getMetaError(error),
         duration: 0,
       });
     }

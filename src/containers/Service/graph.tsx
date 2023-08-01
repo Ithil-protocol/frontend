@@ -34,6 +34,7 @@ export const Graph = ({ data, tab = "all" }: Props) => {
   const sectionClassnames = "p-2.5 rounded-xl cursor-pointer";
   const sectionChoices: graphSections[] = ["TVL", "APY"];
   const tabs = tabObj[tab];
+  const shouldRenderSwitch = tabs.length > 1;
 
   const filteredData =
     graphWindow === "1W"
@@ -66,19 +67,21 @@ export const Graph = ({ data, tab = "all" }: Props) => {
               </span>
             ))}
           </div>
-          <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
-            {tabs.map((choice) => (
-              <span
-                className={classNames(sectionClassnames, {
-                  "bg-primary-300": graphSection === choice,
-                })}
-                onClick={() => setGraphSection(choice)}
-                key={choice}
-              >
-                {choice}
-              </span>
-            ))}
-          </div>
+          {shouldRenderSwitch && (
+            <div className="py-2.5 px-[3px] rounded-xl bg-primary-200">
+              {tabs.map((choice) => (
+                <span
+                  className={classNames(sectionClassnames, {
+                    "bg-primary-300": graphSection === choice,
+                  })}
+                  onClick={() => setGraphSection(choice)}
+                  key={choice}
+                >
+                  {choice}
+                </span>
+              ))}
+            </div>
+          )}
         </Box>
       </Box>
 
