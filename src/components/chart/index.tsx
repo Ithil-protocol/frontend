@@ -4,7 +4,6 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -79,12 +78,6 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey, xTickFormatter }) => {
           strokeWidth={2.5}
           repeatCount={30}
           strokeOpacity={0.04}
-        />
-        <ReferenceLine
-          y={0.2}
-          stroke="#0983ed"
-          strokeDasharray="3 3"
-          offset="5%"
         />
         <Tooltip
           content={<ToolTip />}
