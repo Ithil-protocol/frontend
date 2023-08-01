@@ -12,7 +12,6 @@ import {
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useToken } from "@/hooks/use-token.hook";
 import { LendingToken } from "@/types/onchain.types";
-import { getMetaError } from "@/utils";
 import {
   bigNumberPercentage,
   stringInputToBigNumber,
@@ -58,38 +57,20 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     abi: erc20ABI,
     functionName: "approve",
     onMutate: () => {
-      notificationDialog.open({
-        title: `Approving ${inputAmount} ${token.name}`,
-        status: "loading",
-      });
+      notificationDialog.openLoading(`Approving ${inputAmount} ${token.name}`);
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.open({
-          title: `Approved ${inputAmount} ${token.name}`,
-          status: "success",
-          isClosable: true,
-        });
+        notificationDialog.openSuccess(`Approved ${inputAmount} ${token.name}`);
         refetchAllowance();
       } catch (error) {
-        notificationDialog.open({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-        });
+        notificationDialog.openError(error, "Failed");
       }
     },
-    onError: (error) => {
-      notificationDialog.open({
-        title: getMetaError(error),
-        status: "error",
-        isClosable: true,
-      });
-    },
+    onError: (error) => notificationDialog.openError(error),
   });
 
   const {
@@ -101,39 +82,23 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
     abi: erc4626ABI,
     functionName: "deposit",
     onMutate: () => {
-      notificationDialog.open({
-        title: `Depositing ${inputAmount} ${token.name}`,
-        status: "loading",
-      });
+      notificationDialog.openLoading(`Depositing ${inputAmount} ${token.name}`);
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.open({
-          title: `Deposited ${inputAmount} ${token.name}`,
-          status: "success",
-          isClosable: true,
-        });
+        notificationDialog.openSuccess(
+          `Deposited ${inputAmount} ${token.name}`
+        );
         setInputAmount("0");
         refetchAllowance();
       } catch (error) {
-        notificationDialog.open({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-        });
+        notificationDialog.openError(error, "Failed");
       }
     },
-    onError: (error) => {
-      notificationDialog.open({
-        title: getMetaError(error),
-        status: "error",
-        isClosable: true,
-      });
-    },
+    onError: (error) => notificationDialog.openError(error),
   });
 
   // computed properties
@@ -162,9 +127,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         args: [inputBigNumber, address!],
       });
     } catch (error) {
-      notificationDialog.open({
-        title: getMetaError(error),
-      });
+      notificationDialog.openError(error);
     }
   };
 

@@ -114,22 +114,10 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   //       });
   //       setInputAmount("");
   //     } catch (error) {
-  //       notificationDialog.openDialog({
-  //         title: "Failed",
-  //         description: getMetaError(error),
-  //         status: "error",
-  //         isClosable: true,
-  //       });
+  //       notificationDialog.openError(error,"Failed")
   //     }
   //   },
-  //   onError: (error) => {
-  //     notificationDialog.openDialog({
-  //       title: "Failed",
-  //       description: getMetaError(error),
-  //       status: "error",
-  //       isClosable: true,
-  //     });
-  //   },
+  //   onError: (error) => notificationDialog.openError(error,"Failed")
   // });
 
   // computed properties

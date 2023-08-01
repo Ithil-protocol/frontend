@@ -270,22 +270,11 @@ const Test = () => {
     //       isClosable: true,
     //     });
     //     refetchAllowance();
-    //   } catch (err) {
-    //     notificationDialog.openDialog({
-    //       title: "Failed",
-    //       description: getMetaError(error),
-    //       status: "error",
-    //       isClosable: true,
-    //     });
+    //   } catch (error) {
+    //     notificationDialog.openError(error,"Failed")
     //   }
     // },
-    // onError: () => {
-    //   notificationDialog.openDialog({
-    //     title: getMetaError(error),
-    //     status: "error",
-    //     isClosable: true,
-    //   });
-    // },
+    // onError: (error) => notificationDialog.openError(error)
   });
   // const { data } = useCallOptionCurrentPrice();
   // const { data: ttl, isSuccess } = useCallOptionTotalAllocation();

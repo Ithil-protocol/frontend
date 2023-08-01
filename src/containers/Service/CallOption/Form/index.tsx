@@ -22,7 +22,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName, toFullDate } from "@/utils";
+import { getServiceByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -142,41 +142,24 @@ const Form = ({ asset, setRedeem }: Props) => {
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.open({
-        title: isApproved ? "Opening position" : "Approving",
-        status: "loading",
-      });
+      notificationDialog.openLoading(
+        isApproved ? "Opening position" : "Approving"
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.open({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-        });
+        notificationDialog.openSuccess(
+          isApproved ? "Positions opened successfully" : "Approved successfully"
+        );
         setInputAmount("");
       } catch (error) {
-        notificationDialog.open({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-        });
+        notificationDialog.openError(error, "Failed");
       }
     },
-    onError: (error) => {
-      notificationDialog.open({
-        title: "Failed",
-        description: getMetaError(error),
-        status: "error",
-        isClosable: true,
-      });
-    },
+    onError: (error) => notificationDialog.openError(error, "Failed"),
   });
 
   // computed properties

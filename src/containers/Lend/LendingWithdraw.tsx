@@ -6,7 +6,6 @@ import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useVault } from "@/hooks/use-vault.hook";
 import { LendingToken } from "@/types/onchain.types";
-import { getMetaError } from "@/utils";
 import {
   bigNumberPercentage,
   multiplyBigNumbers,
@@ -56,39 +55,25 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     abi: erc4626ABI,
     functionName: "redeem",
     onMutate: () => {
-      notificationDialog.open({
-        title: `Withdrawing ${inputAmount} ${token.name}`,
-        status: "loading",
-      });
+      notificationDialog.openLoading(
+        `Withdrawing ${inputAmount} ${token.name}`
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.open({
-          title: `Withdrawn ${inputAmount} ${token.name}`,
-          status: "success",
-          isClosable: true,
-        });
+        notificationDialog.openSuccess(
+          `Withdrawn ${inputAmount} ${token.name}`
+        );
         setInputAmount("0");
         setInputBigNumber(BigInt(0));
       } catch (error) {
-        notificationDialog.open({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-        });
+        notificationDialog.openError(error, "Failed");
       }
     },
-    onError: (error) => {
-      notificationDialog.open({
-        title: getMetaError(error),
-        status: "error",
-        isClosable: true,
-      });
-    },
+    onError: (error) => notificationDialog.openError(error),
   });
   const { data: assetsRatioData, isLoading: isAssetsRatioLoading } =
     useConvertToAssets();
@@ -141,9 +126,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         args: [inputBigNumber, address!, address!],
       });
     } catch (error) {
-      notificationDialog.open({
-        title: getMetaError(error),
-      });
+      notificationDialog.openError(error);
     }
   };
 
