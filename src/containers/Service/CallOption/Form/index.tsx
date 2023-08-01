@@ -142,7 +142,7 @@ const Form = ({ asset, setRedeem }: Props) => {
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: isApproved ? "Opening position" : "Approving",
         status: "loading",
         duration: 0,
@@ -153,7 +153,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: isApproved
             ? "Positions opened successfully"
             : "Approved successfully",
@@ -163,7 +163,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         });
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: "Failed",
           description: getMetaError(error),
           status: "error",
@@ -173,7 +173,7 @@ const Form = ({ asset, setRedeem }: Props) => {
       }
     },
     onError: (error) => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: "Failed",
         description: getMetaError(error),
         status: "error",

@@ -53,7 +53,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: isApproved ? "Opening position" : "Approving",
         status: "loading",
         duration: 0,
@@ -64,7 +64,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: isApproved
             ? "Positions opened successfully"
             : "Approved successfully",
@@ -74,7 +74,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         });
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: "Failed",
           description: getMetaError(error),
           status: "error",
@@ -84,7 +84,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       }
     },
     onError: (error) => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: "Failed",
         description: getMetaError(error),
         status: "error",

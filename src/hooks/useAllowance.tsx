@@ -53,7 +53,7 @@ export const useAllowance = ({
     ...config,
     onMutate: ({ args }) => {
       console.log("args33", args);
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: "Approving",
         status: "loading",
         duration: 0,
@@ -64,7 +64,7 @@ export const useAllowance = ({
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: `Approved ${amount} ${token.name}`,
           status: "success",
           isClosable: true,
@@ -72,7 +72,7 @@ export const useAllowance = ({
         });
         refetchAllowance();
       } catch (error) {
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: "Failed",
           description: getMetaError(error),
           status: "error",
@@ -82,7 +82,7 @@ export const useAllowance = ({
       }
     },
     onError: (error) => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: getMetaError(error),
         status: "error",
         isClosable: true,

@@ -39,7 +39,7 @@ export const useTransactionFeedback = () => {
       description: pastTenseDescription ?? description,
     });
 
-    notificationDialog.openDialog({
+    notificationDialog.open({
       title: description,
       status: "loading",
       duration: 0,
@@ -47,7 +47,7 @@ export const useTransactionFeedback = () => {
 
     await waitForTransaction({ hash: txResult.hash });
 
-    notificationDialog.openDialog({
+    notificationDialog.open({
       title: description,
       status: "success",
       duration: 0,
@@ -62,7 +62,7 @@ export const useTransactionFeedback = () => {
         ? `method: ${ethersError.method} errored: ${ethersError.reason}`
         : "execution reverted";
 
-    notificationDialog.openDialog({
+    notificationDialog.open({
       description,
       status: "error",
       title: "Transaction failed",

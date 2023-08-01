@@ -56,7 +56,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     abi: erc4626ABI,
     functionName: "redeem",
     onMutate: () => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: `Withdrawing ${inputAmount} ${token.name}`,
         status: "loading",
         duration: 0,
@@ -67,7 +67,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: `Withdrawn ${inputAmount} ${token.name}`,
           status: "success",
           isClosable: true,
@@ -76,7 +76,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         setInputAmount("0");
         setInputBigNumber(BigInt(0));
       } catch (error) {
-        notificationDialog.openDialog({
+        notificationDialog.open({
           title: "Failed",
           description: getMetaError(error),
           status: "error",
@@ -86,7 +86,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
       }
     },
     onError: (error) => {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: getMetaError(error),
         status: "error",
         isClosable: true,
@@ -145,7 +145,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         args: [inputBigNumber, address!, address!],
       });
     } catch (error) {
-      notificationDialog.openDialog({
+      notificationDialog.open({
         title: getMetaError(error),
         duration: 0,
       });
