@@ -106,7 +106,11 @@ const Form = ({ asset, setRedeem }: Props) => {
   console.log("amount133", amount1.toString());
 
   useEffect(() => {
-    if (redeem.isFinite()) setRedeem(redeem.toNumber());
+    if (redeem.isNaN()) {
+      setRedeem(0);
+    } else {
+      setRedeem(redeem.toNumber());
+    }
   }, [redeem, setRedeem]);
 
   const {
