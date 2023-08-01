@@ -24,7 +24,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getServiceByName } from "@/utils";
+import { getMetaError, getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -118,20 +118,20 @@ const Form = ({ asset }: { asset: Asset }) => {
           duration: 0,
         });
         setInputAmount("");
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
         title: "Failed",
-        description: "Something went wrong",
+        description: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,

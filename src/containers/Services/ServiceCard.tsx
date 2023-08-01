@@ -5,22 +5,20 @@ import { FC } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
-import { palette } from "@/styles/theme/palette";
 import { ServiceName } from "@/types";
 
 import ServiceIcon from "../Service/ServiceIcon";
 import EnterButton from "./EnterButton";
 
 interface ServiceCardProps {
+  apy: string;
   assets: string[];
   description: string | ((assets: string[]) => string);
-  to: string;
-  multiplier: string;
-  label: string;
-  name: ServiceName;
-  apy: string;
-  tvl: string;
   hasIndex: boolean;
+  label: string;
+  multiplier: string | undefined;
+  name: ServiceName;
+  to: string;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
@@ -28,15 +26,14 @@ const ServiceCard: FC<ServiceCardProps> = ({
   assets,
   description,
   hasIndex,
-  multiplier,
   label,
-  to,
-  tvl,
+  multiplier,
   name,
+  to,
 }) => {
   const tokenModal = useTokenModal();
-  const { colorMode, pickColor } = useColorMode();
-  const handleEnterClick = () => tokenModal.openDialog(assets, to);
+  const { colorMode } = useColorMode();
+  const handleEnterClick = () => tokenModal.openDialog(assets, name);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
@@ -45,15 +42,17 @@ const ServiceCard: FC<ServiceCardProps> = ({
           <ServiceIcon name={name} width="full" />
         </Box>
         {/* 1 - 10% multiplier */}
-        <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
-          <Icon
-            icon="ph:lightning-fill"
-            color={colorMode === "dark" ? "white" : "black"}
-          ></Icon>
-          <Text textStyle="slender-sm" className="whitespace-nowrap">
-            {multiplier}
-          </Text>
-        </Box>
+        {multiplier && (
+          <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
+            <Icon
+              icon="ph:lightning-fill"
+              color={colorMode === "dark" ? "white" : "black"}
+            ></Icon>
+            <Text textStyle="slender-sm" className="whitespace-nowrap">
+              {multiplier}
+            </Text>
+          </Box>
+        )}
       </HStack>
       <Heading size="h3" className="mb-6">
         {label}
@@ -76,12 +75,12 @@ const ServiceCard: FC<ServiceCardProps> = ({
         {typeof description === "string" ? description : description(assets)}
       </Text>
       <VStack className="mt-auto" align="start">
-        <HStack spacing="8px" marginBottom="16px">
+        {/* <HStack spacing="8px" marginBottom="16px">
           <Text textStyle="sm" color={pickColor(palette.colors.primary, "700")}>
             TVL:
           </Text>
           <Text textStyle="slender-sm2">{tvl}</Text>
-        </HStack>
+        </HStack> */}
         {/* tokens array */}
         <Box className="flex flex-wrap gap-2 mb-6 justify-evenly">
           {assets.map((token, index) => (

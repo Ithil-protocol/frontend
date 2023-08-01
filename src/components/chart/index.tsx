@@ -79,7 +79,6 @@ const Chart: FC<Props> = ({ data, xKey, yKey, dataKey, xTickFormatter }) => {
           repeatCount={30}
           strokeOpacity={0.04}
         />
-
         <Tooltip
           content={<ToolTip />}
           cursor={false}

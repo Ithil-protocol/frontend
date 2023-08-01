@@ -1,5 +1,4 @@
-import services from "@/data/services.json";
-import { ServiceName } from "@/types";
+import { services } from "@/data/services";
 
 import ServiceCard from "./ServiceCard";
 
@@ -15,11 +14,10 @@ const ServicesPage = () => {
             description={item.description}
             to={item.url}
             hasIndex={item.hasIndex}
-            multiplier={`${item.apyRange}%`}
+            multiplier={item.apyRange}
             label={item.label}
-            name={item.name as ServiceName}
+            name={item.name}
             apy={`${item.bestApy}%`}
-            tvl={`${item.tvl}m`}
           />
         ))}
     </div>

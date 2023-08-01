@@ -237,3 +237,6 @@ export const getServiceByName = (name: ServiceName): Service => {
 
 export const getServiceNames = () =>
   ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;
+
+export const getMetaError = (error: any) =>
+  (error as { shortMessage: string }).shortMessage;
