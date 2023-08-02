@@ -59,21 +59,19 @@ const ActiveTRow: FC<Props> = ({ data }) => {
 
   const service = services[data.type as keyof typeof services];
   const { isLoading, writeAsync: close } = useContractWrite({
-    mode: "prepared",
-    request: {
-      account: address!,
-      address: service.address as Address,
-      abi: service.abi as any,
-      functionName: "close" as const,
-      args: [
-        data.id,
-        encodeAbiParameters(parseAbiParameters("uint256"), [
-          BigInt(5) * BigInt(10) ** BigInt(17),
-        ]),
-      ],
-      chain: undefined,
-      gas: 20_000_000n,
-    },
+    address: service.address as Address,
+    abi: service.abi as any,
+    functionName: "close",
+    // account: address!,
+    // address: service.address as Address,
+    // abi: service.abi as any,
+    // functionName: "close" as const,
+    // args: [
+    //   data.id,
+    //   encodeAbiParameters(parseAbiParameters("uint256"), [
+    //     BigInt(5) * BigInt(10) ** BigInt(17),
+    //   ]),
+    // ],
   });
 
   // const queryClient = useQueryClient();
@@ -92,19 +90,18 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       GMX: (initialQuote * 9n) / 10n,
       CallOption: BigInt(10) ** BigInt(18),
     };
-    close?.();
+    // close?.();
     // console.log("data?.type", data?.type);
-    // const quote = qoutes[data?.type] || 0n;
-    // console.log("quote333", quote);
-    // console.log("data.id", data.id);
-    // const result = await close({
-    //   gas: 20_000_000n,
-    //   args: [
-    //     data.id,
-    //     encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
-    //   ],
-    // });
-    // await trackTransaction(result, "Position closed");
+    const quote = qoutes[data?.type] || 0n;
+    console.log("quote333", quote);
+    console.log("data.id", data.id);
+    const result = await close({
+      args: [
+        data.id,
+        encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
+      ],
+    });
+    await trackTransaction(result, "Position closed");
     // queryClient.resetQueries();
   };
   const asset = getAssetByAddress(data.token);
