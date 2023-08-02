@@ -1,7 +1,8 @@
 import { Box, Button, HStack, Td, Text, Tr } from "@chakra-ui/react";
 import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
-import { useContractWrite } from "wagmi";
+import { Address } from "viem";
+import { useAccount, useContractWrite } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
@@ -12,7 +13,6 @@ import { gmxAddress } from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { queryClient } from "@/lib/react-query";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getAssetByAddress } from "@/utils";
@@ -36,6 +36,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
 
   const { trackTransaction } = useTransactionFeedback();
 
+  const { address } = useAccount();
+
   const services = {
     AAVE: {
       abi: aaveABI,
@@ -57,9 +59,21 @@ const ActiveTRow: FC<Props> = ({ data }) => {
 
   const service = services[data.type as keyof typeof services];
   const { isLoading, writeAsync: close } = useContractWrite({
-    address: service.address,
-    abi: service.abi as any,
-    functionName: "close",
+    mode: "prepared",
+    request: {
+      account: address!,
+      address: service.address as Address,
+      abi: service.abi as any,
+      functionName: "close" as const,
+      args: [
+        data.id,
+        encodeAbiParameters(parseAbiParameters("uint256"), [
+          BigInt(5) * BigInt(10) ** BigInt(17),
+        ]),
+      ],
+      chain: undefined,
+      gas: 20_000_000n,
+    },
   });
 
   // const queryClient = useQueryClient();
@@ -76,16 +90,22 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     const qoutes: Record<string, bigint> = {
       AAVE: (initialQuote * 999n) / 1000n,
       GMX: (initialQuote * 9n) / 10n,
+      CallOption: BigInt(10) ** BigInt(18),
     };
-    const quote = qoutes[data?.type] || 0n;
-    const result = await close({
-      args: [
-        data.id,
-        encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
-      ],
-    });
-    await trackTransaction(result, "Position closed");
-    queryClient.resetQueries();
+    close?.();
+    // console.log("data?.type", data?.type);
+    // const quote = qoutes[data?.type] || 0n;
+    // console.log("quote333", quote);
+    // console.log("data.id", data.id);
+    // const result = await close({
+    //   gas: 20_000_000n,
+    //   args: [
+    //     data.id,
+    //     encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
+    //   ],
+    // });
+    // await trackTransaction(result, "Position closed");
+    // queryClient.resetQueries();
   };
   const asset = getAssetByAddress(data.token);
 
