@@ -120,7 +120,7 @@ const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
               color="#f35959"
               onClick={handelConfirmBtn}
             >
-              Confirm
+              Close
             </Button>
           </HStack>
         </ModalFooter>
