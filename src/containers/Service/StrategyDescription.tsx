@@ -1,13 +1,13 @@
-import { Heading, SkeletonText, Text, useColorMode } from "@chakra-ui/react";
+import { Heading, SkeletonText, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import classNames from "classnames";
 import { FC } from "react";
 import { type Address } from "wagmi";
 
 import { firstNetwork } from "@/config/chains";
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { PropsWithClassName } from "@/types/components.types";
-import { pickColor } from "@/utils/theme";
 
 interface StrategyDescriptionProps extends PropsWithClassName {
   description: string;
@@ -25,7 +25,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
   isLoading = false,
   className,
 }) => {
-  const { colorMode } = useColorMode();
+  const { pickColor } = useColorMode();
   const network = firstNetwork();
   const explorerBaseUrl = network.blockExplorers?.default.url;
   const containerClasses = "p-5 rounded-xl bg-primary-100";
@@ -47,7 +47,7 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
                 icon="mdi:link"
                 width="20px"
                 height="20px"
-                color={pickColor(colorMode, palette.variants.primary, "action")}
+                color={pickColor(palette.variants.primary, "action")}
               ></Icon>
               <Heading size="h2">Address on explorer</Heading>
             </a>
@@ -59,10 +59,10 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
         <div className="flex flex-col gap-2 p-5 rounded-xl bg-primary-200">
           <Heading size="h4">APY Breakdown</Heading>
           <div className="flex flex-row justify-between w-full">
-            <div className="flex flex-row items-baseline flex-grow gap-4">
+            <div className="flex flex-row items-baseline justify-center flex-grow gap-4">
               <Heading
                 size="h5"
-                color={pickColor(colorMode, palette.colors.primary, "800")}
+                color={pickColor(palette.colors.primary, "800")}
                 textTransform="uppercase"
               >
                 Base APY
@@ -74,35 +74,39 @@ const StrategyDescription: FC<StrategyDescriptionProps> = ({
               )}
             </div>
 
-            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
-              <Heading
-                size="h5"
-                color={pickColor(colorMode, palette.colors.primary, "800")}
-                textTransform="uppercase"
-              >
-                Boost APY
-              </Heading>
-              {isLoading ? (
-                <SkeletonText width={30} noOfLines={1} />
-              ) : (
-                <Text textStyle="slender-sm2">{boostApy?.toFixed(2)} %</Text>
-              )}
-            </div>
+            {boostApy && (
+              <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
+                <Heading
+                  size="h5"
+                  color={pickColor(palette.colors.primary, "800")}
+                  textTransform="uppercase"
+                >
+                  Boost APY
+                </Heading>
+                {isLoading ? (
+                  <SkeletonText width={30} noOfLines={1} />
+                ) : (
+                  <Text textStyle="slender-sm2">{boostApy?.toFixed(2)} %</Text>
+                )}
+              </div>
+            )}
 
-            <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
-              <Heading
-                size="h5"
-                color={pickColor(colorMode, palette.colors.primary, "800")}
-                textTransform="uppercase"
-              >
-                Total APY
-              </Heading>
-              {isLoading ? (
-                <SkeletonText width={30} noOfLines={1} />
-              ) : (
-                <Text textStyle="slender-sm2">{totalApy?.toFixed(2)} %</Text>
-              )}
-            </div>
+            {boostApy && (
+              <div className="flex flex-row items-baseline justify-center flex-grow gap-4 border-l border-secondary-500">
+                <Heading
+                  size="h5"
+                  color={pickColor(palette.colors.primary, "800")}
+                  textTransform="uppercase"
+                >
+                  Total APY
+                </Heading>
+                {isLoading ? (
+                  <SkeletonText width={30} noOfLines={1} />
+                ) : (
+                  <Text textStyle="slender-sm2">{totalApy?.toFixed(2)} %</Text>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

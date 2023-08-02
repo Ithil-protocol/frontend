@@ -1,9 +1,9 @@
-import { Box, Button, ButtonGroup, useColorMode } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { viewTypes } from "@/types";
-import { mode, pickColor } from "@/utils/theme";
 
 interface Props {
   currentView: viewTypes;
@@ -13,7 +13,7 @@ interface Props {
 const views: viewTypes[] = ["Active", "Closed"];
 
 const Views: FC<Props> = ({ currentView, setActiveView }) => {
-  const { colorMode } = useColorMode();
+  const { mode, pickColor } = useColorMode();
   const handleActiveView = (view: viewTypes) => {
     setActiveView(view);
   };
@@ -23,7 +23,7 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
       alignItems={["start", "center"]}
       justifyContent="center"
       gap={["10px", "71px"]}
-      bgColor={pickColor(colorMode, palette.colors.primary, "100")}
+      bgColor={pickColor(palette.colors.primary, "100")}
       paddingX={["10px", "30px"]}
       paddingY={["5px", "10px"]}
       borderRadius="12px"
@@ -46,15 +46,15 @@ const Views: FC<Props> = ({ currentView, setActiveView }) => {
             variant={currentView === view ? "solid" : "ghost"}
             bgColor={
               currentView === view
-                ? pickColor(colorMode, palette.colors.primary, "300")
+                ? pickColor(palette.colors.primary, "300")
                 : "transparent"
             }
             fontWeight={currentView === view ? "bold" : "normal"}
             fontSize={["12px", "16px"]}
             color={
               currentView === view
-                ? mode(colorMode, "main", "main.dark")
-                : mode(colorMode, "primary.700", "primary.700.dark")
+                ? mode("main", "main.dark")
+                : mode("primary.700", "primary.700.dark")
             }
             paddingX={["20px", "25px", "30px"]}
             paddingY="4"

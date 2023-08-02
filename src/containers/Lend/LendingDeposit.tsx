@@ -9,9 +9,10 @@ import {
   useContractWrite,
 } from "wagmi";
 
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useToken } from "@/hooks/use-token.hook";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
 import { LendingToken } from "@/types/onchain.types";
+import { getMetaError } from "@/utils";
 import {
   bigNumberPercentage,
   stringInputToBigNumber,
@@ -75,19 +76,19 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
           duration: 0,
         });
         refetchAllowance();
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
-        title: "Something went wrong",
+        title: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
@@ -123,19 +124,19 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         });
         setInputAmount("0");
         refetchAllowance();
-      } catch (err) {
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
-        title: "Something went wrong",
+        title: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
@@ -170,7 +171,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
       });
     } catch (error) {
       notificationDialog.openDialog({
-        title: (error as { shortMessage: string }).shortMessage,
+        title: getMetaError(error),
         duration: 0,
       });
     }

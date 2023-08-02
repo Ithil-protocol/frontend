@@ -3,6 +3,8 @@ import USDC from "cryptocurrency-icons/svg/color/usdc.svg";
 import USDT from "cryptocurrency-icons/svg/color/usdt.svg";
 import WBTC from "cryptocurrency-icons/svg/color/wbtc.svg";
 
+import ITHIL from "@/assets/ithil/logoSymbolLight.svg";
+
 // for those icons that they are absent in the cryptocurrency-icons, just put them inside this path: "src/assets/svgs/icons/" and then import like this:
 // import ARB from "@/assets/svgs/icons/Arbitrum.svg";
 
@@ -16,4 +18,5 @@ export const icons = {
   USDT,
   WBTC,
   WETH: ETH,
+  ITHIL,
 };

@@ -18,7 +18,11 @@ const LeverageInput: React.FC<Props> = ({ leverage, setLeverage }) => {
 
   const onInputChange: UseCounterProps["onChange"] = (value) => {
     setValue(value);
-    setLeverage((+value - 1).toString());
+    if (!isNaN(Number(value))) {
+      setLeverage((+value - 1).toString());
+    } else {
+      setLeverage("0");
+    }
   };
 
   return (

@@ -1,10 +1,10 @@
-import { GridItem, useColorMode } from "@chakra-ui/react";
+import { GridItem } from "@chakra-ui/react";
 
 import CustomChart from "@/components/chart";
 import fakeChartData from "@/data/fakeData.json";
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { formatDate } from "@/utils/date.utils";
-import { pickColor } from "@/utils/theme";
 
 interface GraphDataPoint {
   date: string;
@@ -17,7 +17,7 @@ const graphData = fakeChartData.data.map<GraphDataPoint>((item, _key) => ({
 }));
 
 const Chart = () => {
-  const { colorMode } = useColorMode();
+  const { pickColor } = useColorMode();
 
   return (
     <GridItem
@@ -32,7 +32,7 @@ const Chart = () => {
         md: "30px",
         lg: "40px",
       }}
-      bg={pickColor(colorMode, palette.colors.primary, "100")}
+      bg={pickColor(palette.colors.primary, "100")}
       area="main"
       className="w-[99.5%] md:w-full h-full"
     >

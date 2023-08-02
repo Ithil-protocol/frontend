@@ -1,5 +1,6 @@
 import Generic from "cryptocurrency-icons/svg/icon/generic.svg";
 import {
+  format,
   isSameDay,
   isWithinInterval,
   parse,
@@ -8,6 +9,7 @@ import {
   subWeeks,
 } from "date-fns";
 import { formatUnits, parseUnits } from "viem";
+import { Address } from "viem";
 
 import {
   About as AboutIcon,
@@ -19,8 +21,9 @@ import {
   Star as StarIcon,
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
-import vaults from "@/deploy/vaults.json";
-import { PageHeading, VaultName, VaultsTypes } from "@/types";
+import { assetsObjByAddress, assetsObjByName } from "@/data/assets";
+import { servicesByName } from "@/data/services";
+import { Asset, PageHeading, Service, ServiceName, VaultName } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -38,21 +41,9 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
-export const getVaultByTokenAddress = (tokenAddress: string): VaultsTypes => {
-  const vault = vaults.find((item) => item.tokenAddress === tokenAddress);
-  if (!vault) throw new Error("Vault not found");
-  return vault;
-};
-
-export const getVaultByTokenName = (
-  name: VaultName
-): VaultsTypes | undefined => {
-  return vaults.find((item) => item.name.toLowerCase() === name.toLowerCase());
-};
-
 export const formatToken = (name: VaultName, value: bigint) => {
   try {
-    const token = getVaultByTokenName(name);
+    const token = getAssetByName(name);
     console.log("token:::", token);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
@@ -63,7 +54,7 @@ export const formatToken = (name: VaultName, value: bigint) => {
 };
 export const parseToken = (name: VaultName, value: number | string) => {
   try {
-    const token = getVaultByTokenName(name);
+    const token = getAssetByName(name);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
     const val = typeof value === "string" ? value : value.toString();
@@ -194,3 +185,58 @@ export enum SafetyScoreValue {
 }
 
 export type serviceType = "aave";
+
+export const displayLeverage = (leverage: string) => {
+  return (Number(leverage) + 1).toString();
+};
+
+export const toFullDate = (timestamp: Date) => {
+  const date = new Date(timestamp);
+  const formatType = "dd/MM/yyyy";
+  const formattedDate = format(date, formatType);
+  return formattedDate;
+};
+
+export function convertArrayByKeyToOBJ<
+  T extends Record<string | number | symbol, any>,
+  K extends keyof T
+>(options: T[], keyName: K): Record<T[K], T> {
+  const obj = {} as Record<T[K], T>;
+  options.forEach((option) => {
+    const key = option[keyName];
+    obj[key] = option;
+  });
+  return obj;
+}
+
+export const getAssetByName = (name: string): Asset | undefined => {
+  const asset = assetsObjByName[name.toUpperCase()];
+  return asset;
+};
+
+export const getAssetByAddress = (address: Address): Asset | undefined => {
+  const asset = assetsObjByAddress[address];
+  return asset;
+};
+
+export const getSingleQueryParam = (
+  queryParam: string | string[] | undefined
+): string => {
+  if (typeof queryParam === "undefined") {
+    return ""; // return empty string when queryParam is undefined
+  } else if (Array.isArray(queryParam)) {
+    return queryParam[0]; // ignore other query params
+  } else {
+    return queryParam;
+  }
+};
+
+export const getServiceByName = (name: ServiceName): Service => {
+  return servicesByName[name];
+};
+
+export const getServiceNames = () =>
+  ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;
+
+export const getMetaError = (error: any) =>
+  (error as { shortMessage: string }).shortMessage;

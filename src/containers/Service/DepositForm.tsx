@@ -4,7 +4,6 @@ import {
   InputGroup,
   NumberInput,
   NumberInputField,
-  useColorMode,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { Dispatch, FC, SetStateAction, useState } from "react";
@@ -12,9 +11,10 @@ import { Dispatch, FC, SetStateAction, useState } from "react";
 import { CloseButtonWithCircle } from "@/assets/svgs";
 import { getDecimalRegex } from "@/data/regex";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { AaveAsset } from "@/types/onchain.types";
-import { mode, pickColor } from "@/utils/theme";
+import { getSingleQueryParam } from "@/utils";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormDescriptionItem from "./FormDescriptionItem";
@@ -38,14 +38,16 @@ const DepositForm: FC<Props> = ({
   setSlippage,
   slippage,
 }) => {
-  const { colorMode } = useColorMode();
+  const { mode, pickColor } = useColorMode();
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
   const {
     query: { asset },
   } = useRouter();
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(asset as string);
+  const { baseApy, isLoading: apyLoading } = useBaseApy(
+    getSingleQueryParam(asset)
+  );
   const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
   const finalApy = baseApy
     ? (+baseApy * +finalLeverage - interestAndSpreadInPercent).toFixed(2)
@@ -59,13 +61,9 @@ const DepositForm: FC<Props> = ({
     <Box width="full" gap="30px">
       <Box
         marginTop={5}
-        bg={mode(colorMode, "primary.100", "primary.100.dark")}
+        bg={mode("primary.100", "primary.100.dark")}
         borderRadius="5px"
-        border={`2px dashed ${pickColor(
-          colorMode,
-          palette.colors.primary,
-          "400"
-        )}`}
+        border={`2px dashed ${pickColor(palette.colors.primary, "400")}`}
       >
         <FormDescriptionItem
           extension="%"
@@ -114,8 +112,8 @@ const DepositForm: FC<Props> = ({
               padding: "10px",
             }}
             onClick={handleAdvancedOptionClick(true)}
-            color={mode(colorMode, "primary.100.dark", "primary.100")}
-            bg={mode(colorMode, "primary.400", "primary.500.dark")}
+            color={mode("primary.100.dark", "primary.100")}
+            bg={mode("primary.400", "primary.500.dark")}
           >
             <span
               style={{

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {
   AlertDialog,
   AlertDialogBody,
@@ -6,21 +7,49 @@ import {
   AlertDialogOverlay,
   Button,
   CircularProgressProps,
+  CloseButton,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 
 import {
   Check as CheckIcon,
-  CloseButton,
   Error as ErrorIcon,
   Information as InformationIcon,
   Warning as WarningIcon,
 } from "@/assets/svgs";
+import NotificationDialogLoading from "@/components/notificationDialogLoading";
 import { palette } from "@/styles/theme/palette";
-import { CloseDialogFn, DialogStatus } from "@/types";
+import {
+  CloseDialogFn,
+  DialogOptions,
+  DialogStatus,
+  OpenDialogFnOptions,
+  OpenNotificationDialogFn,
+} from "@/types";
 
-import NotificationDialogLoading from "./notificationDialogLoading";
+const NotificationDialogContext = createContext<{
+  openDialog: OpenNotificationDialogFn;
+  closeDialog: CloseDialogFn;
+}>({
+  closeDialog: () => {},
+  openDialog: (_o: OpenDialogFnOptions) => {},
+});
+
+const getDialogDefaultOptions = (): DialogOptions => ({
+  description: "",
+  duration: 5000,
+  isClosable: true,
+  status: "error",
+  title: "",
+});
 
 interface Props {
   description: string;
@@ -53,7 +82,7 @@ const iconClassNames: {
   warning: "text-yellow-500",
 };
 
-const NotificationDialog: React.FC<Props> = ({
+const NotificationDialogModal: React.FC<Props> = ({
   description,
   isClosable,
   isOpen,
@@ -96,6 +125,7 @@ const NotificationDialog: React.FC<Props> = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              padding: "5px",
             }}
           >
             <span></span>
@@ -105,6 +135,7 @@ const NotificationDialog: React.FC<Props> = ({
               style={{
                 cursor: "pointer",
                 borderRadius: "8px",
+                padding: "5px",
               }}
               onClick={handleClose}
             >
@@ -168,4 +199,53 @@ const NotificationDialog: React.FC<Props> = ({
   );
 };
 
-export default NotificationDialog;
+const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
+  children,
+}) => {
+  const [dialogOptions, setDialogOptions] = useState<DialogOptions>(
+    getDialogDefaultOptions
+  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const openDialog: OpenNotificationDialogFn = (options) => {
+    const newOptions = {
+      ...getDialogDefaultOptions(),
+      ...options,
+    };
+
+    setDialogOptions(newOptions);
+    onOpen();
+
+    if (newOptions.isClosable && newOptions.duration)
+      setTimeout(() => {
+        closeDialog();
+      }, newOptions.duration);
+  };
+
+  const closeDialog: CloseDialogFn = () => {
+    setDialogOptions(getDialogDefaultOptions());
+    onClose();
+  };
+
+  return (
+    <NotificationDialogContext.Provider
+      value={{
+        openDialog,
+        closeDialog,
+      }}
+    >
+      <NotificationDialogModal
+        isOpen={isOpen}
+        {...dialogOptions}
+        onClose={closeDialog}
+      />
+      {children}
+    </NotificationDialogContext.Provider>
+  );
+};
+
+export const useNotificationDialog = () => {
+  return useContext(NotificationDialogContext);
+};
+
+export default NotificationDialogProvider;

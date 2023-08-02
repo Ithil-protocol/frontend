@@ -1,26 +1,30 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
 import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
+import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
-import { aaveAddress } from "@/hooks/generated/aave";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import {
+  aaveAddress,
+  useAaveLatestAndBase,
+  useAaveRiskSpreads,
+} from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
-import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
-import { AaveAsset } from "@/types/onchain.types";
+import { Asset } from "@/types";
+import { getMetaError, getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -28,23 +32,15 @@ import AdvanceSection from "../../AdvanceSection";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
-import SubmitButton from "../../inputs/SubmitButton";
 
-// import DepositForm from "./DepositForm"
-
-const Form = ({ asset }: { asset: AaveAsset }) => {
-  const {
-    query: { asset: token },
-  } = useRouter();
-  const { address: accountAddress, isConnected } = useAccount();
+const Form = ({ asset }: { asset: Asset }) => {
+  const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
-  const [inputAmount, setInputAmount] = useState<string>("0");
+  const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
-  console.log("leverage:", leverage, "slippage:", slippage);
-  // web3 hooks
-  const { trackTransaction } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -62,7 +58,6 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     spender: aaveAddress[chainId],
     token: asset,
   });
-
   const {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
@@ -76,18 +71,45 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     slippage,
     serviceAddress: aaveAddress[chainId],
   });
-  console.log(isInterestError, isFreeLiquidityError, "OOO");
+
+  const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
+
+  const { data: latestAndBase } = useAaveLatestAndBase({
+    args: [asset.tokenAddress],
+  });
+
+  const { data: riskSpreads } = useAaveRiskSpreads({
+    args: [asset.tokenAddress],
+  });
+
+  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
+    baseApy,
+    latestAndBase,
+    riskSpreads,
+  });
+
+  const finalLeverage = isAdvancedOptionsOpen
+    ? leverage
+    : (+bestLeverage - 1).toString();
+
+  // useEffect(() => {
+  //   setLeverage(finalLeverage);
+  // }, [finalLeverage]);
+
+  console.log("finalLeverage", leverage);
 
   const extraData = toHex("");
 
-  const { order } = usePrepareOrder({
+  const { order } = usePrepareDebitOrder({
     token: asset,
-    collateralToken: asset?.collateralTokenAddress,
-    leverage,
+    collateralToken: asset.aaveCollateralTokenAddress,
+    leverage: finalLeverage,
     amount: inputAmount,
     interestAndSpread,
     extraData,
   });
+
+  console.log("aave form prepare order", order);
 
   const {
     data: openData,
@@ -119,21 +141,21 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           isClosable: true,
           duration: 0,
         });
-        setInputAmount("0");
-      } catch (err) {
+        setInputAmount("");
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
         title: "Failed",
-        description: "Something went wrong",
+        description: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
@@ -145,22 +167,18 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
   const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled =
     +inputAmount === 0 || isInterestError || isFreeLiquidityError;
-  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
+  const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
-    setInputAmount(balance?.formatted ?? "0");
+    setInputAmount(balance?.formatted ?? "");
   };
 
-  const { openConnectModal } = useConnectModal();
   const isMounted = useIsMounted();
 
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-
-  const { baseApy, isLoading: apyLoading } = useBaseApy(token as string);
-  const finalLeverage = isAdvancedOptionsOpen ? leverage : "1.5";
   const finalApy = baseApy
-    ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
-    : "";
+    ? +baseApy * +finalLeverage -
+      (+finalLeverage - 1) * displayInterestAndSpreadInPercent
+    : 0;
 
   const formInfoItems = [
     {
@@ -171,8 +189,9 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
     {
       label: "Best Leverage:",
-      value: finalLeverage,
+      value: bestLeverage,
       extension: "x",
+      isLoading: isBestLeverageLoading,
     },
     {
       label: "Borrow Interest:",
@@ -182,11 +201,13 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
     },
     {
       label: "Final APY:",
-      value: finalApy,
+      value: finalApy?.toFixed(2),
       extension: "%",
+      isLoading: isInterestAndSpreadLoading,
     },
   ];
 
+  const tokens = getServiceByName("aave").tokens;
   if (!isMounted) return null;
 
   return (
@@ -231,6 +252,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
+          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
@@ -251,16 +273,19 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <SubmitButton
-        approve={approve}
-        asset={asset}
-        isApproved={isApproved}
-        isButtonDisabled={isButtonDisabled}
-        isButtonLoading={isButtonLoading}
-        isConnected={isConnected}
-        openConnectModal={openConnectModal}
-        openPosition={openPosition}
-      />
+      <PrivateButton
+        isDisabled={isButtonDisabled}
+        loadingText="Waiting"
+        mt="20px"
+        isLoading={isButtonLoading}
+        onClick={() => (isApproved ? openPosition() : approve?.())}
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Open position"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };
