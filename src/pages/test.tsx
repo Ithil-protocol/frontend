@@ -1,12 +1,19 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { Button } from "@chakra-ui/react";
-import { Address, erc20ABI, useContractWrite } from "wagmi";
+import {
+  Address,
+  erc20ABI,
+  useAccount,
+  useBalance,
+  useContractWrite,
+} from "wagmi";
 
 import { assetsObjByAddress } from "@/data/assets";
 import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
 } from "@/hooks/generated/aave";
+import { getAssetByName } from "@/utils";
 
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
@@ -324,6 +331,26 @@ const Test = () => {
   // });
 
   console.log("assets33", assetsObjByAddress);
+
+  const { address } = useAccount();
+
+  const { data: balance } = useBalance({
+    address,
+    token: "0x32a78c6F3bD1D4D1A50830529d1339ce081EDf28",
+  });
+
+  const { data: balanceUSDT } = useBalance({
+    address,
+    token: getAssetByName("usdt")?.tokenAddress,
+  });
+
+  console.log(
+    "ITHIL",
+    balance?.formatted.split(".")[0],
+    "USDT",
+    balanceUSDT?.formatted.split(".")[0]
+  );
+  console.log("balance33 balanceUSDT", balanceUSDT?.formatted);
 
   const { data: B } = useAaveLatestAndBase({
     args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],

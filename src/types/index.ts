@@ -128,6 +128,14 @@ export type Asset = {
   gmxCollateralTokenAddress: Address;
 };
 
+export type Ithil = {
+  name: string;
+  coingeckoId: string;
+  iconName: string;
+  decimals: number;
+  tokenAddress: Address;
+};
+
 export interface Agreement {
   loans: readonly {
     token: Address;

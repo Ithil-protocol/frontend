@@ -2,16 +2,6 @@ export const fixedYieldABI = [
   {
     inputs: [
       {
-        internalType: "string",
-        name: "_name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_symbol",
-        type: "string",
-      },
-      {
         internalType: "address",
         name: "_manager",
         type: "address",
@@ -53,6 +43,11 @@ export const fixedYieldABI = [
   {
     inputs: [],
     name: "RestrictedToOwner",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SlippageExceeded",
     type: "error",
   },
   {
