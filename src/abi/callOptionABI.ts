@@ -8,11 +8,6 @@ export const callOptionABI = [
       },
       {
         internalType: "address",
-        name: "_treasury",
-        type: "address",
-      },
-      {
-        internalType: "address",
         name: "_ithil",
         type: "address",
       },
@@ -24,6 +19,16 @@ export const callOptionABI = [
       {
         internalType: "uint256",
         name: "_halvingTime",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_tenorDuration",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_initialVesting",
         type: "uint256",
       },
       {
@@ -92,12 +97,17 @@ export const callOptionABI = [
   },
   {
     inputs: [],
-    name: "ZeroAmount",
+    name: "SlippageExceeded",
     type: "error",
   },
   {
     inputs: [],
-    name: "ZeroCollateral",
+    name: "StillVested",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ZeroAmount",
     type: "error",
   },
   {
@@ -1317,6 +1327,19 @@ export const callOptionABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "tenorDuration",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "bool",
@@ -1455,10 +1478,10 @@ export const callOptionABI = [
   },
   {
     inputs: [],
-    name: "treasury",
+    name: "underlying",
     outputs: [
       {
-        internalType: "address",
+        internalType: "contract IERC20",
         name: "",
         type: "address",
       },
@@ -1468,12 +1491,12 @@ export const callOptionABI = [
   },
   {
     inputs: [],
-    name: "underlying",
+    name: "vestingTime",
     outputs: [
       {
-        internalType: "contract IERC20",
+        internalType: "uint256",
         name: "",
-        type: "address",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
