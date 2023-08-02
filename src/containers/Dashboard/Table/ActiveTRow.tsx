@@ -100,6 +100,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           ),
           margin: data.margin.toString(),
           service: data.name,
+          token: data.token,
         }}
         onClose={onClose}
         onOpen={onOpen}

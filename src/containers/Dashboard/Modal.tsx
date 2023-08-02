@@ -15,6 +15,7 @@ import {
 import { FC } from "react";
 
 import Slider from "@/components/Slider";
+import TokenIcon from "@/components/TokenIcon";
 import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
 
@@ -25,6 +26,7 @@ interface Data {
   margin?: string;
   amount?: string;
   service: string | undefined;
+  token: string;
 }
 
 interface Props {
@@ -97,10 +99,13 @@ const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
 
         <ModalBody marginBottom={8}>
           <VStack spacing="25px" marginTop={4} alignItems="start">
+            <HStack alignItems="center">
+              <ModalItem title="Service" value={data.service} />{" "}
+              <TokenIcon name={data.token} width={20} height={20} />
+            </HStack>
             <ModalItem title="Pnl" value={data.pnl} />
             <ModalItem title="Amount" value={data.amount} />
             <ModalItem title="Margin" value={data.margin} />
-            <ModalItem title="Service" value={data.service} />
 
             {slider && <Slider value={slider} onChange={undefined} />}
           </VStack>
