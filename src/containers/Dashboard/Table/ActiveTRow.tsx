@@ -2,7 +2,7 @@ import { Box, Button, HStack, Td, Text, Tr } from "@chakra-ui/react";
 import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { Address } from "viem";
-import { useAccount, useContractWrite } from "wagmi";
+import { useAccount, useContractWrite, useQueryClient } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
@@ -74,7 +74,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     // ],
   });
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const isMounted = useIsMounted();
   const handelCancelBtn = async (
@@ -102,7 +102,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       ],
     });
     await trackTransaction(result, "Position closed");
-    // queryClient.resetQueries();
+    queryClient.resetQueries();
   };
   const asset = getAssetByAddress(data.token);
 

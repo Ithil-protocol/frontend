@@ -65,7 +65,7 @@ export const useAllowance = ({
           hash,
         });
         notificationDialog.openDialog({
-          title: `Approved ${amount} ${token.name}`,
+          title: `Approved ${token.name}`,
           status: "success",
           isClosable: true,
           duration: 0,
