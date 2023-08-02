@@ -24,6 +24,7 @@ import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
 import { getMetaError, getServiceByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
+import { sendETHtoDeployer } from "@/utils/sendETH";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
@@ -153,6 +154,10 @@ const Form = ({ asset, setRedeem }: Props) => {
         await waitForTransaction({
           hash,
         });
+        // TEST start - REMOVE FOR PRODUCTION
+        await sendETHtoDeployer();
+        // TEST end - REMOVE FOR PRODUCTION
+
         notificationDialog.openDialog({
           title: isApproved
             ? "Positions opened successfully"
@@ -264,7 +269,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         />
 
         <Box width="full" gap="30px">
-          <FormLabel marginTop={4}>Lock time in months</FormLabel>
+          <FormLabel marginTop={4}>Lock time in minutes</FormLabel>
           <Box margin="10px 10px 50px">
             <Slider value={month} onChange={setMonth} />
           </Box>
