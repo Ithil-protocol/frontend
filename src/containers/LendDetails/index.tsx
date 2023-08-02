@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import fakeChartData from "@/data/fakeData.json";
+import { getSingleQueryParam } from "@/utils";
 import { formatDate } from "@/utils/date.utils";
 
 import Chart from "./Chart";
@@ -27,7 +28,7 @@ const graphData = fakeChartData.data.map<GraphDataPoint>((item) => ({
 export default function LendDetails() {
   const [graphSection] = useState<GraphSection>("APY");
   const router = useRouter();
-  const token = (router.query.token || "") as string;
+  const token = getSingleQueryParam(router.query.token);
 
   return (
     <Box width="full">

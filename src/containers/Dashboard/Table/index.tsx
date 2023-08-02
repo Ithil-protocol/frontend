@@ -6,20 +6,21 @@ import {
   Th,
   Thead,
   Tr,
-  useColorMode,
 } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { formatUnits } from "viem";
 
 import { useClosePositions } from "@/hooks/useClosePositions";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
+import { useColorMode } from "@/hooks/useColorMode";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import {
   useAaveOpenPositions,
+  useCallOptionOpenPositions,
+  useFixedYieldOpenPositions,
   useGmxOpenPositions,
 } from "@/hooks/useOpenPositions";
 import { viewTypes } from "@/types";
-import { fixPrecision, getVaultByTokenAddress } from "@/utils";
-import { mode } from "@/utils/theme";
+import { fixPrecision, getAssetByAddress } from "@/utils";
 
 import ActiveTRow from "./ActiveTRow";
 import CloseTRow from "./CloseTRow";
@@ -31,35 +32,47 @@ interface Props {
 }
 
 const Table: FC<Props> = ({ columns, activeView }) => {
-  const notificationDialog = useNotificationDialog();
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
   const { positions: aavePositions, isLoading: isLoadingAave } =
     useAaveOpenPositions();
   const { positions: gmxPositions, isLoading: isLoadingGmx } =
     useGmxOpenPositions();
-  const positions = [aavePositions, gmxPositions].flat().sort((a, b) => {
-    return (
-      new Date(Number(b.agreement?.createdAt)).getTime() -
-      new Date(Number(a.agreement?.createdAt)).getTime()
-    );
-  });
-
-  const [isLoadingPositions, setIsLoadingPositions] = useState<boolean>(false);
+  const { positions: fixedYieldPositions, isLoading: isLoadingFixedYield } =
+    useFixedYieldOpenPositions();
+  const { positions: CallOptionsPositions, isLoading: isLoadingCallOption } =
+    useCallOptionOpenPositions();
+  const positions = [
+    aavePositions,
+    gmxPositions,
+    fixedYieldPositions,
+    CallOptionsPositions,
+  ]
+    .flat()
+    .sort((a, b) => {
+      return (
+        new Date(Number(b.agreement?.createdAt)).getTime() -
+        new Date(Number(a.agreement?.createdAt)).getTime()
+      );
+    });
+  const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
     useClosePositions();
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
-  const hasItems =
-    activeView === "Active" ? positions.length > 0 : closedPositions.length > 0;
+  const hasItems = {
+    Active:
+      positions.length > 0 ||
+      isLoadingAave ||
+      isLoadingGmx ||
+      isLoadingFixedYield,
+    Closed: closedPositions.length > 0 || isLoadingClosed,
+  };
 
-  useEffect(() => {
-    if (isLoadingAave || isLoadingGmx) {
-      setIsLoadingPositions(true);
-    } else {
-      setIsLoadingPositions(false);
-    }
-  }, [isLoadingAave, isLoadingGmx]);
+  const isLoadingPositions =
+    isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
+
+  if (!isMounted) return null;
 
   return (
     <TableContainer width="full">
@@ -70,11 +83,11 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       >
         <Thead>
           <Tr width="56">
-            {hasItems &&
+            {hasItems["Active"] &&
               columns.map((col, index) => (
                 <Th
                   width="72"
-                  color={mode(colorMode, "primary.700", "primary.700.dark")}
+                  color={mode("primary.700", "primary.700.dark")}
                   className="font-sans"
                   fontSize="18px"
                   fontWeight="medium"
@@ -89,21 +102,28 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           {activeView === "Active"
             ? positions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
-                  const vault = getVaultByTokenAddress(loanItem.token);
+                  const asset = getAssetByAddress(loanItem.token);
+
+                  if (item.type === "FixedYield") {
+                    console.log("loanItem.margin", loanItem.margin);
+                  }
+
+                  if (!asset) return null;
 
                   return (
                     <ActiveTRow
                       key={key}
                       data={{
                         amount: loanItem.amount,
-                        margin: formatUnits(loanItem.margin, vault.decimals),
+                        margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
-                        formattedPnl: fixPrecision(+item.pnl!, 2).toString(),
-                        pnl: item.pnl,
-                        pnlPercentage: fixPrecision(
-                          +item.pnlPercentage!,
-                          2
-                        ).toString(),
+                        formattedPnl:
+                          item?.pnl && fixPrecision(+item?.pnl, 2).toString(),
+                        isPnlLoading: item?.isPnlLoading,
+                        pnl: item?.pnl,
+                        pnlPercentage:
+                          item?.pnlPercentage &&
+                          fixPrecision(+item?.pnlPercentage, 2).toString(),
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
@@ -132,12 +152,12 @@ const Table: FC<Props> = ({ columns, activeView }) => {
 
           {isLoadingPositions &&
             activeView === "Active" &&
-            Array.from({ length: 1 }).map((_, index) => (
+            Array.from({ length: 4 }).map((_, index) => (
               <TRowLoading tdCount={5} key={index} />
             ))}
           {isLoadingClosed &&
             activeView === "Closed" &&
-            Array.from({ length: 1 }).map((_, index) => (
+            Array.from({ length: 4 }).map((_, index) => (
               <TRowLoading tdCount={4} key={index} />
             ))}
           {isPositionsExist &&

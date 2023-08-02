@@ -2,6 +2,12 @@
 import { Button } from "@chakra-ui/react";
 import { Address, erc20ABI, useContractWrite } from "wagmi";
 
+import { assetsObjByAddress } from "@/data/assets";
+import {
+  useAaveLatestAndBase,
+  useAaveRiskSpreads,
+} from "@/hooks/generated/aave";
+
 const Test = () => {
   // Encodes a string, number, bigint, or ByteArray into a hex string
   // console.log("toHex", toHex(""));
@@ -10,7 +16,7 @@ const Test = () => {
   // const { data } = useVaultDetails("wbtc");
   // console.log("useVaultDetails", data);
 
-  // this order is usless (and not working.don't know why). but I dont remove it for future test
+  // this order is useless (and not working.don't know why). but I don't remove it for future test
   // const order = {
   //   agreement: {
   //     collaterals: [
@@ -39,7 +45,7 @@ const Test = () => {
   // serviceTest(order);
 
   // this order works fine. if you want to test "open" function. (token, collateralToken, amount, _leverage)
-  // const { order: workedOrder } = usePrepareOrder(
+  // const { order: workedOrder } = usePrepareDebitOrder(
   //   "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
   //   "0x078f358208685046a11C85e8ad32895DED33A249",
   //   parseUnits("0.000241", 8),
@@ -63,7 +69,7 @@ const Test = () => {
   //   }
   // });
 
-  // this is for downloading events. it doesn't work I dont know why
+  // this is for downloading events. it doesn't work I don't know why
 
   // const yy = async () => {
   //   const filter = await publicClient.createContractEventFilter({
@@ -204,13 +210,6 @@ const Test = () => {
 
   // useRateAndSpread({tokenAddress:"0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"});
 
-  // const vault = getVaultByTokenAddress("0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f");
-  // console.log("ii", vault);
-  // const { data: vaultFreeLiquidity } = useVaultFreeLiquidity({
-  //   address: "0x8e39010dC8f11aD087Ba377f605c122d8dd4C72E" as Address,
-  // });
-  // console.log("ii2", vaultFreeLiquidity);
-
   // const { write: setRiskParam } = useContractWrite({
   //   mode: "prepared",
   //   // @ts-ignore
@@ -276,7 +275,7 @@ const Test = () => {
     //   } catch (err) {
     //     notificationDialog.openDialog({
     //       title: "Failed",
-    //       description: "Something went wrong",
+    //       description: getMetaError(error),
     //       status: "error",
     //       isClosable: true,
     //       duration: 0,
@@ -285,13 +284,60 @@ const Test = () => {
     // },
     // onError: () => {
     //   notificationDialog.openDialog({
-    //     title: "Something went wrong",
+    //     title: getMetaError(error),
     //     status: "error",
     //     isClosable: true,
     //     duration: 0,
     //   });
     // },
   });
+  // const { data } = useCallOptionCurrentPrice();
+  // const { data: ttl, isSuccess } = useCallOptionTotalAllocation();
+  // data && console.log("virtualAmount", formatUnits(data, 6), ttl);
+
+  // function callOptionFinalAmount(initialPrice: bigint, allocation: bigint) {
+  //   const loan = 150000000n;
+  //   const monthsLocked = 12;
+
+  //   const virtualAmount =
+  //     multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / initialPrice;
+
+  //   const finalPrice =
+  //     (initialPrice * allocation) / (allocation - virtualAmount);
+
+  //   const finalAmount =
+  //     multiplyBigInt(loan, 2 ** (monthsLocked / 12)) / finalPrice;
+
+  //   console.log("virtualAmount", finalAmount);
+  // }
+
+  // (data && isSuccess) && callOptionFinalAmount(data, ttl)
+
+  // const { data: caps } = useManagerCaps({
+  //   args: [
+  //     "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
+  //     "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+  //   ],
+  // });
+  // const { data: vaults } = useManagerVaults({
+  //   args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
+  // });
+
+  console.log("assets33", assetsObjByAddress);
+
+  const { data: B } = useAaveLatestAndBase({
+    args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],
+  });
+
+  const { data: C } = useAaveRiskSpreads({
+    args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],
+  });
+
+  console.log("BBBBBBBB", B, "CCCCCCCCCCCC", C);
+
+  if (B) {
+    console.log("pppppppppppppp", B % BigInt(2) ** BigInt(128));
+  }
 
   return (
     <Button onClick={() => approve()}>

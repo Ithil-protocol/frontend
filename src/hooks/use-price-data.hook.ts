@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "wagmi";
 
-import vaults from "@/deploy/vaults.json";
+import { assets } from "@/data/assets";
 import { type LendingTokenList } from "@/types/onchain.types";
 
-export const lendingTokens = vaults as LendingTokenList;
+export const lendingTokens = assets as LendingTokenList;
 
 export type CoingeckoSimpleTokenPrice = Record<Address, { usd: number }>;
 

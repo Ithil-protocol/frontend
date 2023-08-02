@@ -1,24 +1,30 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { gmxABI } from "@/abi";
+import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
-import { gmxAddress } from "@/hooks/generated/gmx";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import {
+  gmxAddress,
+  useGmxLatestAndBase,
+  useGmxRiskSpreads,
+} from "@/hooks/generated/gmx";
 import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
+import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { useNotificationDialog } from "@/hooks/useNotificationDialog";
-import { usePrepareOrder } from "@/hooks/usePrepareOrder";
+import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
+import { getMetaError, getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -26,14 +32,13 @@ import AdvanceSection from "../../AdvanceSection";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
-import SubmitButton from "../../inputs/SubmitButton";
 
 // import DepositForm from "./DepositForm"
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress, isConnected } = useAccount();
   const chainId = useChainId() as 98745;
-  const [inputAmount, setInputAmount] = useState<string>("0");
+  const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const notificationDialog = useNotificationDialog();
@@ -73,9 +78,9 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
-  const { order } = usePrepareOrder({
+  const { order } = usePrepareDebitOrder({
     token: asset,
-    collateralToken: asset?.collateralTokenAddress,
+    collateralToken: asset.gmxCollateralTokenAddress,
     leverage,
     amount: inputAmount,
     interestAndSpread,
@@ -112,21 +117,21 @@ const Form = ({ asset }: { asset: Asset }) => {
           isClosable: true,
           duration: 0,
         });
-        setInputAmount("0");
-      } catch (err) {
+        setInputAmount("");
+      } catch (error) {
         notificationDialog.openDialog({
           title: "Failed",
-          description: "Something went wrong",
+          description: getMetaError(error),
           status: "error",
           isClosable: true,
           duration: 0,
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
       notificationDialog.openDialog({
         title: "Failed",
-        description: "Something went wrong",
+        description: getMetaError(error),
         status: "error",
         isClosable: true,
         duration: 0,
@@ -137,22 +142,45 @@ const Form = ({ asset }: { asset: Asset }) => {
   // computed properties
   const isButtonLoading = isInterestAndSpreadLoading;
   const isButtonDisabled = isButtonLoading || +inputAmount === 0;
-  const isMaxDisabled = inputAmount === (balance?.value.toString() ?? "0");
+  const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
 
-  const { openConnectModal } = useConnectModal();
-  const isMounted = useIsMounted();
-
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
 
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
-  const finalLeverage = isAdvancedOptionsOpen ? leverage : 2.5;
+
+  console.log("baseApyGMX", baseApy);
+
+  const { data: latestAndBase } = useGmxLatestAndBase({
+    args: [asset.tokenAddress],
+  });
+
+  const { data: riskSpreads } = useGmxRiskSpreads({
+    args: [asset.tokenAddress],
+  });
+
+  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
+    baseApy,
+    latestAndBase,
+    riskSpreads,
+  });
+
+  console.log("latestAndBase", latestAndBase);
+  console.log("riskSpreads", riskSpreads);
+
+  const finalLeverage = isAdvancedOptionsOpen
+    ? leverage
+    : (+bestLeverage - 1).toString();
+
+  const isMounted = useIsMounted();
+
   const finalApy = baseApy
-    ? (+baseApy * +finalLeverage - displayInterestAndSpreadInPercent).toFixed(2)
-    : "";
+    ? +baseApy * +finalLeverage -
+      (+finalLeverage - 1) * displayInterestAndSpreadInPercent
+    : 0;
 
   const formInfoItems = [
     {
@@ -163,8 +191,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Best Leverage:",
-      value: finalLeverage,
+      value: bestLeverage,
       extension: "x",
+      isLoading: isBestLeverageLoading,
     },
     {
       label: "Borrow Interest:",
@@ -174,10 +203,12 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Final APY:",
-      value: finalApy,
+      value: finalApy?.toFixed(2),
       extension: "%",
+      isLoading: isInterestAndSpreadLoading,
     },
   ];
+  const tokens = getServiceByName("gmx").tokens;
 
   if (!isMounted) return null;
 
@@ -222,7 +253,8 @@ const Form = ({ asset }: { asset: Asset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={false}
+          switchableAsset
+          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
@@ -243,16 +275,19 @@ const Form = ({ asset }: { asset: Asset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <SubmitButton
-        approve={approve}
-        asset={asset}
-        isApproved={isApproved}
-        isButtonDisabled={isButtonDisabled}
-        isButtonLoading={isButtonLoading}
-        isConnected={isConnected}
-        openConnectModal={openConnectModal}
-        openPosition={openPosition}
-      />
+      <PrivateButton
+        onClick={() => (isApproved ? openPosition() : approve?.())}
+        isDisabled={isButtonDisabled}
+        loadingText="Waiting"
+        mt="20px"
+        isLoading={isButtonLoading}
+      >
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Open position"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };

@@ -1,5 +1,20 @@
-import Gmx from "@/containers/Service/Gmx";
+import { useEffect } from "react";
 
-const GmxPage = () => <Gmx />;
+import { useTokenModal } from "@/contexts/TokenModal";
+import { getServiceByName } from "@/utils";
 
-export default GmxPage;
+const GMXPage = () => {
+  const tokenModal = useTokenModal({
+    isClosable: false,
+    returnPath: "/services",
+  });
+
+  useEffect(() => {
+    const tokens = getServiceByName("gmx").tokens;
+    tokenModal.openDialog(tokens, "gmx");
+  }, []);
+
+  return null;
+};
+
+export default GMXPage;

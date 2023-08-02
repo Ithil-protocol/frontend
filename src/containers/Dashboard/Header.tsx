@@ -1,7 +1,6 @@
-import { Box, Link, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
-import { ArrowLeft } from "@/assets/svgs";
 import { viewTypes } from "@/types";
 
 import Views from "./Views";
@@ -12,10 +11,6 @@ interface Props {
 }
 
 const Header: FC<Props> = ({ currentView, setActiveView }) => {
-  const { colorMode } = useColorMode();
-
-  console.log("currentView33", currentView);
-
   return (
     <Box
       display="flex"
@@ -26,11 +21,6 @@ const Header: FC<Props> = ({ currentView, setActiveView }) => {
       gap={["50px"]}
     >
       <Box display="flex" alignItems={["start", "center"]} gap="15">
-        <Link href="/">
-          <ArrowLeft
-            className={`${colorMode === "light" && "fill-[#070b0f]"}`}
-          />
-        </Link>
         <Text fontWeight="bold" fontSize="24px">
           {currentView} Positions
         </Text>

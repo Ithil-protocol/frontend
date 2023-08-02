@@ -1,11 +1,12 @@
-import { SkeletonText, Text, useColorMode } from "@chakra-ui/react";
+import { SkeletonText, Text } from "@chakra-ui/react";
 
-import { mode } from "@/utils/theme";
+import { useColorMode } from "@/hooks/useColorMode";
 
 export interface Props {
   label: string;
   value?: string | number;
-  extension: string;
+  extension?: string;
+  prefix?: string;
   isLoading?: boolean;
 }
 
@@ -14,8 +15,9 @@ const FormInfoItem: React.FC<Props> = ({
   label,
   value,
   isLoading = false,
+  prefix,
 }) => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   return (
     <>
@@ -33,7 +35,7 @@ const FormInfoItem: React.FC<Props> = ({
             fontWeight: "400",
             lineHeight: "24px",
           }}
-          color={mode(colorMode, "primary.200.dark", "primary.700.dark")}
+          color={mode("primary.200.dark", "primary.700.dark")}
         >
           {label}
         </Text>
@@ -47,8 +49,9 @@ const FormInfoItem: React.FC<Props> = ({
               lineHeight: "24px",
             }}
           >
+            {prefix && <span>{prefix}</span>}
             <span>{value}</span>
-            <span>{extension}</span>
+            {extension && <span>{extension}</span>}
           </Text>
         )}
       </div>

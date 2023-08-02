@@ -1,11 +1,11 @@
-import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
+import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { CloseButton } from "@/assets/svgs";
+import { useColorMode } from "@/hooks/useColorMode";
 import { routes, socialMedia } from "@/utils";
-import { mode } from "@/utils/theme";
 
 interface Props {
   isSidebarOpen: boolean;
@@ -13,14 +13,16 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
-  const closeSidebar = () => onSetSidebarOpen(false);
+  const closeSidebar = useCallback(
+    () => onSetSidebarOpen(false),
+    [onSetSidebarOpen]
+  );
   const router = useRouter();
   useEffect(() => {
     closeSidebar();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [closeSidebar, router]);
 
   return (
     <Box
@@ -28,7 +30,7 @@ const Sidebar: React.FC<Props> = ({ isSidebarOpen, onSetSidebarOpen }) => {
       className={
         " top-0 w-full h-[104vh] bottom-0 right-0 left-0 fixed -translate-y-5  z-[9999999]"
       }
-      backgroundColor={mode(colorMode, "#ffffff", "#070b0f")}
+      backgroundColor={mode("#ffffff", "#070b0f")}
     >
       <HStack justifyContent="end" className="p-14">
         <span onClick={closeSidebar}>

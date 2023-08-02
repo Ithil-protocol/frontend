@@ -1,4 +1,4 @@
-import { useColorMode } from "@chakra-ui/react";
+import "@chakra-ui/react";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -8,12 +8,14 @@ import { type FC, type PropsWithChildren } from "react";
 import { WagmiConfig } from "wagmi";
 
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Head from "@/components/Head";
 import PageWrapper from "@/components/page-wrapper";
 import { testNetwork } from "@/config/chains";
+import NotificationDialogProvider from "@/contexts/NotificationDialog";
+import TokenModalProvider from "@/contexts/TokenModal";
+import { useColorMode } from "@/hooks/useColorMode";
 import { queryClient } from "@/lib/react-query";
 import { chains, wagmiClient } from "@/lib/wagmi";
-import NotificationDialogProvider from "@/providers/notificationDialog";
-import TokenModalProvider from "@/providers/tokenModal";
 import { Chakra } from "@/styles/ChakraCustomProvider";
 import "@/styles/globals.css";
 import {
@@ -42,6 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GoogleAnalytics />
+      <Head />
       <WagmiConfig config={wagmiClient}>
         <QueryClientProvider client={queryClient}>
           <Chakra>

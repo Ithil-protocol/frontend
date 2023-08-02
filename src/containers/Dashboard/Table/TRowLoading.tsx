@@ -1,21 +1,21 @@
-import { Td, Tr, useColorMode } from "@chakra-ui/react";
+import { Td, Tr } from "@chakra-ui/react";
 import { FC } from "react";
 
 import { Loading } from "@/components/loading";
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { pickColor } from "@/utils/theme";
 
 interface Props {
   tdCount: number;
 }
 
 const TRowLoading: FC<Props> = ({ tdCount }) => {
-  const { colorMode } = useColorMode();
+  const { pickColor } = useColorMode();
 
   return (
     <Tr
       width="72"
-      bgColor={pickColor(colorMode, palette.colors.primary, "100")}
+      bgColor={pickColor(palette.colors.primary, "100")}
       borderRadius="12px"
       sx={{
         "& > td": {

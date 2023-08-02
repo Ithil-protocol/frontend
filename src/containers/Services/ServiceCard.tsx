@@ -1,71 +1,61 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Heading,
-  Text,
-  VStack,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { FC } from "react";
 
-import { useTokenModal } from "@/hooks/useTokenModal";
-import { palette } from "@/styles/theme/palette";
-import { ButtonEvent, ServiceType } from "@/types";
-import { pickColor } from "@/utils/theme";
+import { useTokenModal } from "@/contexts/TokenModal";
+import { useColorMode } from "@/hooks/useColorMode";
+import { ServiceName } from "@/types";
 
 import ServiceIcon from "../Service/ServiceIcon";
+import EnterButton from "./EnterButton";
 
 interface ServiceCardProps {
+  apy: string;
   assets: string[];
   description: string | ((assets: string[]) => string);
+  hasIndex: boolean;
+  label: string;
+  multiplier: string | undefined;
+  name: ServiceName;
   to: string;
-  multiplier: string;
-  name: string;
-  apy: string;
-  tvl: string;
 }
 
 const ServiceCard: FC<ServiceCardProps> = ({
+  apy,
   assets,
   description,
-  to,
+  hasIndex,
+  label,
   multiplier,
   name,
-  apy,
-  tvl,
+  to,
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode } = useColorMode();
-
-  const handleEnterClick = (e: ButtonEvent) => {
-    if (to.includes("aave")) {
-      e.preventDefault();
-      tokenModal.openDialog();
-    }
-  };
+  const handleEnterClick = () => tokenModal.openDialog(assets, name);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
       <HStack className="flex justify-between w-full mb-6">
         <Box>
-          <ServiceIcon name={name as ServiceType} width="full" />
+          <ServiceIcon name={name} width="full" />
         </Box>
         {/* 1 - 10% multiplier */}
-        <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
-          <Icon
-            icon="ph:lightning-fill"
-            color={colorMode === "dark" ? "white" : "black"}
-          ></Icon>
-          <Text textStyle="slender-sm" className="whitespace-nowrap">
-            {multiplier}
-          </Text>
-        </Box>
+        {multiplier && (
+          <Box className="flex items-center gap-1 px-2 py-1 border rounded-md border-primary-500">
+            <Icon
+              icon="ph:lightning-fill"
+              color={colorMode === "dark" ? "white" : "black"}
+            ></Icon>
+            <Text textStyle="slender-sm" className="whitespace-nowrap">
+              {multiplier}
+            </Text>
+          </Box>
+        )}
       </HStack>
       <Heading size="h3" className="mb-6">
-        {name}
+        {label}
       </Heading>
       <HStack
         alignItems="center"
@@ -85,15 +75,12 @@ const ServiceCard: FC<ServiceCardProps> = ({
         {typeof description === "string" ? description : description(assets)}
       </Text>
       <VStack className="mt-auto" align="start">
-        <HStack spacing="8px" marginBottom="16px">
-          <Text
-            textStyle="sm"
-            color={pickColor(colorMode, palette.colors.primary, "700")}
-          >
+        {/* <HStack spacing="8px" marginBottom="16px">
+          <Text textStyle="sm" color={pickColor(palette.colors.primary, "700")}>
             TVL:
           </Text>
           <Text textStyle="slender-sm2">{tvl}</Text>
-        </HStack>
+        </HStack> */}
         {/* tokens array */}
         <Box className="flex flex-wrap gap-2 mb-6 justify-evenly">
           {assets.map((token, index) => (
@@ -112,11 +99,13 @@ const ServiceCard: FC<ServiceCardProps> = ({
           ))}
         </Box>
       </VStack>
-      <Link href={`/services/${to}`}>
-        <Button onClick={handleEnterClick} size="lg" className="w-full">
-          Enter
-        </Button>
-      </Link>
+      {hasIndex ? (
+        <EnterButton onClick={handleEnterClick} />
+      ) : (
+        <Link href={`/services/${to}`}>
+          <EnterButton />
+        </Link>
+      )}
     </Box>
   );
 };

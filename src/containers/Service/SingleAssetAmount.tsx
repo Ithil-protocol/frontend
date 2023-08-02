@@ -9,17 +9,19 @@ import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
-import { useTokenModal } from "@/hooks/useTokenModal";
-import { AaveAsset } from "@/types/onchain.types";
+import { useServiceName } from "@/hooks/useServiceName";
+import { Asset } from "@/types";
 
 interface Props {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  asset: AaveAsset;
+  asset: Pick<Asset, "name" | "decimals">;
   onMaxClick: () => void;
   isMaxDisabled: boolean;
   switchableAsset?: boolean;
+  tokens: string[];
 }
 
 const SingleAssetAmount: FC<Props> = ({
@@ -29,10 +31,13 @@ const SingleAssetAmount: FC<Props> = ({
   onMaxClick,
   isMaxDisabled,
   switchableAsset = true,
+  tokens,
 }) => {
+  const serviceName = useServiceName();
+
   const tokenModal = useTokenModal({
     onSelectTokenCallback: () => {
-      onChange("0");
+      onChange("");
     },
   });
 
@@ -43,6 +48,7 @@ const SingleAssetAmount: FC<Props> = ({
       onChange(value);
     }
   };
+  // const { data: vaultData } = useVaults();
 
   return (
     <>
@@ -51,7 +57,11 @@ const SingleAssetAmount: FC<Props> = ({
           style={{
             cursor: "pointer",
           }}
-          onClick={switchableAsset ? tokenModal.openDialog : undefined}
+          onClick={() =>
+            switchableAsset &&
+            serviceName &&
+            tokenModal.openDialog(tokens, serviceName)
+          }
           className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
         >
           {asset === null ? (

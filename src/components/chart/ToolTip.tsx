@@ -1,4 +1,4 @@
-import { Box, HStack, Text, useColorMode } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import { FC } from "react";
 import { TooltipProps } from "recharts";
 import {
@@ -6,23 +6,23 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 import { formatDate } from "@/utils/date.utils";
-import { mode, pickColor } from "@/utils/theme";
 
 const ToolTip: FC<TooltipProps<ValueType, NameType>> = ({
   active,
   payload,
   label,
 }) => {
-  const { colorMode } = useColorMode();
+  const { pickColor, mode } = useColorMode();
 
   if (active) {
     return (
       <Box
-        bgColor={pickColor(colorMode, palette.colors.primary, "100")}
+        bgColor={pickColor(palette.colors.primary, "100")}
         padding="10px 30px"
-        border={mode(colorMode, "primary.100.dark", "primary.100")}
+        border={mode("primary.100.dark", "primary.100")}
         className="border rounded-xl border-white-100"
       >
         <HStack>

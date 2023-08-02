@@ -1,4 +1,4 @@
-import { SafetyScoreValue } from "@/utils";
+import { SafetyScoreValue, getServiceNames } from "@/utils";
 
 export type viewTypes = "Active" | "Closed";
 
@@ -30,7 +30,6 @@ export interface VaultsTypes {
 }
 
 export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
-export type ServiceType = "AAVE" | "GMX";
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;
@@ -45,11 +44,17 @@ export interface SafetyScore {
   }[];
   description: string;
 }
+
+const serviceNames = getServiceNames();
+export type ServiceName = (typeof serviceNames)[number];
+
 export interface Service {
-  name: string;
+  label: string;
+  name: ServiceName;
   long_name: string;
   description: string;
-  apyRange: string;
+  apyRange?: string;
+  hasIndex: boolean;
   bestApy: number;
   boostApy: number;
   tokens: string[];
@@ -57,10 +62,11 @@ export interface Service {
   url: string;
   safety_score: SafetyScore;
   explanation: string;
+  type: "debit" | "credit";
 }
 
 export interface TRowTypes {
-  token: string;
+  token: Address;
   amount: bigint;
   margin: string | number;
   createdAt: bigint | undefined;
@@ -96,10 +102,15 @@ export interface OpenDialogFnOptions
 export type OpenNotificationDialogFn = (o: OpenDialogFnOptions) => void;
 export type CloseDialogFn = VoidNoArgs;
 
-export type OpenTokenDialogFn = () => void;
+export type OpenTokenDialogFn = (
+  tokens: string[],
+  serviceName: ServiceName
+) => void;
 export interface TokenModalOptions {
+  tokens: string[];
   isClosable: boolean;
   onSelectTokenCallback: () => void;
+  returnPath: string;
 }
 
 export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
@@ -110,5 +121,36 @@ export type Asset = {
   iconName: string;
   decimals: number;
   tokenAddress: Address;
-  collateralTokenAddress: Address;
+  oracleAddress: Address;
+  vaultAddress: Address;
+  callOptionAddress: Address;
+  aaveCollateralTokenAddress: Address;
+  gmxCollateralTokenAddress: Address;
 };
+
+export interface Agreement {
+  loans: readonly {
+    token: Address;
+    amount: bigint;
+    margin: bigint;
+    interestAndSpread: bigint;
+  }[];
+  collaterals: readonly {
+    itemType: number;
+    token: Address;
+    identifier: bigint;
+    amount: bigint;
+  }[];
+  createdAt: bigint;
+  status: number;
+}
+
+export interface OpenPosition {
+  agreement?: Agreement;
+  pnlPercentage?: string;
+  pnl?: string;
+  isPnlLoading?: boolean;
+  id?: bigint;
+  quote?: bigint;
+  type: string;
+}

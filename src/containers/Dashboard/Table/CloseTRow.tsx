@@ -1,22 +1,22 @@
-import { Box, HStack, Td, Text, Tr, useColorMode } from "@chakra-ui/react";
+import { Box, HStack, Td, Text, Tr } from "@chakra-ui/react";
 import { FC } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
-import { getVaultByTokenAddress } from "@/utils";
+import { getAssetByAddress } from "@/utils";
 import { formatFullDate } from "@/utils/date.utils";
-import { mode, pickColor } from "@/utils/theme";
 
 interface Props {
   data: TRowTypes;
 }
 
 const CloseTRow: FC<Props> = ({ data }) => {
-  const { colorMode } = useColorMode();
-  const vaultTokenData = getVaultByTokenAddress(data.token);
+  const { colorMode, mode, pickColor } = useColorMode();
+  const asset = getAssetByAddress(data.token);
   const isMounted = useIsMounted();
 
   if (!isMounted) return null;
@@ -24,7 +24,7 @@ const CloseTRow: FC<Props> = ({ data }) => {
   return (
     <Tr
       width="72"
-      bgColor={pickColor(colorMode, palette.colors.primary, "100")}
+      bgColor={pickColor(palette.colors.primary, "100")}
       borderRadius="12px"
       // onClick={() => router.push("/dashboard/detail/1")}
       // cursor="pointer"
@@ -36,7 +36,7 @@ const CloseTRow: FC<Props> = ({ data }) => {
         minHeight: "200px",
       }}
     >
-      <Td color={mode(colorMode, "primary.main.dark", "primary.main")}>
+      <Td color={mode("primary.main.dark", "primary.main")}>
         <HStack spacing="20px" alignItems="center">
           <Box>
             <HStack>
@@ -57,19 +57,19 @@ const CloseTRow: FC<Props> = ({ data }) => {
                     }}
                     width={42}
                     height={42}
-                    name={vaultTokenData?.name || ""}
+                    name={asset?.name || ""}
                   />
                 </Box>
               </Box>
               <Text fontSize="22px" lineHeight="22px">
-                {vaultTokenData?.name}
+                {asset?.name}
               </Text>
             </HStack>
           </Box>
         </HStack>
       </Td>
       <Td
-        color={mode(colorMode, "primary.700", "primary.700.dark")}
+        color={mode("primary.700", "primary.700.dark")}
         fontWeight="medium"
         fontSize="22px"
         lineHeight="22px"
@@ -79,7 +79,7 @@ const CloseTRow: FC<Props> = ({ data }) => {
       <Td>
         <Text
           fontWeight="medium"
-          color={mode(colorMode, "primary.700", "primary.700.dark")}
+          color={mode("primary.700", "primary.700.dark")}
           fontSize="22px"
           lineHeight="22px"
         >

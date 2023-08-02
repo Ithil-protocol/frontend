@@ -1,21 +1,21 @@
-import { HStack, Text, useColorMode } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { FC } from "react";
 
+import { useColorMode } from "@/hooks/useColorMode";
 import { PositionsDetailItemType } from "@/types/index";
-import { mode } from "@/utils/theme";
 
 interface Props extends PositionsDetailItemType {
   valueColor?: string;
 }
 
 const PositionsDetailItem: FC<Props> = ({ title, value, unit, valueColor }) => {
-  const { colorMode } = useColorMode();
+  const { mode } = useColorMode();
 
   return (
     <HStack justifyContent="space-between" width="full">
       <Text
         className="font-sans"
-        color={mode(colorMode, "primary.700.dark", "primary.700")}
+        color={mode("primary.700.dark", "primary.700")}
       >
         {title}
       </Text>
@@ -24,7 +24,7 @@ const PositionsDetailItem: FC<Props> = ({ title, value, unit, valueColor }) => {
           <Text
             fontSize="16px"
             lineHeight="24px"
-            color={mode(colorMode, "secondary.400.dark", "secondary.400")}
+            color={mode("secondary.400.dark", "secondary.400")}
             className="font-semibold"
           >
             {unit}
@@ -35,9 +35,7 @@ const PositionsDetailItem: FC<Props> = ({ title, value, unit, valueColor }) => {
           className="font-medium"
           lineHeight="24px"
           color={
-            valueColor
-              ? valueColor
-              : mode(colorMode, "primary.main.dark", "primary.main")
+            valueColor ? valueColor : mode("primary.main.dark", "primary.main")
           }
         >
           {value}
