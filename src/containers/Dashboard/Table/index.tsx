@@ -127,6 +127,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
+                        name: item.name,
                       }}
                     />
                   );

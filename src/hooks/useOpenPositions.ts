@@ -73,7 +73,8 @@ export const useAaveOpenPositions = () => {
       pnlPercentage:
         pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
       isPnlLoading,
-      type: "AAVE",
+      type: "aave",
+      name: "AAVE",
     });
   }
 
@@ -139,7 +140,8 @@ export const useGmxOpenPositions = () => {
       pnlPercentage:
         pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
       isPnlLoading,
-      type: "GMX",
+      type: "gmx",
+      name: "GMX",
     });
   }
 
@@ -161,7 +163,8 @@ export const useFixedYieldOpenPositions = () => {
     positions.push({
       agreement,
       id: data?.[1][i],
-      type: "FixedYield",
+      type: "fixed-yield",
+      name: "Fixed yield",
     });
   }
 
@@ -224,7 +227,8 @@ export const useCallOptionOpenPositions = () => {
       positions.push({
         agreement,
         id: ids?.[index],
-        type: "CallOption",
+        type: "call-option",
+        name: "Call option",
       });
     });
   });

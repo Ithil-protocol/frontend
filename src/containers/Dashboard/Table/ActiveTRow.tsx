@@ -33,6 +33,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   quote?: bigint;
   formattedPnl?: string;
   type: string;
+  name: string;
 }
 
 interface Props {
@@ -46,19 +47,19 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const { trackTransaction } = useTransactionFeedback();
 
   const services = {
-    AAVE: {
+    aave: {
       abi: aaveABI,
       address: aaveAddress[98745],
     },
-    GMX: {
+    gmx: {
       abi: gmxABI,
       address: gmxAddress[98745],
     },
-    FixedYield: {
+    "fixed-yield": {
       abi: fixedYieldABI,
       address: fixedYieldAddress[98745],
     },
-    CallOption: {
+    "call-option": {
       abi: callOptionABI,
       address: getAssetByAddress(data.token)?.callOptionAddress,
     },
@@ -98,7 +99,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
             data.amount
           ),
           margin: data.margin.toString(),
-          service: data.type,
+          service: data.name,
         }}
         onClose={onClose}
         onOpen={onOpen}
@@ -156,7 +157,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {data.type}
+          {data.name}
         </Td>
         <Td>
           {!data.isPnlLoading ? (
