@@ -174,7 +174,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
                   style={{
                     width: "95%",
                     border: "transparent",
-                    padding: "5px",
+                    padding: "10px 5px",
                     borderRadius: "5px",
                   }}
                   _hover={{
@@ -183,7 +183,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
                   onClick={addIthilToWallet}
                 >
                   <div className="block pr-1">
-                    <LogoSymbolLight width={32} />
+                    <LogoSymbolLight width={24} />
                   </div>
                   Add ITHIL to wallet
                 </MenuItem>
