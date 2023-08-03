@@ -73,7 +73,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
 
   if (!isMounted) return null;
-
   return (
     <TableContainer width="full">
       <DefaultTable
@@ -128,6 +127,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         quote: item.quote,
                         type: item.type,
                         name: item.name,
+                        slippage: item.slippage,
                       }}
                     />
                   );

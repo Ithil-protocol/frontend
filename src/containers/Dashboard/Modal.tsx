@@ -27,6 +27,8 @@ interface Data {
   amount?: string;
   service: string | undefined;
   token: string;
+  slippage: number;
+  type: string;
 }
 
 interface Props {
@@ -99,15 +101,19 @@ const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
 
         <ModalBody marginBottom={8}>
           <VStack spacing="25px" marginTop={4} alignItems="start">
+            <ModalItem title="Service name" value={`${data.service} service`} />
             <HStack alignItems="center">
-              <ModalItem title="Service" value={data.service} />{" "}
+              <ModalItem title="Amount obtained" value={data.amount} />{" "}
               <TokenIcon name={data.token} width={20} height={20} />
             </HStack>
-            <ModalItem title="Pnl" value={data.pnl} />
-            <ModalItem title="Amount" value={data.amount} />
-            <ModalItem title="Margin" value={data.margin} />
+            <ModalItem title="Slippage" value={`${data.slippage}%`} />
 
-            {slider && <Slider value={slider} max={100} onChange={undefined} />}
+            {data.type === "call-option" && (
+              <>
+                <ModalItem title="Purchase price" value={""} />
+                <Slider value={slider} max={100} onChange={undefined} />
+              </>
+            )}
           </VStack>
         </ModalBody>
         <ModalFooter justifyContent="center">
@@ -120,7 +126,7 @@ const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
               color="#f35959"
               onClick={handelConfirmBtn}
             >
-              Close
+              OK
             </Button>
           </HStack>
         </ModalFooter>

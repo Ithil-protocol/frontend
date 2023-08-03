@@ -34,6 +34,7 @@ interface Data extends Omit<TRowTypes, "createdAt"> {
   formattedPnl?: string;
   type: string;
   name: string;
+  slippage: number;
 }
 
 interface Props {
@@ -87,7 +88,6 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   if (!isMounted) return null;
 
   const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
-
   return (
     <>
       <Modal
@@ -101,6 +101,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           margin: data.margin.toString(),
           service: data.name,
           token: data.token,
+          slippage: data.slippage,
+          type: data.type,
         }}
         onClose={onClose}
         onOpen={onOpen}

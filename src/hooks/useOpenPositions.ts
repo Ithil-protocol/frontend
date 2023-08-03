@@ -75,6 +75,7 @@ export const useAaveOpenPositions = () => {
       isPnlLoading,
       type: "aave",
       name: "AAVE",
+      slippage: 0,
     });
   }
 
@@ -142,6 +143,7 @@ export const useGmxOpenPositions = () => {
       isPnlLoading,
       type: "gmx",
       name: "GMX",
+      slippage: 1,
     });
   }
 
@@ -165,6 +167,7 @@ export const useFixedYieldOpenPositions = () => {
       id: data?.[1][i],
       type: "fixed-yield",
       name: "Fixed yield",
+      slippage: 0,
     });
   }
 
@@ -229,6 +232,7 @@ export const useCallOptionOpenPositions = () => {
         id: ids?.[index],
         type: "call-option",
         name: "Call option",
+        slippage: 0,
       });
     });
   });

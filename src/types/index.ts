@@ -154,4 +154,5 @@ export interface OpenPosition {
   quote?: bigint;
   type: string;
   name: string;
+  slippage: number;
 }
