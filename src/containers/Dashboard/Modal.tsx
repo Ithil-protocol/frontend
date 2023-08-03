@@ -107,7 +107,7 @@ const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
             <ModalItem title="Amount" value={data.amount} />
             <ModalItem title="Margin" value={data.margin} />
 
-            {slider && <Slider value={slider} onChange={undefined} />}
+            {slider && <Slider value={slider} max={100} onChange={undefined} />}
           </VStack>
         </ModalBody>
         <ModalFooter justifyContent="center">
