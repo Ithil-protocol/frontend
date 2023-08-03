@@ -55,10 +55,10 @@ const Content = () => {
         },
         {
           title: "Share price",
-          value: fixPrecision(
+          value: `${fixPrecision(
             +formatUnits(data?.convertToShares ?? 0n, asset?.decimals ?? 0),
             2
-          ),
+          )} ${asset?.name}`,
         },
       ].map((item, index) => {
         return (

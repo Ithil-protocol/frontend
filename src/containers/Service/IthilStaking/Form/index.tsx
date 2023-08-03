@@ -15,7 +15,7 @@ import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { AaveAsset } from "@/types/onchain.types";
+import { Ithil } from "@/types";
 import {
   displayLeverage,
   getServiceByName,
@@ -28,7 +28,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: AaveAsset }) => {
+const Form = ({ asset }: { asset: Ithil }) => {
   const {
     query: { asset: token },
   } = useRouter();

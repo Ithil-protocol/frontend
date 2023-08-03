@@ -30,7 +30,7 @@ export const useAllowance = ({
       args: [address as Address, spender],
       enabled: !!address,
       watch: true,
-    }
+    },
   );
 
   const currentAllowance = allowanceValue
@@ -59,7 +59,7 @@ export const useAllowance = ({
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openSuccess(`Approved ${amount} ${token.name}`);
+        notificationDialog.openSuccess(`Approved ${token.name}`);
         refetchAllowance();
       } catch (error) {
         notificationDialog.openError(error, "Failed");
