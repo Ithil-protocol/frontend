@@ -9,11 +9,12 @@ import {
 } from "@chakra-ui/react";
 
 interface Props {
+  max?: number;
   value: number;
   onChange: UseSliderProps["onChange"];
 }
 
-const Slider: React.FC<Props> = ({ value, onChange }) => {
+const Slider: React.FC<Props> = ({ max = 12, onChange, value }) => {
   return (
     <>
       <ChakraSlider
@@ -22,9 +23,11 @@ const Slider: React.FC<Props> = ({ value, onChange }) => {
         aria-label="slider-ex-4"
         defaultValue={value}
         min={1}
-        max={12}
+        max={max}
         step={1}
-        style={{ width: "100%" }}
+        style={{
+          width: "100%",
+        }}
       >
         <SliderMark mt={5} value={value}>
           <Badge
