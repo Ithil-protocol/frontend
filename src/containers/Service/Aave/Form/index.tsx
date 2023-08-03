@@ -58,19 +58,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     spender: aaveAddress[chainId],
     token: asset,
   });
-  const {
-    interestAndSpread,
-    displayInterestAndSpreadInPercent,
-    isInterestAndSpreadLoading,
-    isInterestError,
-    isFreeLiquidityError,
-  } = useRateAndSpread({
-    token: asset,
-    leverage,
-    margin: inputAmount,
-    slippage,
-    serviceAddress: aaveAddress[chainId],
-  });
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
 
@@ -91,6 +78,20 @@ const Form = ({ asset }: { asset: Asset }) => {
   const finalLeverage = isAdvancedOptionsOpen
     ? leverage
     : (+bestLeverage - 1).toString();
+
+  const {
+    interestAndSpread,
+    displayInterestAndSpreadInPercent,
+    isInterestAndSpreadLoading,
+    isInterestError,
+    isFreeLiquidityError,
+  } = useRateAndSpread({
+    token: asset,
+    leverage: finalLeverage.toString(),
+    margin: inputAmount,
+    slippage,
+    serviceAddress: aaveAddress[chainId],
+  });
 
   // useEffect(() => {
   //   setLeverage(finalLeverage);

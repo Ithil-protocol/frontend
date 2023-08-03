@@ -2,7 +2,7 @@ import { Box, Button, HStack, Td, Text, Tr } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
-import { useContractWrite } from "wagmi";
+import { useContractWrite, useQueryClient } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
@@ -13,7 +13,6 @@ import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { queryClient } from "@/lib/react-query";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
 import { getAssetByAddress, getMetaError } from "@/utils";
@@ -97,7 +96,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     },
   });
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const isMounted = useIsMounted();
   const handelCancelBtn = async (
@@ -110,6 +109,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     const quotes: Record<string, bigint> = {
       AAVE: (initialQuote * 999n) / 1000n,
       GMX: (initialQuote * 9n) / 10n,
+      CallOption: BigInt(10) ** BigInt(18),
     };
     const quote = quotes[data?.type] || 0n;
     close({
