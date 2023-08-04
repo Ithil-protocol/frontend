@@ -13,30 +13,21 @@ export const useTransaction = (
 
   // useEffect(() => {
   //   if (isSuccess) {
-  //     notificationDialog.openDialog({
-  //       title: description,
-  //       status: "success",
-  //     });
+  //     notificationDialog.openSuccess(description);
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [isSuccess]);
   // useEffect(() => {
   //   if (isError) {
-  //     notificationDialog.openDialog({
-  //       title: error?.message
+  //     notificationDialog.openError(error?.message
   //         ? error.message
-  //         : "Somethings went wrong, please try again later.",
-  //       status: "error",
-  //     });
+  //         : "Somethings went wrong, please try again later.",);
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [isError]);
   // useEffect(() => {
   //   if (isLoading) {
-  //     notificationDialog.openDialog({
-  //       title: description,
-  //       status: "loading",
-  //     });
+  //     notificationDialog.openLoading(description);
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [isLoading]);

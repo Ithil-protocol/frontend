@@ -95,23 +95,16 @@ const Form = ({ asset }: { asset: Ithil }) => {
   //   args: [order],
   //   account: accountAddress as Address,
   //   onMutate: async () => {
-  //     notificationDialog.openDialog({
-  //       title: isApproved ? "Opening position" : "Approving",
-  //       status: "loading",
-  //     });
+  //     notificationDialog.openLoading(isApproved ? "Opening position" : "Approving");
   //   },
   //   onSuccess: async ({ hash }) => {
   //     try {
   //       await waitForTransaction({
   //         hash,
   //       });
-  //       notificationDialog.openDialog({
-  //         title: isApproved
+  //       notificationDialog.openSuccess(isApproved
   //           ? "Positions opened successfully"
-  //           : "Approved successfully",
-  //         status: "success",
-  //         isClosable: true,
-  //       });
+  //           : "Approved successfully");
   //       setInputAmount("");
   //     } catch (error) {
   //       notificationDialog.openError(error,"Failed")

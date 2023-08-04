@@ -261,21 +261,14 @@ const Test = () => {
     functionName: "approve",
     args: ["0xDB338034fE951cDFEdd0A1abAab43e5C1Efd0bCd", 1000n],
     // onMutate: () => {
-    //   notificationDialog.openDialog({
-    //     title: `Approving ${inputAmount} ${token.name}`,
-    //     status: "loading",
-    //   });
+    //   notificationDialog.openLoading(`Approving ${inputAmount} ${token.name}`)
     // },
     // onSuccess: async ({ hash }) => {
     //   try {
     //     await waitForTransaction({
     //       hash,
     //     });
-    //     notificationDialog.openDialog({
-    //       title: `Approved ${inputAmount} ${token.name}`,
-    //       status: "success",
-    //       isClosable: true,
-    //     });
+    //     notificationDialog.openSuccess(`Approved ${inputAmount} ${token.name}`)
     //     refetchAllowance();
     //   } catch (error) {
     //     notificationDialog.openError(error,"Failed")
