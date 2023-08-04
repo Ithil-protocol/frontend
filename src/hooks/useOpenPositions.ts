@@ -75,7 +75,7 @@ export const useAaveOpenPositions = () => {
       isPnlLoading,
       type: "aave",
       name: "AAVE",
-      slippage: 0,
+      slippage: 0.1,
     });
   }
 
@@ -143,7 +143,7 @@ export const useGmxOpenPositions = () => {
       isPnlLoading,
       type: "gmx",
       name: "GMX",
-      slippage: 1,
+      slippage: 10,
     });
   }
 
