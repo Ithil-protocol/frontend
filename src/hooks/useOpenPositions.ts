@@ -73,7 +73,9 @@ export const useAaveOpenPositions = () => {
       pnlPercentage:
         pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
       isPnlLoading,
-      type: "AAVE",
+      type: "aave",
+      name: "AAVE",
+      slippage: 0.1,
     });
   }
 
@@ -139,7 +141,9 @@ export const useGmxOpenPositions = () => {
       pnlPercentage:
         pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
       isPnlLoading,
-      type: "GMX",
+      type: "gmx",
+      name: "GMX",
+      slippage: 10,
     });
   }
 
@@ -161,7 +165,9 @@ export const useFixedYieldOpenPositions = () => {
     positions.push({
       agreement,
       id: data?.[1][i],
-      type: "FixedYield",
+      type: "fixed-yield",
+      name: "Fixed yield",
+      slippage: 0,
     });
   }
 
@@ -224,24 +230,12 @@ export const useCallOptionOpenPositions = () => {
       positions.push({
         agreement,
         id: ids?.[index],
-        type: "CallOption",
+        type: "call-option",
+        name: "Call option",
+        slippage: 0,
       });
     });
   });
-
-  console.log("userAgreements", userAgreements);
-  console.log("positionsss", positions);
-
-  // const length = data?.[0].length! || 0;
-
-  // for (let i = 0; i < length; i++) {
-  //   const agreement = data?.[0][i]!;
-  //   positions.push({
-  //     agreement,
-  //     id: data?.[1][i]!,
-  //     type: "CallOption",
-  //   });
-  // }
 
   return {
     positions,

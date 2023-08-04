@@ -54,6 +54,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         new Date(Number(a.agreement?.createdAt)).getTime()
       );
     });
+
+  console.log("positions999", positions);
   const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
@@ -73,7 +75,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
 
   if (!isMounted) return null;
-
   return (
     <TableContainer width="full">
       <DefaultTable
@@ -108,7 +109,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     <ActiveTRow
                       key={key}
                       data={{
-                        amount: loanItem.amount,
+                        amount: formatUnits(loanItem.amount, asset.decimals),
                         margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
                         formattedPnl:
@@ -121,6 +122,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
+                        name: item.name,
+                        slippage: item.slippage,
                       }}
                     />
                   );
@@ -134,7 +137,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     <CloseTRow
                       key={key}
                       data={{
-                        amount: loanItem.amount,
                         createdAt: item.agreement?.createdAt,
                         margin: fixPrecision(Number(loanItem.margin), 2),
                         token: loanItem.token,
