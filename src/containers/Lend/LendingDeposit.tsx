@@ -67,7 +67,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         notificationDialog.openSuccess(`Approved ${inputAmount} ${token.name}`);
         refetchAllowance();
       } catch (error) {
-        notificationDialog.openError(error, "Failed");
+        notificationDialog.openError("Failed", error);
       }
     },
     onError: (error) => notificationDialog.openError(error),
@@ -95,7 +95,7 @@ export const LendingDeposit: FC<LendingProps> = ({ token }) => {
         setInputAmount("0");
         refetchAllowance();
       } catch (error) {
-        notificationDialog.openError(error, "Failed");
+        notificationDialog.openError("Failed", error);
       }
     },
     onError: (error) => notificationDialog.openError(error),

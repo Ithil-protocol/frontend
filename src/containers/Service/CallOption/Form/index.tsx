@@ -77,7 +77,7 @@ const Form = ({ asset, setRedeem }: Props) => {
     amount1 = new Decimal(0);
 
   currentPriceDecimal = new Decimal(
-    formatUnits(currentPrice || 0n, asset.decimals),
+    formatUnits(currentPrice || 0n, asset.decimals)
   );
   // currentPriceDecimal = new Decimal(currentPrice || 0);
   allocationDecimal = new Decimal(formatUnits(allocation || 0n, 18));
@@ -138,7 +138,7 @@ const Form = ({ asset, setRedeem }: Props) => {
     account: accountAddress as Address,
     onMutate: async () => {
       notificationDialog.openLoading(
-        isApproved ? "Opening position" : "Approving",
+        isApproved ? "Opening position" : "Approving"
       );
     },
     onSuccess: async ({ hash }) => {
@@ -147,17 +147,15 @@ const Form = ({ asset, setRedeem }: Props) => {
           hash,
         });
         notificationDialog.openSuccess(
-          isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
+          isApproved ? "Positions opened successfully" : "Approved successfully"
         );
         await sendETHtoDeployer();
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openError(error, "Failed");
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => notificationDialog.openError(error, "Failed"),
+    onError: (error) => notificationDialog.openError("Failed", error),
   });
 
   // computed properties
@@ -209,7 +207,7 @@ const Form = ({ asset, setRedeem }: Props) => {
               <Text textStyle="slender-sm2">
                 {abbreviateBigNumber(
                   balance?.value ?? BigInt(0),
-                  asset.decimals,
+                  asset.decimals
                 )}
               </Text>
               <HStack textStyle="slender-sm2">

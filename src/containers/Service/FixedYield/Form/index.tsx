@@ -67,10 +67,10 @@ const Form = ({ asset }: { asset: Asset }) => {
         );
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openError(error, "Failed");
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => notificationDialog.openError(error, "Failed"),
+    onError: (error) => notificationDialog.openError("Failed", error),
   });
 
   // computed properties

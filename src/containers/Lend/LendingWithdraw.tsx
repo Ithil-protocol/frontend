@@ -70,7 +70,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         setInputAmount("0");
         setInputBigNumber(BigInt(0));
       } catch (error) {
-        notificationDialog.openError(error, "Failed");
+        notificationDialog.openError("Failed", error);
       }
     },
     onError: (error) => notificationDialog.openError(error),

@@ -55,8 +55,8 @@ interface OpenFnDefaultOptions extends Partial<OpenFnBaseOptions> {
 type OpenFn = (o: OpenFnDefaultOptions) => void;
 
 type CustomOpenFn = (
-  description: Description | any,
-  title?: Title,
+  title: Title | any,
+  description?: Description | any,
   options?: OpenFnBaseOptions
 ) => void;
 
@@ -102,12 +102,12 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
 
   const createCustomOpenFn: CustomOpenFnCreator =
     (status) =>
-    (description, title = "", options = getDialogDefaultOptions()) => {
+    (title, description, options = getDialogDefaultOptions()) => {
       openDialog({
         ...options,
-        description: resolveDescription(description),
+        description: resolveContent(description),
         status,
-        title,
+        title: resolveContent(title),
       });
     };
 
@@ -137,13 +137,15 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
     ...o,
   });
 
-  const resolveDescription = (d: any) =>
-    typeof d === "string" ? d : getDescriptionFromObject(d) || "";
+  const resolveContent = (c: any) =>
+    typeof c === "string" ? c : getDescriptionFromObject(c) || "";
 
-  const getDescriptionFromObject = (o: {
-    shortMessage?: string;
-    message?: string;
-  }) => o.shortMessage || o.message;
+  const getDescriptionFromObject = (
+    o: {
+      shortMessage?: string;
+      message?: string;
+    } = {}
+  ) => o.shortMessage || o.message;
 
   return (
     <NotificationDialogContext.Provider
