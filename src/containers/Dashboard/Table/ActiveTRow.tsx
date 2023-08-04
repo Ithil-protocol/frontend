@@ -1,21 +1,21 @@
 import { Box, Button, HStack, Td, Text, Tr } from "@chakra-ui/react";
+import { waitForTransaction } from "@wagmi/core";
 import { FC } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
-import { Address } from "viem";
-import { useAccount, useContractWrite, useQueryClient } from "wagmi";
+import { useContractWrite, useQueryClient } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
-import { getAssetByAddress } from "@/utils";
+import { getAssetByAddress, getMetaError } from "@/utils";
 
 interface Data extends Omit<TRowTypes, "createdAt"> {
   pnlPercentage?: string;
@@ -33,10 +33,7 @@ interface Props {
 
 const ActiveTRow: FC<Props> = ({ data }) => {
   const { colorMode, mode, pickColor } = useColorMode();
-
-  const { trackTransaction } = useTransactionFeedback();
-
-  const { address } = useAccount();
+  const notificationDialog = useNotificationDialog();
 
   const services = {
     AAVE: {
@@ -58,20 +55,45 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   } as const;
 
   const service = services[data.type as keyof typeof services];
-  const { isLoading, writeAsync: close } = useContractWrite({
-    address: service.address as Address,
+  const { isLoading, write: close } = useContractWrite({
+    address: service.address,
     abi: service.abi as any,
     functionName: "close",
-    // account: address!,
-    // address: service.address as Address,
-    // abi: service.abi as any,
-    // functionName: "close" as const,
-    // args: [
-    //   data.id,
-    //   encodeAbiParameters(parseAbiParameters("uint256"), [
-    //     BigInt(5) * BigInt(10) ** BigInt(17),
-    //   ]),
-    // ],
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: "Closing...",
+        status: "loading",
+        duration: 0,
+      });
+    },
+    onSuccess: async (result) => {
+      try {
+        await waitForTransaction(result);
+        queryClient.resetQueries();
+        notificationDialog.openDialog({
+          status: "success",
+          title: "",
+          description: "Position closed",
+          duration: 0,
+        });
+      } catch (error) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: getMetaError(error),
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: (error) => {
+      notificationDialog.openDialog({
+        status: "error",
+        title: "Error happened",
+        description: getMetaError(error),
+        duration: 0,
+      });
+    },
   });
 
   const queryClient = useQueryClient();
@@ -82,27 +104,20 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   ) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log("data.quote", data.quote);
     if (data.isPnlLoading) return;
     const initialQuote = data?.quote || 0n;
-    const qoutes: Record<string, bigint> = {
+    const quotes: Record<string, bigint> = {
       AAVE: (initialQuote * 999n) / 1000n,
       GMX: (initialQuote * 9n) / 10n,
       CallOption: BigInt(10) ** BigInt(18),
     };
-    // close?.();
-    // console.log("data?.type", data?.type);
-    const quote = qoutes[data?.type] || 0n;
-    console.log("quote333", quote);
-    console.log("data.id", data.id);
-    const result = await close({
+    const quote = quotes[data?.type] || 0n;
+    close({
       args: [
         data.id,
         encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
       ],
     });
-    await trackTransaction(result, "Position closed");
-    queryClient.resetQueries();
   };
   const asset = getAssetByAddress(data.token);
 

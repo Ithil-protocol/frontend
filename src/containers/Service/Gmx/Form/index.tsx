@@ -16,7 +16,6 @@ import {
   useGmxLatestAndBase,
   useGmxRiskSpreads,
 } from "@/hooks/generated/gmx";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
@@ -36,7 +35,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 // import DepositForm from "./DepositForm"
 
 const Form = ({ asset }: { asset: Asset }) => {
-  const { address: accountAddress, isConnected } = useAccount();
+  const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
@@ -44,7 +43,6 @@ const Form = ({ asset }: { asset: Asset }) => {
   const notificationDialog = useNotificationDialog();
 
   // web3 hooks
-  const { trackTransaction } = useTransactionFeedback();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
