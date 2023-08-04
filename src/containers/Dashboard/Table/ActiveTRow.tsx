@@ -7,26 +7,19 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { waitForTransaction } from "@wagmi/core";
 import { FC } from "react";
-import { useContractWrite, useQueryClient } from "wagmi";
 
-import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
-import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { aaveAddress } from "@/hooks/generated/aave";
-import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
-import { gmxAddress } from "@/hooks/generated/gmx";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes } from "@/types";
-import { getAssetByAddress, getMetaError } from "@/utils";
+import { getAssetByAddress } from "@/utils";
 
 import Modal from "../Modal";
 
-interface Data extends Omit<TRowTypes, "createdAt"> {
+export interface Data extends Omit<TRowTypes, "createdAt"> {
   pnlPercentage?: string;
   pnl?: string;
   isPnlLoading?: boolean;
@@ -43,76 +36,8 @@ interface Props {
 }
 
 const ActiveTRow: FC<Props> = ({ data }) => {
-  console.log("datadata", data);
   const { colorMode, mode, pickColor } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const notificationDialog = useNotificationDialog();
-
-  const services = {
-    aave: {
-      abi: aaveABI,
-      address: aaveAddress[98745],
-    },
-    gmx: {
-      abi: gmxABI,
-      address: gmxAddress[98745],
-    },
-    "fixed-yield": {
-      abi: fixedYieldABI,
-      address: fixedYieldAddress[98745],
-    },
-    "call-option": {
-      abi: callOptionABI,
-      address: getAssetByAddress(data.token)?.callOptionAddress,
-    },
-  } as const;
-
-  console.log("data.type33", data.type);
-
-  const service = services[data.type as keyof typeof services];
-  const { isLoading, write: close } = useContractWrite({
-    address: service?.address,
-    abi: service?.abi as any,
-    functionName: "close",
-    onMutate: () => {
-      notificationDialog.openDialog({
-        title: "Closing...",
-        status: "loading",
-        duration: 0,
-      });
-    },
-    onSuccess: async (result) => {
-      try {
-        await waitForTransaction(result);
-        queryClient.resetQueries();
-        notificationDialog.openDialog({
-          status: "success",
-          title: "",
-          description: "Position closed",
-          duration: 0,
-        });
-      } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
-      }
-    },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        status: "error",
-        title: "Error happened",
-        description: getMetaError(error),
-        duration: 0,
-      });
-    },
-  });
-
-  const queryClient = useQueryClient();
 
   const isMounted = useIsMounted();
   const handelCancelBtn = async (
@@ -121,20 +46,6 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     e.stopPropagation();
     e.preventDefault();
     onOpen();
-    if (data.isPnlLoading) return;
-    const initialQuote = data?.quote || 0n;
-    const quotes: Record<string, bigint> = {
-      aave: (initialQuote * 999n) / 1000n,
-      gmx: (initialQuote * 9n) / 10n,
-      "call-option": BigInt(10) ** BigInt(18),
-    };
-    const quote = quotes[data?.type] || 0n;
-    // close({
-    //   args: [
-    //     data.id,
-    //     encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
-    //   ],
-    // });
   };
   const asset = getAssetByAddress(data.token);
 
@@ -143,20 +54,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
   return (
     <>
-      <Modal
-        data={{
-          pnl: data.formattedPnl,
-          amount: data.amount,
-          margin: data.margin,
-          service: data.name,
-          token: data.token,
-          slippage: data.slippage,
-          type: data.type,
-        }}
-        onClose={onClose}
-        onOpen={onOpen}
-        isOpen={isOpen}
-      />
+      <Modal data={data} onClose={onClose} onOpen={onOpen} isOpen={isOpen} />
       <Tr
         width="72"
         bgColor={pickColor(palette.colors.primary, "100")}
@@ -251,12 +149,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           {data.type === "call-option" ? data.amount : data.margin}
         </Td>
         <Td textAlign="end" width={200} height="108px">
-          <Button
-            onClick={handelCancelBtn}
-            variant="outline"
-            color="#f35959"
-            isLoading={isLoading}
-          >
+          <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
             Close
           </Button>
         </Td>

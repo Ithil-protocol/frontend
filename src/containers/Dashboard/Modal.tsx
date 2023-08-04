@@ -12,26 +12,24 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { waitForTransaction } from "@wagmi/core";
 import { FC, useState } from "react";
-import { Address } from "viem";
+import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import { useContractWrite, useQueryClient } from "wagmi";
 
+import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import Slider from "@/components/Slider";
 import TokenIcon from "@/components/TokenIcon";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { aaveAddress } from "@/hooks/generated/aave";
+import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
+import { gmxAddress } from "@/hooks/generated/gmx";
 import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
-import { getAssetByAddress } from "@/utils";
+import { getAssetByAddress, getMetaError } from "@/utils";
 
 import ModalItem from "./ModalItem";
-
-interface Data {
-  pnl?: string;
-  margin?: string | number;
-  amount?: string | number;
-  service: string | undefined;
-  token: string;
-  slippage: number;
-  type: string;
-}
+import { type Data } from "./Table/ActiveTRow";
 
 interface Props {
   data: Data;
@@ -48,27 +46,92 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
   const asset = getAssetByAddress(data.token as Address);
   const tokenName = asset?.name;
 
+  const notificationDialog = useNotificationDialog();
+
+  const services = {
+    aave: {
+      abi: aaveABI,
+      address: aaveAddress[98745],
+    },
+    gmx: {
+      abi: gmxABI,
+      address: gmxAddress[98745],
+    },
+    "fixed-yield": {
+      abi: fixedYieldABI,
+      address: fixedYieldAddress[98745],
+    },
+    "call-option": {
+      abi: callOptionABI,
+      address: getAssetByAddress(data.token)?.callOptionAddress,
+    },
+  } as const;
+
+  const service = services[data.type as keyof typeof services];
+
+  const queryClient = useQueryClient();
+
+  const { write: close } = useContractWrite({
+    address: service?.address,
+    abi: service?.abi as any,
+    functionName: "close",
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: "Closing...",
+        status: "loading",
+        duration: 0,
+      });
+    },
+    onSuccess: async (result) => {
+      try {
+        await waitForTransaction(result);
+        queryClient.resetQueries();
+        onClose();
+        notificationDialog.openDialog({
+          status: "success",
+          title: "Position closed",
+          duration: 0,
+        });
+      } catch (error) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: getMetaError(error),
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: (error) => {
+      notificationDialog.openDialog({
+        status: "error",
+        title: "Error happened",
+        description: getMetaError(error),
+        duration: 0,
+      });
+    },
+  });
+
   const handelConfirmBtn = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
     e.preventDefault();
-    // console.log("data.quote", data.quote);
-    // if (data.isPnlLoading) return;
-    // const initialQuote = data?.quote || 0n;
-    // const qoutes: Record<string, bigint> = {
-    //   AAVE: (initialQuote * 999n) / 1000n,
-    //   GMX: (initialQuote * 9n) / 10n,
-    // };
-    // const quote = qoutes[data?.type] || 0n;
-    // const result = await close({
-    //   args: [
-    //     data.id,
-    //     encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
-    //   ],
-    // });
-    // await trackTransaction(result, "Position closed");
-    // queryClient.resetQueries();
+    if (data.isPnlLoading) return;
+    const initialQuote = data?.quote || 0n;
+    const quotes: Record<string, bigint> = {
+      aave: (initialQuote * 999n) / 1000n,
+      gmx: (initialQuote * 9n) / 10n,
+      "call-option":
+        (BigInt(10) ** BigInt(18) * BigInt(percentage)) / BigInt(100),
+    };
+    const quote = quotes[data?.type] || 0n;
+    close({
+      args: [
+        data.id,
+        encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
+      ],
+    });
   };
   return (
     <ChakraModal onClose={onClose} isCentered isOpen={isOpen}>
@@ -108,7 +171,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
 
         <ModalBody marginBottom={8}>
           <VStack spacing="25px" marginTop={4} alignItems="start">
-            <ModalItem title="Service name" value={`${data.service} service`} />
+            <ModalItem title="Service name" value={`${data.name} service`} />
             <HStack alignItems="center">
               <ModalItem title="Amount obtained" value={data.amount} />{" "}
               {tokenName && (
