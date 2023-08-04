@@ -24,6 +24,7 @@ const isEthersError = (error: any): error is EthersError => {
   );
 };
 
+//CLEANME: It is now useless, we can delete it
 export const useTransactionFeedback = () => {
   const addRecentTransaction = useAddRecentTransaction();
   const notificationDialog = useNotificationDialog();

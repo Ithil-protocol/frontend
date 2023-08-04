@@ -4,13 +4,13 @@ import Header from "@/containers/Dashboard/Header";
 import Table from "@/containers/Dashboard/Table";
 import { viewTypes } from "@/types";
 
-export type ColumnsActive = "Tokens" | "Service" | "PnL" | "Margin" | "";
+export type ColumnsActive = "Tokens" | "Service" | "Status" | "Margin" | "";
 export type ColumnsOther = "Tokens" | "Service" | "Date";
 
 const columnsActive: ColumnsActive[] = [
   "Tokens",
   "Service",
-  "PnL",
+  "Status",
   "Margin",
   "",
 ];
