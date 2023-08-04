@@ -54,6 +54,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         new Date(Number(a.agreement?.createdAt)).getTime()
       );
     });
+
+  console.log("positions999", positions);
   const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
@@ -73,7 +75,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
     isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
 
   if (!isMounted) return null;
-
   return (
     <TableContainer width="full">
       <DefaultTable
@@ -99,22 +100,16 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {activeView === "Active"
+          {!isLoadingPositions && activeView === "Active"
             ? positions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
                   const asset = getAssetByAddress(loanItem.token);
-
-                  if (item.type === "FixedYield") {
-                    console.log("loanItem.margin", loanItem.margin);
-                  }
-
                   if (!asset) return null;
-
                   return (
                     <ActiveTRow
                       key={key}
                       data={{
-                        amount: loanItem.amount,
+                        amount: formatUnits(loanItem.amount, asset.decimals),
                         margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
                         formattedPnl:
@@ -127,19 +122,21 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
+                        name: item.name,
+                        slippage: item.slippage,
                       }}
                     />
                   );
                 })
               )
-            : activeView === "Closed" &&
+            : !isLoadingClosed &&
+              activeView === "Closed" &&
               closedPositions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
                   return (
                     <CloseTRow
                       key={key}
                       data={{
-                        amount: loanItem.amount,
                         createdAt: item.agreement?.createdAt,
                         margin: fixPrecision(Number(loanItem.margin), 2),
                         token: loanItem.token,
