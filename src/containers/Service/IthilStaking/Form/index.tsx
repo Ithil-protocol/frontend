@@ -215,7 +215,7 @@ const Form = ({ asset }: { asset: Ithil }) => {
           {/* <FormInfo items={formInfoItems} /> */}
           <FormLabel marginTop={4}>Maturity time in months</FormLabel>
           <Box margin="10px 10px 20px">
-            <Slider value={month} onChange={setMonth} />
+            <Slider value={month} min={1} max={12} onChange={setMonth} />
           </Box>
 
           {/* <AdvanceSection
