@@ -67,7 +67,7 @@ export interface Service {
 
 export interface TRowTypes {
   token: Address;
-  amount: bigint;
+  amount?: string | number;
   margin: string | number;
   createdAt: bigint | undefined;
   type: string;

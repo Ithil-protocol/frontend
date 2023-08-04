@@ -25,8 +25,8 @@ import ModalItem from "./ModalItem";
 
 interface Data {
   pnl?: string;
-  margin?: string;
-  amount?: string;
+  margin?: string | number;
+  amount?: string | number;
   service: string | undefined;
   token: string;
   slippage: number;
@@ -140,7 +140,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
               color="#f35959"
               onClick={handelConfirmBtn}
             >
-              OK
+              Close
             </Button>
           </HStack>
         </ModalFooter>

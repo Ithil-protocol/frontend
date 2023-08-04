@@ -21,8 +21,8 @@ import { gmxAddress } from "@/hooks/generated/gmx";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
-import { TRowTypes, VaultName } from "@/types";
-import { formatToken, getAssetByAddress, getMetaError } from "@/utils";
+import { TRowTypes } from "@/types";
+import { getAssetByAddress, getMetaError } from "@/utils";
 
 import Modal from "../Modal";
 
@@ -43,6 +43,7 @@ interface Props {
 }
 
 const ActiveTRow: FC<Props> = ({ data }) => {
+  console.log("datadata", data);
   const { colorMode, mode, pickColor } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -145,11 +146,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       <Modal
         data={{
           pnl: data.formattedPnl,
-          amount: formatToken(
-            getAssetByAddress(data.token)?.name as VaultName,
-            data.amount
-          ),
-          margin: data.margin.toString(),
+          amount: data.amount,
+          margin: data.margin,
           service: data.name,
           token: data.token,
           slippage: data.slippage,
@@ -250,7 +248,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {data.margin}
+          {data.type === "call-option" ? data.amount : data.margin}
         </Td>
         <Td textAlign="end" width={200} height="108px">
           <Button

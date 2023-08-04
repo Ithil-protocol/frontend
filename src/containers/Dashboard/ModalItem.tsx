@@ -3,7 +3,7 @@ import { FC } from "react";
 
 interface ModalItemProps {
   title: string;
-  value: string | undefined;
+  value?: string | number;
 }
 
 const ModalItem: FC<ModalItemProps> = ({ title, value }) => {

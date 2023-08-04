@@ -109,7 +109,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     <ActiveTRow
                       key={key}
                       data={{
-                        amount: loanItem.amount,
+                        amount: formatUnits(loanItem.amount, asset.decimals),
                         margin: formatUnits(loanItem.margin, asset.decimals),
                         token: loanItem.token,
                         formattedPnl:
@@ -137,7 +137,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                     <CloseTRow
                       key={key}
                       data={{
-                        amount: loanItem.amount,
                         createdAt: item.agreement?.createdAt,
                         margin: fixPrecision(Number(loanItem.margin), 2),
                         token: loanItem.token,
