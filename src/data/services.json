@@ -61,7 +61,7 @@
     "label": "Call Option",
     "type": "credit",
     "long_name": "Aave leveraged lending",
-    "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
+    "description": "Be part of Ithil tokenomics by reserving your $ITHIL allocation with an innovative non dilutive purchase model based on call options.",
     "bestApy": 12,
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],

@@ -15,7 +15,7 @@ import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { AaveAsset } from "@/types/onchain.types";
+import { Ithil } from "@/types";
 import {
   displayLeverage,
   getServiceByName,
@@ -28,7 +28,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: AaveAsset }) => {
+const Form = ({ asset }: { asset: Ithil }) => {
   const {
     query: { asset: token },
   } = useRouter();
@@ -215,7 +215,7 @@ const Form = ({ asset }: { asset: AaveAsset }) => {
           {/* <FormInfo items={formInfoItems} /> */}
           <FormLabel marginTop={4}>Maturity time in months</FormLabel>
           <Box margin="10px 10px 20px">
-            <Slider value={month} onChange={setMonth} />
+            <Slider value={month} min={1} max={12} onChange={setMonth} />
           </Box>
 
           {/* <AdvanceSection

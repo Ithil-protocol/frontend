@@ -54,6 +54,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         new Date(Number(a.agreement?.createdAt)).getTime()
       );
     });
+
+  console.log("positions999", positions);
   const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
@@ -98,17 +100,11 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {activeView === "Active"
+          {!isLoadingPositions && activeView === "Active"
             ? positions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
                   const asset = getAssetByAddress(loanItem.token);
-
-                  if (item.type === "FixedYield") {
-                    console.log("loanItem.margin", loanItem.margin);
-                  }
-
                   if (!asset) return null;
-
                   return (
                     <ActiveTRow
                       key={key}
@@ -133,7 +129,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                   );
                 })
               )
-            : activeView === "Closed" &&
+            : !isLoadingClosed &&
+              activeView === "Closed" &&
               closedPositions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
                   return (

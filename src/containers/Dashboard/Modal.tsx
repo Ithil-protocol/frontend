@@ -12,12 +12,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { Address } from "viem";
 
 import Slider from "@/components/Slider";
 import TokenIcon from "@/components/TokenIcon";
 import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
+import { getAssetByAddress } from "@/utils";
 
 import ModalItem from "./ModalItem";
 
@@ -32,15 +34,20 @@ interface Data {
 }
 
 interface Props {
-  slider: number;
   data: Data;
   isOpen: boolean;
   onOpen: VoidNoArgs;
   onClose: VoidNoArgs;
 }
 
-const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
+const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
   const { mode } = useColorMode();
+
+  const [percentage, setPercentage] = useState(100);
+
+  const asset = getAssetByAddress(data.token as Address);
+  const tokenName = asset?.name;
+
   const handelConfirmBtn = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -104,14 +111,21 @@ const Modal: FC<Props> = ({ slider, data, isOpen, onClose, onOpen }) => {
             <ModalItem title="Service name" value={`${data.service} service`} />
             <HStack alignItems="center">
               <ModalItem title="Amount obtained" value={data.amount} />{" "}
-              <TokenIcon name={data.token} width={20} height={20} />
+              {tokenName && (
+                <TokenIcon name={tokenName} width={20} height={20} />
+              )}
             </HStack>
             <ModalItem title="Slippage" value={`${data.slippage}%`} />
 
             {data.type === "call-option" && (
               <>
                 <ModalItem title="Purchase price" value={""} />
-                <Slider value={slider} max={100} onChange={undefined} />
+                <Slider
+                  value={percentage}
+                  max={100}
+                  min={0}
+                  onChange={setPercentage}
+                />
               </>
             )}
           </VStack>

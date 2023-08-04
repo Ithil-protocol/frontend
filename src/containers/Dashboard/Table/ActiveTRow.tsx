@@ -7,21 +7,22 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
+import { waitForTransaction } from "@wagmi/core";
 import { FC } from "react";
-import { useContractWrite } from "wagmi";
+import { useContractWrite, useQueryClient } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
-import { useTransactionFeedback } from "@/hooks/use-transaction.hook";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { TRowTypes, VaultName } from "@/types";
-import { formatToken, getAssetByAddress } from "@/utils";
+import { formatToken, getAssetByAddress, getMetaError } from "@/utils";
 
 import Modal from "../Modal";
 
@@ -45,7 +46,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const { colorMode, mode, pickColor } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { trackTransaction } = useTransactionFeedback();
+  const notificationDialog = useNotificationDialog();
 
   const services = {
     aave: {
@@ -66,14 +67,51 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     },
   } as const;
 
+  console.log("data.type33", data.type);
+
   const service = services[data.type as keyof typeof services];
-  const { isLoading, writeAsync: close } = useContractWrite({
-    address: service.address,
-    abi: service.abi as any,
+  const { isLoading, write: close } = useContractWrite({
+    address: service?.address,
+    abi: service?.abi as any,
     functionName: "close",
+    onMutate: () => {
+      notificationDialog.openDialog({
+        title: "Closing...",
+        status: "loading",
+        duration: 0,
+      });
+    },
+    onSuccess: async (result) => {
+      try {
+        await waitForTransaction(result);
+        queryClient.resetQueries();
+        notificationDialog.openDialog({
+          status: "success",
+          title: "",
+          description: "Position closed",
+          duration: 0,
+        });
+      } catch (error) {
+        notificationDialog.openDialog({
+          title: "Failed",
+          description: getMetaError(error),
+          status: "error",
+          isClosable: true,
+          duration: 0,
+        });
+      }
+    },
+    onError: (error) => {
+      notificationDialog.openDialog({
+        status: "error",
+        title: "Error happened",
+        description: getMetaError(error),
+        duration: 0,
+      });
+    },
   });
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const isMounted = useIsMounted();
   const handelCancelBtn = async (
@@ -82,6 +120,20 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     e.stopPropagation();
     e.preventDefault();
     onOpen();
+    if (data.isPnlLoading) return;
+    const initialQuote = data?.quote || 0n;
+    const quotes: Record<string, bigint> = {
+      aave: (initialQuote * 999n) / 1000n,
+      gmx: (initialQuote * 9n) / 10n,
+      "call-option": BigInt(10) ** BigInt(18),
+    };
+    const quote = quotes[data?.type] || 0n;
+    // close({
+    //   args: [
+    //     data.id,
+    //     encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
+    //   ],
+    // });
   };
   const asset = getAssetByAddress(data.token);
 
@@ -91,7 +143,6 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   return (
     <>
       <Modal
-        slider={4}
         data={{
           pnl: data.formattedPnl,
           amount: formatToken(

@@ -237,20 +237,6 @@ export const useCallOptionOpenPositions = () => {
     });
   });
 
-  console.log("userAgreements", userAgreements);
-  console.log("positionsss", positions);
-
-  // const length = data?.[0].length! || 0;
-
-  // for (let i = 0; i < length; i++) {
-  //   const agreement = data?.[0][i]!;
-  //   positions.push({
-  //     agreement,
-  //     id: data?.[1][i]!,
-  //     type: "CallOption",
-  //   });
-  // }
-
   return {
     positions,
     isLoading,
