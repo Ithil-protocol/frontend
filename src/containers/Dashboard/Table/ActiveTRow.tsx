@@ -117,7 +117,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
                   fontWeight="medium"
                   color={
                     +data.formattedPnl === 0
-                      ? "#CCCCCC"
+                      ? "#a4b1be"
                       : isPnlPositive
                       ? "#15ac89"
                       : "#f35959"
@@ -130,7 +130,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
                 <Text
                   bg={
                     +data.formattedPnl === 0
-                      ? "#CCCCCC"
+                      ? "#a4b1be"
                       : isPnlPositive
                       ? "#15ac89"
                       : "#f35959"
