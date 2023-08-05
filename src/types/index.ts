@@ -65,12 +65,20 @@ export interface Service {
   type: "debit" | "credit";
 }
 
-export interface TRowTypes {
+export interface PositionType {
   token: Address;
-  amount?: string | number;
+  amount: string;
   margin: string | number;
   createdAt: bigint | undefined;
   type: string;
+  pnlPercentage?: string;
+  pnl?: string;
+  isPnlLoading?: boolean;
+  id: bigint | undefined;
+  quote?: bigint;
+  formattedPnl?: string;
+  name: string;
+  slippage: number;
 }
 
 export interface PageHeading {
