@@ -14,25 +14,13 @@ import { Loading } from "@/components/loading";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
-import { TRowTypes } from "@/types";
+import { PositionType } from "@/types";
 import { getAssetByAddress } from "@/utils";
 
 import Modal from "../Modal";
 
-export interface Data extends Omit<TRowTypes, "createdAt"> {
-  pnlPercentage?: string;
-  pnl?: string;
-  isPnlLoading?: boolean;
-  id?: bigint;
-  quote?: bigint;
-  formattedPnl?: string;
-  type: string;
-  name: string;
-  slippage: number;
-}
-
 interface Props {
-  data: Data;
+  data: Omit<PositionType, "createdAt">;
 }
 
 const ActiveTRow: FC<Props> = ({ data }) => {

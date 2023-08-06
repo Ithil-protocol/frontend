@@ -4,7 +4,7 @@ import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { toHex } from "viem";
 import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -24,7 +24,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName } from "@/utils";
+import { getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -35,7 +35,6 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
@@ -55,7 +54,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: approve,
   } = useAllowance({
     amount: inputAmount,
-    spender: aaveAddress[chainId],
+    spender: aaveAddress,
     token: asset,
   });
 
@@ -90,7 +89,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     leverage: finalLeverage.toString(),
     margin: inputAmount,
     slippage,
-    serviceAddress: aaveAddress[chainId],
+    serviceAddress: aaveAddress,
   });
 
   // useEffect(() => {
@@ -118,50 +117,29 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: openPosition,
   } = useContractWrite({
     abi: aaveABI,
-    address: aaveAddress[98745],
+    address: aaveAddress,
     functionName: "open",
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.openDialog({
-        title: isApproved ? "Opening position" : "Approving",
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading(
+        isApproved ? "Opening position" : "Approving"
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openSuccess(
+          isApproved ? "Positions opened successfully" : "Approved successfully"
+        );
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        title: "Failed",
-        description: getMetaError(error),
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
+    onError: (error) => notificationDialog.openError("Failed", error),
   });
 
   // computed properties
