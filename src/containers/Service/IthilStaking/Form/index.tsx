@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toHex } from "viem";
-import { useAccount, useBalance, useChainId } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 
 import PrivateButton from "@/components/PrivateButton";
 import Slider from "@/components/Slider";
@@ -33,7 +33,6 @@ const Form = ({ asset }: { asset: Ithil }) => {
     query: { asset: token },
   } = useRouter();
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
@@ -55,7 +54,7 @@ const Form = ({ asset }: { asset: Ithil }) => {
     write: approve,
   } = useAllowance({
     amount: inputAmount,
-    spender: aaveAddress[chainId],
+    spender: aaveAddress,
     token: asset,
   });
 
@@ -70,7 +69,7 @@ const Form = ({ asset }: { asset: Ithil }) => {
   //   leverage,
   //   margin: inputAmount,
   //   slippage,
-  //   serviceAddress: aaveAddress[chainId],
+  //   serviceAddress: aaveAddress,
   // });
 
   const extraData = toHex("");
@@ -90,7 +89,7 @@ const Form = ({ asset }: { asset: Ithil }) => {
   //   write: openPosition,
   // } = useContractWrite({
   //   abi: aaveABI,
-  //   address: aaveAddress[98745],
+  //   address: aaveAddress,
   //   functionName: "open",
   //   args: [order],
   //   account: accountAddress as Address,

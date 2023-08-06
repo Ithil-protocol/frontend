@@ -4,7 +4,7 @@ import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { toHex } from "viem";
 import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -35,7 +35,6 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
@@ -55,7 +54,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: approve,
   } = useAllowance({
     amount: inputAmount,
-    spender: aaveAddress[chainId],
+    spender: aaveAddress,
     token: asset,
   });
 
@@ -90,7 +89,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     leverage: finalLeverage.toString(),
     margin: inputAmount,
     slippage,
-    serviceAddress: aaveAddress[chainId],
+    serviceAddress: aaveAddress,
   });
 
   // useEffect(() => {
@@ -118,7 +117,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: openPosition,
   } = useContractWrite({
     abi: aaveABI,
-    address: aaveAddress[98745],
+    address: aaveAddress,
     functionName: "open",
     args: [order],
     account: accountAddress as Address,
