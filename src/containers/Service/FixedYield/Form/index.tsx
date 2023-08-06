@@ -14,7 +14,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName } from "@/utils";
+import { getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -53,45 +53,24 @@ const Form = ({ asset }: { asset: Asset }) => {
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.openDialog({
-        title: isApproved ? "Opening position" : "Approving",
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading(
+        isApproved ? "Opening position" : "Approving"
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openSuccess(
+          isApproved ? "Positions opened successfully" : "Approved successfully"
+        );
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        title: "Failed",
-        description: getMetaError(error),
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
+    onError: (error) => notificationDialog.openError("Failed", error),
   });
 
   // computed properties

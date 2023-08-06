@@ -24,9 +24,10 @@ import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
+import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useColorMode } from "@/hooks/useColorMode";
 import { PositionType, VoidNoArgs } from "@/types";
-import { getAssetByAddress, getMetaError } from "@/utils";
+import { getAssetByAddress } from "@/utils";
 
 import ModalItem from "./ModalItem";
 
@@ -40,7 +41,7 @@ interface Props {
   onClose: VoidNoArgs;
 }
 
-const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
+const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { mode } = useColorMode();
 
   const [percentage, setPercentage] = useState(100);
@@ -49,6 +50,13 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
   const tokenName = asset?.name;
 
   const notificationDialog = useNotificationDialog();
+
+  const { redeem } = useCallOptionInfo({
+    asset: asset!,
+    amount: data.amount?.toString(),
+    month: 1,
+    enabled: data.type === "call-option",
+  });
 
   const services = {
     aave: {
@@ -78,39 +86,20 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
     abi: service?.abi as any,
     functionName: "close",
     onMutate: () => {
-      notificationDialog.openDialog({
-        title: "Closing...",
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading("Closing...");
     },
     onSuccess: async (result) => {
       try {
         await waitForTransaction(result);
         queryClient.resetQueries();
         onClose();
-        notificationDialog.openDialog({
-          status: "success",
-          title: "Position closed",
-          duration: 0,
-        });
+        notificationDialog.openSuccess("Position closed");
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
     onError: (error) => {
-      notificationDialog.openDialog({
-        status: "error",
-        title: "Error happened",
-        description: getMetaError(error),
-        duration: 0,
-      });
+      notificationDialog.openError("Error happened", error);
     },
   });
 
@@ -184,12 +173,16 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
 
             {data.type === "call-option" && (
               <>
-                <ModalItem title="Purchase price" value={""} />
+                <ModalItem
+                  title="Purchase price"
+                  value={`$${redeem?.toFixed(2)}`}
+                />
                 <Slider
                   value={percentage}
                   max={100}
                   min={0}
                   onChange={setPercentage}
+                  extension="%"
                 />
               </>
             )}

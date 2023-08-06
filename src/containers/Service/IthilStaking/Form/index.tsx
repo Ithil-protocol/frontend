@@ -95,45 +95,22 @@ const Form = ({ asset }: { asset: Ithil }) => {
   //   args: [order],
   //   account: accountAddress as Address,
   //   onMutate: async () => {
-  //     notificationDialog.openDialog({
-  //       title: isApproved ? "Opening position" : "Approving",
-  //       status: "loading",
-  //       duration: 0,
-  //     });
+  //     notificationDialog.openLoading(isApproved ? "Opening position" : "Approving");
   //   },
   //   onSuccess: async ({ hash }) => {
   //     try {
   //       await waitForTransaction({
   //         hash,
   //       });
-  //       notificationDialog.openDialog({
-  //         title: isApproved
+  //       notificationDialog.openSuccess(isApproved
   //           ? "Positions opened successfully"
-  //           : "Approved successfully",
-  //         status: "success",
-  //         isClosable: true,
-  //         duration: 0,
-  //       });
+  //           : "Approved successfully");
   //       setInputAmount("");
   //     } catch (error) {
-  //       notificationDialog.openDialog({
-  //         title: "Failed",
-  //         description: getMetaError(error),
-  //         status: "error",
-  //         isClosable: true,
-  //         duration: 0,
-  //       });
+  //       notificationDialog.openError(error,"Failed")
   //     }
   //   },
-  //   onError: (error) => {
-  //     notificationDialog.openDialog({
-  //       title: "Failed",
-  //       description: getMetaError(error),
-  //       status: "error",
-  //       isClosable: true,
-  //       duration: 0,
-  //     });
-  //   },
+  //   onError: (error) => notificationDialog.openError(error,"Failed")
   // });
 
   // computed properties

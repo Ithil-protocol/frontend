@@ -5,7 +5,6 @@ import { useAccount } from "wagmi";
 
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { Token } from "@/types/onchain.types";
-import { getMetaError } from "@/utils";
 
 import {
   usePrepareTokenApprove,
@@ -53,42 +52,20 @@ export const useAllowance = ({
     ...config,
     onMutate: ({ args }) => {
       console.log("args33", args);
-      notificationDialog.openDialog({
-        title: "Approving",
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading("Approving");
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
-          title: `Approved ${token.name}`,
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openSuccess(`Approved ${token.name}`);
         refetchAllowance();
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        title: getMetaError(error),
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
+    onError: (error) => notificationDialog.openError(error),
   });
 
   return {
