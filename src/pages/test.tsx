@@ -67,7 +67,7 @@ const Test = () => {
   //   mode:"prepared",
   //   request:{
   //     abi: aaveABI,
-  //     address: aaveAddress[98745],
+  //     address: aaveAddress,
   //     functionName: "open",
   //     args: [workedOrder],
   //     gas: 2000000n,
@@ -107,7 +107,7 @@ const Test = () => {
   // const { data: walletClient, error: walletError } = useWalletClient();
   // const { data: xx } = useContractRead({
   //   abi: aaveABI,
-  //   address: aaveAddress[98745],
+  //   address: aaveAddress,
   //   functionName: "getUserAgreements",
   //   account: walletClient,
   // });
@@ -120,7 +120,7 @@ const Test = () => {
   //     console.log("useragg", 2);
   //     const contract = getContract({
   //       abi: aaveABI,
-  //       address: aaveAddress[98745],
+  //       address: aaveAddress,
   //       walletClient,
   //     });
   //     console.log("useragg", 3);
@@ -154,7 +154,7 @@ const Test = () => {
   //   // @ts-ignore
   //   request: {
   //     abi: aaveABI,
-  //     address: aaveAddress[98745],
+  //     address: aaveAddress,
   //     functionName: "close",
   //     args: [
   //       BigInt(0),
@@ -181,7 +181,7 @@ const Test = () => {
   //   contracts: [
   //     {
   //       abi: aaveABI,
-  //       address: aaveAddress[98745],
+  //       address: aaveAddress,
   //       functionName: "getAgreement",
   //       args: [4n],
   //     },
@@ -195,7 +195,7 @@ const Test = () => {
   //   contracts: [
   //     {
   //       abi: aaveABI,
-  //       address: aaveAddress[98745],
+  //       address: aaveAddress,
   //       functionName: "quote",
   //       args: [getAgreementsByUser?.[0]?.[0] as unknown as ServiceAgreement],
   //       // enabled: getAgreementsByUser?.[0]?.[0],
@@ -222,7 +222,7 @@ const Test = () => {
   //   // @ts-ignore
   //   request: {
   //     abi: aaveABI,
-  //     address: aaveAddress[98745],
+  //     address: aaveAddress,
   //     functionName: "setRiskParams",
   //     args: [
   //       "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",

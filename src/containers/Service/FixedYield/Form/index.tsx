@@ -2,7 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { fixedYieldABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -24,7 +24,6 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const notificationDialog = useNotificationDialog();
 
@@ -37,7 +36,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { isApproved, write: approve } = useAllowance({
     amount: inputAmount,
-    spender: fixedYieldAddress[98745],
+    spender: fixedYieldAddress,
     token: asset,
   });
 
@@ -48,7 +47,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { write: openPosition } = useContractWrite({
     abi: fixedYieldABI,
-    address: fixedYieldAddress[98745],
+    address: fixedYieldAddress,
     functionName: "open",
     args: [order],
     account: accountAddress as Address,

@@ -4,7 +4,7 @@ import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -35,7 +35,6 @@ interface Props {
 
 const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [month, setMonth] = useState(1);

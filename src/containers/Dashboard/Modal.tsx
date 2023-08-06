@@ -61,15 +61,15 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
   const services = {
     aave: {
       abi: aaveABI,
-      address: aaveAddress[98745],
+      address: aaveAddress,
     },
     gmx: {
       abi: gmxABI,
-      address: gmxAddress[98745],
+      address: gmxAddress,
     },
     "fixed-yield": {
       abi: fixedYieldABI,
-      address: fixedYieldAddress[98745],
+      address: fixedYieldAddress,
     },
     "call-option": {
       abi: callOptionABI,

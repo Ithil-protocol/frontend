@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { gmxABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -36,7 +36,6 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
@@ -57,7 +56,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: approve,
   } = useAllowance({
     amount: inputAmount,
-    spender: gmxAddress[chainId],
+    spender: gmxAddress,
     token: asset,
   });
 
@@ -72,7 +71,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     leverage,
     margin: inputAmount,
     slippage,
-    serviceAddress: gmxAddress[chainId],
+    serviceAddress: gmxAddress,
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
@@ -91,7 +90,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     write: openPosition,
   } = useContractWrite({
     abi: gmxABI,
-    address: gmxAddress[98745],
+    address: gmxAddress,
     functionName: "open",
     args: [order],
     account: accountAddress,
