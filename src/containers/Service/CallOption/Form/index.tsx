@@ -2,9 +2,8 @@ import { FormLabel, HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
-import { Decimal } from "decimal.js";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Address, formatUnits } from "viem";
+import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
@@ -14,11 +13,8 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import {
-  useCallOptionCurrentPrice,
-  useCallOptionTotalAllocation,
-} from "@/hooks/generated/callOption";
 import { useAllowance } from "@/hooks/useAllowance";
+import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
@@ -52,59 +48,16 @@ const Form = ({ asset, setRedeem }: Props) => {
     watch: true,
   });
 
-  const { data: currentPrice, isLoading: isCurrentPriceLoading } =
-    useCallOptionCurrentPrice({
-      address: asset.callOptionAddress,
-    });
-  const { data: allocation, isLoading: isAllocationLoading } =
-    useCallOptionTotalAllocation({
-      address: asset.callOptionAddress,
-    });
-
-  console.log("currentPrice22", currentPrice);
-
-  const isInfoLoading = isCurrentPriceLoading || isAllocationLoading;
-
-  const inputDecimal = new Decimal(inputAmount || 0),
-    monthDecimal = new Decimal(month);
-
-  let allocationDecimal = new Decimal(0),
-    currentPriceDecimal = new Decimal(0),
-    virtualAmount = new Decimal(0),
-    finalPrice = new Decimal(0),
-    finalAmount = new Decimal(0),
-    redeem = new Decimal(0),
-    amount1 = new Decimal(0);
-
-  currentPriceDecimal = new Decimal(
-    formatUnits(currentPrice || 0n, asset.decimals)
-  );
-  // currentPriceDecimal = new Decimal(currentPrice || 0);
-  allocationDecimal = new Decimal(formatUnits(allocation || 0n, 18));
-  // allocationDecimal = new Decimal(allocation || 0);
-  virtualAmount = inputDecimal
-    .mul(new Decimal(2).pow(monthDecimal.div(12)))
-    .div(currentPriceDecimal);
-
-  finalPrice = currentPriceDecimal
-    .mul(allocationDecimal)
-    .div(allocationDecimal.minus(virtualAmount));
-
-  console.log("finalPrice33", finalPrice.toString());
-
-  finalAmount = inputDecimal
-    .mul(new Decimal(2).pow(monthDecimal.div(12)))
-    .div(finalPrice);
-
-  console.log("finalAmount33", finalPrice.toString());
-
-  amount1 = finalAmount
-    .mul(new Decimal("0.95"))
-    .mul(new Decimal(10).pow(new Decimal(asset.decimals)));
-
-  redeem = inputDecimal.div(finalAmount);
-
-  console.log("amount133", amount1.toString());
+  const {
+    isLoading: isInfoLoading,
+    amount1,
+    finalAmount,
+    redeem,
+  } = useCallOptionInfo({
+    asset,
+    amount: inputAmount,
+    month,
+  });
 
   useEffect(() => {
     if (redeem.isNaN()) {
