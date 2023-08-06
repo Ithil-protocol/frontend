@@ -26,9 +26,7 @@ export default defineConfig([
         //       ? "0xD1d01555b5DC60ba330414be2266f4FAC195a32B"
         //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
         // },
-        address: {
-          98745: contracts.aaveService as Address,
-        },
+        address: contracts.aaveService as Address,
         abi: aaveABI,
       },
     ],
@@ -50,9 +48,7 @@ export default defineConfig([
       {
         name: "Manager",
         abi: managerABI,
-        address: {
-          98745: contracts.manager as Address,
-        },
+        address: contracts.manager as Address,
       },
     ],
     plugins: [react()],
@@ -63,9 +59,7 @@ export default defineConfig([
       {
         name: "Gmx",
         abi: gmxABI,
-        address: {
-          98745: contracts.gmxService as Address,
-        },
+        address: contracts.gmxService as Address,
       },
     ],
     plugins: [react()],
@@ -86,9 +80,7 @@ export default defineConfig([
       {
         name: "FixedYield",
         abi: fixedYieldABI,
-        address: {
-          98745: contracts.fixedYieldService as Address,
-        },
+        address: contracts.fixedYieldService as Address,
       },
     ],
     plugins: [react()],

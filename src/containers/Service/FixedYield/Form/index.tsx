@@ -2,7 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useState } from "react";
 import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { fixedYieldABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -14,7 +14,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName } from "@/utils";
+import { getServiceByName } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -24,7 +24,6 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const notificationDialog = useNotificationDialog();
 
@@ -37,7 +36,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { isApproved, write: approve } = useAllowance({
     amount: inputAmount,
-    spender: fixedYieldAddress[98745],
+    spender: fixedYieldAddress,
     token: asset,
   });
 
@@ -48,50 +47,29 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { write: openPosition } = useContractWrite({
     abi: fixedYieldABI,
-    address: fixedYieldAddress[98745],
+    address: fixedYieldAddress,
     functionName: "open",
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.openDialog({
-        title: isApproved ? "Opening position" : "Approving",
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading(
+        isApproved ? "Opening position" : "Approving"
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openSuccess(
+          isApproved ? "Positions opened successfully" : "Approved successfully"
+        );
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        title: "Failed",
-        description: getMetaError(error),
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
+    onError: (error) => notificationDialog.openError("Failed", error),
   });
 
   // computed properties

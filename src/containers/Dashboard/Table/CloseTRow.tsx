@@ -6,12 +6,12 @@ import { Loading } from "@/components/loading";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
-import { TRowTypes } from "@/types";
+import { PositionType } from "@/types";
 import { getAssetByAddress } from "@/utils";
 import { formatFullDate } from "@/utils/date.utils";
 
 interface Props {
-  data: TRowTypes;
+  data: Omit<PositionType, "slippage" | "amount" | "name" | "id">;
 }
 
 const CloseTRow: FC<Props> = ({ data }) => {
