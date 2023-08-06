@@ -26,14 +26,16 @@ import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
 import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useColorMode } from "@/hooks/useColorMode";
-import { VoidNoArgs } from "@/types";
+import { PositionType, VoidNoArgs } from "@/types";
 import { getAssetByAddress } from "@/utils";
 
 import ModalItem from "./ModalItem";
-import { type Data } from "./Table/ActiveTRow";
 
 interface Props {
-  data: Data;
+  data: Omit<
+    PositionType,
+    "createdAt" | "pnlPercentage" | "pnl" | "formattedPnl"
+  >;
   isOpen: boolean;
   onOpen: VoidNoArgs;
   onClose: VoidNoArgs;
