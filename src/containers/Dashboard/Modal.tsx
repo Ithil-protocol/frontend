@@ -199,6 +199,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
                   max={100}
                   min={0}
                   onChange={setPercentage}
+                  extension="%"
                 />
               </>
             )}
