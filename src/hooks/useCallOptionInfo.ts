@@ -10,18 +10,26 @@ import {
 
 interface Props {
   asset: Asset;
-  amount: string;
+  amount?: string;
   month: number;
+  enabled?: boolean;
 }
 
-export const useCallOptionInfo = ({ asset, amount, month }: Props) => {
+export const useCallOptionInfo = ({
+  asset,
+  amount,
+  month,
+  enabled = true,
+}: Props) => {
   const { data: currentPrice, isLoading: isCurrentPriceLoading } =
     useCallOptionCurrentPrice({
       address: asset.callOptionAddress,
+      enabled,
     });
   const { data: allocation, isLoading: isAllocationLoading } =
     useCallOptionTotalAllocation({
       address: asset.callOptionAddress,
+      enabled,
     });
 
   const isLoading = isCurrentPriceLoading || isAllocationLoading;
@@ -36,6 +44,13 @@ export const useCallOptionInfo = ({ asset, amount, month }: Props) => {
     finalAmount = new Decimal(0),
     redeem = new Decimal(0),
     amount1 = new Decimal(0);
+
+  if (!enabled)
+    return {
+      redeem,
+      amount1,
+      finalAmount,
+    };
 
   currentPriceDecimal = new Decimal(
     formatUnits(currentPrice || 0n, asset.decimals)

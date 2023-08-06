@@ -60,10 +60,11 @@ const Form = ({ asset, setRedeem }: Props) => {
   });
 
   useEffect(() => {
-    if (redeem.isNaN()) {
+    if (!redeem) return;
+    if (redeem?.isNaN()) {
       setRedeem(0);
     } else {
-      setRedeem(redeem.toNumber());
+      setRedeem(redeem?.toNumber());
     }
   }, [redeem, setRedeem]);
 
@@ -157,12 +158,12 @@ const Form = ({ asset, setRedeem }: Props) => {
   const formInfoItems = [
     {
       label: " ITHIL obtained:",
-      value: finalAmount.toFixed(2),
+      value: finalAmount?.toFixed(2),
       isLoading: isInfoLoading,
     },
     {
       label: "redeem price:",
-      value: redeem.isNaN() ? "0.00" : redeem.toFixed(2),
+      value: redeem?.isNaN() ? "0.00" : redeem?.toFixed(2),
       prefix: "$",
       isLoading: isInfoLoading,
     },
