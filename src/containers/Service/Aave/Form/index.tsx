@@ -1,7 +1,7 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toHex } from "viem";
 import { Address } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
@@ -37,7 +37,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
-  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
+  const [leverage, setLeverage] = useState("0");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
@@ -77,9 +77,15 @@ const Form = ({ asset }: { asset: Asset }) => {
     riskSpreads,
   });
 
+  useEffect(() => {
+    if (bestLeverage) setLeverage(bestLeverage.toString());
+  }, [bestLeverage]);
+
   const finalLeverage = (
     isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
   ).toString();
+
+  console.log("finalLeverage", finalLeverage);
 
   const {
     interestAndSpread,
