@@ -13,9 +13,10 @@ interface Props {
   max: number;
   value: number;
   onChange: UseSliderProps["onChange"];
+  extension?: string;
 }
 
-const Slider: React.FC<Props> = ({ max, min, onChange, value }) => {
+const Slider: React.FC<Props> = ({ max, min, onChange, value, extension }) => {
   return (
     <>
       <ChakraSlider
@@ -41,6 +42,7 @@ const Slider: React.FC<Props> = ({ max, min, onChange, value }) => {
             colorScheme="cyan"
           >
             {value}
+            {extension}
           </Badge>
         </SliderMark>
         <SliderTrack bg="white">

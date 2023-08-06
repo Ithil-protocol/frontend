@@ -24,6 +24,7 @@ import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress } from "@/hooks/generated/gmx";
+import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useColorMode } from "@/hooks/useColorMode";
 import { VoidNoArgs } from "@/types";
 import { getAssetByAddress, getMetaError } from "@/utils";
@@ -47,6 +48,13 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
   const tokenName = asset?.name;
 
   const notificationDialog = useNotificationDialog();
+
+  const { redeem } = useCallOptionInfo({
+    asset: asset!,
+    amount: data.amount?.toString(),
+    month: 1,
+    enabled: data.type === "call-option",
+  });
 
   const services = {
     aave: {
@@ -182,12 +190,16 @@ const Modal: FC<Props> = ({ data, isOpen, onClose, onOpen }) => {
 
             {data.type === "call-option" && (
               <>
-                <ModalItem title="Purchase price" value={""} />
+                <ModalItem
+                  title="Purchase price"
+                  value={`$${redeem?.toFixed(2)}`}
+                />
                 <Slider
                   value={percentage}
                   max={100}
                   min={0}
                   onChange={setPercentage}
+                  extension="%"
                 />
               </>
             )}
