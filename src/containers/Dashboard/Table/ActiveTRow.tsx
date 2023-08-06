@@ -115,14 +115,26 @@ const ActiveTRow: FC<Props> = ({ data }) => {
               <HStack>
                 <Text
                   fontWeight="medium"
-                  color={isPnlPositive ? "#15ac89" : "#f35959"}
+                  color={
+                    +data.formattedPnl === 0
+                      ? "#a4b1be"
+                      : isPnlPositive
+                      ? "#15ac89"
+                      : "#f35959"
+                  }
                   fontSize="22px"
                   lineHeight="22px"
                 >
                   {data.formattedPnl}
                 </Text>
                 <Text
-                  bg={isPnlPositive ? "#15ac89" : "#f35959"}
+                  bg={
+                    +data.formattedPnl === 0
+                      ? "#a4b1be"
+                      : isPnlPositive
+                      ? "#15ac89"
+                      : "#f35959"
+                  }
                   borderRadius="8px"
                   fontWeight="bold"
                   fontFamily="18px"
