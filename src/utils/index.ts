@@ -240,3 +240,12 @@ export const getServiceNames = () =>
 
 export const getMetaError = (error: any) =>
   (error as { shortMessage: string }).shortMessage;
+
+export const isValidNumber = (str: string) => {
+  const regex = /^\d*\.?\d*$/;
+  return regex.test(str);
+};
+
+export const normalizeInputValue = (inputValue: string) => {
+  return Number.isNaN(+inputValue) ? "0" : inputValue;
+};
