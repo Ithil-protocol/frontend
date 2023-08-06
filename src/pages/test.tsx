@@ -261,42 +261,20 @@ const Test = () => {
     functionName: "approve",
     args: ["0xDB338034fE951cDFEdd0A1abAab43e5C1Efd0bCd", 1000n],
     // onMutate: () => {
-    //   notificationDialog.openDialog({
-    //     title: `Approving ${inputAmount} ${token.name}`,
-    //     status: "loading",
-    //     duration: 0,
-    //   });
+    //   notificationDialog.openLoading(`Approving ${inputAmount} ${token.name}`)
     // },
     // onSuccess: async ({ hash }) => {
     //   try {
     //     await waitForTransaction({
     //       hash,
     //     });
-    //     notificationDialog.openDialog({
-    //       title: `Approved ${inputAmount} ${token.name}`,
-    //       status: "success",
-    //       isClosable: true,
-    //       duration: 0,
-    //     });
+    //     notificationDialog.openSuccess(`Approved ${inputAmount} ${token.name}`)
     //     refetchAllowance();
-    //   } catch (err) {
-    //     notificationDialog.openDialog({
-    //       title: "Failed",
-    //       description: getMetaError(error),
-    //       status: "error",
-    //       isClosable: true,
-    //       duration: 0,
-    //     });
+    //   } catch (error) {
+    //     notificationDialog.openError(error,"Failed")
     //   }
     // },
-    // onError: () => {
-    //   notificationDialog.openDialog({
-    //     title: getMetaError(error),
-    //     status: "error",
-    //     isClosable: true,
-    //     duration: 0,
-    //   });
-    // },
+    // onError: (error) => notificationDialog.openError(error)
   });
   // const { data } = useCallOptionCurrentPrice();
   // const { data: ttl, isSuccess } = useCallOptionTotalAllocation();
