@@ -24,7 +24,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName } from "@/utils";
+import { getMetaError, getServiceByName, normalizeInputValue } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -41,6 +41,8 @@ const Form = ({ asset }: { asset: Asset }) => {
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
+
+  const normalizeLeverage = normalizeInputValue(leverage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -75,9 +77,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     riskSpreads,
   });
 
-  const finalLeverage = isAdvancedOptionsOpen
-    ? leverage
-    : (+bestLeverage - 1).toString();
+  const finalLeverage = (
+    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
+  ).toString();
 
   const {
     interestAndSpread,
@@ -92,12 +94,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     slippage,
     serviceAddress: aaveAddress[chainId],
   });
-
-  // useEffect(() => {
-  //   setLeverage(finalLeverage);
-  // }, [finalLeverage]);
-
-  console.log("finalLeverage", leverage);
 
   const extraData = toHex("");
 
