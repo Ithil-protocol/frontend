@@ -1,11 +1,19 @@
 import { testNetwork } from "@/config/chains";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig } from "wagmi";
+import { Chain, configureChains, createConfig } from "wagmi";
+import {arbitrum} from "wagmi/chains"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { queryClient } from "@/lib/react-query";
 
+const networks : Record<string,Chain> = {
+  mainnet:arbitrum,
+  testnet:testNetwork
+}
+
+const network = networks[process.env.NEXT_PUBLIC_NETWORK!];
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [testNetwork], // until Ithil is not a multi-chain app, we can use only one network
+  [network], // until Ithil is not a multi-chain app, we can use only one network
   [
     jsonRpcProvider({
       rpc: (_chain) => ({ http: testNetwork.rpcUrls.default.http[0] }),
