@@ -224,7 +224,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         <Box width="full" gap="30px">
           <FormLabel marginTop={4}>Lock time in minutes</FormLabel>
           <Box margin="10px 10px 50px">
-            <Slider value={month} onChange={setMonth} />
+            <Slider value={month} min={1} max={12} onChange={setMonth} />
           </Box>
           <FormInfo items={formInfoItems} />
 
