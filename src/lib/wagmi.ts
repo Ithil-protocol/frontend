@@ -3,7 +3,7 @@ import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { Chain, configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { queryClient } from "@/lib/react-query";
-import { arbitrum } from "wagmi/dist/chains";
+import { arbitrum } from "wagmi/chains";
 
 const networks : Record<string,Chain> = {
   mainnet:arbitrum,
