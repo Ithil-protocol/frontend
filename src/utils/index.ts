@@ -237,3 +237,30 @@ export const getServiceByName = (name: ServiceName): Service => {
 
 export const getServiceNames = () =>
   ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;
+
+export const handleProtocolAlert = () => {
+  const now = Date.now();
+  const message =
+    "the protocol has been deeply tested but is unaudited, use it at your own risk";
+  const dataKey = "protocolAlert";
+
+  const alert = JSON.parse(localStorage.getItem(dataKey) || "null");
+
+  if (!alert || alert.expireTime < now) {
+    const newAlert = {
+      expireTime: now + 30 * 24 * 60 * 60 * 1000,
+      message,
+    };
+    localStorage.setItem(dataKey, JSON.stringify(newAlert));
+
+    return {
+      message,
+      shouldShowMessage: true,
+    };
+  }
+
+  return {
+    message,
+    shouldShowMessage: false,
+  };
+};
