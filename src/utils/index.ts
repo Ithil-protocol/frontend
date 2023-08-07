@@ -249,8 +249,10 @@ export const handleProtocolAlert = () => {
   const now = Date.now();
 
   if (!alert || alert.expireTime < now) {
+    const thirtyDaysInMS = 2_592_000_000;
+
     const newAlert = {
-      expireTime: now + 30 * 24 * 60 * 60 * 1000,
+      expireTime: now + thirtyDaysInMS,
       message,
     };
     localStorage.setItem(dataKey, JSON.stringify(newAlert));
