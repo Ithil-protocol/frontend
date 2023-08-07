@@ -239,12 +239,14 @@ export const getServiceNames = () =>
   ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;
 
 export const handleProtocolAlert = () => {
-  const now = Date.now();
+  const isMainNet = process.env.NEXT_PUBLIC_NETWORK === "mainnet";
   const message =
     "the protocol has been deeply tested but is unaudited, use it at your own risk";
+
   const dataKey = "protocolAlert";
 
   const alert = JSON.parse(localStorage.getItem(dataKey) || "null");
+  const now = Date.now();
 
   if (!alert || alert.expireTime < now) {
     const newAlert = {
@@ -255,12 +257,12 @@ export const handleProtocolAlert = () => {
 
     return {
       message,
-      shouldShowMessage: true,
+      shouldShowMessage: isMainNet && true,
     };
   }
 
   return {
     message,
-    shouldShowMessage: false,
+    shouldShowMessage: isMainNet && false,
   };
 };
