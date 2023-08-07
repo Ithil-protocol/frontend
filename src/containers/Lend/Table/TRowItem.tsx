@@ -20,8 +20,11 @@ const TRowItem: FC<Props> = ({
 }) => {
   return (
     <Td>
-      {isVaultsLoading || (isVaultsError && <Loading />)}
-      <DynamicEstimatedValue value={value} token={token} />
+      {isVaultsLoading || isVaultsError ? (
+        <Loading />
+      ) : (
+        <DynamicEstimatedValue value={value} token={token} />
+      )}
     </Td>
   );
 };
