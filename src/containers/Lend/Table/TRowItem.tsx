@@ -10,6 +10,7 @@ interface Props {
   isVaultsError: boolean;
   value: bigint | undefined;
   token: Token;
+  width?: string;
 }
 
 const TRowItem: FC<Props> = ({
@@ -17,9 +18,10 @@ const TRowItem: FC<Props> = ({
   isVaultsLoading,
   value,
   token,
+  width = "auto",
 }) => {
   return (
-    <Td>
+    <Td width={width}>
       {isVaultsLoading || isVaultsError ? (
         <Loading />
       ) : (
