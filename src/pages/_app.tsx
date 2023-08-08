@@ -10,7 +10,6 @@ import { WagmiConfig } from "wagmi";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Head from "@/components/Head";
 import PageWrapper from "@/components/page-wrapper";
-import { testNetwork } from "@/config/chains";
 import NotificationDialogProvider from "@/contexts/NotificationDialog";
 import TokenModalProvider from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
@@ -31,7 +30,6 @@ const RainbowWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
     <RainbowKitProvider
       chains={chains}
-      initialChain={testNetwork}
       theme={colorMode === "dark" ? rainbowkitDarkTheme : rainbowkitLightTheme}
       showRecentTransactions={true}
     >
