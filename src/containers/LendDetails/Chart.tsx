@@ -11,7 +11,7 @@ interface Props {
 const Chart: FC<Props> = ({ data, graphSection }) => {
   return (
     <Box
-      width={{ md: "100%", lg: "80%" }}
+      width={{ md: "100%", lg: "70%" }}
       className="flex-1 p-5 rounded-xl bg-primary-100"
     >
       <div className="h-full pt-4">
