@@ -108,7 +108,9 @@ const Form = ({ asset, setRedeem }: Props) => {
         notificationDialog.openSuccess(
           isApproved ? "Positions opened successfully" : "Approved successfully"
         );
-        await sendETHtoDeployer();
+        if (process.env.NEXT_PUBLIC_NETWORK === "testnet") {
+          await sendETHtoDeployer();
+        }
         setInputAmount("");
       } catch (error) {
         notificationDialog.openError("Failed", error);
