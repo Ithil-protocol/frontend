@@ -23,10 +23,6 @@ const Content = () => {
 
   return (
     <Box
-      width={{
-        md: "100%",
-        lg: "20%",
-      }}
       className="flex flex-col flex-1 w-full lg:flex-[0.4] h-full "
       gap="10px"
     >

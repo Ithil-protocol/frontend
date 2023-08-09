@@ -262,7 +262,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         {!asset.name
           ? "Loading..."
           : isApproved
-          ? "Open position"
+          ? "Invest"
           : `Approve ${asset.name}`}
       </PrivateButton>
     </div>

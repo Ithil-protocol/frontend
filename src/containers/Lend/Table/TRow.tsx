@@ -52,26 +52,29 @@ const TRow: FC<Props> = ({
         selectedRow === idx && "border-none bg-primary-200",
       ])}
     >
-      <Td>
+      <Td width="15%">
         <div className="flex items-center gap-2">
           <TokenIcon name={vault.token.name} height={32} width={32} />
           <Text className="uppercase">{vault.token.name}</Text>
         </div>
       </Td>
-      <Td>5%</Td>
+      <Td width="15%">5%</Td>
       <TRowItem
+        width="20%"
         isVaultsError={isVaultsError}
         isVaultsLoading={isVaultsLoading}
         value={vault.tvl}
         token={vault.token}
       />
       <TRowItem
+        width="20%"
         isVaultsError={isVaultsError}
         isVaultsLoading={isVaultsLoading}
         value={vault.borrowed}
         token={vault.token}
       />
       <TRowItem
+        width="15%"
         isVaultsError={isVaultsError}
         isVaultsLoading={isVaultsLoading}
         value={vault.deposited}
