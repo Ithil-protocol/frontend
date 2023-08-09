@@ -27,7 +27,10 @@ const SlippageInput: React.FC<Props> = ({ slippage, setSlippage }) => {
 
   return (
     <>
-      <AdvancedFormLabel label="Slippage" tooltip="Not implemented" />
+      <AdvancedFormLabel
+        label="Slippage"
+        tooltip="Maximum loss accepted at position opening time"
+      />
       <InputGroup size="md">
         <NumberInput
           width="100%"

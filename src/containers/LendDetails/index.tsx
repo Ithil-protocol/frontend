@@ -64,9 +64,15 @@ export default function LendDetails() {
         flexDirection={{ base: "column", lg: "row" }}
         flex={1}
       >
-        <Box>
+        <Box
+          width={{
+            md: "100%",
+            lg: "20%",
+          }}
+        >
           <Content />
         </Box>
+
         <Chart data={graphData} graphSection={graphSection} />
       </Box>
     </Box>
