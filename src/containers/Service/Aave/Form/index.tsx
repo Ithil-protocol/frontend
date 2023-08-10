@@ -85,8 +85,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
   ).toString();
 
-  console.log("finalLeverage", finalLeverage);
-
   const {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
@@ -111,8 +109,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     interestAndSpread,
     extraData,
   });
-
-  console.log("aave form prepare order", order);
 
   const {
     data: openData,

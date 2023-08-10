@@ -1,7 +1,7 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 
@@ -23,7 +23,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName } from "@/utils";
+import { getMetaError, getServiceByName, normalizeInputValue } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -38,11 +38,12 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
-  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
-  const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
-  const notificationDialog = useNotificationDialog();
+  const [leverage, setLeverage] = useState("0");
 
-  // web3 hooks
+  const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
+  const notificationDialog = useNotificationDialog();
+  const normalizeLeverage = normalizeInputValue(leverage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -61,6 +62,30 @@ const Form = ({ asset }: { asset: Asset }) => {
     token: asset,
   });
 
+  const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
+
+  const { data: latestAndBase } = useGmxLatestAndBase({
+    args: [asset.tokenAddress],
+  });
+
+  const { data: riskSpreads } = useGmxRiskSpreads({
+    args: [asset.tokenAddress],
+  });
+
+  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
+    baseApy,
+    latestAndBase,
+    riskSpreads,
+  });
+
+  useEffect(() => {
+    if (bestLeverage) setLeverage(bestLeverage.toString());
+  }, [bestLeverage]);
+
+  const finalLeverage = (
+    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
+  ).toString();
+
   const {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
@@ -69,7 +94,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage,
+    leverage: finalLeverage,
     margin: inputAmount,
     slippage,
     serviceAddress: gmxAddress[chainId],
@@ -79,7 +104,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { order } = usePrepareDebitOrder({
     token: asset,
     collateralToken: asset.gmxCollateralTokenAddress,
-    leverage,
+    leverage: finalLeverage,
     amount: inputAmount,
     interestAndSpread,
     extraData,
@@ -145,33 +170,6 @@ const Form = ({ asset }: { asset: Asset }) => {
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "0");
   };
-
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-
-  const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
-
-  console.log("baseApyGMX", baseApy);
-
-  const { data: latestAndBase } = useGmxLatestAndBase({
-    args: [asset.tokenAddress],
-  });
-
-  const { data: riskSpreads } = useGmxRiskSpreads({
-    args: [asset.tokenAddress],
-  });
-
-  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
-    baseApy,
-    latestAndBase,
-    riskSpreads,
-  });
-
-  console.log("latestAndBase", latestAndBase);
-  console.log("riskSpreads", riskSpreads);
-
-  const finalLeverage = isAdvancedOptionsOpen
-    ? leverage
-    : (+bestLeverage - 1).toString();
 
   const isMounted = useIsMounted();
 
