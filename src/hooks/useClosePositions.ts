@@ -79,8 +79,6 @@ export const useClosePositions = () => {
     );
   });
 
-  console.log("postions44", positions);
-
   return {
     positions,
     isLoading: isLoadingAave || isLoadingGmx,

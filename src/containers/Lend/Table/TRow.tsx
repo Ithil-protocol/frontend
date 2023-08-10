@@ -7,6 +7,7 @@ import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { Vaults } from "@/types/onchain.types";
+import { cutoffDecimals } from "@/utils";
 
 import TRowItem from "./TRowItem";
 
@@ -56,7 +57,11 @@ const TRow: FC<Props> = ({
         </div>
       </Td>
       <Td width="15%">
-        {isLoading || !isMounted ? <Loading /> : vault.apy + "%"}
+        {isLoading || !isMounted ? (
+          <Loading />
+        ) : (
+          cutoffDecimals(Number(vault.apy || 0), 2) + "%"
+        )}
       </Td>
       <TRowItem
         width="20%"
