@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useState } from "react";
 
-import { placeHolderVaultData, useVaults } from "@/hooks/use-vaults.hook";
+import { useVaults } from "@/hooks/use-vaults.hook";
 import { Vaults } from "@/types/onchain.types";
 
 import Deposit from "../deposit";
@@ -50,37 +50,28 @@ const columns: Array<{
 ];
 const Table = () => {
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
-  const {
-    data: vaultData,
-    isError: isVaultsError,
-    isLoadingError,
-    isLoading,
-  } = useVaults();
-  // computed values
-  const vaultDataWithFallback = vaultData ?? placeHolderVaultData;
+  const { data, isError, isPlaceholderData } = useVaults();
 
   return (
     <TableContainer className="w-full rounded-xl bg-primary-100 lg:p-6">
       <DefaultTable size="md">
         <Thead columns={columns} />
         <Tbody>
-          {vaultDataWithFallback.map((vault: Vaults[number], idx) => (
+          {data?.map((vault: Vaults[number], idx) => (
             <Fragment key={idx}>
               <TRow
-                isLoading={isLoading}
-                isLoadingError={isLoadingError}
-                vaultData={vaultData}
-                vaultDataWithFallback={vaultDataWithFallback}
+                isVaultsError={isError}
+                isLoading={isPlaceholderData}
+                vaultData={data}
                 setSelectedRow={setSelectedRow}
                 selectedRow={selectedRow}
                 idx={idx}
                 vault={vault}
-                isVaultsError={isVaultsError}
               />
               {selectedRow === idx && (
                 <Tr>
                   <Td colSpan={columns.length}>
-                    <Deposit token={vaultDataWithFallback[idx].token} />
+                    <Deposit token={data[idx].token} />
                   </Td>
                 </Tr>
               )}

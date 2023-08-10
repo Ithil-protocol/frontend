@@ -1,5 +1,7 @@
 import { type Address } from "wagmi";
 
+import { Asset } from ".";
+
 // the minimal intersection of LendingToken and ServiceAsset
 export interface Token {
   name: string;
@@ -14,13 +16,16 @@ export interface LendingToken extends Token {
   vaultAddress: Address;
 }
 export type LendingTokenList = LendingToken[];
-export type Vaults = Array<{
-  key: string;
-  token: LendingTokenList[number];
+
+export type Vault = {
+  token: Asset;
   tvl?: bigint;
   borrowed?: bigint;
   deposited?: bigint;
-}>;
+  apy?: string;
+};
+
+export type Vaults = Vault[];
 
 // used in services page
 export interface AaveAsset {
