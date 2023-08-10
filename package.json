@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "pnpm wagmi && next build",
     "check:format": "prettier --write --list-different ./",
     "check:lint": "eslint ./ --fix",
     "check:lint:default": "eslint 'src/**/*.{ts,tsx}'",
