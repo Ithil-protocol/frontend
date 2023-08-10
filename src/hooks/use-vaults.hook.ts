@@ -93,6 +93,10 @@ const getVaultData = async (address?: string) => {
       sharesToAsset,
       asset.decimals
     );
+
+    console.log("sharesToAsset", sharesToAsset);
+    console.log("creationDate", multicallData[length * 5 + idx].result);
+
     const borrowed = multicallData[length * 4 + idx].result as bigint;
 
     const apy = new Decimal(
