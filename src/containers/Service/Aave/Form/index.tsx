@@ -95,7 +95,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage: finalLeverage.toString(),
+    leverage: finalLeverage,
     margin: inputAmount,
     slippage,
     serviceAddress: aaveAddress[chainId],
