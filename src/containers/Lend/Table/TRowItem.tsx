@@ -10,6 +10,7 @@ interface Props {
   isVaultsError: boolean;
   value: bigint | undefined;
   token: Token;
+  width?: string;
 }
 
 const TRowItem: FC<Props> = ({
@@ -17,11 +18,15 @@ const TRowItem: FC<Props> = ({
   isVaultsLoading,
   value,
   token,
+  width = "auto",
 }) => {
   return (
-    <Td>
-      {isVaultsLoading || (isVaultsError && <Loading />)}
-      <DynamicEstimatedValue value={value} token={token} />
+    <Td width={width}>
+      {isVaultsLoading || isVaultsError ? (
+        <Loading />
+      ) : (
+        <DynamicEstimatedValue value={value} token={token} />
+      )}
     </Td>
   );
 };

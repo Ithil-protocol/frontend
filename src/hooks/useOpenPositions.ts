@@ -1,5 +1,5 @@
 import { formatUnits } from "viem";
-import { Address, useAccount, useContractRead, useContractReads } from "wagmi";
+import { useAccount, useContractRead, useContractReads } from "wagmi";
 
 import { aaveABI, callOptionABI, gmxABI } from "@/abi";
 import { assets } from "@/data/assets";
@@ -21,14 +21,14 @@ export const useAaveOpenPositions = () => {
 
   const quoteContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
-    address: aaveAddress[98745] as Address,
+    address: aaveAddress,
     functionName: "quote",
     args: [agreement],
   }));
 
   const feeContracts = data?.[0]?.map((agreement) => ({
     abi: aaveABI,
-    address: aaveAddress[98745] as Address,
+    address: aaveAddress,
     functionName: "computeDueFees",
     args: [agreement],
   }));
@@ -91,14 +91,14 @@ export const useGmxOpenPositions = () => {
 
   const quoteContracts = data?.[0]?.map((agreement) => ({
     abi: gmxABI,
-    address: gmxAddress[98745] as Address,
+    address: gmxAddress,
     functionName: "quote",
     args: [agreement],
   }));
 
   const feeContracts = data?.[0]?.map((agreement) => ({
     abi: gmxABI,
-    address: gmxAddress[98745] as Address,
+    address: gmxAddress,
     functionName: "computeDueFees",
     args: [agreement],
   }));

@@ -112,6 +112,7 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
     };
 
   const openError = createCustomOpenFn("error");
+  const openInfo = createCustomOpenFn("info");
   const openLoading = createCustomOpenFn("loading");
   const openSuccess = createCustomOpenFn("success");
 
@@ -153,6 +154,7 @@ const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
         close: closeDialog,
         open: openDialog,
         openError,
+        openInfo,
         openLoading,
         openSuccess,
       }}
@@ -302,12 +304,14 @@ const NotificationDialogContext = createContext<{
   close: CloseDialogFn;
   open: OpenFn;
   openError: CustomOpenFn;
+  openInfo: CustomOpenFn;
   openLoading: CustomOpenFn;
   openSuccess: CustomOpenFn;
 }>({
   close: () => undefined,
   open: () => undefined,
   openError: () => undefined,
+  openInfo: () => undefined,
   openLoading: () => undefined,
   openSuccess: () => undefined,
 });
