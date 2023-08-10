@@ -40,7 +40,8 @@ export const useRateAndSpread = ({
   slippage,
   serviceAddress,
 }: AaveRateAndSpreadProps) => {
-  const bigintMargin = parseUnits(margin, token.decimals);
+  const bigintMargin =
+    margin !== "" && margin !== "0" ? parseUnits(margin, token.decimals) : 1n;
   const loan = multiplyBigInt(bigintMargin, +leverage);
 
   const asset = getAssetByAddress(token.tokenAddress);

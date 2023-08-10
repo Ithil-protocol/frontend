@@ -1,7 +1,7 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toHex } from "viem";
 import { Address } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
@@ -24,7 +24,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getServiceByName } from "@/utils";
+import { cutoffDecimals, getServiceByName, normalizeInputValue } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -36,10 +36,12 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
-  const [leverage, setLeverage] = useState(appConfig.DEFAULT_LEVERAGE);
+  const [leverage, setLeverage] = useState("0");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
+
+  const normalizeLeverage = normalizeInputValue(leverage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -74,9 +76,18 @@ const Form = ({ asset }: { asset: Asset }) => {
     riskSpreads,
   });
 
-  const finalLeverage = isAdvancedOptionsOpen
-    ? leverage
-    : (+bestLeverage - 1).toString();
+  useEffect(() => {
+    if (bestLeverage) setLeverage(bestLeverage.toString());
+  }, [bestLeverage]);
+
+  console.log("test: leverage normalizeLeverage", normalizeLeverage);
+  console.log("test: leverage bestLeverage", bestLeverage);
+
+  const finalLeverage = (
+    isAdvancedOptionsOpen ? +normalizeLeverage : +bestLeverage
+  ).toString();
+
+  console.log("finalLeverage", finalLeverage);
 
   const {
     interestAndSpread,
@@ -86,17 +97,11 @@ const Form = ({ asset }: { asset: Asset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage: finalLeverage.toString(),
+    leverage: finalLeverage,
     margin: inputAmount,
     slippage,
     serviceAddress: aaveAddress,
   });
-
-  // useEffect(() => {
-  //   setLeverage(finalLeverage);
-  // }, [finalLeverage]);
-
-  console.log("finalLeverage", leverage);
 
   const extraData = toHex("");
 
@@ -108,8 +113,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     interestAndSpread,
     extraData,
   });
-
-  console.log("aave form prepare order", order);
 
   const {
     data: openData,
@@ -180,7 +183,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Final APY:",
-      value: finalApy?.toFixed(2),
+      value: cutoffDecimals(finalApy, 2),
       extension: "%",
       isLoading: isInterestAndSpreadLoading,
     },

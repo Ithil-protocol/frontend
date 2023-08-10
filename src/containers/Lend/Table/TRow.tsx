@@ -4,15 +4,15 @@ import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
-import { LendingToken, Vaults } from "@/types/onchain.types";
+import { Loading } from "@/components/loading";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { Vaults } from "@/types/onchain.types";
 
 import TRowItem from "./TRowItem";
 
 interface Props {
-  isLoadingError: boolean;
   isLoading: boolean;
   vaultData: Vaults | undefined;
-  vaultDataWithFallback: { key: string; token: LendingToken }[];
   setSelectedRow: Dispatch<SetStateAction<null | number>>;
   selectedRow: null | number;
   idx: number;
@@ -22,22 +22,19 @@ interface Props {
 
 const TRow: FC<Props> = ({
   isLoading,
-  isLoadingError,
   vaultData,
-  vaultDataWithFallback,
   setSelectedRow,
   selectedRow,
   idx,
   vault,
   isVaultsError,
 }) => {
-  const isVaultsLoading = isLoading || isLoadingError;
+  const isVaultsLoading = isLoading;
 
-  console.log("vaultData33", vaultData);
-
+  const isMounted = useIsMounted();
   const onSelectedChange = (idx: number) => {
     // not sure this check is necessary
-    const vault = vaultDataWithFallback?.[idx];
+    const vault = vaultData?.[idx];
     if (vault == null) return;
     // clicking on selected row will unselect it
     if (selectedRow === idx) return setSelectedRow(null);
@@ -58,7 +55,9 @@ const TRow: FC<Props> = ({
           <Text className="uppercase">{vault.token.name}</Text>
         </div>
       </Td>
-      <Td width="15%">5%</Td>
+      <Td width="15%">
+        {isLoading || !isMounted ? <Loading /> : vault.apy + "%"}
+      </Td>
       <TRowItem
         width="20%"
         isVaultsError={isVaultsError}
