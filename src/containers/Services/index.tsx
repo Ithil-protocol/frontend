@@ -6,7 +6,11 @@ const ServicesPage = () => {
   return (
     <div className="grid gap-6 mg:gap-6 md:grid-cols-2 lg:grid-cols-3 rounded-xl">
       {services
-        .filter((service) => service.url !== "/fixed-yield")
+        .filter(
+          (service) =>
+            process.env.NEXT_PUBLIC_NETWORK !== "mainnet" ||
+            (service.url !== "/fixed-yield" && service.url !== "/call-option")
+        )
         .map((item, index) => (
           <ServiceCard
             key={item.name + index}

@@ -65,12 +65,20 @@ export interface Service {
   type: "debit" | "credit";
 }
 
-export interface TRowTypes {
+export interface PositionType {
   token: Address;
-  amount?: string | number;
+  amount: string;
   margin: string | number;
   createdAt: bigint | undefined;
   type: string;
+  pnlPercentage?: string;
+  pnl?: string;
+  isPnlLoading?: boolean;
+  id: bigint | undefined;
+  quote?: bigint;
+  formattedPnl?: string;
+  name: string;
+  slippage: number;
 }
 
 export interface PageHeading {
@@ -78,28 +86,6 @@ export interface PageHeading {
   heading: string;
 }
 
-export type DialogStatus = "error" | "warning" | "success" | "info" | "loading";
-
-export interface DialogOptions {
-  status: DialogStatus;
-  title: string;
-  description: string;
-  duration: number;
-  isClosable: boolean;
-}
-
-export interface OpenDialogFnOptions
-  extends Omit<
-    DialogOptions,
-    "duration" | "description" | "isClosable" | "status"
-  > {
-  duration?: number;
-  status?: DialogStatus;
-  isClosable?: boolean;
-  description?: string;
-}
-
-export type OpenNotificationDialogFn = (o: OpenDialogFnOptions) => void;
 export type CloseDialogFn = VoidNoArgs;
 
 export type OpenTokenDialogFn = (

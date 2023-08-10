@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import {
   AlertDialog,
   AlertDialogBody,
@@ -27,38 +26,41 @@ import {
 } from "@/assets/svgs";
 import NotificationDialogLoading from "@/components/notificationDialogLoading";
 import { palette } from "@/styles/theme/palette";
-import {
-  CloseDialogFn,
-  DialogOptions,
-  DialogStatus,
-  OpenDialogFnOptions,
-  OpenNotificationDialogFn,
-} from "@/types";
+import { CloseDialogFn } from "@/types";
 
-const NotificationDialogContext = createContext<{
-  openDialog: OpenNotificationDialogFn;
-  closeDialog: CloseDialogFn;
-}>({
-  closeDialog: () => {},
-  openDialog: (_o: OpenDialogFnOptions) => {},
-});
+type DialogStatus = "error" | "warning" | "success" | "info" | "loading";
+type Duration = number;
+type Title = string;
+type Description = string;
+type IsClosable = boolean;
 
-const getDialogDefaultOptions = (): DialogOptions => ({
-  description: "",
-  duration: 5000,
-  isClosable: true,
-  status: "error",
-  title: "",
-});
-
-interface Props {
-  description: string;
-  isClosable: boolean;
-  isOpen: boolean;
-  onClose: CloseDialogFn;
-  status: DialogStatus;
-  title: string;
+interface OpenFnBaseOptions {
+  duration: Duration;
+  isClosable: IsClosable;
 }
+interface DialogOptions extends OpenFnBaseOptions {
+  description: Description;
+  duration: Duration;
+  isClosable: IsClosable;
+  status: DialogStatus;
+  title: Title;
+}
+
+interface OpenFnDefaultOptions extends Partial<OpenFnBaseOptions> {
+  description?: string;
+  status?: DialogStatus;
+  title?: Title;
+}
+
+type OpenFn = (o: OpenFnDefaultOptions) => void;
+
+type CustomOpenFn = (
+  title: Title | any,
+  description?: Description | any,
+  options?: OpenFnBaseOptions
+) => void;
+
+type CustomOpenFnCreator = (status: DialogStatus) => CustomOpenFn;
 
 const icons: {
   [key in DialogStatus]:
@@ -82,14 +84,99 @@ const iconClassNames: {
   warning: "text-yellow-500",
 };
 
-const NotificationDialogModal: React.FC<Props> = ({
-  description,
-  isClosable,
-  isOpen,
-  onClose,
-  status,
-  title,
+const getDialogDefaultOptions = (): DialogOptions => ({
+  description: "",
+  duration: 0,
+  isClosable: false,
+  status: "error",
+  title: "",
+});
+
+const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
+  children,
 }) => {
+  const [dialogOptions, setDialogOptions] = useState<DialogOptions>(
+    getDialogDefaultOptions
+  );
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const createCustomOpenFn: CustomOpenFnCreator =
+    (status) =>
+    (title, description, options = getDialogDefaultOptions()) => {
+      openDialog({
+        ...options,
+        description: resolveContent(description),
+        status,
+        title: resolveContent(title),
+      });
+    };
+
+  const openError = createCustomOpenFn("error");
+  const openInfo = createCustomOpenFn("info");
+  const openLoading = createCustomOpenFn("loading");
+  const openSuccess = createCustomOpenFn("success");
+
+  const openDialog: OpenFn = (options) => {
+    const newOptions = mergeOptions(options);
+
+    setDialogOptions(newOptions);
+    onOpen();
+
+    if (newOptions.isClosable)
+      setTimeout(() => {
+        closeDialog();
+      }, newOptions.duration);
+  };
+
+  const closeDialog: CloseDialogFn = () => {
+    setDialogOptions(getDialogDefaultOptions());
+    onClose();
+  };
+
+  const mergeOptions = (o: Partial<DialogOptions>) => ({
+    ...getDialogDefaultOptions(),
+    ...o,
+  });
+
+  const resolveContent = (c: any) =>
+    typeof c === "string" ? c : getDescriptionFromObject(c) || "";
+
+  const getDescriptionFromObject = (
+    o: {
+      shortMessage?: string;
+      message?: string;
+    } = {}
+  ) => o.shortMessage || o.message;
+
+  return (
+    <NotificationDialogContext.Provider
+      value={{
+        close: closeDialog,
+        open: openDialog,
+        openError,
+        openInfo,
+        openLoading,
+        openSuccess,
+      }}
+    >
+      <NotificationDialogComponent
+        isOpen={isOpen}
+        {...dialogOptions}
+        onClose={closeDialog}
+      />
+      {children}
+    </NotificationDialogContext.Provider>
+  );
+};
+
+const NotificationDialogComponent: React.FC<{
+  description: string;
+  isClosable: boolean;
+  isOpen: boolean;
+  onClose: CloseDialogFn;
+  status: DialogStatus;
+  title: string;
+}> = ({ description, isClosable, isOpen, onClose, status, title }) => {
   const dialogRef = useRef<null | any>(null);
 
   const Icon = icons[status];
@@ -160,11 +247,21 @@ const NotificationDialogModal: React.FC<Props> = ({
               className={`w-16 h-16 ${classNames}`}
             />
 
-            <Text fontSize={24} textAlign="center" fontWeight={"bold"}>
+            <Text
+              fontSize={24}
+              fontWeight={"bold"}
+              overflowWrap="anywhere"
+              textAlign="center"
+            >
               {title}
             </Text>
 
-            <Text fontWeight={"light"} textAlign="center" fontSize={17}>
+            <Text
+              fontSize={17}
+              fontWeight={"light"}
+              overflowWrap="anywhere"
+              textAlign="center"
+            >
               {description}
             </Text>
 
@@ -199,53 +296,24 @@ const NotificationDialogModal: React.FC<Props> = ({
   );
 };
 
-const NotificationDialogProvider: React.FC<PropsWithChildren> = ({
-  children,
-}) => {
-  const [dialogOptions, setDialogOptions] = useState<DialogOptions>(
-    getDialogDefaultOptions
-  );
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const openDialog: OpenNotificationDialogFn = (options) => {
-    const newOptions = {
-      ...getDialogDefaultOptions(),
-      ...options,
-    };
-
-    setDialogOptions(newOptions);
-    onOpen();
-
-    if (newOptions.isClosable && newOptions.duration)
-      setTimeout(() => {
-        closeDialog();
-      }, newOptions.duration);
-  };
-
-  const closeDialog: CloseDialogFn = () => {
-    setDialogOptions(getDialogDefaultOptions());
-    onClose();
-  };
-
-  return (
-    <NotificationDialogContext.Provider
-      value={{
-        openDialog,
-        closeDialog,
-      }}
-    >
-      <NotificationDialogModal
-        isOpen={isOpen}
-        {...dialogOptions}
-        onClose={closeDialog}
-      />
-      {children}
-    </NotificationDialogContext.Provider>
-  );
-};
-
 export const useNotificationDialog = () => {
   return useContext(NotificationDialogContext);
 };
+
+const NotificationDialogContext = createContext<{
+  close: CloseDialogFn;
+  open: OpenFn;
+  openError: CustomOpenFn;
+  openInfo: CustomOpenFn;
+  openLoading: CustomOpenFn;
+  openSuccess: CustomOpenFn;
+}>({
+  close: () => undefined,
+  open: () => undefined,
+  openError: () => undefined,
+  openInfo: () => undefined,
+  openLoading: () => undefined,
+  openSuccess: () => undefined,
+});
 
 export default NotificationDialogProvider;

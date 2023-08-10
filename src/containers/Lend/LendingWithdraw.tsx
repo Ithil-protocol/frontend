@@ -6,7 +6,6 @@ import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useVault } from "@/hooks/use-vault.hook";
 import { LendingToken } from "@/types/onchain.types";
-import { getMetaError } from "@/utils";
 import {
   bigNumberPercentage,
   multiplyBigNumbers,
@@ -56,43 +55,25 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
     abi: erc4626ABI,
     functionName: "redeem",
     onMutate: () => {
-      notificationDialog.openDialog({
-        title: `Withdrawing ${inputAmount} ${token.name}`,
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading(
+        `Withdrawing ${inputAmount} ${token.name}`
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        notificationDialog.openDialog({
-          title: `Withdrawn ${inputAmount} ${token.name}`,
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openSuccess(
+          `Withdrawn ${inputAmount} ${token.name}`
+        );
         setInputAmount("0");
         setInputBigNumber(BigInt(0));
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        title: getMetaError(error),
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
+    onError: (error) => notificationDialog.openError(error),
   });
   const { data: assetsRatioData, isLoading: isAssetsRatioLoading } =
     useConvertToAssets();
@@ -145,10 +126,7 @@ export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
         args: [inputBigNumber, address!, address!],
       });
     } catch (error) {
-      notificationDialog.openDialog({
-        title: getMetaError(error),
-        duration: 0,
-      });
+      notificationDialog.openError(error);
     }
   };
 

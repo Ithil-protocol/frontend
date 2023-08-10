@@ -249,3 +249,34 @@ export const isValidNumber = (str: string) => {
 export const normalizeInputValue = (inputValue: string) => {
   return Number.isNaN(+inputValue) ? "0" : inputValue;
 };
+
+export const handleProtocolAlert = () => {
+  const isMainNet = process.env.NEXT_PUBLIC_NETWORK === "mainnet";
+  const message =
+    "the protocol has been deeply tested but is unaudited, use it at your own risk";
+
+  const dataKey = "protocolAlert";
+
+  const alert = JSON.parse(localStorage.getItem(dataKey) || "null");
+  const now = Date.now();
+
+  if (!alert || alert.expireTime < now) {
+    const thirtyDaysInMS = 2_592_000_000;
+
+    const newAlert = {
+      expireTime: now + thirtyDaysInMS,
+      message,
+    };
+    localStorage.setItem(dataKey, JSON.stringify(newAlert));
+
+    return {
+      message,
+      shouldShowMessage: isMainNet && true,
+    };
+  }
+
+  return {
+    message,
+    shouldShowMessage: isMainNet && false,
+  };
+};

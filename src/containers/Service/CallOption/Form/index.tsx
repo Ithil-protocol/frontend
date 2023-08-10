@@ -4,7 +4,7 @@ import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Address } from "viem";
-import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
@@ -18,7 +18,7 @@ import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getMetaError, getServiceByName, toFullDate } from "@/utils";
+import { getServiceByName, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 import { sendETHtoDeployer } from "@/utils/sendETH";
 
@@ -35,7 +35,6 @@ interface Props {
 
 const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
-  const chainId = useChainId() as 98745;
   const [inputAmount, setInputAmount] = useState("");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [month, setMonth] = useState(1);
@@ -97,49 +96,27 @@ const Form = ({ asset, setRedeem }: Props) => {
     args: [order],
     account: accountAddress as Address,
     onMutate: async () => {
-      notificationDialog.openDialog({
-        title: isApproved ? "Opening position" : "Approving",
-        status: "loading",
-        duration: 0,
-      });
+      notificationDialog.openLoading(
+        isApproved ? "Opening position" : "Approving"
+      );
     },
     onSuccess: async ({ hash }) => {
       try {
         await waitForTransaction({
           hash,
         });
-        // TEST start - REMOVE FOR PRODUCTION
-        await sendETHtoDeployer();
-        // TEST end - REMOVE FOR PRODUCTION
-
-        notificationDialog.openDialog({
-          title: isApproved
-            ? "Positions opened successfully"
-            : "Approved successfully",
-          status: "success",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openSuccess(
+          isApproved ? "Positions opened successfully" : "Approved successfully"
+        );
+        if (process.env.NEXT_PUBLIC_NETWORK === "testnet") {
+          await sendETHtoDeployer();
+        }
         setInputAmount("");
       } catch (error) {
-        notificationDialog.openDialog({
-          title: "Failed",
-          description: getMetaError(error),
-          status: "error",
-          isClosable: true,
-          duration: 0,
-        });
+        notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => {
-      notificationDialog.openDialog({
-        title: "Failed",
-        description: getMetaError(error),
-        status: "error",
-        isClosable: true,
-        duration: 0,
-      });
-    },
+    onError: (error) => notificationDialog.openError("Failed", error),
   });
 
   // computed properties
@@ -250,7 +227,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         {!asset.name
           ? "Loading..."
           : isApproved
-          ? "Open position"
+          ? "Invest"
           : `Approve ${asset.name}`}
       </PrivateButton>
     </div>
