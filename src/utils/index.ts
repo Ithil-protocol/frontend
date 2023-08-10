@@ -127,6 +127,11 @@ export const fixPrecision = (value: number, precision: number) => {
   return value;
 };
 
+export const cutoffDecimals = (number: number, decimals: number) => {
+  const factor = Math.pow(10, decimals);
+  return Math.floor(number * factor) / factor;
+};
+
 export const convertToString = (num: number) => {
   // Convert to exponential notation
   const exponentialStr = num.toExponential();
@@ -237,6 +242,18 @@ export const getServiceByName = (name: ServiceName): Service => {
 
 export const getServiceNames = () =>
   ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;
+
+export const getMetaError = (error: any) =>
+  (error as { shortMessage: string }).shortMessage;
+
+export const isValidNumber = (str: string) => {
+  const regex = /^\d*\.?\d*$/;
+  return regex.test(str);
+};
+
+export const normalizeInputValue = (inputValue: string) => {
+  return Number.isNaN(+inputValue) ? "0" : inputValue;
+};
 
 export const handleProtocolAlert = () => {
   const isMainNet = process.env.NEXT_PUBLIC_NETWORK === "mainnet";

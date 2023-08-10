@@ -37,7 +37,10 @@ const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
-  const [month, setMonth] = useState(1);
+
+  const min = process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? 4 : 1;
+
+  const [month, setMonth] = useState(min);
   const notificationDialog = useNotificationDialog();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -200,9 +203,14 @@ const Form = ({ asset, setRedeem }: Props) => {
         />
 
         <Box width="full" gap="30px">
-          <FormLabel marginTop={4}>Lock time in minutes</FormLabel>
+          <FormLabel marginTop={4}>
+            Lock time in{" "}
+            {process.env.NEXT_PUBLIC_NETWORK === "mainnet"
+              ? "months"
+              : "minutes"}
+          </FormLabel>
           <Box margin="10px 10px 50px">
-            <Slider value={month} min={1} max={12} onChange={setMonth} />
+            <Slider value={month} min={min} max={12} onChange={setMonth} />
           </Box>
           <FormInfo items={formInfoItems} />
 
