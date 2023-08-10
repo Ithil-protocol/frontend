@@ -23,7 +23,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getServiceByName, normalizeInputValue } from "@/utils";
+import { cutoffDecimals, getServiceByName, normalizeInputValue } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -82,7 +82,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   }, [bestLeverage]);
 
   const finalLeverage = (
-    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
+    isAdvancedOptionsOpen ? +normalizeLeverage : +bestLeverage
   ).toString();
 
   const {
@@ -177,7 +177,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Final APY:",
-      value: finalApy?.toFixed(2),
+      value: cutoffDecimals(finalApy, 2),
       extension: "%",
       isLoading: isInterestAndSpreadLoading,
     },

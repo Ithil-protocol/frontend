@@ -127,6 +127,11 @@ export const fixPrecision = (value: number, precision: number) => {
   return value;
 };
 
+export const cutoffDecimals = (number: number, decimals: number) => {
+  const factor = Math.pow(10, decimals);
+  return Math.floor(number * factor) / factor;
+};
+
 export const convertToString = (num: number) => {
   // Convert to exponential notation
   const exponentialStr = num.toExponential();

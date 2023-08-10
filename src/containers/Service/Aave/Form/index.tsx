@@ -24,7 +24,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { getServiceByName, normalizeInputValue } from "@/utils";
+import { cutoffDecimals, getServiceByName, normalizeInputValue } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -80,9 +80,14 @@ const Form = ({ asset }: { asset: Asset }) => {
     if (bestLeverage) setLeverage(bestLeverage.toString());
   }, [bestLeverage]);
 
+  console.log("test: leverage normalizeLeverage", normalizeLeverage);
+  console.log("test: leverage bestLeverage", bestLeverage);
+
   const finalLeverage = (
-    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
+    isAdvancedOptionsOpen ? +normalizeLeverage : +bestLeverage
   ).toString();
+
+  console.log("finalLeverage", finalLeverage);
 
   const {
     interestAndSpread,
@@ -178,7 +183,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Final APY:",
-      value: finalApy?.toFixed(2),
+      value: cutoffDecimals(finalApy, 2),
       extension: "%",
       isLoading: isInterestAndSpreadLoading,
     },
