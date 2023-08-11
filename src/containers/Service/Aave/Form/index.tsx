@@ -119,11 +119,16 @@ const Form = ({ asset }: { asset: Asset }) => {
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    abi: aaveABI,
-    address: aaveAddress,
-    functionName: "open",
-    args: [order],
-    account: accountAddress as Address,
+    mode: "prepared",
+    request: {
+      abi: aaveABI,
+      address: aaveAddress,
+      functionName: "open",
+      args: [order],
+      account: accountAddress as Address,
+      chain: undefined,
+      gas: 2_100_000n,
+    },
     onMutate: async () => {
       notificationDialog.openLoading(
         isApproved ? "Opening position" : "Approving"
@@ -260,7 +265,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         loadingText="Waiting"
         mt="20px"
         isLoading={isButtonLoading}
-        onClick={() => (isApproved ? openPosition() : approve?.())}
+        onClick={() => (isApproved ? openPosition?.() : approve?.())}
       >
         {!asset.name
           ? "Loading..."
