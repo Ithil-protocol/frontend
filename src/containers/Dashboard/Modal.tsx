@@ -32,10 +32,7 @@ import { getAssetByAddress } from "@/utils";
 import ModalItem from "./ModalItem";
 
 interface Props {
-  data: Omit<
-    PositionType,
-    "createdAt" | "pnlPercentage" | "pnl" | "formattedPnl"
-  >;
+  data: Omit<PositionType, "createdAt" | "pnlPercentage" | "formattedPnl">;
   isOpen: boolean;
   onOpen: VoidNoArgs;
   onClose: VoidNoArgs;
@@ -164,7 +161,10 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
           <VStack spacing="25px" marginTop={4} alignItems="start">
             <ModalItem title="Service name" value={`${data.name} service`} />
             <HStack alignItems="center">
-              <ModalItem title="Amount obtained" value={data.amount} />{" "}
+              <ModalItem
+                title="Amount obtained"
+                value={Number(data.margin) + Number(data.pnl ?? 0)}
+              />{" "}
               {tokenName && (
                 <TokenIcon name={tokenName} width={20} height={20} />
               )}
