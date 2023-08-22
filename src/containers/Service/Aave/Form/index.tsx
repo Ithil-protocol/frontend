@@ -122,16 +122,11 @@ const Form = ({ asset }: { asset: Asset }) => {
     isLoading: isOpenLoading,
     write: openPosition,
   } = useContractWrite({
-    mode: "prepared",
-    request: {
-      abi: aaveABI,
-      address: aaveAddress,
-      functionName: "open",
-      args: [order],
-      account: accountAddress as Address,
-      chain: undefined,
-      gas: 3_100_000n,
-    },
+    abi: aaveABI,
+    address: aaveAddress,
+    functionName: "open",
+    args: [order],
+    account: accountAddress as Address,
     onMutate: async () => {
       notificationDialog.openLoading(
         isApproved ? "Opening position" : "Approving"
