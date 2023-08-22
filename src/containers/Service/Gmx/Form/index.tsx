@@ -100,6 +100,8 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
+  console.log("extraData gmx", extraData);
+
   const { order } = usePrepareDebitOrder({
     token: asset,
     collateralToken: asset.gmxCollateralTokenAddress,

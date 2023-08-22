@@ -2,7 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useEffect, useState } from "react";
-import { toHex } from "viem";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { Address } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
@@ -103,7 +103,10 @@ const Form = ({ asset }: { asset: Asset }) => {
     serviceAddress: aaveAddress,
   });
 
-  const extraData = toHex("");
+  // const extraData = toHex("");
+
+  // console.log("extraData aave", extraData);
+  const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
   const { order } = usePrepareDebitOrder({
     token: asset,
