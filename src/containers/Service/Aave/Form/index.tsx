@@ -2,7 +2,9 @@ import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useEffect, useState } from "react";
+
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
