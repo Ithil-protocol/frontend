@@ -118,10 +118,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         pnl: item?.pnl,
                         pnlPercentage:
                           item?.pnlPercentage &&
-                          fixPrecision(
-                            +item?.pnlPercentage * 100,
-                            2
-                          ).toString(),
+                          fixPrecision(+item?.pnlPercentage, 2).toString(),
                         id: item.id,
                         quote: item.quote,
                         type: item.type,
