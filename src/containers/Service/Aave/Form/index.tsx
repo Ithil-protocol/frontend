@@ -127,7 +127,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       args: [order],
       account: accountAddress as Address,
       chain: undefined,
-      gas: 3_000_000n,
+      gas: 3_100_000n,
     },
     onMutate: async () => {
       notificationDialog.openLoading(
