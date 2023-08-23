@@ -171,7 +171,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Best Leverage:",
-      value: bestLeverage,
+      value: Number(bestLeverage) + 1,
       extension: "x",
       isLoading: isBestLeverageLoading,
     },
