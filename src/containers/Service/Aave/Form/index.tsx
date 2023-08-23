@@ -189,6 +189,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   ];
 
   const tokens = getServiceByName("aave").tokens;
+
   if (!isMounted) return null;
 
   return (
@@ -242,7 +243,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
             setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
-            leverage={leverage}
+            leverage={(Number(bestLeverage) + 1).toString()}
             setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
