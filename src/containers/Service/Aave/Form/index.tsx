@@ -2,9 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useEffect, useState } from "react";
-
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
-
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -191,6 +189,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   ];
 
   const tokens = getServiceByName("aave").tokens;
+
   if (!isMounted) return null;
 
   return (
@@ -244,7 +243,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
             setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
-            leverage={leverage}
+            leverage={(Number(bestLeverage) + 1).toString()}
             setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
