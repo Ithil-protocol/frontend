@@ -73,7 +73,7 @@ export const useAaveOpenPositions = () => {
       // *10000 / 100 => percent with 2 decimal
       pnlPercentage:
         pnl !== undefined && margin !== undefined
-          ? (+formatUnits((pnl * 10000n) / margin, decimals) / 100).toString()
+          ? (Number((pnl * 10000n) / margin) / 100).toString()
           : undefined,
       isPnlLoading,
       type: "aave",
