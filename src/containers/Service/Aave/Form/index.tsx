@@ -13,7 +13,7 @@ import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import {
   aaveAddress,
-  useAaveLatestAndBase,
+  useAaveComputeBaseRateAndSpread,
   useAaveRiskSpreads,
 } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -60,8 +60,8 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
 
-  const { data: latestAndBase } = useAaveLatestAndBase({
-    args: [asset.tokenAddress],
+  const { data: latestAndBase } = useAaveComputeBaseRateAndSpread({
+    args: [asset.tokenAddress, 0n, 0n, 1n],
   });
 
   const { data: riskSpreads } = useAaveRiskSpreads({
