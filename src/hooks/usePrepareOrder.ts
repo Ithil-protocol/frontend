@@ -61,6 +61,7 @@ export const usePrepareDebitOrder = ({
 }: PrepareDebitOrderProps) => {
   const bigintAmount = parseUnits(amount, token.decimals);
 
+  console.log("leverageInPrepareOrder", leverage);
   const amountInLeverage = multiplyBigInt(bigintAmount, +leverage);
 
   const collateral: ServiceCollateral = {
