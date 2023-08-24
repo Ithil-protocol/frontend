@@ -83,7 +83,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   console.log("test: leverage bestLeverage", bestLeverage);
 
   const finalLeverage = (
-    isAdvancedOptionsOpen ? +normalizeLeverage : +bestLeverage
+    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
   ).toString();
 
   console.log("finalLeverage", finalLeverage);
@@ -170,7 +170,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
     {
       label: "Best Leverage:",
-      value: Number(bestLeverage) + 1,
+      value: bestLeverage,
       extension: "x",
       isLoading: isBestLeverageLoading,
     },
