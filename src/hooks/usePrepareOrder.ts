@@ -4,7 +4,6 @@ import {
   formatUnits,
   parseAbiParameters,
   parseUnits,
-  toHex,
 } from "viem";
 import { type Address } from "wagmi";
 
@@ -223,7 +222,7 @@ export const usePrepareFixedYieldOrder = ({
 
   const order: IServiceOrder = {
     agreement,
-    data: toHex(""),
+    data: encodeAbiParameters(parseAbiParameters("uint256"), [0n]),
   };
 
   return {
