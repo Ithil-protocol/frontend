@@ -243,7 +243,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
             setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
-            leverage={(Number(bestLeverage) + 1).toString()}
+            leverage={leverage}
             setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
