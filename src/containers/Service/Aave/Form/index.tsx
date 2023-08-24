@@ -2,7 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import React, { useEffect, useState } from "react";
-import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -39,7 +39,6 @@ const Form = ({ asset }: { asset: Asset }) => {
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
-
   const normalizeLeverage = normalizeInputValue(leverage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -79,14 +78,9 @@ const Form = ({ asset }: { asset: Asset }) => {
     if (bestLeverage) setLeverage(bestLeverage.toString());
   }, [bestLeverage]);
 
-  console.log("test: leverage normalizeLeverage", normalizeLeverage);
-  console.log("test: leverage bestLeverage", bestLeverage);
-
   const finalLeverage = (
     isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
   ).toString();
-
-  console.log("finalLeverage", finalLeverage);
 
   const {
     interestAndSpread,
@@ -101,7 +95,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     slippage,
     serviceAddress: aaveAddress,
   });
-
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
   const { order } = usePrepareDebitOrder({
@@ -122,7 +115,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     address: aaveAddress,
     functionName: "open",
     args: [order],
-    account: accountAddress as Address,
+    account: accountAddress,
     onMutate: async () => {
       notificationDialog.openLoading(
         isApproved ? "Opening position" : "Approving"
@@ -155,7 +148,6 @@ const Form = ({ asset }: { asset: Asset }) => {
   };
 
   const isMounted = useIsMounted();
-  console.log("leverageleverageleverage", leverage);
 
   const finalApy = baseApy
     ? +baseApy * +leverage - (+leverage - 1) * displayInterestAndSpreadInPercent
@@ -233,7 +225,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           isMaxDisabled={isMaxDisabled}
           value={inputAmount}
           onChange={setInputAmount}
-          switchableAsset={true}
+          switchableAsset
           tokens={tokens}
         />
 
@@ -256,11 +248,11 @@ const Form = ({ asset }: { asset: Asset }) => {
         isInterestError={isInterestError}
       />
       <PrivateButton
+        onClick={() => (isApproved ? openPosition?.() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
         isLoading={isButtonLoading}
-        onClick={() => (isApproved ? openPosition?.() : approve?.())}
       >
         {!asset.name
           ? "Loading..."
