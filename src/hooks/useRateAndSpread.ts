@@ -68,8 +68,6 @@ export const useRateAndSpread = ({
     enabled: !!vaultFreeLiquidity,
   });
 
-  console.log("BaseRateAndSpread", data);
-
   const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
 
   const result = {

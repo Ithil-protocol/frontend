@@ -38,7 +38,6 @@ const Form = ({ asset }: { asset: Ithil }) => {
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [month, setMonth] = useState(1);
   const notificationDialog = useNotificationDialog();
-  console.log("leverage:", leverage, "slippage:", slippage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,

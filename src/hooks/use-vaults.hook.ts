@@ -73,8 +73,6 @@ const getVaultData = async (address?: string) => {
   const length = assets.length;
 
   const data: Vaults = assets.map((asset, idx) => {
-    console.log("multicallData", multicallData);
-
     // tvl informations are available at index 0...length
     const tvl = multicallData[idx].result as bigint;
     // freeLiquidity informations are available at index length...length*2
