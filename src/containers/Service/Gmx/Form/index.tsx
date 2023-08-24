@@ -61,7 +61,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     token: asset,
   });
 
-  const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
+  const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
 
   const { data: latestAndBase } = useGmxComputeBaseRateAndSpread({
     args: [asset.tokenAddress, 0n, 0n, 1n],
