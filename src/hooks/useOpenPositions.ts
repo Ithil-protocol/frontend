@@ -142,8 +142,9 @@ export const useGmxOpenPositions = () => {
       quote,
       pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
       pnlPercentage:
-        pnl !== undefined ? formatUnits(pnl / 100n, decimals) : undefined,
-      isPnlLoading,
+        pnl !== undefined && margin !== undefined
+          ? (Number((pnl * 10000n) / margin) / 100).toString()
+          : undefined,
       type: "gmx",
       name: "GMX",
       slippage: 10,
