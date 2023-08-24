@@ -152,6 +152,13 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const isMounted = useIsMounted();
 
+  console.log(
+    "gmxLeverage",
+    "leverageInPrepare:",
+    finalLeverage,
+    "leverageInApy:",
+    leverage
+  );
   const finalApy = baseApy
     ? +baseApy * +leverage - (+leverage - 1) * displayInterestAndSpreadInPercent
     : 0;

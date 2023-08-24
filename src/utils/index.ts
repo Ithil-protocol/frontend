@@ -44,7 +44,6 @@ export const filterDatesWithinPastWeek = (data: any) => {
 export const formatToken = (name: VaultName, value: bigint) => {
   try {
     const token = getAssetByName(name);
-    console.log("token:::", token);
     if (!token) throw Error("Token isn't defined");
     const decimals = token.decimals;
     return formatUnits(value, decimals);

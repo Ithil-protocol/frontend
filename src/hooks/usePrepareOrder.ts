@@ -61,7 +61,6 @@ export const usePrepareDebitOrder = ({
 }: PrepareDebitOrderProps) => {
   const bigintAmount = parseUnits(amount, token.decimals);
 
-  console.log("leverageInPrepareOrder", leverage);
   const amountInLeverage = multiplyBigInt(bigintAmount, +leverage);
 
   const collateral: ServiceCollateral = {
@@ -201,8 +200,6 @@ export const usePrepareFixedYieldOrder = ({
     args: [loanAmount],
     enabled: !!asset?.vaultAddress,
   });
-
-  console.log("order33 - shares", shares);
 
   const collateral: ServiceCollateral = {
     itemType: 0,

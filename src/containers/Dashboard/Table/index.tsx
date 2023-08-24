@@ -55,7 +55,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
       );
     });
 
-  console.log("positions999", positions);
   const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =

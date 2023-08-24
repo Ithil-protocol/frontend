@@ -37,8 +37,6 @@ export const useAllowance = ({
     ? Number(formatUnits(allowanceValue, token.decimals))
     : 0;
 
-  console.log("currentAllowance", currentAllowance);
-
   const needAllowance = currentAllowance < Number(amount);
 
   const { config } = usePrepareTokenApprove({
@@ -51,7 +49,6 @@ export const useAllowance = ({
   const mutation = useTokenApprove({
     ...config,
     onMutate: ({ args }) => {
-      console.log("args33", args);
       notificationDialog.openLoading("Approving");
     },
     onSuccess: async ({ hash }) => {

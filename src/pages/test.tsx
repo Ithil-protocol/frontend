@@ -8,7 +8,6 @@ import {
   useContractWrite,
 } from "wagmi";
 
-import { assetsObjByAddress } from "@/data/assets";
 import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
@@ -308,8 +307,6 @@ const Test = () => {
   //   args: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
   // });
 
-  console.log("assets33", assetsObjByAddress);
-
   const { address } = useAccount();
 
   const { data: balance } = useBalance({
@@ -322,14 +319,6 @@ const Test = () => {
     token: getAssetByName("usdt")?.tokenAddress,
   });
 
-  console.log(
-    "ITHIL",
-    balance?.formatted.split(".")[0],
-    "USDT",
-    balanceUSDT?.formatted.split(".")[0]
-  );
-  console.log("balance33 balanceUSDT", balanceUSDT?.formatted);
-
   const { data: B } = useAaveLatestAndBase({
     args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],
   });
@@ -337,12 +326,6 @@ const Test = () => {
   const { data: C } = useAaveRiskSpreads({
     args: ["0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"],
   });
-
-  console.log("BBBBBBBB", B, "CCCCCCCCCCCC", C);
-
-  if (B) {
-    console.log("pppppppppppppp", B % BigInt(2) ** BigInt(128));
-  }
 
   return (
     <Button onClick={() => approve()}>
