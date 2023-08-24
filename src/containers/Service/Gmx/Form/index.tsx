@@ -82,7 +82,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   }, [bestLeverage]);
 
   const finalLeverage = (
-    isAdvancedOptionsOpen ? +normalizeLeverage : +bestLeverage
+    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
   ).toString();
 
   const {
@@ -142,18 +142,18 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   // computed properties
   const isButtonLoading = isInterestAndSpreadLoading;
-  const isButtonDisabled = isButtonLoading || +inputAmount === 0;
+  const isButtonDisabled =
+    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
-    setInputAmount(balance?.formatted ?? "0");
+    setInputAmount(balance?.formatted ?? "");
   };
 
   const isMounted = useIsMounted();
 
   const finalApy = baseApy
-    ? +baseApy * +finalLeverage -
-      (+finalLeverage - 1) * displayInterestAndSpreadInPercent
+    ? +baseApy * +leverage - (+leverage - 1) * displayInterestAndSpreadInPercent
     : 0;
 
   const formInfoItems = [
@@ -250,7 +250,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         isInterestError={isInterestError}
       />
       <PrivateButton
-        onClick={() => (isApproved ? openPosition() : approve?.())}
+        onClick={() => (isApproved ? openPosition?.() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
