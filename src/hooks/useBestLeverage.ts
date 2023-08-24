@@ -2,7 +2,7 @@ import { Decimal } from "decimal.js";
 
 interface IBestLeverage {
   baseApy?: number;
-  latestAndBase?: bigint;
+  latestAndBase?: readonly [bigint, bigint];
   riskSpreads?: bigint;
 }
 
@@ -20,9 +20,10 @@ export const useBestLeverage = ({
   const parsedBaseApy = new Decimal(baseApy).mul(
     new Decimal(10).pow(new Decimal(16))
   );
-  const finalLatestAndBase = new Decimal(
-    (latestAndBase % BigInt(2) ** BigInt(128)).toString()
-  );
+  const finalLatestAndBase = new Decimal(latestAndBase[0].toString());
+  //  new Decimal(
+  //   (latestAndBase % BigInt(2) ** BigInt(128)).toString()
+  // );
 
   const bestLeverage = new Decimal(
     parsedBaseApy

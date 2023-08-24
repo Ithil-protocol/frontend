@@ -13,7 +13,7 @@ import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import {
   gmxAddress,
-  useGmxLatestAndBase,
+  useGmxComputeBaseRateAndSpread,
   useGmxRiskSpreads,
 } from "@/hooks/generated/gmx";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -63,8 +63,8 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
 
-  const { data: latestAndBase } = useGmxLatestAndBase({
-    args: [asset.tokenAddress],
+  const { data: latestAndBase } = useGmxComputeBaseRateAndSpread({
+    args: [asset.tokenAddress, 0n, 0n, 1n],
   });
 
   const { data: riskSpreads } = useGmxRiskSpreads({
