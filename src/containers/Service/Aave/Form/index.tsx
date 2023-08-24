@@ -155,10 +155,10 @@ const Form = ({ asset }: { asset: Asset }) => {
   };
 
   const isMounted = useIsMounted();
+  console.log("leverageleverageleverage", leverage);
 
   const finalApy = baseApy
-    ? +baseApy * +finalLeverage -
-      (+finalLeverage - 1) * displayInterestAndSpreadInPercent
+    ? +baseApy * +leverage - (+leverage - 1) * displayInterestAndSpreadInPercent
     : 0;
 
   const formInfoItems = [
@@ -260,7 +260,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         loadingText="Waiting"
         mt="20px"
         isLoading={isButtonLoading}
-        onClick={() => (isApproved ? openPosition() : approve?.())}
+        onClick={() => (isApproved ? openPosition?.() : approve?.())}
       >
         {!asset.name
           ? "Loading..."
