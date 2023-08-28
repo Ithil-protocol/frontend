@@ -66,7 +66,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
         borderRadius="6px"
         marginBottom="16px"
         marginX="auto"
-        className="bg-primary-600"
+        backgroundColor={`${colorMode === "dark" ? "#1c2236" : "#e7eaeb"}`}
       >
         <Text textStyle="md2">Best APY</Text>
         <Text textStyle="slender-md">{apy}</Text>
