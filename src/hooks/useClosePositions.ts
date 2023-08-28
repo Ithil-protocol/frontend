@@ -4,6 +4,9 @@ import { useAccount } from "wagmi";
 import { aaveABI, gmxABI } from "@/abi";
 import { publicClient } from "@/wagmiTest/config";
 
+import { aaveAddress } from "./generated/aave";
+import { gmxAddress } from "./generated/gmx";
+
 export const useAaveClosePositions = () => {
   const { address: accountAddress } = useAccount();
   const result = useQuery({
@@ -15,6 +18,7 @@ export const useAaveClosePositions = () => {
           eventName: "PositionClosed",
           fromBlock: 0n,
           args: { user: accountAddress },
+          address: aaveAddress,
         }
       );
       const positionClosedLogs = await publicClient.getFilterLogs({
@@ -42,6 +46,7 @@ export const useGmxClosePositions = () => {
           eventName: "PositionClosed",
           fromBlock: 0n,
           args: { user: accountAddress },
+          address: gmxAddress,
         }
       );
       const positionClosedLogs = await publicClient.getFilterLogs({
