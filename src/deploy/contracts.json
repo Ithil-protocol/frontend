@@ -6,7 +6,7 @@
   "gmxService": "0x2B1050f9df5f210Ec121B92E23c96216DB966aa5",
   "feeCollectorService": "0xb08CC77431CF45285bbB80172C8124a2Bec363De",
   "callOptionService": "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
-  "fixedYieldService": "0x40a87286ef87e17a48a5b266f94c918a53289956",
+  "fixedYieldService": "0xa84e493ad0a2b1826bf8182baa2bb036b8620271",
   "managerBlockNumber": "111134933",
   "oracle": "0xd40Cfb8cc7ccf7c1249B954F81338965b32A5801"
 }
