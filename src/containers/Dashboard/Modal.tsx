@@ -194,7 +194,9 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
 
             {aaveOrGmx && (
               <>
-                <Text>Dummy title</Text>
+                <Text className="font-bold" as="p">
+                  Slippage
+                </Text>
                 <Slider
                   value={slippage}
                   max={10}
