@@ -148,6 +148,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         >
           {data.type === "call-option" ? data.amount : data.margin}
         </Td>
+        <Td
+          color={mode("primary.700", "primary.700.dark")}
+          fontWeight="medium"
+          fontSize="22px"
+          lineHeight="22px"
+        >
+          {data.expireAt ? data.expireAt : <Loading />}
+        </Td>
         <Td textAlign="end" width={200} height="108px">
           <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
             Close
