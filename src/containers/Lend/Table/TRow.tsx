@@ -1,3 +1,4 @@
+import { AddIcon } from "@chakra-ui/icons";
 import { Button, Td, Text, Tr } from "@chakra-ui/react";
 import classNames from "classnames";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import { Loading } from "@/components/loading";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { Vaults } from "@/types/onchain.types";
 import { cutoffDecimals } from "@/utils";
+import { addTokenToWallet } from "@/utils/addIthil";
 
 import TRowItem from "./TRowItem";
 
@@ -103,6 +105,20 @@ const TRow: FC<Props> = ({
             Info
           </Button>
         </Link>
+      </Td>
+      <Td>
+        <Button
+          variant="solid"
+          w={10}
+          h={10}
+          borderRadius={10000}
+          onClick={(e) => {
+            e.stopPropagation();
+            addTokenToWallet(vault.token);
+          }}
+        >
+          <AddIcon />
+        </Button>
       </Td>
     </Tr>
   );
