@@ -5,7 +5,7 @@
   "aaveService": "0xb18865C919ADd78862D412AD253536d4C1C178Db",
   "gmxService": "0x2B1050f9df5f210Ec121B92E23c96216DB966aa5",
   "feeCollectorService": "0xb08CC77431CF45285bbB80172C8124a2Bec363De",
-  "callOptionService": "0xCcDf09d5C8AD392549F8AB5C2948b9007F9C2d6B",
+  "callOptionService": "0x0822d0785e3f87fa245372e7f3aa4ceaf507a4c3",
   "fixedYieldService": "0x40a87286ef87e17a48a5b266f94c918a53289956",
   "managerBlockNumber": "111134933",
   "oracle": "0xd40Cfb8cc7ccf7c1249B954F81338965b32A5801"

@@ -7,7 +7,7 @@
     "tokenAddress": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
     "oracleAddress": "0x50834f3163758fcc1df9973b6e91f0f0f0434ad3",
     "vaultAddress": "0x6b416C9727fb248C3097b5c1D10c39a7EBDFf239",
-    "callOptionAddress": "0x1eCCcFf52C171eF2085d54E43864a8F6BE146B03",
+    "callOptionAddress": "0x0822D0785E3f87fA245372e7f3aA4CEaF507a4c3",
     "aaveCollateralTokenAddress": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
     "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
   },
