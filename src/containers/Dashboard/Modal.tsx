@@ -125,6 +125,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
       ],
     });
   };
+  const aaveOrGmx = data.type === "aave" || data.type === "gmx";
   return (
     <ChakraModal onClose={onClose} isCentered isOpen={isOpen}>
       <ModalOverlay backdropFilter="blur(10px)" />
@@ -191,7 +192,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
               </>
             )}
 
-            {data.type !== "call-option" && (
+            {aaveOrGmx && (
               <>
                 <Text>Dummy title</Text>
                 <Slider
