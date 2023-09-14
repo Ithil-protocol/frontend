@@ -9,7 +9,7 @@ import { Loading } from "@/components/loading";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { Vaults } from "@/types/onchain.types";
 import { cutoffDecimals } from "@/utils";
-import { addTokenToWallet } from "@/utils/addIthil";
+import { addTokenToWallet } from "@/utils/addTokenToWallet";
 
 import TRowItem from "./TRowItem";
 

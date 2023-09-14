@@ -24,7 +24,7 @@ import {
 } from "@/assets/svgs";
 import { useColorMode } from "@/hooks/useColorMode";
 import { routes, socialMedia } from "@/utils";
-import { ITHILToken, addTokenToWallet } from "@/utils/addIthil";
+import { ITHILToken, addTokenToWallet } from "@/utils/addTokenToWallet";
 
 import { ThemeSwitch } from "./theme-switch";
 
