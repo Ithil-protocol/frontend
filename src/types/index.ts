@@ -79,6 +79,7 @@ export interface PositionType {
   formattedPnl?: string;
   name: string;
   slippage: number;
+  expireAt: string | undefined;
 }
 
 export interface PageHeading {
