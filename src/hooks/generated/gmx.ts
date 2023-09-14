@@ -1052,7 +1052,7 @@ export const gmxABI = [
   },
 ] as const;
 
-export const gmxAddress = "0x2B1050f9df5f210Ec121B92E23c96216DB966aa5" as const;
+export const gmxAddress = "0x7E34E6320E79021BA608370b5128cA3480c4c373" as const;
 
 export const gmxConfig = { address: gmxAddress, abi: gmxABI } as const;
 

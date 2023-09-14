@@ -758,7 +758,7 @@ export const fixedYieldABI = [
 ] as const;
 
 export const fixedYieldAddress =
-  "0x40A87286EF87e17a48a5b266F94c918A53289956" as const;
+  "0xa84e493ad0a2b1826bf8182baa2bb036b8620271" as const;
 
 export const fixedYieldConfig = {
   address: fixedYieldAddress,
