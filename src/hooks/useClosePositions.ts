@@ -69,12 +69,12 @@ export const useClosePositions = () => {
 
   const aaveWithTypes = aave.map((item) => ({
     ...item,
-    type: "AAVE",
+    type: "aave" as const,
   }));
 
   const gmxWithTypes = gmx.map((item) => ({
     ...item,
-    type: "GMX",
+    type: "gmx" as const,
   }));
 
   const positions = [aaveWithTypes, gmxWithTypes].flat().sort((a, b) => {

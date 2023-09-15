@@ -4,7 +4,13 @@ import Header from "@/containers/Dashboard/Header";
 import Table from "@/containers/Dashboard/Table";
 import { viewTypes } from "@/types";
 
-export type ColumnsActive = "Tokens" | "Service" | "Status" | "Margin" | "";
+export type ColumnsActive =
+  | "Tokens"
+  | "Service"
+  | "Status"
+  | "Margin"
+  | "Expire"
+  | "";
 export type ColumnsOther = "Tokens" | "Service" | "Date";
 
 const columnsActive: ColumnsActive[] = [
@@ -12,6 +18,7 @@ const columnsActive: ColumnsActive[] = [
   "Service",
   "Status",
   "Margin",
+  "Expire",
   "",
 ];
 const columnsOther: ColumnsOther[] = ["Tokens", "Service", "Date"];

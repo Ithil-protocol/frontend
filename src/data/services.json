@@ -10,6 +10,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "DAI"],
     "tvl": 158.86,
+    "deadline": 86400,
     "url": "/aave",
     "hasIndex": true,
     "safety_score": {
@@ -30,6 +31,7 @@
       ],
       "description": "By depositing your tokens on Aave, you contribute to a robust lending pool that serves borrowers across multiple chains, making it one of the most trusted and established DeFi protocols in the industry. Aave operates as a decentralized lending and borrowing platform, facilitating the lending of tokens by depositors and providing borrowers with access to these tokens. As a depositor, you earn a fee in return for lending your tokens to borrowers on the platform. This fee, which is derived from the interest paid by borrowers, serves as a source of income for you, boosting your overall APY. Aave's reputation for security and reliability is built on its extensive track record and adoption across various blockchain networks. With billions of dollars secured across more than five chains, Aave has consistently demonstrated its ability to safeguard user funds and maintain the integrity of its lending platform."
     },
+
     "explanation": "This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
   },
 
@@ -43,6 +45,7 @@
     "boostApy": 3,
     "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 100,
+    "deadline": 86400,
     "url": "/gmx",
     "hasIndex": true,
     "safety_score": {
@@ -66,6 +69,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 158.86,
+    "deadline": 86400,
     "url": "/call-option",
     "hasIndex": true,
     "safety_score": {
@@ -98,6 +102,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 158.86,
+    "deadline": 86400,
     "url": "/fixed-yield",
     "hasIndex": true,
     "safety_score": {
