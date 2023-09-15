@@ -1,6 +1,7 @@
 import Generic from "cryptocurrency-icons/svg/icon/generic.svg";
 import {
   format,
+  isFuture,
   isSameDay,
   isWithinInterval,
   parse,
@@ -283,4 +284,18 @@ export const handleProtocolAlert = () => {
     message,
     shouldShowMessage: isMainNet && false,
   };
+};
+
+export const isPositionActive = (
+  serviceName: ServiceName,
+  createdAt: number
+) => {
+  const { deadline } = getServiceByName(serviceName);
+  const time = createdAt + deadline;
+
+  if (serviceName === "call-option") console.log("time33", createdAt * 1000);
+
+  const isActive = isFuture(time * 1000);
+
+  return isActive;
 };
