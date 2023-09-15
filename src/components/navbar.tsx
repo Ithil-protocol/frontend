@@ -24,7 +24,7 @@ import {
 } from "@/assets/svgs";
 import { useColorMode } from "@/hooks/useColorMode";
 import { routes, socialMedia } from "@/utils";
-import { addIthilToWallet } from "@/utils/addIthil";
+import { ITHILToken, addTokenToWallet } from "@/utils/addTokenToWallet";
 
 import { ThemeSwitch } from "./theme-switch";
 
@@ -180,7 +180,7 @@ const Navbar: FC<Props> = ({ onSetSidebarOpen }) => {
                   _hover={{
                     backgroundColor: mode("primary.200", "primary.200.dark"),
                   }}
-                  onClick={addIthilToWallet}
+                  onClick={() => addTokenToWallet(ITHILToken)}
                 >
                   <div className="block pr-1">
                     <LogoSymbolLight width={24} />
