@@ -78,7 +78,6 @@ export interface PositionType {
   quote?: bigint;
   formattedPnl?: string;
   name: string;
-  slippage: number;
 }
 
 export interface PageHeading {
@@ -148,5 +147,4 @@ export interface OpenPosition {
   quote?: bigint;
   type: string;
   name: string;
-  slippage: number;
 }
