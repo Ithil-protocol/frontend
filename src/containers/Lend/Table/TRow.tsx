@@ -114,7 +114,10 @@ const TRow: FC<Props> = ({
           borderRadius={10000}
           onClick={(e) => {
             e.stopPropagation();
-            addTokenToWallet(vault.token);
+            addTokenToWallet({
+              ...vault.token,
+              tokenAddress: vault.token.iTokenAddress,
+            });
           }}
         >
           <AddIcon />
