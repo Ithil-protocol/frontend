@@ -122,7 +122,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         quote: item.quote,
                         type: item.type,
                         name: item.name,
-                        slippage: item.slippage,
                       }}
                     />
                   );
