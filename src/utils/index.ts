@@ -293,8 +293,6 @@ export const isPositionActive = (
   const { deadline } = getServiceByName(serviceName);
   const time = createdAt + deadline;
 
-  if (serviceName === "call-option") console.log("time33", createdAt * 1000);
-
   const isActive = isFuture(time * 1000);
 
   return isActive;
