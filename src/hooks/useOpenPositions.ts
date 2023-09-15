@@ -68,7 +68,6 @@ export const useAaveOpenPositions = () => {
     positions.push({
       agreement,
       id: data?.[1][i],
-      createdAt: data?.[0][i]?.createdAt,
       quote,
       pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
       // *10000 / 100 => percent with 2 decimal
@@ -140,7 +139,6 @@ export const useGmxOpenPositions = () => {
     positions.push({
       agreement,
       id: data?.[1][i],
-      createdAt: data?.[0][i]?.createdAt,
       quote,
       pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
       pnlPercentage:
@@ -171,7 +169,6 @@ export const useFixedYieldOpenPositions = () => {
     positions.push({
       agreement,
       id: data?.[1][i],
-      createdAt: data?.[0][i]?.createdAt,
       type: "fixed-yield",
       name: "Fixed yield",
       slippage: 0,
@@ -226,6 +223,8 @@ export const useCallOptionOpenPositions = () => {
     userAgreements3,
   ];
 
+  console.log("userAgreementsuserAgreements", userAgreements);
+
   const isLoading = isLoading0 || isLoading1 || isLoading2 || isLoading3;
 
   const positions: OpenPosition[] = [];
@@ -237,7 +236,6 @@ export const useCallOptionOpenPositions = () => {
       positions.push({
         agreement,
         id: ids?.[index],
-        createdAt: 0n, //should change
         type: "call-option",
         name: "Call option",
         slippage: 0,

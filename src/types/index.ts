@@ -149,6 +149,5 @@ export interface OpenPosition {
   quote?: bigint;
   type: ServiceName;
   name: string;
-  createdAt?: bigint;
   slippage: number;
 }
