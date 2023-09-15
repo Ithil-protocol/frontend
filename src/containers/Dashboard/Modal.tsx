@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite, useQueryClient } from "wagmi";
 
@@ -42,15 +42,11 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { mode } = useColorMode();
 
   const [percentage, setPercentage] = useState(100);
-  const [slippage, setSlippage] = useState(0);
+  const [slippage, setSlippage] = useState(10);
   const asset = getAssetByAddress(data.token as Address);
   const tokenName = asset?.name;
 
   const notificationDialog = useNotificationDialog();
-
-  useEffect(() => {
-    setSlippage(data.slippage);
-  }, [data]);
 
   const { redeem } = useCallOptionInfo({
     asset: asset!,
@@ -174,7 +170,6 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                 <TokenIcon name={tokenName} width={20} height={20} />
               )}
             </HStack>
-            <ModalItem title="Slippage" value={`${slippage}%`} />
 
             {data.type === "call-option" && (
               <>
@@ -194,6 +189,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
 
             {aaveOrGmx && (
               <>
+                <ModalItem title="Slippage" value={`${slippage}%`} />
                 <Text className="font-bold" as="p">
                   Slippage
                 </Text>
