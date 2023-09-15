@@ -74,7 +74,7 @@ const CloseTRow: FC<Props> = ({ data }) => {
         fontSize="22px"
         lineHeight="22px"
       >
-        {data.type}
+        {data.type?.toUpperCase()}
       </Td>
       <Td>
         <Text

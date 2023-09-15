@@ -71,7 +71,7 @@ export interface PositionType {
   amount: string;
   margin: string | number;
   createdAt: bigint | undefined;
-  type: string;
+  type: ServiceName;
   pnlPercentage?: string;
   pnl?: string;
   isPnlLoading?: boolean;
@@ -80,7 +80,6 @@ export interface PositionType {
   formattedPnl?: string;
   name: string;
   slippage: number;
-  expireAt: string | undefined;
 }
 
 export interface PageHeading {
@@ -148,7 +147,8 @@ export interface OpenPosition {
   isPnlLoading?: boolean;
   id?: bigint;
   quote?: bigint;
-  type: string;
+  type: ServiceName;
   name: string;
+  createdAt?: bigint;
   slippage: number;
 }
