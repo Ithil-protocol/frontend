@@ -113,6 +113,7 @@ export type Asset = {
   callOptionAddress: Address;
   aaveCollateralTokenAddress: Address;
   gmxCollateralTokenAddress: Address;
+  iTokenAddress: Address;
 };
 
 export type Ithil = {
