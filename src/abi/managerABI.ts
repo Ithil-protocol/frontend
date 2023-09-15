@@ -320,7 +320,7 @@ export const managerABI = [
     inputs: [
       {
         internalType: "address",
-        name: "token",
+        name: "vaultToken",
         type: "address",
       },
       {

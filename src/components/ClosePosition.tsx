@@ -3,7 +3,12 @@ import { Button, GridItem, HStack, Text, VStack } from "@chakra-ui/react";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 
-const ClosePosition = () => {
+interface Props {
+  asset: string;
+  positionValue: string;
+}
+
+const ClosePosition: React.FC<Props> = ({ asset, positionValue }) => {
   const { mode, pickColor } = useColorMode();
 
   return (
@@ -39,7 +44,7 @@ const ClosePosition = () => {
               lineHeight="24px"
               color={pickColor(palette.colors.primary, "800")}
             >
-              USDC
+              {asset}
             </Text>
             <Text
               fontWeight="black"
@@ -47,7 +52,7 @@ const ClosePosition = () => {
               lineHeight="24px"
               color={mode("primary.main.dark", "primary.main")}
             >
-              500
+              {positionValue}
             </Text>
           </HStack>
         </HStack>

@@ -5,7 +5,27 @@ import { palette } from "@/styles/theme/palette";
 
 import PositionsDetailItem from "./PositionsDetailItem";
 
-const PositionsDetails = () => {
+interface Props {
+  collateral: string;
+  currentPrice: string;
+  distanceFromLiquid: string;
+  liquidPrice: string;
+  loan: string;
+  opened: string;
+  openPrice: string;
+  profit: string;
+}
+
+const PositionsDetails: React.FC<Props> = ({
+  collateral,
+  currentPrice,
+  distanceFromLiquid,
+  liquidPrice,
+  loan,
+  opened,
+  openPrice,
+  profit,
+}) => {
   const { pickColor } = useColorMode();
 
   return (
@@ -34,26 +54,38 @@ const PositionsDetails = () => {
           Positions Details
         </Heading>
         <VStack spacing="24px" width="full">
-          <PositionsDetailItem title="Loan" unit="ETH 2x Long" value="8.05" />
-          <PositionsDetailItem title="Open Price" unit="USDC" value="4.122" />
+          <PositionsDetailItem title="Loan" unit="ETH 2x Long" value={loan} />
+          <PositionsDetailItem
+            title="Open Price"
+            unit="USDC"
+            value={openPrice}
+          />
           <PositionsDetailItem
             title="Current Price"
             unit="USDC"
-            value="4.122"
+            value={currentPrice}
           />
-          <PositionsDetailItem title="Liq. Price" unit="USDC" value="4.122" />
-          <PositionsDetailItem title="Collateral" unit="ETH" value="1.00" />
+          <PositionsDetailItem
+            title="Liq. Price"
+            unit="USDC"
+            value={liquidPrice}
+          />
+          <PositionsDetailItem
+            title="Collateral"
+            unit="ETH"
+            value={collateral}
+          />
           <PositionsDetailItem
             title="Distance From Liq."
             unit="ETH"
-            value="+ 0.05"
+            value={distanceFromLiquid}
           />
           <PositionsDetailItem
             title="Profit"
             valueColor="#15ac89"
-            value="$ 2.400.00 (+24.1 %)"
+            value={profit}
           />
-          <PositionsDetailItem title="Opened" value="05/01/2023" />
+          <PositionsDetailItem title="Opened" value={opened} />
         </VStack>
       </VStack>
     </GridItem>

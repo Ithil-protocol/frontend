@@ -1,7 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 
-import ClosePosition from "./ClosePosition";
-import PositionsDetails from "./PositionsDetails";
+import ClosePosition from "@/components/ClosePosition";
+import PositionsDetails from "@/components/PositionsDetails";
 
 const Nav = () => {
   return (
@@ -15,8 +15,17 @@ const Nav = () => {
         height="full"
         width="full"
       >
-        <PositionsDetails />
-        <ClosePosition />
+        <PositionsDetails
+          collateral=""
+          currentPrice=""
+          distanceFromLiquid=""
+          liquidPrice=""
+          loan=""
+          openPrice=""
+          opened=""
+          profit=""
+        />
+        <ClosePosition asset="" positionValue="" />
       </Grid>
     </GridItem>
   );
