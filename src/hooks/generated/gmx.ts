@@ -38,6 +38,7 @@ export const gmxABI = [
   { type: "error", inputs: [], name: "Locked" },
   { type: "error", inputs: [], name: "LossByArbitraryAddress" },
   { type: "error", inputs: [], name: "MarginTooLow" },
+  { type: "error", inputs: [], name: "OnlyLiquidator" },
   { type: "error", inputs: [], name: "RestrictedAccess" },
   { type: "error", inputs: [], name: "RestrictedToOwner" },
   { type: "error", inputs: [], name: "UserIsNotWhitelisted" },
@@ -653,6 +654,13 @@ export const gmxABI = [
     stateMutability: "view",
     type: "function",
     inputs: [],
+    name: "liquidator",
+    outputs: [{ name: "", internalType: "address", type: "address" }],
+  },
+  {
+    stateMutability: "view",
+    type: "function",
+    inputs: [],
     name: "locked",
     outputs: [{ name: "", internalType: "bool", type: "bool" }],
   },
@@ -891,6 +899,13 @@ export const gmxABI = [
     type: "function",
     inputs: [{ name: "_guardian", internalType: "address", type: "address" }],
     name: "setGuardian",
+    outputs: [],
+  },
+  {
+    stateMutability: "nonpayable",
+    type: "function",
+    inputs: [{ name: "_liquidator", internalType: "address", type: "address" }],
+    name: "setLiquidator",
     outputs: [],
   },
   {
@@ -1415,6 +1430,26 @@ export function useGmxLiquidationScore<
     abi: gmxABI,
     address: gmxAddress,
     functionName: "liquidationScore",
+    ...config,
+  } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link gmxABI}__ and `functionName` set to `"liquidator"`.
+ */
+export function useGmxLiquidator<
+  TFunctionName extends "liquidator",
+  TSelectData = ReadContractResult<typeof gmxABI, TFunctionName>
+>(
+  config: Omit<
+    UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>,
+    "abi" | "address" | "functionName"
+  > = {} as any
+) {
+  return useContractRead({
+    abi: gmxABI,
+    address: gmxAddress,
+    functionName: "liquidator",
     ...config,
   } as UseContractReadConfig<typeof gmxABI, TFunctionName, TSelectData>);
 }
@@ -2202,6 +2237,34 @@ export function useGmxSetGuardian<TMode extends WriteContractMode = undefined>(
 }
 
 /**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link gmxABI}__ and `functionName` set to `"setLiquidator"`.
+ */
+export function useGmxSetLiquidator<
+  TMode extends WriteContractMode = undefined
+>(
+  config: TMode extends "prepared"
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof gmxABI,
+          "setLiquidator"
+        >["request"]["abi"],
+        "setLiquidator",
+        TMode
+      > & { functionName?: "setLiquidator" }
+    : UseContractWriteConfig<typeof gmxABI, "setLiquidator", TMode> & {
+        abi?: never;
+        functionName?: "setLiquidator";
+      } = {} as any
+) {
+  return useContractWrite<typeof gmxABI, "setLiquidator", TMode>({
+    abi: gmxABI,
+    address: gmxAddress,
+    functionName: "setLiquidator",
+    ...config,
+  } as any);
+}
+
+/**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link gmxABI}__ and `functionName` set to `"setMinMargin"`.
  */
 export function useGmxSetMinMargin<TMode extends WriteContractMode = undefined>(
@@ -2547,6 +2610,23 @@ export function usePrepareGmxSetGuardian(
     functionName: "setGuardian",
     ...config,
   } as UsePrepareContractWriteConfig<typeof gmxABI, "setGuardian">);
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link gmxABI}__ and `functionName` set to `"setLiquidator"`.
+ */
+export function usePrepareGmxSetLiquidator(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof gmxABI, "setLiquidator">,
+    "abi" | "address" | "functionName"
+  > = {} as any
+) {
+  return usePrepareContractWrite({
+    abi: gmxABI,
+    address: gmxAddress,
+    functionName: "setLiquidator",
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof gmxABI, "setLiquidator">);
 }
 
 /**

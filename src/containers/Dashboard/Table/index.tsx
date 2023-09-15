@@ -123,6 +123,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         type: item.type,
                         name: item.name,
                         slippage: item.slippage,
+                        createdAt: item.agreement?.createdAt,
                       }}
                     />
                   );

@@ -215,7 +215,7 @@ export const managerABI = [
     stateMutability: "nonpayable",
     type: "function",
     inputs: [
-      { name: "token", internalType: "address", type: "address" },
+      { name: "vaultToken", internalType: "address", type: "address" },
       { name: "feeUnlockTime", internalType: "uint256", type: "uint256" },
     ],
     name: "setFeeUnlockTime",
