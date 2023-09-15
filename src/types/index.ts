@@ -59,6 +59,7 @@ export interface Service {
   boostApy: number;
   tokens: string[];
   tvl: number;
+  deadline: number;
   url: string;
   safety_score: SafetyScore;
   explanation: string;
