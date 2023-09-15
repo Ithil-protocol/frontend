@@ -170,10 +170,6 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                 <TokenIcon name={tokenName} width={20} height={20} />
               )}
             </HStack>
-            <ModalItem
-              title="Leverage"
-              value={`${+data.amount / +data.margin + 1}`}
-            />
             {data.type === "call-option" && (
               <>
                 <ModalItem
@@ -192,6 +188,10 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
 
             {isAaveOrGmx && (
               <>
+                <ModalItem
+                  title="Leverage"
+                  value={`${+data.amount / +data.margin + 1}`}
+                />
                 <ModalItem title="Slippage" value={`${slippage}%`} />
                 <Text className="font-bold" as="p">
                   Slippage
