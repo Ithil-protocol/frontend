@@ -199,7 +199,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                 <Slider
                   value={slippage}
                   max={10}
-                  min={0}
+                  min={1}
                   onChange={setSlippage}
                 />
               </>
