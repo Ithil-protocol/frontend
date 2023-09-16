@@ -108,8 +108,8 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
     if (data.isPnlLoading) return;
     const initialQuote = data?.quote || 0n;
     const quotes: Record<string, bigint> = {
-      aave: (initialQuote * 999n) / 1000n,
-      gmx: (initialQuote * 9n) / 10n,
+      aave: (initialQuote * (100n - BigInt(slippage))) / 100n,
+      gmx: (initialQuote * (100n - BigInt(slippage))) / 100n,
       "call-option":
         (BigInt(10) ** BigInt(18) * BigInt(percentage)) / BigInt(100),
     };
