@@ -48,6 +48,7 @@ interface PrepareDebitOrderProps {
   leverage: string;
   interestAndSpread: bigint;
   extraData: Address;
+  slippage: string;
 }
 
 export const usePrepareDebitOrder = ({
@@ -57,6 +58,7 @@ export const usePrepareDebitOrder = ({
   leverage,
   interestAndSpread,
   extraData,
+  slippage,
 }: PrepareDebitOrderProps) => {
   const bigintAmount = parseUnits(amount, token.decimals);
 
@@ -66,7 +68,10 @@ export const usePrepareDebitOrder = ({
     itemType: 0,
     token: collateralToken,
     identifier: BigInt(0),
-    amount: bigintAmount + amountInLeverage,
+    amount:
+      ((bigintAmount + amountInLeverage) *
+        BigInt(1000 - Number(slippage) * 1000)) /
+      1000n,
   };
   const loan: ServiceLoan = {
     token: token.tokenAddress,

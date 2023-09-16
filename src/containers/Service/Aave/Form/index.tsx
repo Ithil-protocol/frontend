@@ -104,6 +104,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     amount: inputAmount,
     interestAndSpread,
     extraData,
+    slippage,
   });
 
   const {
