@@ -42,7 +42,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { mode } = useColorMode();
 
   const [percentage, setPercentage] = useState(100);
-  const [slippage, setSlippage] = useState(10);
+  const [slippage, setSlippage] = useState(1);
   const asset = getAssetByAddress(data.token as Address);
   const tokenName = asset?.name;
 
@@ -201,6 +201,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                   max={10}
                   min={1}
                   onChange={setSlippage}
+                  extension="%"
                 />
               </>
             )}
