@@ -1,16 +1,17 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
-import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { useOpenPositionModal } from "@/contexts/PositionModal";
 import {
   aaveAddress,
   useAaveComputeBaseRateAndSpread,
@@ -23,7 +24,12 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { cutoffDecimals, getServiceByName, normalizeInputValue } from "@/utils";
+import {
+  cutoffDecimals,
+  getServiceByName,
+  getSingleQueryParam,
+  normalizeInputValue,
+} from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -139,13 +145,29 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   // computed properties
   const isButtonLoading = isInterestAndSpreadLoading;
-  const isButtonDisabled =
+  const isSubmitButtonDisabled =
     +inputAmount === 0 || isInterestError || isFreeLiquidityError;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "");
   };
+
+  const openPositionModal = useOpenPositionModal({
+    onSubmit: () => (isApproved ? openPosition?.() : approve?.()),
+    isClosable: true,
+    submitText: !asset.name
+      ? "Loading..."
+      : isApproved
+      ? "Invest"
+      : `Approve ${asset.name}`,
+    isSubmitDisabled: isSubmitButtonDisabled,
+    isSubmitLoading: isButtonLoading,
+  });
+
+  const {
+    query: { asset: token },
+  } = useRouter();
 
   const isMounted = useIsMounted();
 
@@ -181,6 +203,16 @@ const Form = ({ asset }: { asset: Asset }) => {
   ];
 
   const tokens = getServiceByName("aave").tokens;
+
+  const handleOpenPositionModal = () => {
+    openPositionModal.open({
+      amount: inputAmount,
+      leverage,
+      position: "aave",
+      slippage,
+      token: getSingleQueryParam(token),
+    });
+  };
 
   if (!isMounted) return null;
 
@@ -247,19 +279,15 @@ const Form = ({ asset }: { asset: Asset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <PrivateButton
-        onClick={() => (isApproved ? openPosition?.() : approve?.())}
-        isDisabled={isButtonDisabled}
-        loadingText="Waiting"
-        mt="20px"
+      <Button
+        isDisabled={isSubmitButtonDisabled}
         isLoading={isButtonLoading}
+        loadingText="Waiting"
+        onClick={handleOpenPositionModal}
+        mt="20px"
       >
-        {!asset.name
-          ? "Loading..."
-          : isApproved
-          ? "Invest"
-          : `Approve ${asset.name}`}
-      </PrivateButton>
+        Open Position
+      </Button>
     </div>
   );
 };
