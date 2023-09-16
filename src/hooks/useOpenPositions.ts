@@ -50,9 +50,9 @@ export const useAaveOpenPositions = () => {
     const amount = agreement?.loans[0].amount;
     const margin = agreement?.loans[0].margin;
     const quoteResult = quotes?.[i].result as unknown[] as bigint[];
-    const quote = quoteResult?.[0];
+    const quote = quoteResult?.[0] || 0n;
     const feeResult = fees?.[i].result as unknown[] as bigint[];
-    const fee = feeResult?.[0];
+    const fee = feeResult?.[0] || 0n;
 
     const isPnlLoading =
       isQuotesLoading || isFeesLoading || isAgreementsLoading;
@@ -78,7 +78,6 @@ export const useAaveOpenPositions = () => {
       isPnlLoading,
       type: "aave",
       name: "AAVE",
-      slippage: 0.1,
     });
   }
 
@@ -125,9 +124,9 @@ export const useGmxOpenPositions = () => {
     const amount = agreement?.loans[0].amount;
     const margin = agreement?.loans[0].margin;
     const quoteResult = quotes?.[i].result as unknown[] as bigint[];
-    const quote = quoteResult?.[0];
+    const quote = quoteResult?.[0] || 0n;
     const feeResult = fees?.[i].result as unknown[] as bigint[];
-    const fee = feeResult?.[0];
+    const fee = feeResult?.[0] || 0n;
 
     const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
 
@@ -147,7 +146,6 @@ export const useGmxOpenPositions = () => {
           : undefined,
       type: "gmx",
       name: "GMX",
-      slippage: 10,
     });
   }
 
@@ -171,7 +169,6 @@ export const useFixedYieldOpenPositions = () => {
       id: data?.[1][i],
       type: "fixed-yield",
       name: "Fixed yield",
-      slippage: 0,
     });
   }
 
@@ -238,7 +235,6 @@ export const useCallOptionOpenPositions = () => {
         id: ids?.[index],
         type: "call-option",
         name: "Call option",
-        slippage: 0,
       });
     });
   });

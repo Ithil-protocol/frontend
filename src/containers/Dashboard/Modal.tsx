@@ -42,7 +42,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { mode } = useColorMode();
 
   const [percentage, setPercentage] = useState(100);
-
+  const [slippage, setSlippage] = useState(1);
   const asset = getAssetByAddress(data.token as Address);
   const tokenName = asset?.name;
 
@@ -108,8 +108,8 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
     if (data.isPnlLoading) return;
     const initialQuote = data?.quote || 0n;
     const quotes: Record<string, bigint> = {
-      aave: (initialQuote * 999n) / 1000n,
-      gmx: (initialQuote * 9n) / 10n,
+      aave: (initialQuote * (100n - BigInt(slippage))) / 100n,
+      gmx: (initialQuote * (100n - BigInt(slippage))) / 100n,
       "call-option":
         (BigInt(10) ** BigInt(18) * BigInt(percentage)) / BigInt(100),
     };
@@ -121,6 +121,7 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
       ],
     });
   };
+  const isAaveOrGmx = data.type === "aave" || data.type === "gmx";
   return (
     <ChakraModal onClose={onClose} isCentered isOpen={isOpen}>
       <ModalOverlay backdropFilter="blur(10px)" />
@@ -169,8 +170,6 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                 <TokenIcon name={tokenName} width={20} height={20} />
               )}
             </HStack>
-            <ModalItem title="Slippage" value={`${data.slippage}%`} />
-
             {data.type === "call-option" && (
               <>
                 <ModalItem
@@ -182,6 +181,26 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                   max={100}
                   min={0}
                   onChange={setPercentage}
+                  extension="%"
+                />
+              </>
+            )}
+
+            {isAaveOrGmx && (
+              <>
+                <ModalItem
+                  title="Leverage"
+                  value={`${+data.amount / +data.margin + 1}`}
+                />
+                <ModalItem title="Slippage" value={`${slippage}%`} />
+                <Text className="font-bold" as="p">
+                  Slippage
+                </Text>
+                <Slider
+                  value={slippage}
+                  max={10}
+                  min={1}
+                  onChange={setSlippage}
                   extension="%"
                 />
               </>
