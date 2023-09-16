@@ -46,7 +46,8 @@
     ".npmrc": false,
     ".env.local": false,
     ".gitattributes": false,
-    ".eslintrc.cjs": false
+    ".eslintrc.cjs": false,
+    ".env": false
   },
   "prettier.configPath": ".prettierrc.json",
   "prettier.endOfLine": "lf",

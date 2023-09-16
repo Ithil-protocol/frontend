@@ -67,6 +67,11 @@ export const gmxABI = [
   },
   {
     inputs: [],
+    name: "OnlyLiquidator",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "RestrictedAccess",
     type: "error",
   },
@@ -1126,6 +1131,19 @@ export const gmxABI = [
   },
   {
     inputs: [],
+    name: "liquidator",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "locked",
     outputs: [
       {
@@ -1546,6 +1564,19 @@ export const gmxABI = [
       },
     ],
     name: "setGuardian",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_liquidator",
+        type: "address",
+      },
+    ],
+    name: "setLiquidator",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

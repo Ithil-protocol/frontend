@@ -15,12 +15,12 @@ import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { PositionType } from "@/types";
-import { getAssetByAddress } from "@/utils";
+import { getAssetByAddress, isPositionActive } from "@/utils";
 
 import Modal from "../Modal";
 
 interface Props {
-  data: Omit<PositionType, "createdAt">;
+  data: PositionType;
 }
 
 const ActiveTRow: FC<Props> = ({ data }) => {
@@ -147,6 +147,16 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           lineHeight="22px"
         >
           {data.type === "call-option" ? data.amount : data.margin}
+        </Td>
+        <Td
+          color={mode("primary.700", "primary.700.dark")}
+          fontWeight="medium"
+          fontSize="22px"
+          lineHeight="22px"
+        >
+          {isPositionActive(data.type, Number(data.createdAt))
+            ? "Active"
+            : "Expired"}
         </Td>
         <Td textAlign="end" width={200} height="108px">
           <Button onClick={handelCancelBtn} variant="outline" color="#f35959">

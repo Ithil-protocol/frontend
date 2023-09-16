@@ -59,6 +59,7 @@ export interface Service {
   boostApy: number;
   tokens: string[];
   tvl: number;
+  deadline: number;
   url: string;
   safety_score: SafetyScore;
   explanation: string;
@@ -70,7 +71,7 @@ export interface PositionType {
   amount: string;
   margin: string | number;
   createdAt: bigint | undefined;
-  type: string;
+  type: ServiceName;
   pnlPercentage?: string;
   pnl?: string;
   isPnlLoading?: boolean;
@@ -111,6 +112,7 @@ export type Asset = {
   callOptionAddress: Address;
   aaveCollateralTokenAddress: Address;
   gmxCollateralTokenAddress: Address;
+  iTokenAddress: Address;
 };
 
 export type Ithil = {
@@ -145,6 +147,6 @@ export interface OpenPosition {
   isPnlLoading?: boolean;
   id?: bigint;
   quote?: bigint;
-  type: string;
+  type: ServiceName;
   name: string;
 }
