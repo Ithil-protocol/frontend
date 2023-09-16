@@ -9,7 +9,8 @@ export type PromiseVoidNoArgs = () => Promise<void>;
 export interface PositionsDetailItemType {
   title: string;
   value: string;
-  unit?: string;
+  prefix?: string;
+  postfix?: string;
 }
 
 export type Address = `0x${string}`;

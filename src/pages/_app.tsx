@@ -12,6 +12,7 @@ import Head from "@/components/Head";
 import PageWrapper from "@/components/page-wrapper";
 import { testNetwork } from "@/config/chains";
 import NotificationDialogProvider from "@/contexts/NotificationDialog";
+import PositionModalProvider from "@/contexts/PositionModal";
 import TokenModalProvider from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
 import { queryClient } from "@/lib/react-query";
@@ -52,7 +53,9 @@ export default function App({ Component, pageProps }: AppProps) {
               <PageWrapper>
                 <NotificationDialogProvider>
                   <TokenModalProvider>
-                    <Component {...pageProps} />
+                    <PositionModalProvider>
+                      <Component {...pageProps} />
+                    </PositionModalProvider>
                   </TokenModalProvider>
                 </NotificationDialogProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
