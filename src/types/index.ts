@@ -29,7 +29,7 @@ export interface VaultsTypes {
   vaultAddress: string;
 }
 
-export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
+export type VaultName = "USDC.e" | "USDT" | "WETH" | "WBTC";
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;

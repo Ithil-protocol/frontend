@@ -8,7 +8,7 @@
     "apyRange": "5-10x",
     "bestApy": 26.7,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
+    "tokens": ["USDC.e", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 158.86,
     "deadline": 86400,
     "url": "/aave",
@@ -43,7 +43,7 @@
     "apyRange": "2-5x",
     "bestApy": 27.8,
     "boostApy": 3,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
+    "tokens": ["USDC.e", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 100,
     "deadline": 86400,
     "url": "/gmx",
@@ -56,7 +56,7 @@
         { "value": "positive", "text": "High returns" },
         { "value": "neutral", "text": "Medium volatility assets" }
       ],
-      "description": "Details: Experience the transformative power of the GMX DeFi strategy, designed to maximize your returns and unlock new dimensions of investment potential. By participating in this groundbreaking approach, you gain access to a diversified portfolio of high-value tokens. The GLP liquidity pool encompasses stablecoins like USDC, USDT, DAI, FRAX, blue chips such as WETH and WBTC, and coveted DeFi stars like UNI. As a liquidity provider, you earn a proportional share of the pool's fees, distributed periodically in the form of esteemed WETH. Additionally, you can capitalize on positive price variations in the underlying tokens, amplifying your overall returns. When closing your position, GMX ensures a seamless process by distributing your accumulated WETH rewards in a lump sum. GMX is a trusted trading platform renowned for its consistent rewards and robust performance. By embracing their DeFi strategy, you position yourself to seize the potential growth opportunities within the decentralized finance market. Don't miss out on the chance to leverage the strength of GMX and embark on a rewarding journey in the world of DeFi."
+      "description": "Details: Experience the transformative power of the GMX DeFi strategy, designed to maximize your returns and unlock new dimensions of investment potential. By participating in this groundbreaking approach, you gain access to a diversified portfolio of high-value tokens. The GLP liquidity pool encompasses stablecoins like USDC.e, USDT, DAI, FRAX, blue chips such as WETH and WBTC, and coveted DeFi stars like UNI. As a liquidity provider, you earn a proportional share of the pool's fees, distributed periodically in the form of esteemed WETH. Additionally, you can capitalize on positive price variations in the underlying tokens, amplifying your overall returns. When closing your position, GMX ensures a seamless process by distributing your accumulated WETH rewards in a lump sum. GMX is a trusted trading platform renowned for its consistent rewards and robust performance. By embracing their DeFi strategy, you position yourself to seize the potential growth opportunities within the decentralized finance market. Don't miss out on the chance to leverage the strength of GMX and embark on a rewarding journey in the world of DeFi."
     }
   },
   {
@@ -67,7 +67,7 @@
     "description": "Be part of Ithil tokenomics by reserving your $ITHIL allocation with an innovative non dilutive purchase model based on call options.",
     "bestApy": 50,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
+    "tokens": ["USDC.e", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 158.86,
     "deadline": 86400,
     "url": "/call-option",
@@ -100,7 +100,7 @@
     "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
     "bestApy": 12,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
+    "tokens": ["USDC.e", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 158.86,
     "deadline": 86400,
     "url": "/fixed-yield",

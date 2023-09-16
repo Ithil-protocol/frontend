@@ -55,7 +55,7 @@ const TRow: FC<Props> = ({
       <Td width="15%">
         <div className="flex items-center gap-2">
           <TokenIcon name={vault.token.name} height={32} width={32} />
-          <Text className="uppercase">{vault.token.name}</Text>
+          <Text>{vault.token.name}</Text>
         </div>
       </Td>
       <Td width="15%">
