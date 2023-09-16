@@ -50,9 +50,9 @@ export const useAaveOpenPositions = () => {
     const amount = agreement?.loans[0].amount;
     const margin = agreement?.loans[0].margin;
     const quoteResult = quotes?.[i].result as unknown[] as bigint[];
-    const quote = quoteResult?.[0];
+    const quote = quoteResult?.[0] || 0n;
     const feeResult = fees?.[i].result as unknown[] as bigint[];
-    const fee = feeResult?.[0];
+    const fee = feeResult?.[0] || 0n;
 
     const isPnlLoading =
       isQuotesLoading || isFeesLoading || isAgreementsLoading;
