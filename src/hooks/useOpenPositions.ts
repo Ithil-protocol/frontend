@@ -220,6 +220,8 @@ export const useCallOptionOpenPositions = () => {
     userAgreements3,
   ];
 
+  console.log("userAgreementsuserAgreements", userAgreements);
+
   const isLoading = isLoading0 || isLoading1 || isLoading2 || isLoading3;
 
   const positions: OpenPosition[] = [];

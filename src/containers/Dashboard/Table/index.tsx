@@ -122,6 +122,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         quote: item.quote,
                         type: item.type,
                         name: item.name,
+                        createdAt: item.agreement?.createdAt,
                       }}
                     />
                   );
@@ -148,7 +149,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           {isLoadingPositions &&
             activeView === "Active" &&
             Array.from({ length: 4 }).map((_, index) => (
-              <TRowLoading tdCount={5} key={index} />
+              <TRowLoading tdCount={6} key={index} />
             ))}
           {isLoadingClosed &&
             activeView === "Closed" &&
