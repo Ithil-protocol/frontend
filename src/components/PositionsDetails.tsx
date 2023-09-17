@@ -57,17 +57,17 @@ const PositionsDetails: React.FC<Props> = ({
           <PositionsDetailItem title="Loan" unit="ETH 2x Long" value={loan} />
           <PositionsDetailItem
             title="Open Price"
-            unit="USDC"
+            unit="USDC.e"
             value={openPrice}
           />
           <PositionsDetailItem
             title="Current Price"
-            unit="USDC"
+            unit="USDC.e"
             value={currentPrice}
           />
           <PositionsDetailItem
             title="Liq. Price"
-            unit="USDC"
+            unit="USDC.e"
             value={liquidPrice}
           />
           <PositionsDetailItem

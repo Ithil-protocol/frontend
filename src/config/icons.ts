@@ -14,7 +14,7 @@ import ITHIL from "@/assets/ithil/logoSymbolLight.svg";
 // TokenX: any-SVG-icon-file
 
 export const icons = {
-  USDC,
+  "USDC.E": USDC,
   // ARB,
   USDT,
   WBTC,
