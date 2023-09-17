@@ -3,7 +3,7 @@
   "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
   "assets": [
     {
-      "name": "USDC",
+      "name": "USDC.e",
       "coingeckoId": "usd-coin",
       "iconName": "usdc",
       "decimals": 6,

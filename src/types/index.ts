@@ -30,7 +30,7 @@ export interface VaultsTypes {
   vaultAddress: string;
 }
 
-export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
+export type VaultName = "USDC.e" | "USDT" | "WETH" | "WBTC";
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;
@@ -80,7 +80,6 @@ export interface PositionType {
   quote?: bigint;
   formattedPnl?: string;
   name: string;
-  slippage: number;
 }
 
 export interface PageHeading {
@@ -114,6 +113,7 @@ export type Asset = {
   callOptionAddress: Address;
   aaveCollateralTokenAddress: Address;
   gmxCollateralTokenAddress: Address;
+  iTokenAddress: Address;
 };
 
 export type Ithil = {
@@ -150,5 +150,4 @@ export interface OpenPosition {
   quote?: bigint;
   type: ServiceName;
   name: string;
-  slippage: number;
 }
