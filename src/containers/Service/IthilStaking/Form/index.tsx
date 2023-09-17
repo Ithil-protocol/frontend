@@ -183,7 +183,6 @@ const Form = ({ asset }: { asset: Ithil }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={false}
-          tokens={tokens}
         />
 
         <Box width="full" gap="30px">

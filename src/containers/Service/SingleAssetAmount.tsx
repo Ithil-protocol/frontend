@@ -5,6 +5,7 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
 import TokenIcon from "@/components/TokenIcon";
@@ -12,16 +13,16 @@ import { Loading } from "@/components/loading";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
 import { useServiceName } from "@/hooks/useServiceName";
-import { Asset } from "@/types";
+import { Asset, ServiceName } from "@/types";
+import { filterAssetByName, getServiceByName } from "@/utils";
 
 interface Props {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  asset: Pick<Asset, "name" | "decimals">;
+  asset: Pick<Asset, "name" | "decimals" | "label">;
   onMaxClick: () => void;
   isMaxDisabled: boolean;
   switchableAsset?: boolean;
-  tokens: string[];
 }
 
 const SingleAssetAmount: FC<Props> = ({
@@ -31,7 +32,6 @@ const SingleAssetAmount: FC<Props> = ({
   onMaxClick,
   isMaxDisabled,
   switchableAsset = true,
-  tokens,
 }) => {
   const serviceName = useServiceName();
 
@@ -48,8 +48,12 @@ const SingleAssetAmount: FC<Props> = ({
       onChange(value);
     }
   };
+  const router = useRouter();
   // const { data: vaultData } = useVaults();
-
+  const tokens =
+    getServiceByName(router.pathname.split("/")[2] as ServiceName)?.tokens ||
+    [];
+  const filteredAsset = filterAssetByName(tokens);
   return (
     <>
       <div className="flex gap-2">
@@ -60,7 +64,7 @@ const SingleAssetAmount: FC<Props> = ({
           onClick={() =>
             switchableAsset &&
             serviceName &&
-            tokenModal.openDialog(tokens, serviceName)
+            tokenModal.openDialog(filteredAsset, serviceName)
           }
           className="flex items-center gap-1 justify-center px-2 rounded-md bg-primary-200 min-w-[92px]"
         >
@@ -83,7 +87,7 @@ const SingleAssetAmount: FC<Props> = ({
                   width={24}
                 />
               </span>
-              <Text textStyle="sm">{asset?.name}</Text>
+              <Text textStyle="sm">{asset?.label}</Text>
             </div>
           )}
         </div>

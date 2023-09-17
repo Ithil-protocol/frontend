@@ -199,7 +199,6 @@ const Form = ({ asset, setRedeem }: Props) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
-          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
@@ -236,7 +235,7 @@ const Form = ({ asset, setRedeem }: Props) => {
           ? "Loading..."
           : isApproved
           ? "Invest"
-          : `Approve ${asset.name}`}
+          : `Approve ${asset.label}`}
       </PrivateButton>
     </div>
   );

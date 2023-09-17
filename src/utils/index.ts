@@ -22,7 +22,7 @@ import {
   Star as StarIcon,
 } from "@/assets/svgs";
 import { icons } from "@/config/icons";
-import { assetsObjByAddress, assetsObjByName } from "@/data/assets";
+import { assets, assetsObjByAddress, assetsObjByName } from "@/data/assets";
 import { servicesByName } from "@/data/services";
 import { Asset, PageHeading, Service, ServiceName, VaultName } from "@/types";
 
@@ -296,4 +296,12 @@ export const isPositionActive = (
   const isActive = isFuture(time * 1000);
 
   return isActive;
+};
+
+export const filterAssetByName = (tokens: string[]) => {
+  return assets.filter((asset) => {
+    return tokens.some(
+      (token) => token.toLowerCase() === asset.name.toLowerCase()
+    );
+  });
 };

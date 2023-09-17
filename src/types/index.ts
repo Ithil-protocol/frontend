@@ -65,7 +65,21 @@ export interface Service {
   explanation: string;
   type: "debit" | "credit";
 }
-
+export type Asset = {
+  name: string;
+  label: string;
+  description: string;
+  coingeckoId: string;
+  iconName: string;
+  decimals: number;
+  tokenAddress: Address;
+  oracleAddress: Address;
+  vaultAddress: Address;
+  callOptionAddress: Address;
+  aaveCollateralTokenAddress: Address;
+  gmxCollateralTokenAddress: Address;
+  iTokenAddress: Address;
+};
 export interface PositionType {
   token: Address;
   amount: string;
@@ -88,12 +102,8 @@ export interface PageHeading {
 
 export type CloseDialogFn = VoidNoArgs;
 
-export type OpenTokenDialogFn = (
-  tokens: string[],
-  serviceName: ServiceName
-) => void;
 export interface TokenModalOptions {
-  tokens: string[];
+  assets: Asset[];
   isClosable: boolean;
   onSelectTokenCallback: () => void;
   returnPath: string;
@@ -101,24 +111,13 @@ export interface TokenModalOptions {
 
 export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
 
-export type Asset = {
-  name: string;
-  label: string;
-  description: string;
-  coingeckoId: string;
-  iconName: string;
-  decimals: number;
-  tokenAddress: Address;
-  oracleAddress: Address;
-  vaultAddress: Address;
-  callOptionAddress: Address;
-  aaveCollateralTokenAddress: Address;
-  gmxCollateralTokenAddress: Address;
-  iTokenAddress: Address;
-};
-
+export type OpenTokenDialogFn = (
+  assets: Asset[],
+  serviceName: ServiceName
+) => void;
 export type Ithil = {
   name: string;
+  label: string;
   coingeckoId: string;
   iconName: string;
   decimals: number;

@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
+import { assetsObjByName } from "@/data/assets";
 import fakeChartData from "@/data/fakeData.json";
 import { getSingleQueryParam } from "@/utils";
 import { formatDate } from "@/utils/date.utils";
@@ -29,6 +30,7 @@ export default function LendDetails() {
   const [graphSection] = useState<GraphSection>("APY");
   const router = useRouter();
   const token = getSingleQueryParam(router.query.token);
+  const assetToken = assetsObjByName[token.toUpperCase()];
 
   return (
     <Box width="full">
@@ -48,7 +50,7 @@ export default function LendDetails() {
             <TokenIcon name={token} width={38} height={38} />
           </span>
           <Text fontWeight="light" fontSize="3xl">
-            {token.toUpperCase()} Vault Details
+            {assetToken?.label.toUpperCase()} Vault Details
           </Text>
         </div>
         <span></span>
