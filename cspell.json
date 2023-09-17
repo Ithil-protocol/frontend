@@ -3,7 +3,7 @@
   "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": [],
+  "words": ["Liqu"],
   "ignoreRegExpList": ["0x(.*)?", "id:(.*)?", "apiKey:(.*)?"],
   "import": [],
   "ignoreWords": [

@@ -2,6 +2,7 @@ import { ServiceName } from "@/types";
 
 export interface Data {
   amount: string;
+  collateral: string;
   leverage: string;
   position: ServiceName;
   slippage: string;

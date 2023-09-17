@@ -22,8 +22,8 @@ import { CloseButton } from "@/assets/svgs";
 import PrivateButton from "@/components/PrivateButton";
 import { CloseDialogFn, VoidNoArgs } from "@/types";
 
-import { Data } from "../types";
 import PositionsDetails from "./PositionsDetails";
+import { Data } from "./types";
 
 type IsClosable = boolean;
 
@@ -145,6 +145,7 @@ const PositionModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     position: "aave",
     slippage: "0",
     token: "",
+    collateral: "0",
   });
 
   const [data, setData] = useState<Data>(getDefaultData);

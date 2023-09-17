@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -211,6 +211,10 @@ const Form = ({ asset }: { asset: Asset }) => {
       position: "aave",
       slippage,
       token: getSingleQueryParam(token),
+      collateral: formatUnits(
+        order.agreement.collaterals[0].amount,
+        asset.decimals
+      ),
     });
   };
 

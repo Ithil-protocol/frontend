@@ -3,8 +3,8 @@ import { GridItem, VStack } from "@chakra-ui/react";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 
-import { Data } from "../types";
 import PositionsDetailItem from "./PositionsDetailItem";
+import { Data } from "./types";
 
 interface Props {
   collateral?: string;
@@ -43,6 +43,11 @@ const PositionsDetails: React.FC<Props> = ({ data }) => {
             title="Amount"
             postfix={data.token.toUpperCase()}
             value={data.amount}
+          />{" "}
+          <PositionsDetailItem
+            title="Collateral"
+            postfix={data.token.toUpperCase()}
+            value={data.collateral}
           />
           <PositionsDetailItem
             title="Leverage"
