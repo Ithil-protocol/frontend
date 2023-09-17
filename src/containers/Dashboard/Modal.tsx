@@ -23,7 +23,7 @@ import TokenIcon from "@/components/TokenIcon";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
-import { gmxAddress } from "@/hooks/generated/gmx";
+import { gmxAddress, useGmxWethReward } from "@/hooks/generated/gmx";
 import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useColorMode } from "@/hooks/useColorMode";
 import { PositionType, VoidNoArgs } from "@/types";
@@ -75,6 +75,13 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
   } as const;
 
   const service = services[data.type as keyof typeof services];
+
+  const { data: reward, isLoading: isRewardLoading } = useGmxWethReward({
+    args: [data.id!],
+    enabled: !!data.id && data.type === "gmx",
+  });
+
+  console.log("data");
 
   const queryClient = useQueryClient();
 
@@ -170,6 +177,9 @@ const Modal: FC<Props> = ({ data, isOpen, onClose }) => {
                 <TokenIcon name={tokenName} width={20} height={20} />
               )}
             </HStack>
+            {data.type === "gmx" && (
+              <ModalItem title="Weth reward" value={reward?.toString()} />
+            )}
             {data.type === "call-option" && (
               <>
                 <ModalItem
