@@ -9,7 +9,7 @@ import iWETH from "./iTokens/iWETH.png";
 
 export const iTokenIcons: Record<string, StaticImageData> = {
   iDAI,
-  "iUSDC.e": iUSDC,
+  iUSDC,
   iUSDT,
   iWBTC,
   iWETH,
