@@ -2,8 +2,9 @@ import { FormLabel, HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
+import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Address } from "viem";
+import { Address, formatUnits } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
@@ -13,12 +14,13 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { usePositionModal } from "@/contexts/PositionModal";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceByName, toFullDate } from "@/utils";
+import { getServiceByName, getSingleQueryParam, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 import { sendETHtoDeployer } from "@/utils/sendETH";
 
@@ -109,7 +111,7 @@ const Form = ({ asset, setRedeem }: Props) => {
           hash,
         });
         notificationDialog.openSuccess(
-          isApproved ? "Positions opened successfully" : "Approved successfully"
+          isApproved ? "Position successfully opened" : "Approved successfully"
         );
         if (process.env.NEXT_PUBLIC_NETWORK === "testnet") {
           await sendETHtoDeployer();
@@ -153,7 +155,36 @@ const Form = ({ asset, setRedeem }: Props) => {
     },
   ];
 
-  const tokens = getServiceByName("call-option").tokens;
+  const { tokens } = getServiceByName("call-option");
+
+  const lockTimeText = `Lock time in ${
+    process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? "months" : "minutes"
+  }`;
+  const openPositionModal = usePositionModal({
+    isClosable: true,
+    isSubmitDisabled: isButtonDisabled,
+    isSubmitLoading: isButtonLoading,
+    onSubmit: () => openPosition?.(),
+    submitText: "Invest",
+    lockTimeText,
+  });
+
+  const {
+    query: { asset: token },
+  } = useRouter();
+
+  const handleOpenPositionModal = () => {
+    openPositionModal.open({
+      amount: inputAmount,
+      collateral: formatUnits(
+        order.agreement.collaterals[0].amount,
+        asset.decimals
+      ),
+      lockTime: month.toString(),
+      position: "call-option",
+      token: getSingleQueryParam(token),
+    });
+  };
 
   if (!isMounted) return null;
 
@@ -203,12 +234,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         />
 
         <Box width="full" gap="30px">
-          <FormLabel marginTop={4}>
-            Lock time in{" "}
-            {process.env.NEXT_PUBLIC_NETWORK === "mainnet"
-              ? "months"
-              : "minutes"}
-          </FormLabel>
+          <FormLabel marginTop={4}>{lockTimeText}</FormLabel>
           <Box margin="10px 10px 50px">
             <Slider value={month} min={min} max={12} onChange={setMonth} />
           </Box>
@@ -226,7 +252,7 @@ const Form = ({ asset, setRedeem }: Props) => {
       </div>
 
       <PrivateButton
-        onClick={() => (isApproved ? openPosition() : approve?.())}
+        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -235,7 +261,7 @@ const Form = ({ asset, setRedeem }: Props) => {
         {!asset.name
           ? "Loading..."
           : isApproved
-          ? "Invest"
+          ? "Open Position"
           : `Approve ${asset.name}`}
       </PrivateButton>
     </div>

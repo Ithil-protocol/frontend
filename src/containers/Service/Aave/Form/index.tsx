@@ -1,4 +1,4 @@
-import { Button, HStack, Text } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
@@ -7,11 +7,12 @@ import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
+import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { useOpenPositionModal } from "@/contexts/PositionModal";
+import { usePositionModal } from "@/contexts/PositionModal";
 import {
   aaveAddress,
   useAaveComputeBaseRateAndSpread,
@@ -134,7 +135,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           hash,
         });
         notificationDialog.openSuccess(
-          isApproved ? "Positions opened successfully" : "Approved successfully"
+          isApproved ? "Position successfully opened" : "Approved successfully"
         );
         setInputAmount("");
       } catch (error) {
@@ -154,14 +155,10 @@ const Form = ({ asset }: { asset: Asset }) => {
     setInputAmount(balance?.formatted ?? "");
   };
 
-  const openPositionModal = useOpenPositionModal({
-    onSubmit: () => (isApproved ? openPosition?.() : approve?.()),
+  const openPositionModal = usePositionModal({
+    onSubmit: () => openPosition?.(),
     isClosable: true,
-    submitText: !asset.name
-      ? "Loading..."
-      : isApproved
-      ? "Invest"
-      : `Approve ${asset.name}`,
+    submitText: "Invest",
     isSubmitDisabled: isSubmitButtonDisabled,
     isSubmitLoading: isButtonLoading,
   });
@@ -203,7 +200,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = getServiceByName("aave").tokens;
+  const { tokens } = getServiceByName("aave");
 
   const handleOpenPositionModal = () => {
     openPositionModal.open({
@@ -284,15 +281,20 @@ const Form = ({ asset }: { asset: Asset }) => {
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
       />
-      <Button
+
+      <PrivateButton
+        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
         isDisabled={isSubmitButtonDisabled}
-        isLoading={isButtonLoading}
         loadingText="Waiting"
-        onClick={handleOpenPositionModal}
         mt="20px"
+        isLoading={isButtonLoading}
       >
-        Open Position
-      </Button>
+        {!asset.name
+          ? "Loading..."
+          : isApproved
+          ? "Open Position"
+          : `Approve ${asset.name}`}
+      </PrivateButton>
     </div>
   );
 };

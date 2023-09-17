@@ -33,6 +33,7 @@ interface ModalOptions {
   isClosable: IsClosable;
   isSubmitDisabled: boolean;
   onSubmit: VoidNoArgs;
+  lockTimeText?: string;
 }
 
 // interface OpenFnDefaultOptions extends Partial<ModalOptions> {}
@@ -40,22 +41,24 @@ interface ModalOptions {
 type OpenFn = (d: Data, o?: Partial<ModalOptions>) => void;
 
 const PositionModalComponent: React.FC<{
+  data: Data;
   isClosable: boolean;
   isOpen: boolean;
   isSubmitDisabled: boolean;
   isSubmitLoading: boolean;
+  lockTimeText: string;
   onClose: CloseDialogFn;
   onSubmit: VoidNoArgs;
-  data: Data;
   submitText: string;
 }> = ({
+  data,
   isClosable,
   isOpen,
   isSubmitDisabled,
   isSubmitLoading,
+  lockTimeText,
   onClose,
   onSubmit,
-  data,
   submitText,
 }) => {
   const handleClose = () => isClosable && onClose();
@@ -104,7 +107,7 @@ const PositionModalComponent: React.FC<{
               width="full"
               maxWidth="500px"
             >
-              <PositionsDetails data={data} />
+              <PositionsDetails data={data} lockTimeText={lockTimeText} />
 
               <PrivateButton
                 style={{
@@ -141,11 +144,12 @@ const PositionModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const getDefaultData = (): Data => ({
     amount: "0",
-    leverage: "0",
-    position: "aave",
-    slippage: "0",
-    token: "",
     collateral: "0",
+    leverage: undefined,
+    lockTime: undefined,
+    position: "aave",
+    slippage: undefined,
+    token: "",
   });
 
   const [data, setData] = useState<Data>(getDefaultData);
@@ -165,6 +169,11 @@ const PositionModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     ...o,
   });
 
+  const handleSubmit = () => {
+    modalOptions.onSubmit();
+    onClose();
+  };
+
   return (
     <PositionModalContext.Provider
       value={{
@@ -180,20 +189,21 @@ const PositionModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         isOpen={isOpen}
         onClose={onClose}
         submitText={modalOptions.submitText}
+        lockTimeText={modalOptions.lockTimeText || ""}
         isSubmitLoading={
           modalOptions.submitText === "" ? true : modalOptions.isSubmitLoading
         }
         isSubmitDisabled={
           modalOptions.submitText === "" ? true : modalOptions.isSubmitDisabled
         }
-        onSubmit={modalOptions.onSubmit}
+        onSubmit={handleSubmit}
       />
       {children}
     </PositionModalContext.Provider>
   );
 };
 
-export const useOpenPositionModal = (options: ModalOptions) => {
+export const usePositionModal = (options: ModalOptions) => {
   const { setOptions, ...rest } = useContext(PositionModalContext);
 
   const onSubmit = useCallback(() => {

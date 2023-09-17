@@ -1,7 +1,8 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Address } from "viem";
+import { Address, formatUnits } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { fixedYieldABI } from "@/abi";
@@ -9,12 +10,13 @@ import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { usePositionModal } from "@/contexts/PositionModal";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceByName } from "@/utils";
+import { getServiceByName, getSingleQueryParam } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -62,7 +64,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           hash,
         });
         notificationDialog.openSuccess(
-          isApproved ? "Positions opened successfully" : "Approved successfully"
+          isApproved ? "Position successfully opened" : "Approved successfully"
         );
         setInputAmount("");
       } catch (error) {
@@ -84,7 +86,31 @@ const Form = ({ asset }: { asset: Asset }) => {
   const isMounted = useIsMounted();
 
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-  const tokens = getServiceByName("fixed-yield").tokens;
+  const { tokens } = getServiceByName("fixed-yield");
+
+  const openPositionModal = usePositionModal({
+    onSubmit: () => openPosition?.(),
+    isClosable: true,
+    submitText: "Invest",
+    isSubmitDisabled: isButtonDisabled,
+    isSubmitLoading: isButtonLoading,
+  });
+
+  const {
+    query: { asset: token },
+  } = useRouter();
+
+  const handleOpenPositionModal = () => {
+    openPositionModal.open({
+      amount: inputAmount,
+      position: "fixed-yield",
+      token: getSingleQueryParam(token),
+      collateral: formatUnits(
+        order.agreement.collaterals[0].amount,
+        asset.decimals
+      ),
+    });
+  };
 
   if (!isMounted) return null;
 
@@ -135,7 +161,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       </div>
 
       <PrivateButton
-        onClick={() => (isApproved ? openPosition() : approve?.())}
+        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -144,7 +170,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         {!asset.name
           ? "Loading..."
           : isApproved
-          ? "Invest"
+          ? "Open Position"
           : `Approve ${asset.name}`}
       </PrivateButton>
     </div>

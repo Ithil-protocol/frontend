@@ -7,15 +7,11 @@ import PositionsDetailItem from "./PositionsDetailItem";
 import { Data } from "./types";
 
 interface Props {
-  collateral?: string;
-  currentPrice?: string;
-  distanceFromLiquid?: string;
-  liquidPrice?: string;
-  loan?: string;
   data: Data;
+  lockTimeText: string;
 }
 
-const PositionsDetails: React.FC<Props> = ({ data }) => {
+const PositionsDetails: React.FC<Props> = ({ data, lockTimeText }) => {
   const { pickColor } = useColorMode();
 
   return (
@@ -43,22 +39,29 @@ const PositionsDetails: React.FC<Props> = ({ data }) => {
             title="Amount"
             postfix={data.token.toUpperCase()}
             value={data.amount}
-          />{" "}
+          />
           <PositionsDetailItem
             title="Collateral"
             postfix={data.token.toUpperCase()}
             value={data.collateral}
           />
-          <PositionsDetailItem
-            title="Leverage"
-            postfix="x"
-            value={data.leverage}
-          />
-          <PositionsDetailItem
-            title="Slippage"
-            postfix="%"
-            value={data.slippage}
-          />
+          {data.leverage && (
+            <PositionsDetailItem
+              title="Leverage"
+              postfix="x"
+              value={data.leverage}
+            />
+          )}
+          {data.slippage && (
+            <PositionsDetailItem
+              title="Slippage"
+              postfix="%"
+              value={data.slippage}
+            />
+          )}
+          {data.lockTime && (
+            <PositionsDetailItem title={lockTimeText} value={data.lockTime} />
+          )}
         </VStack>
       </VStack>
     </GridItem>
