@@ -93,7 +93,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
                 fontWeight="normal"
                 className="mx-auto"
               >
-                {token}
+                {token.toUpperCase()}
               </Text>
             </Box>
           ))}

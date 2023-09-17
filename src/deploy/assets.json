@@ -1,6 +1,6 @@
 [
   {
-    "name": "USDC.e",
+    "name": "USDC",
     "coingeckoId": "usd-coin",
     "iconName": "usdc",
     "decimals": 6,
