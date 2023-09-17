@@ -2,7 +2,6 @@ import {
   Table as DefaultTable,
   TableContainer,
   Tbody,
-  Td,
   Th,
   Thead,
   Tr,
@@ -122,7 +121,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         quote: item.quote,
                         type: item.type,
                         name: item.name,
-                        slippage: item.slippage,
                         createdAt: item.agreement?.createdAt,
                       }}
                     />
@@ -150,27 +148,25 @@ const Table: FC<Props> = ({ columns, activeView }) => {
           {isLoadingPositions &&
             activeView === "Active" &&
             Array.from({ length: 4 }).map((_, index) => (
-              <TRowLoading tdCount={5} key={index} />
+              <TRowLoading tdCount={6} key={index} />
             ))}
           {isLoadingClosed &&
             activeView === "Closed" &&
             Array.from({ length: 4 }).map((_, index) => (
               <TRowLoading tdCount={4} key={index} />
             ))}
-          {isPositionsExist &&
-            !isLoadingPositions &&
-            activeView === "Active" && (
-              <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
-                <Td>You don&apos;t have any recorded open positions.</Td>
-              </Tr>
-            )}
-          {isClosedExist && !isLoadingClosed && activeView === "Closed" && (
-            <Tr className="flex items-center justify-center text-lg font-bold h-96 text-primary-900">
-              <Td>You don&apos;t have any recorded closed positions.</Td>
-            </Tr>
-          )}
         </Tbody>
       </DefaultTable>
+      {isPositionsExist && !isLoadingPositions && activeView === "Active" && (
+        <div className="flex items-center justify-center w-full text-lg font-bold h-96 text-primary-900">
+          <p>You don&apos;t have any recorded open positions.</p>
+        </div>
+      )}
+      {isClosedExist && !isLoadingClosed && activeView === "Closed" && (
+        <div className="flex items-center justify-center w-full text-lg font-bold h-96 text-primary-900">
+          <p>You don&apos;t have any recorded closed positions.</p>
+        </div>
+      )}
     </TableContainer>
   );
 };

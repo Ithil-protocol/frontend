@@ -1,6 +1,8 @@
 [
   {
     "name": "USDC",
+    "label": "USDC.e",
+    "description": "usd coin",
     "coingeckoId": "usd-coin",
     "iconName": "usdc",
     "decimals": 6,
@@ -9,10 +11,13 @@
     "vaultAddress": "0x0273574dE5C6f6bbb9a4353ea8629c58e73FF34f",
     "callOptionAddress": "0x1eCCcFf52C171eF2085d54E43864a8F6BE146B03",
     "aaveCollateralTokenAddress": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
-    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
+    "iTokenAddress": "0x6b416C9727fb248C3097b5c1D10c39a7EBDFf239"
   },
   {
     "name": "USDT",
+    "label": "USDT",
+    "description": "tether",
     "coingeckoId": "tether",
     "iconName": "usdt",
     "decimals": 6,
@@ -21,10 +26,13 @@
     "vaultAddress": "0xC335849a4d60E57B2B9A89006483d99258e538e1",
     "callOptionAddress": "0x97B3FC56cB418768Bd6916a3A162163F4602bc42",
     "aaveCollateralTokenAddress": "0x6ab707Aca953eDAeFBc4fD23bA73294241490620",
-    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
+    "iTokenAddress": "0x8b002cf7380403329627149aA3D730E633BF1D33"
   },
   {
     "name": "WETH",
+    "label": "WETH",
+    "description": "wrapped ethereum",
     "coingeckoId": "ethereum",
     "iconName": "eth",
     "decimals": 18,
@@ -33,10 +41,13 @@
     "vaultAddress": "0xc3cAA76778a080B7432Ae1f94d9976d6374432E0",
     "callOptionAddress": "0x7487D094240C283b9F2724C85EcA22E4445f405a",
     "aaveCollateralTokenAddress": "0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8",
-    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
+    "iTokenAddress": "0xE8FEB169cc9ffbF3873EbfD31e34144672D9D7D0"
   },
   {
     "name": "WBTC",
+    "label": "WBTC",
+    "description": "wrapped bitcoin",
     "coingeckoId": "btc",
     "iconName": "btc",
     "decimals": 8,
@@ -45,10 +56,13 @@
     "vaultAddress": "0x8583AC9a28A44c3Db446002b2B1170CCA8ec6459",
     "callOptionAddress": "0xF54267C3BE678549D19fB57009793b2986b63184",
     "aaveCollateralTokenAddress": "0x078f358208685046a11C85e8ad32895DED33A249",
-    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
+    "iTokenAddress": "0xd5687bfa0b5EBc020dc726282cFD94086701DF94"
   },
   {
     "name": "DAI",
+    "label": "DAI",
+    "description": "dai coin",
     "coingeckoId": "dai",
     "iconName": "dai",
     "decimals": 18,
@@ -57,6 +71,7 @@
     "vaultAddress": "0x4375fa3e1b533a50530869E4cdfC820389cc6DAA",
     "callOptionAddress": "0x22741cC21f6013C2BBDF0534717aE8a46386D59f",
     "aaveCollateralTokenAddress": "0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE",
-    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903"
+    "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
+    "iTokenAddress": "0xdC4c8Bfbf326d5F87fCB58D1a6E5B6E23992E61d"
   }
 ]
