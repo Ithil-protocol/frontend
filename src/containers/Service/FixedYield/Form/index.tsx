@@ -88,12 +88,13 @@ const Form = ({ asset }: { asset: Asset }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const { tokens } = getServiceByName("fixed-yield");
 
-  const openPositionModal = usePositionModal({
+  const positionModal = usePositionModal({
     onSubmit: () => openPosition?.(),
     isClosable: true,
     submitText: "Invest",
     isSubmitDisabled: isButtonDisabled,
     isSubmitLoading: isButtonLoading,
+    title: "Open Position",
   });
 
   const {
@@ -101,7 +102,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   } = useRouter();
 
   const handleOpenPositionModal = () => {
-    openPositionModal.open({
+    positionModal.open({
       amount: inputAmount,
       position: "fixed-yield",
       token: getSingleQueryParam(token),

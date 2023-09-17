@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Modal as ChakraModal,
   Grid,
@@ -6,6 +7,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  SliderProps,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -28,12 +30,17 @@ import { Data } from "./types";
 type IsClosable = boolean;
 
 interface ModalOptions {
-  submitText: string;
-  isSubmitLoading: boolean;
   isClosable: IsClosable;
   isSubmitDisabled: boolean;
-  onSubmit: VoidNoArgs;
+  isSubmitLoading: boolean;
   lockTimeText?: string;
+  onPurchasePriceChange?: SliderProps["onChange"];
+  onSlippageChange?: SliderProps["onChange"];
+  onSubmit: VoidNoArgs;
+  percentage?: number;
+  slippage?: number;
+  submitText: string;
+  title: string;
 }
 
 // interface OpenFnDefaultOptions extends Partial<ModalOptions> {}
@@ -48,8 +55,13 @@ const PositionModalComponent: React.FC<{
   isSubmitLoading: boolean;
   lockTimeText: string;
   onClose: CloseDialogFn;
+  onPurchasePriceChange?: SliderProps["onChange"];
+  onSlippageChange?: SliderProps["onChange"];
   onSubmit: VoidNoArgs;
+  percentage?: number;
+  slippage?: number;
   submitText: string;
+  title: string;
 }> = ({
   data,
   isClosable,
@@ -58,8 +70,13 @@ const PositionModalComponent: React.FC<{
   isSubmitLoading,
   lockTimeText,
   onClose,
+  onPurchasePriceChange,
+  onSlippageChange,
   onSubmit,
+  percentage,
+  slippage,
   submitText,
+  title,
 }) => {
   const handleClose = () => isClosable && onClose();
 
@@ -74,7 +91,7 @@ const PositionModalComponent: React.FC<{
             justifyContent: "space-between",
           }}
         >
-          Open Position
+          {title}
           {isClosable ? (
             <Text
               style={{
@@ -107,7 +124,14 @@ const PositionModalComponent: React.FC<{
               width="full"
               maxWidth="500px"
             >
-              <PositionsDetails data={data} lockTimeText={lockTimeText} />
+              <PositionsDetails
+                data={data}
+                lockTimeText={lockTimeText}
+                onPurchasePriceChange={onPurchasePriceChange}
+                onSlippageChange={onSlippageChange}
+                percentage={percentage}
+                slippage={slippage}
+              />
 
               <PrivateButton
                 style={{
@@ -138,17 +162,13 @@ const PositionModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     isSubmitLoading: false,
     onSubmit: () => undefined,
     submitText: "",
+    title: "",
   });
 
   const [modalOptions, setModalOptions] = useState(getModalDefaultOptions);
 
   const getDefaultData = (): Data => ({
-    amount: "0",
-    collateral: "0",
-    leverage: undefined,
-    lockTime: undefined,
     position: "aave",
-    slippage: undefined,
     token: "",
   });
 
@@ -185,6 +205,11 @@ const PositionModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     >
       <PositionModalComponent
         data={data}
+        title={modalOptions.title}
+        onPurchasePriceChange={modalOptions.onPurchasePriceChange}
+        onSlippageChange={modalOptions.onSlippageChange}
+        percentage={modalOptions.percentage}
+        slippage={modalOptions.slippage}
         isClosable={modalOptions.isClosable}
         isOpen={isOpen}
         onClose={onClose}
@@ -209,12 +234,31 @@ export const usePositionModal = (options: ModalOptions) => {
   const onSubmit = useCallback(() => {
     options.onSubmit();
   }, [options.onSubmit]);
+  const onPurchasePriceChange = useCallback(
+    (value: number) => {
+      options.onPurchasePriceChange?.(value);
+    },
+    [options.onSubmit]
+  );
+  const onSlippageChange = useCallback(
+    (value: number) => {
+      options.onSlippageChange?.(value);
+    },
+    [options.onSubmit]
+  );
 
   useEffect(() => {
-    setOptions({ ...options, onSubmit });
+    setOptions({
+      ...options,
+      onPurchasePriceChange,
+      onSlippageChange,
+      onSubmit,
+    });
   }, [
     options.submitText,
     options.isSubmitDisabled,
+    options.percentage,
+    options.slippage,
     options.isSubmitLoading,
     options.isClosable,
   ]);

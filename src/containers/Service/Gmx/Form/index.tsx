@@ -203,16 +203,17 @@ const Form = ({ asset }: { asset: Asset }) => {
   ];
   const { tokens } = getServiceByName("gmx");
 
-  const openPositionModal = usePositionModal({
+  const positionModal = usePositionModal({
     isClosable: true,
     isSubmitDisabled: isButtonDisabled,
     isSubmitLoading: isButtonLoading,
     onSubmit: () => openPosition?.(),
     submitText: "Invest",
+    title: "Open Position",
   });
 
   const handleOpenPositionModal = () => {
-    openPositionModal.open({
+    positionModal.open({
       amount: inputAmount,
       leverage,
       position: "gmx",

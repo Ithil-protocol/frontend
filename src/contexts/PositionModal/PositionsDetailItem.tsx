@@ -14,6 +14,7 @@ const PositionsDetailItem: FC<Props> = ({
   prefix,
   valueColor,
   postfix,
+  postfixIcon,
 }) => {
   const { mode } = useColorMode();
 
@@ -48,12 +49,17 @@ const PositionsDetailItem: FC<Props> = ({
         </Text>
         {postfix && (
           <Text
+            display="flex"
+            alignItems="center"
             fontSize="16px"
+            gap="5px"
             lineHeight="24px"
             color={mode("secondary.500.dark", "secondary.500")}
             className="font-semibold"
           >
             {postfix}
+
+            {postfixIcon}
           </Text>
         )}
       </HStack>

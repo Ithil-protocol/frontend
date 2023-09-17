@@ -160,13 +160,14 @@ const Form = ({ asset, setRedeem }: Props) => {
   const lockTimeText = `Lock time in ${
     process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? "months" : "minutes"
   }`;
-  const openPositionModal = usePositionModal({
+  const positionModal = usePositionModal({
     isClosable: true,
     isSubmitDisabled: isButtonDisabled,
     isSubmitLoading: isButtonLoading,
     onSubmit: () => openPosition?.(),
     submitText: "Invest",
     lockTimeText,
+    title: "Open Position",
   });
 
   const {
@@ -174,7 +175,7 @@ const Form = ({ asset, setRedeem }: Props) => {
   } = useRouter();
 
   const handleOpenPositionModal = () => {
-    openPositionModal.open({
+    positionModal.open({
       amount: inputAmount,
       collateral: formatUnits(
         order.agreement.collaterals[0].amount,

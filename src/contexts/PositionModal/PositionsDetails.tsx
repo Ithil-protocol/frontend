@@ -1,5 +1,7 @@
-import { GridItem, VStack } from "@chakra-ui/react";
+import { GridItem, SliderProps, VStack } from "@chakra-ui/react";
 
+import Slider from "@/components/Slider";
+import TokenIcon from "@/components/TokenIcon";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
 
@@ -9,9 +11,20 @@ import { Data } from "./types";
 interface Props {
   data: Data;
   lockTimeText: string;
+  onPurchasePriceChange?: SliderProps["onChange"];
+  onSlippageChange?: SliderProps["onChange"];
+  percentage?: number;
+  slippage?: number;
 }
 
-const PositionsDetails: React.FC<Props> = ({ data, lockTimeText }) => {
+const PositionsDetails: React.FC<Props> = ({
+  data,
+  lockTimeText,
+  onPurchasePriceChange,
+  onSlippageChange,
+  percentage,
+  slippage,
+}) => {
   const { pickColor } = useColorMode();
 
   return (
@@ -31,20 +44,61 @@ const PositionsDetails: React.FC<Props> = ({ data, lockTimeText }) => {
     >
       <VStack alignItems="start" spacing="40px" height="full">
         <VStack spacing="24px" width="full">
-          <PositionsDetailItem
-            title="Position"
-            value={data.position.toUpperCase()}
-          />
-          <PositionsDetailItem
-            title="Amount"
-            postfix={data.token.toUpperCase()}
-            value={data.amount}
-          />
-          <PositionsDetailItem
-            title="Collateral"
-            postfix={data.token.toUpperCase()}
-            value={data.collateral}
-          />
+          {data.position && (
+            <PositionsDetailItem
+              title="Position"
+              value={data.position.toUpperCase()}
+            />
+          )}
+          {data.amount && (
+            <PositionsDetailItem
+              title="Amount"
+              value={data.amount}
+              postfix={data.token.toUpperCase()}
+              postfixIcon={
+                <TokenIcon name={data.token} width={20} height={20} />
+              }
+            />
+          )}
+          {data.amountObtained && (
+            <PositionsDetailItem
+              title="Amount Obtained"
+              value={data.amountObtained}
+              postfix={data.token.toUpperCase()}
+              postfixIcon={
+                <TokenIcon name={data.token} width={20} height={20} />
+              }
+            />
+          )}
+          {data.wethReward && (
+            <PositionsDetailItem title="Weth Reward" value={data.wethReward} />
+          )}
+          {data.purchasePrice && typeof percentage === "number" && (
+            <>
+              <PositionsDetailItem
+                title="Purchase price"
+                prefix="$"
+                value={data.purchasePrice}
+              />
+              <Slider
+                value={percentage}
+                max={100}
+                min={0}
+                onChange={onPurchasePriceChange}
+                extension="%"
+              />
+            </>
+          )}
+          {data.collateral && (
+            <PositionsDetailItem
+              title="Collateral"
+              value={data.collateral}
+              postfix={data.token.toUpperCase()}
+              postfixIcon={
+                <TokenIcon name={data.token} width={20} height={20} />
+              }
+            />
+          )}
           {data.leverage && (
             <PositionsDetailItem
               title="Leverage"
@@ -52,12 +106,21 @@ const PositionsDetails: React.FC<Props> = ({ data, lockTimeText }) => {
               value={data.leverage}
             />
           )}
-          {data.slippage && (
-            <PositionsDetailItem
-              title="Slippage"
-              postfix="%"
-              value={data.slippage}
-            />
+          {data.slippage && typeof slippage === "number" && (
+            <>
+              <PositionsDetailItem
+                title="Slippage"
+                postfix="%"
+                value={data.slippage}
+              />
+              <Slider
+                value={slippage}
+                max={10}
+                min={1}
+                onChange={onSlippageChange}
+                extension="%"
+              />
+            </>
           )}
           {data.lockTime && (
             <PositionsDetailItem title={lockTimeText} value={data.lockTime} />

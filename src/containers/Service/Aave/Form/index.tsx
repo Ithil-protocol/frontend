@@ -155,12 +155,13 @@ const Form = ({ asset }: { asset: Asset }) => {
     setInputAmount(balance?.formatted ?? "");
   };
 
-  const openPositionModal = usePositionModal({
+  const positionModal = usePositionModal({
     onSubmit: () => openPosition?.(),
     isClosable: true,
     submitText: "Invest",
     isSubmitDisabled: isSubmitButtonDisabled,
     isSubmitLoading: isButtonLoading,
+    title: "Open Position",
   });
 
   const {
@@ -203,7 +204,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { tokens } = getServiceByName("aave");
 
   const handleOpenPositionModal = () => {
-    openPositionModal.open({
+    positionModal.open({
       amount: inputAmount,
       leverage,
       position: "aave",
