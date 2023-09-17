@@ -1,6 +1,8 @@
 [
   {
-    "name": "USDC.e",
+    "name": "USDC",
+    "label": "USDC.e",
+    "description": "usd coin",
     "coingeckoId": "usd-coin",
     "iconName": "usdc",
     "decimals": 6,
@@ -14,6 +16,8 @@
   },
   {
     "name": "USDT",
+    "label": "USDT",
+    "description": "tether",
     "coingeckoId": "tether",
     "iconName": "usdt",
     "decimals": 6,
@@ -27,6 +31,8 @@
   },
   {
     "name": "WETH",
+    "label": "WETH",
+    "description": "wrapped ethereum",
     "coingeckoId": "ethereum",
     "iconName": "eth",
     "decimals": 18,
@@ -40,6 +46,8 @@
   },
   {
     "name": "WBTC",
+    "label": "WBTC",
+    "description": "wrapped bitcoin",
     "coingeckoId": "btc",
     "iconName": "btc",
     "decimals": 8,
@@ -53,6 +61,8 @@
   },
   {
     "name": "DAI",
+    "label": "DAI",
+    "description": "dai coin",
     "coingeckoId": "dai",
     "iconName": "dai",
     "decimals": 18,

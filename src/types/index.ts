@@ -29,7 +29,7 @@ export interface VaultsTypes {
   vaultAddress: string;
 }
 
-export type VaultName = "USDC.e" | "USDT" | "WETH" | "WBTC";
+export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;
@@ -103,6 +103,8 @@ export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
 
 export type Asset = {
   name: string;
+  label: string;
+  description: string;
   coingeckoId: string;
   iconName: string;
   decimals: number;
