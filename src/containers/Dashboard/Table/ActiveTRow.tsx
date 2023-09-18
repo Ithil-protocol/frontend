@@ -7,17 +7,25 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { waitForTransaction } from "@wagmi/core";
+import { FC, useState } from "react";
+import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import { useContractWrite, useQueryClient } from "wagmi";
 
+import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
+import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { PositionModal } from "@/contexts/PositionModal";
+import { aaveAddress } from "@/hooks/generated/aave";
+import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
+import { gmxAddress, useGmxWethReward } from "@/hooks/generated/gmx";
+import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { PositionType } from "@/types";
 import { getAssetByAddress, isPositionActive } from "@/utils";
-
-import Modal from "../Modal";
 
 interface Props {
   data: PositionType;
@@ -25,30 +33,115 @@ interface Props {
 
 const ActiveTRow: FC<Props> = ({ data }) => {
   const { colorMode, mode, pickColor } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const [percentage, setPercentage] = useState(100);
+  const [slippage, setSlippage] = useState(1);
+  const asset = getAssetByAddress(data.token as Address);
+
+  const notificationDialog = useNotificationDialog();
+
+  const { redeem } = useCallOptionInfo({
+    asset: asset!,
+    amount: data.amount?.toString(),
+    month: 1,
+    enabled: data.type === "call-option",
+  });
+
+  const services = {
+    aave: {
+      abi: aaveABI,
+      address: aaveAddress,
+    },
+    gmx: {
+      abi: gmxABI,
+      address: gmxAddress,
+    },
+    "fixed-yield": {
+      abi: fixedYieldABI,
+      address: fixedYieldAddress,
+    },
+    "call-option": {
+      abi: callOptionABI,
+      address: getAssetByAddress(data.token)?.callOptionAddress,
+    },
+  } as const;
+
+  const service = services[data.type as keyof typeof services];
+
+  const { data: reward } = useGmxWethReward({
+    args: [data.id!],
+    enabled: !!data.id && data.type === "gmx",
+  });
+
+  const queryClient = useQueryClient();
+
+  const { write: close } = useContractWrite({
+    address: service?.address,
+    abi: service?.abi as any,
+    functionName: "close",
+    onMutate: () => {
+      notificationDialog.openLoading("Closing...");
+    },
+    onSuccess: async (result) => {
+      try {
+        await waitForTransaction(result);
+        queryClient.resetQueries();
+        onClose();
+        notificationDialog.openSuccess("Position closed");
+      } catch (error) {
+        notificationDialog.openError("Failed", error);
+      }
+    },
+    onError: (error) => {
+      notificationDialog.openError("Error happened", error);
+    },
+  });
+
+  const handelConfirmBtn = async () => {
+    if (data.isPnlLoading) return;
+    const initialQuote = data?.quote || 0n;
+    const quotes: Record<string, bigint> = {
+      aave: (initialQuote * (100n - BigInt(slippage))) / 100n,
+      gmx: (initialQuote * (100n - BigInt(slippage))) / 100n,
+      "call-option":
+        (BigInt(10) ** BigInt(18) * BigInt(percentage)) / BigInt(100),
+    };
+    const quote = quotes[data?.type] || 0n;
+    close({
+      args: [
+        data.id,
+        encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
+      ],
+    });
+  };
+  const isAaveOrGmx = data.type === "aave" || data.type === "gmx";
 
   const isMounted = useIsMounted();
-  const handelCancelBtn = async (
+
+  const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
+
+  const { formattedPnl = "0" } = data;
+
+  const pnlColor =
+    +formattedPnl === 0 ? "#a4b1be" : isPnlPositive ? "#15ac89" : "#f35959";
+
+  const handleCloseClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
     e.preventDefault();
     onOpen();
   };
-  const asset = getAssetByAddress(data.token);
 
   if (!isMounted) return null;
 
-  const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
   return (
     <>
-      <Modal data={data} onClose={onClose} onOpen={onOpen} isOpen={isOpen} />
       <Tr
         width="72"
         bgColor={pickColor(palette.colors.primary, "100")}
         borderRadius="12px"
-        // onClick={() => router.push("/dashboard/detail/1")}
-        // cursor="pointer"
         sx={{
           "& > td": {
             padding: ["20px 40px", "30px 40px"],
@@ -103,26 +196,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
               <HStack>
                 <Text
                   fontWeight="medium"
-                  color={
-                    +data.formattedPnl === 0
-                      ? "#a4b1be"
-                      : isPnlPositive
-                      ? "#15ac89"
-                      : "#f35959"
-                  }
+                  color={pnlColor}
                   fontSize="22px"
                   lineHeight="22px"
                 >
                   {data.formattedPnl}
                 </Text>
                 <Text
-                  bg={
-                    +data.formattedPnl === 0
-                      ? "#a4b1be"
-                      : isPnlPositive
-                      ? "#15ac89"
-                      : "#f35959"
-                  }
+                  bg={pnlColor}
                   borderRadius="8px"
                   fontWeight="bold"
                   fontFamily="18px"
@@ -159,11 +240,42 @@ const ActiveTRow: FC<Props> = ({ data }) => {
             : "Expired"}
         </Td>
         <Td textAlign="end" width={200} height="108px">
-          <Button onClick={handelCancelBtn} variant="outline" color="#f35959">
+          <Button onClick={handleCloseClick} variant="outline" color="#f35959">
             Close
           </Button>
         </Td>
       </Tr>
+
+      <PositionModal
+        canShowPercentageSlider
+        canShowSlippageSlider
+        isOpen={isOpen}
+        onClose={onClose}
+        data={{
+          type: "close",
+          token: asset?.name || "",
+          position: data.type,
+          leverage: isAaveOrGmx
+            ? (+data.amount / +data.margin + 1).toString()
+            : undefined,
+          slippage: slippage.toString(),
+          amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
+            .toFixed(2)
+            .toString(),
+          wethReward: data.type === "gmx" ? reward?.toString() : undefined,
+          purchasePrice:
+            data.type === "call-option" ? redeem?.toFixed(2) : undefined,
+          pnlPercentage: data.pnlPercentage,
+          formattedPnl: data.formattedPnl,
+          pnlColor,
+          percentage,
+        }}
+        title="Close Position"
+        onPurchasePriceChange={setPercentage}
+        onSlippageChange={setSlippage}
+        submitText="Close Position"
+        onSubmit={handelConfirmBtn}
+      />
     </>
   );
 };

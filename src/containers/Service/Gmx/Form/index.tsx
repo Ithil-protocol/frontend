@@ -1,8 +1,9 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI, gmxABI } from "@/abi";
@@ -11,6 +12,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { PositionModal } from "@/contexts/PositionModal";
 import {
   gmxAddress,
   useGmxComputeBaseRateAndSpread,
@@ -24,7 +26,12 @@ import { useMinMarginLimit } from "@/hooks/useMinMarginLimit";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { cutoffDecimals, getServiceByName, normalizeInputValue } from "@/utils";
+import {
+  cutoffDecimals,
+  getServiceByName,
+  getSingleQueryParam,
+  normalizeInputValue,
+} from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -39,6 +46,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState("0");
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
@@ -109,6 +117,10 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
+  const {
+    query: { asset: token },
+  } = useRouter();
+
   const { order } = usePrepareDebitOrder({
     token: asset,
     collateralToken: asset.gmxCollateralTokenAddress,
@@ -140,7 +152,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           hash,
         });
         notificationDialog.openSuccess(
-          isApproved ? "Positions opened successfully" : "Approved successfully"
+          isApproved ? "Position successfully opened" : "Approved successfully"
         );
         setInputAmount("");
       } catch (error) {
@@ -202,7 +214,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       isLoading: isInterestAndSpreadLoading,
     },
   ];
-  const tokens = getServiceByName("gmx").tokens;
+  const { tokens } = getServiceByName("gmx");
 
   if (!isMounted) return null;
 
@@ -270,7 +282,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         isLessThanMinimumMarginError={isLessThanMinimumMarginError}
       />
       <PrivateButton
-        onClick={() => (isApproved ? openPosition?.() : approve?.())}
+        onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -282,6 +294,27 @@ const Form = ({ asset }: { asset: Asset }) => {
           ? "Invest"
           : `Approve ${asset.label}`}
       </PrivateButton>
+
+      <PositionModal
+        canShowSlippageSlider={false}
+        canShowPercentageSlider={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={openPosition}
+        submitText="Invest"
+        title="Open Position"
+        data={{
+          amount: inputAmount,
+          leverage,
+          position: "gmx",
+          slippage: (+slippage * 100).toString(),
+          token: getSingleQueryParam(token),
+          collateral: formatUnits(
+            order.agreement.collaterals[0].amount,
+            asset.decimals
+          ),
+        }}
+      />
     </div>
   );
 };

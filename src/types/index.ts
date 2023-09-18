@@ -11,7 +11,11 @@ export type PromiseVoidNoArgs = () => Promise<void>;
 export interface PositionsDetailItemType {
   title: string;
   value: string;
-  unit?: string;
+  prefix?: string;
+  postfix?: string;
+  postfixIcon?: React.ReactElement;
+  postfixStyle?: React.CSSProperties;
+  prefixStyle?: React.CSSProperties;
 }
 
 export interface ChartDataPoint {

@@ -101,7 +101,7 @@ const Form = ({ asset }: { asset: AssetEssential }) => {
   //         hash,
   //       });
   //       notificationDialog.openSuccess(isApproved
-  //           ? "Positions opened successfully"
+  //           ? "Position successfully opened"
   //           : "Approved successfully");
   //       setInputAmount("");
   //     } catch (error) {

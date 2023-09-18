@@ -228,7 +228,7 @@ export const getSingleQueryParam = (
   queryParam: string | string[] | undefined
 ) => {
   if (typeof queryParam === "undefined") {
-    throw new Error(); // return empty string when queryParam is undefined
+    return "" as AssetName; // return empty string when queryParam is undefined
   } else if (Array.isArray(queryParam)) {
     return queryParam[0].toUpperCase() as AssetName; // ignore other query params
   } else {
