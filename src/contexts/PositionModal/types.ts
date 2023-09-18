@@ -14,4 +14,6 @@ export interface Data {
   slippage?: string;
   token: string;
   wethReward?: string;
+  percentage?: number;
+  type?: "open" | "close";
 }
