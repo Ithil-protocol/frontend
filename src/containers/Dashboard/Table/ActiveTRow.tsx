@@ -122,6 +122,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   });
 
   const isMounted = useIsMounted();
+
+  const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
+
+  const { formattedPnl = "0" } = data;
+
+  const pnlColor =
+    +formattedPnl === 0 ? "#a4b1be" : isPnlPositive ? "#15ac89" : "#f35959";
+
   const handleCloseClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -134,16 +142,20 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         ? (+data.amount / +data.margin + 1).toString()
         : undefined,
       slippage: isAaveOrGmx ? slippage.toString() : undefined,
-      amountObtained: (Number(data.margin) + Number(data.pnl ?? 0)).toString(),
+      amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
+        .toFixed(2)
+        .toString(),
       wethReward: data.type === "gmx" ? reward?.toString() : undefined,
       purchasePrice:
         data.type === "call-option" ? redeem?.toFixed(2) : undefined,
+      pnlPercentage: data.pnlPercentage,
+      formattedPnl: data.formattedPnl,
+      pnlColor,
     });
   };
 
   if (!isMounted) return null;
 
-  const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
   return (
     <>
       <Tr
@@ -204,26 +216,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
               <HStack>
                 <Text
                   fontWeight="medium"
-                  color={
-                    +data.formattedPnl === 0
-                      ? "#a4b1be"
-                      : isPnlPositive
-                      ? "#15ac89"
-                      : "#f35959"
-                  }
+                  color={pnlColor}
                   fontSize="22px"
                   lineHeight="22px"
                 >
                   {data.formattedPnl}
                 </Text>
                 <Text
-                  bg={
-                    +data.formattedPnl === 0
-                      ? "#a4b1be"
-                      : isPnlPositive
-                      ? "#15ac89"
-                      : "#f35959"
-                  }
+                  bg={pnlColor}
                   borderRadius="8px"
                   fontWeight="bold"
                   fontFamily="18px"

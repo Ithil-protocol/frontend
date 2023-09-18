@@ -12,6 +12,8 @@ export interface PositionsDetailItemType {
   prefix?: string;
   postfix?: string;
   postfixIcon?: React.ReactElement;
+  postfixStyle?: React.CSSProperties;
+  prefixStyle?: React.CSSProperties;
 }
 
 export type Address = `0x${string}`;

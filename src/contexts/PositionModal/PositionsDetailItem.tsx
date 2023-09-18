@@ -9,12 +9,14 @@ interface Props extends PositionsDetailItemType {
 }
 
 const PositionsDetailItem: FC<Props> = ({
-  title,
-  value,
-  prefix,
-  valueColor,
   postfix,
   postfixIcon,
+  postfixStyle = {},
+  prefix,
+  prefixStyle = {},
+  title,
+  value,
+  valueColor,
 }) => {
   const { mode } = useColorMode();
 
@@ -29,6 +31,7 @@ const PositionsDetailItem: FC<Props> = ({
       <HStack>
         {prefix && (
           <Text
+            style={prefixStyle}
             fontSize="16px"
             lineHeight="24px"
             color={mode("secondary.400.dark", "secondary.400")}
@@ -49,6 +52,7 @@ const PositionsDetailItem: FC<Props> = ({
         </Text>
         {postfix && (
           <Text
+            style={postfixStyle}
             display="flex"
             alignItems="center"
             fontSize="16px"

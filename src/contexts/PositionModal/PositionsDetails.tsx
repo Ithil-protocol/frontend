@@ -99,6 +99,21 @@ const PositionsDetails: React.FC<Props> = ({
               }
             />
           )}
+          {data.pnlPercentage && data.formattedPnl && (
+            <PositionsDetailItem
+              title="PNL"
+              value=""
+              postfix={`${data.pnlPercentage} %`}
+              prefix={data.formattedPnl}
+              postfixStyle={{
+                backgroundColor: data.pnlColor,
+                color: pickColor(palette.colors.primary, "100"),
+                padding: "4px 8px",
+                borderRadius: "8px",
+              }}
+              prefixStyle={{ color: data.pnlColor }}
+            />
+          )}
           {data.leverage && (
             <PositionsDetailItem
               title="Leverage"
@@ -113,13 +128,15 @@ const PositionsDetails: React.FC<Props> = ({
                 postfix="%"
                 value={data.slippage}
               />
-              <Slider
-                value={slippage}
-                max={10}
-                min={1}
-                onChange={onSlippageChange}
-                extension="%"
-              />
+              <div style={{ padding: "10px 5px", width: "100%" }}>
+                <Slider
+                  value={slippage}
+                  max={10}
+                  min={1}
+                  onChange={onSlippageChange}
+                  extension="%"
+                />
+              </div>
             </>
           )}
           {data.lockTime && (
