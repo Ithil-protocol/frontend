@@ -15,7 +15,7 @@ import { aaveAddress } from "@/hooks/generated/aave";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { Ithil } from "@/types";
+import { AssetEssential } from "@/types";
 import {
   displayLeverage,
   getServiceByName,
@@ -28,7 +28,7 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
 
-const Form = ({ asset }: { asset: Ithil }) => {
+const Form = ({ asset }: { asset: AssetEssential }) => {
   const {
     query: { asset: token },
   } = useRouter();
@@ -183,7 +183,6 @@ const Form = ({ asset }: { asset: Ithil }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={false}
-          tokens={tokens}
         />
 
         <Box width="full" gap="30px">

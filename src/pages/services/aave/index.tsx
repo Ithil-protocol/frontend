@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
-import { getServiceByName } from "@/utils";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 const AavePage = () => {
   const tokenModal = useTokenModal({
@@ -11,7 +11,9 @@ const AavePage = () => {
 
   useEffect(() => {
     const tokens = getServiceByName("aave").tokens;
-    tokenModal.openDialog(tokens, "aave");
+    const filteredAssets = convertNamesToAssets(tokens);
+
+    tokenModal.openDialog(filteredAssets, "aave");
   }, []);
 
   return null;

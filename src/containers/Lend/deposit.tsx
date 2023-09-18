@@ -1,12 +1,12 @@
 import { type FC } from "react";
 
-import { type LendingToken } from "@/types/onchain.types";
+import { Asset } from "@/types";
 
 import LendingDeposit from "./LendingDeposit";
 import LendingWithdraw from "./LendingWithdraw";
 
 interface LendingProps {
-  token: LendingToken;
+  token: Asset;
 }
 
 export const Deposit: FC<LendingProps> = ({ token }) => {

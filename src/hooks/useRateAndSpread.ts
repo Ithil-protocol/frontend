@@ -2,7 +2,7 @@ import { Address, formatEther, parseUnits } from "viem";
 import { useContractRead } from "wagmi";
 
 import { aaveABI } from "@/abi";
-import { Token } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { fixPrecision, getAssetByAddress, multiplyBigInt } from "@/utils";
 
 import { useVaultFreeLiquidity } from "./generated/vault";
@@ -26,7 +26,7 @@ export const reverseDisplayInterestSpreadInPercent = (
 };
 
 interface AaveRateAndSpreadProps {
-  token: Token;
+  token: Asset;
   leverage: string;
   margin: string;
   slippage: string;

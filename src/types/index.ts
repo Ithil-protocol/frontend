@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 import { SafetyScoreValue, getServiceNames } from "@/utils";
 
 export type viewTypes = "Active" | "Closed";
@@ -12,24 +14,13 @@ export interface PositionsDetailItemType {
   unit?: string;
 }
 
-export type Address = `0x${string}`;
-
 export interface ChartDataPoint {
   date: Date;
   tvl: number;
   apy: number;
 }
 
-export interface VaultsTypes {
-  name: string;
-  coingeckoId: string;
-  iconName: string;
-  decimals: number;
-  tokenAddress: string;
-  vaultAddress: string;
-}
-
-export type VaultName = "USDC" | "USDT" | "WETH" | "WBTC";
+export type AssetName = "USDC" | "USDT" | "WETH" | "WBTC" | "DAI";
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;
@@ -57,7 +48,7 @@ export interface Service {
   hasIndex: boolean;
   bestApy: number;
   boostApy: number;
-  tokens: string[];
+  tokens: AssetName[];
   tvl: number;
   deadline: number;
   url: string;
@@ -65,6 +56,26 @@ export interface Service {
   explanation: string;
   type: "debit" | "credit";
 }
+export type Asset = {
+  name: string;
+  label: string;
+  description: string;
+  coingeckoId: string;
+  iconName: string;
+  decimals: number;
+  tokenAddress: Address;
+  oracleAddress: Address;
+  vaultAddress: Address;
+  callOptionAddress: Address;
+  aaveCollateralTokenAddress: Address;
+  gmxCollateralTokenAddress: Address;
+  iTokenAddress: Address;
+};
+
+export type AssetEssential = Pick<
+  Asset,
+  "name" | "label" | "decimals" | "tokenAddress" | "coingeckoId" | "iconName"
+>;
 
 export interface PositionType {
   token: Address;
@@ -88,12 +99,8 @@ export interface PageHeading {
 
 export type CloseDialogFn = VoidNoArgs;
 
-export type OpenTokenDialogFn = (
-  tokens: string[],
-  serviceName: ServiceName
-) => void;
 export interface TokenModalOptions {
-  tokens: string[];
+  assets: Asset[];
   isClosable: boolean;
   onSelectTokenCallback: () => void;
   returnPath: string;
@@ -101,29 +108,10 @@ export interface TokenModalOptions {
 
 export type ButtonEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
 
-export type Asset = {
-  name: string;
-  label: string;
-  description: string;
-  coingeckoId: string;
-  iconName: string;
-  decimals: number;
-  tokenAddress: Address;
-  oracleAddress: Address;
-  vaultAddress: Address;
-  callOptionAddress: Address;
-  aaveCollateralTokenAddress: Address;
-  gmxCollateralTokenAddress: Address;
-  iTokenAddress: Address;
-};
-
-export type Ithil = {
-  name: string;
-  coingeckoId: string;
-  iconName: string;
-  decimals: number;
-  tokenAddress: Address;
-};
+export type OpenTokenDialogFn = (
+  assets: Asset[],
+  serviceName: ServiceName
+) => void;
 
 export interface Agreement {
   loans: readonly {
@@ -152,3 +140,13 @@ export interface OpenPosition {
   type: ServiceName;
   name: string;
 }
+
+export type Vault = {
+  token: Asset;
+  tvl?: bigint;
+  borrowed?: bigint;
+  deposited?: bigint;
+  apy?: string;
+};
+
+export type Vaults = Vault[];

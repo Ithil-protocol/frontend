@@ -7,13 +7,10 @@ import {
 } from "wagmi";
 
 import { useToken } from "@/hooks/use-token.hook";
-import { type LendingToken } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { oneUnitWithDecimals } from "@/utils/input.utils";
 
-export const useVault = (
-  token: LendingToken,
-  userAddress: Address | undefined
-) => {
+export const useVault = (token: Asset, userAddress: Address | undefined) => {
   const { useAllowance } = useToken(token.tokenAddress);
   const { data: allowance } = useAllowance(userAddress, token.vaultAddress);
   const { data: sharesBalance } = useBalance({

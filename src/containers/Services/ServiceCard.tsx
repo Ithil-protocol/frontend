@@ -5,15 +5,16 @@ import { FC } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
-import { ServiceName } from "@/types";
+import { Asset, ServiceName } from "@/types";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 import ServiceIcon from "../Service/ServiceIcon";
 import EnterButton from "./EnterButton";
 
 interface ServiceCardProps {
   apy: string;
-  assets: string[];
-  description: string | ((assets: string[]) => string);
+  assets: Asset[];
+  description: string;
   hasIndex: boolean;
   label: string;
   multiplier: string | undefined;
@@ -33,7 +34,9 @@ const ServiceCard: FC<ServiceCardProps> = ({
 }) => {
   const tokenModal = useTokenModal();
   const { colorMode } = useColorMode();
-  const handleEnterClick = () => tokenModal.openDialog(assets, name);
+  const tokens = getServiceByName(name).tokens;
+  const filteredAssets = convertNamesToAssets(tokens);
+  const handleEnterClick = () => tokenModal.openDialog(filteredAssets, name);
 
   return (
     <Box className="flex flex-col p-7 rounded-xl bg-primary-100">
@@ -71,9 +74,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
         <Text textStyle="md2">Best APY</Text>
         <Text textStyle="slender-md">{apy}</Text>
       </HStack>
-      <Text className="mb-4 ">
-        {typeof description === "string" ? description : description(assets)}
-      </Text>
+      <Text className="mb-4 ">{description}</Text>
       <VStack className="mt-auto" align="start">
         {/* <HStack spacing="8px" marginBottom="16px">
           <Text textStyle="sm" color={pickColor(palette.colors.primary, "700")}>
@@ -83,9 +84,9 @@ const ServiceCard: FC<ServiceCardProps> = ({
         </HStack> */}
         {/* tokens array */}
         <Box className="flex flex-wrap gap-2 mb-6 justify-evenly">
-          {assets.map((token, index) => (
+          {filteredAssets.map((token, index) => (
             <Box
-              key={token + index}
+              key={token.name + index}
               className="flex py-1 min-w-[92px] border border-primary-500 rounded-md"
             >
               <Text
@@ -93,7 +94,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
                 fontWeight="normal"
                 className="mx-auto"
               >
-                {token.toUpperCase()}
+                {token.label}
               </Text>
             </Box>
           ))}

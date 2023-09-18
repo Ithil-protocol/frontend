@@ -316,7 +316,7 @@ const Test = () => {
 
   const { data: balanceUSDT } = useBalance({
     address,
-    token: getAssetByName("usdt")?.tokenAddress,
+    token: getAssetByName("USDT")?.tokenAddress,
   });
 
   const { data: B } = useAaveLatestAndBase({
