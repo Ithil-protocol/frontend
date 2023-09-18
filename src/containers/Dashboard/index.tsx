@@ -7,18 +7,18 @@ import { viewTypes } from "@/types";
 export type ColumnsActive =
   | "Tokens"
   | "Service"
-  | "Status"
+  | "PNL"
   | "Margin"
-  | "Expire"
+  | "Status"
   | "";
 export type ColumnsOther = "Tokens" | "Service" | "Date";
 
 const columnsActive: ColumnsActive[] = [
   "Tokens",
   "Service",
-  "Status",
+  "PNL",
   "Margin",
-  "Expire",
+  "Status",
   "",
 ];
 const columnsOther: ColumnsOther[] = ["Tokens", "Service", "Date"];
