@@ -259,6 +259,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       <ServiceError
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
+        isLessThanMinimumMarginError={isLessThanMinimumMarginError}
       />
       <PrivateButton
         onClick={() => (isApproved ? openPosition?.() : approve?.())}
