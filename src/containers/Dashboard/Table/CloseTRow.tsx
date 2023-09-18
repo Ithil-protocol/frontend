@@ -62,7 +62,7 @@ const CloseTRow: FC<Props> = ({ data }) => {
                 </Box>
               </Box>
               <Text fontSize="22px" lineHeight="22px">
-                {asset?.name}
+                {asset?.label}
               </Text>
             </HStack>
           </Box>

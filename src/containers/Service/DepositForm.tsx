@@ -13,7 +13,6 @@ import { getDecimalRegex } from "@/data/regex";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
-import { AaveAsset } from "@/types/onchain.types";
 import { getSingleQueryParam } from "@/utils";
 
 import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -26,7 +25,7 @@ interface Props {
   setSlippage: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
   interestAndSpreadInPercent: number;
-  assetDecimal?: AaveAsset["decimals"];
+  assetDecimal?: number;
 }
 
 const DepositForm: FC<Props> = ({

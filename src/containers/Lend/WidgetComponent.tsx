@@ -10,7 +10,7 @@ import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { getDecimalRegex } from "@/data/regex";
-import { LendingToken } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import TabSwitch from "./TabSwitch";
@@ -19,7 +19,7 @@ interface WidgetComponentProps {
   title: string;
   balance: bigint | undefined;
 
-  token: LendingToken;
+  token: Asset;
 
   inputAmount: string;
   onInputChange: (value: string) => void;

@@ -9,7 +9,6 @@ import { type Address } from "wagmi";
 
 import { ithil } from "@/data/ithil-token";
 import { Asset } from "@/types";
-import { Token } from "@/types/onchain.types";
 import { multiplyBigInt } from "@/utils";
 
 import { useCallOptionCurrentPrice } from "./generated/callOption";
@@ -42,7 +41,7 @@ interface IServiceOrder {
 }
 
 interface PrepareDebitOrderProps {
-  token: Token;
+  token: Asset;
   collateralToken: Address;
   amount: string;
   leverage: string;

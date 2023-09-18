@@ -4,7 +4,7 @@ import { parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { Token } from "@/types/onchain.types";
+import { AssetEssential } from "@/types";
 
 import {
   usePrepareTokenApprove,
@@ -15,7 +15,7 @@ import {
 interface AllowanceProps {
   amount: string | undefined;
   spender: Address;
-  token: Token;
+  token: AssetEssential;
 }
 export const useAllowance = ({
   amount = "0",

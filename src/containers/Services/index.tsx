@@ -1,3 +1,4 @@
+import { assets } from "@/data/assets";
 import { services } from "@/data/services";
 
 import ServiceCard from "./ServiceCard";
@@ -14,7 +15,7 @@ const ServicesPage = () => {
         .map((item, index) => (
           <ServiceCard
             key={item.name + index}
-            assets={item.tokens}
+            assets={assets}
             description={item.description}
             to={item.url}
             hasIndex={item.hasIndex}

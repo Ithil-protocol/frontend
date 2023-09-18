@@ -27,6 +27,7 @@ import { CloseButton } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { useColorMode } from "@/hooks/useColorMode";
 import {
+  Asset,
   CloseDialogFn,
   OpenTokenDialogFn,
   ServiceName,
@@ -39,13 +40,13 @@ const TokenModalContext = createContext<{
   onSelectToken: CloseDialogFn;
   openDialog: OpenTokenDialogFn;
   setOptions: (o: TokenModalOptions) => void;
-  tokens: string[];
+  assets: Asset[];
 }>({
   closeDialog: () => undefined,
   onSelectToken: () => undefined,
   openDialog: () => undefined,
   setOptions: () => undefined,
-  tokens: [],
+  assets: [],
 });
 
 export const useTokenModal = (
@@ -69,7 +70,7 @@ export const getDefaultOptions = (): TokenModalOptions => ({
   isClosable: true,
   onSelectTokenCallback: () => undefined,
   returnPath: "",
-  tokens: [],
+  assets: [],
 });
 
 interface Props {
@@ -79,7 +80,7 @@ interface Props {
   onSelectToken?: () => void;
   returnPath?: string;
   serviceName: string;
-  tokens: string[];
+  assets: Asset[];
 }
 
 const TokenModalComponent: React.FC<Props> = ({
@@ -89,7 +90,7 @@ const TokenModalComponent: React.FC<Props> = ({
   onSelectToken,
   returnPath,
   serviceName,
-  tokens,
+  assets,
 }) => {
   const { mode } = useColorMode();
 
@@ -139,11 +140,11 @@ const TokenModalComponent: React.FC<Props> = ({
             }}
           >
             <List p="10px" bg="transparent">
-              {tokens.map((item, key) => (
+              {assets.map((item, key) => (
                 <React.Fragment key={key}>
                   <Link
                     onClick={onSelectToken}
-                    href={`/services/${serviceName}/${item.toLowerCase()}`}
+                    href={`/services/${serviceName}/${item.name.toLowerCase()}`}
                   >
                     <ListItem>
                       <Button
@@ -158,7 +159,7 @@ const TokenModalComponent: React.FC<Props> = ({
                         variant="outline"
                       >
                         <div>
-                          <TokenIcon width={40} height={40} name={item} />
+                          <TokenIcon width={40} height={40} name={item.name} />
                         </div>
 
                         <div
@@ -173,14 +174,14 @@ const TokenModalComponent: React.FC<Props> = ({
                             fontWeight="medium"
                             color={mode("secondary.100", "secondary.100.dark")}
                           >
-                            {item}
+                            {item.label}
                           </Text>
                           <Text
                             fontWeight="medium"
                             fontSize="md"
                             color={mode("primary.400.dark", "primary.400")}
                           >
-                            {item} token
+                            {item.description}
                           </Text>
                         </div>
                       </Button>
@@ -212,9 +213,9 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [options, setOptions] = useState<TokenModalOptions>(getDefaultOptions);
   const [serviceName, setServiceName] = useState<ServiceName | "">("");
-  const handleOpen: OpenTokenDialogFn = (tokens, sn: ServiceName) => {
+  const handleOpen: OpenTokenDialogFn = (assets, sn: ServiceName) => {
     setServiceName(sn);
-    setOptions((prev) => ({ ...prev, tokens }));
+    setOptions((prev) => ({ ...prev, assets }));
     onOpen();
   };
 
@@ -235,7 +236,7 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         onSelectToken: handleSelectToken,
         openDialog: handleOpen,
         setOptions,
-        tokens: options.tokens,
+        assets: options.assets,
       }}
     >
       <TokenModalComponent
@@ -245,7 +246,7 @@ const TokenModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         onClose={handleClose}
         onSelectToken={handleSelectToken}
         returnPath={options.returnPath}
-        tokens={options.tokens}
+        assets={options.assets}
       />
 
       {children}
