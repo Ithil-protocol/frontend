@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
-import { gmxABI } from "@/abi";
+import { aaveABI, gmxABI } from "@/abi";
 import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
@@ -22,6 +22,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { useMinMarginLimit } from "@/hooks/useMinMarginLimit";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
@@ -67,6 +68,14 @@ const Form = ({ asset }: { asset: Asset }) => {
     spender: gmxAddress,
     token: asset,
   });
+
+  const { isLessThanMinimumMarginError, isMinMarginLoading } =
+    useMinMarginLimit({
+      abi: aaveABI,
+      asset,
+      inputAmount,
+      serviceAddress: gmxAddress,
+    });
 
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
 
@@ -153,9 +162,12 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isInterestAndSpreadLoading;
+  const isButtonLoading = isInterestAndSpreadLoading || isMinMarginLoading;
   const isButtonDisabled =
-    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
+    +inputAmount === 0 ||
+    isInterestError ||
+    isFreeLiquidityError ||
+    isLessThanMinimumMarginError;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
@@ -270,7 +282,6 @@ const Form = ({ asset }: { asset: Asset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset
-          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
@@ -290,6 +301,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       <ServiceError
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
+        isLessThanMinimumMarginError={isLessThanMinimumMarginError}
       />
       <PrivateButton
         onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
@@ -301,8 +313,8 @@ const Form = ({ asset }: { asset: Asset }) => {
         {!asset.name
           ? "Loading..."
           : isApproved
-          ? "Open Position"
-          : `Approve ${asset.name}`}
+          ? "Invest"
+          : `Approve ${asset.label}`}
       </PrivateButton>
     </div>
   );

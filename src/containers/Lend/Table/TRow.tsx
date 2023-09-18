@@ -7,7 +7,7 @@ import { Dispatch, FC, SetStateAction } from "react";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { Vaults } from "@/types/onchain.types";
+import { Vaults } from "@/types";
 import { cutoffDecimals } from "@/utils";
 import { addTokenToWallet } from "@/utils/addTokenToWallet";
 
@@ -55,7 +55,7 @@ const TRow: FC<Props> = ({
       <Td width="15%">
         <div className="flex items-center gap-2">
           <TokenIcon name={vault.token.name} height={32} width={32} />
-          <Text className="uppercase">{vault.token.name}</Text>
+          <Text>{vault.token.label}</Text>
         </div>
       </Td>
       <Td width="15%">

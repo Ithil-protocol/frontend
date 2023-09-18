@@ -3,12 +3,12 @@ import { type FC } from "react";
 import { type Address } from "wagmi";
 
 import { usePriceData } from "@/hooks/use-price-data.hook";
-import { type Token } from "@/types/onchain.types";
+import { AssetEssential } from "@/types";
 import { estimateTokenValue } from "@/utils/input.utils";
 
 interface EstimatedValueProps {
   value: bigint | undefined;
-  token: Token;
+  token: AssetEssential;
 }
 
 export const EstimatedValue: FC<EstimatedValueProps> = ({ value, token }) => {

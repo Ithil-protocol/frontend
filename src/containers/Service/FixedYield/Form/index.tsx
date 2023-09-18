@@ -157,7 +157,6 @@ const Form = ({ asset }: { asset: Asset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset={true}
-          tokens={tokens}
         />
       </div>
 
@@ -171,8 +170,8 @@ const Form = ({ asset }: { asset: Asset }) => {
         {!asset.name
           ? "Loading..."
           : isApproved
-          ? "Open Position"
-          : `Approve ${asset.name}`}
+          ? "Invest"
+          : `Approve ${asset.label}`}
       </PrivateButton>
     </div>
   );

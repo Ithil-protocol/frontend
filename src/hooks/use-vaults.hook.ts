@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 
 import { assets } from "@/data/assets";
 import { vaultABI } from "@/hooks/generated/vault";
-import { type Vaults } from "@/types/onchain.types";
+import { Vaults } from "@/types";
 import { ErrorCause } from "@/utils/error-cause";
 import { multiplyBigNumbers, oneUnitWithDecimals } from "@/utils/input.utils";
 
