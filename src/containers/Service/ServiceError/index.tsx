@@ -5,8 +5,8 @@ import InterestError from "./InterestError";
 import LessThanMinimumMarginError from "./LessThanMinimumMarginError";
 
 interface Props {
-  isInterestError: boolean;
-  isFreeLiquidityError: boolean;
+  isInterestError?: boolean;
+  isFreeLiquidityError?: boolean;
   isLessThanMinimumMarginError?: boolean;
 }
 
