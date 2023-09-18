@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
-import { filterAssetByName, getServiceByName } from "@/utils";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 const FixedYieldPage = () => {
   const tokenModal = useTokenModal({
@@ -11,7 +11,7 @@ const FixedYieldPage = () => {
 
   useEffect(() => {
     const tokens = getServiceByName("fixed-yield").tokens;
-    const filteredAssets = filterAssetByName(tokens);
+    const filteredAssets = convertNamesToAssets(tokens);
     tokenModal.openDialog(filteredAssets, "fixed-yield");
   }, []);
 

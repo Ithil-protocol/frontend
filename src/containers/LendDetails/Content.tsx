@@ -4,7 +4,6 @@ import { formatUnits } from "viem";
 
 import { useColorMode } from "@/hooks/useColorMode";
 import { useVaultDetails } from "@/hooks/useVaultDetails";
-import { VaultName } from "@/types";
 import { fixPrecision, getAssetByName, getSingleQueryParam } from "@/utils";
 
 const Content = () => {
@@ -15,9 +14,7 @@ const Content = () => {
 
   const normalizedToken = getSingleQueryParam(token);
 
-  const { data, isLoading } = useVaultDetails(
-    normalizedToken.toUpperCase() as VaultName
-  );
+  const { data, isLoading } = useVaultDetails(normalizedToken);
 
   const asset = getAssetByName(normalizedToken);
 

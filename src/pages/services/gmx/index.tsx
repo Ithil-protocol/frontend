@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
-import { filterAssetByName, getServiceByName } from "@/utils";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 const GMXPage = () => {
   const tokenModal = useTokenModal({
@@ -11,7 +11,7 @@ const GMXPage = () => {
 
   useEffect(() => {
     const tokens = getServiceByName("gmx").tokens;
-    const filteredAssets = filterAssetByName(tokens);
+    const filteredAssets = convertNamesToAssets(tokens);
     tokenModal.openDialog(filteredAssets, "gmx");
   }, []);
 

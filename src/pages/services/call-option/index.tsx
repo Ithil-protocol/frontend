@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useTokenModal } from "@/contexts/TokenModal";
-import { filterAssetByName, getServiceByName } from "@/utils";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 const CallOptionPage = () => {
   const tokenModal = useTokenModal({
@@ -11,7 +11,7 @@ const CallOptionPage = () => {
 
   useEffect(() => {
     const tokens = getServiceByName("call-option").tokens;
-    const filteredAssets = filterAssetByName(tokens);
+    const filteredAssets = convertNamesToAssets(tokens);
     tokenModal.openDialog(filteredAssets, "call-option");
   }, []);
 

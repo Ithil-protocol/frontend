@@ -14,7 +14,7 @@ import { useTokenModal } from "@/contexts/TokenModal";
 import { getDecimalRegex } from "@/data/regex";
 import { useServiceName } from "@/hooks/useServiceName";
 import { Asset, ServiceName } from "@/types";
-import { filterAssetByName, getServiceByName } from "@/utils";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 interface Props {
   value: string;
@@ -53,7 +53,7 @@ const SingleAssetAmount: FC<Props> = ({
   const tokens =
     getServiceByName(router.pathname.split("/")[2] as ServiceName)?.tokens ||
     [];
-  const filteredAsset = filterAssetByName(tokens);
+  const filteredAsset = convertNamesToAssets(tokens);
   return (
     <>
       <div className="flex gap-2">

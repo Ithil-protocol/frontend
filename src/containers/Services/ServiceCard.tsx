@@ -6,7 +6,7 @@ import { FC } from "react";
 import { useTokenModal } from "@/contexts/TokenModal";
 import { useColorMode } from "@/hooks/useColorMode";
 import { Asset, ServiceName } from "@/types";
-import { filterAssetByName, getServiceByName } from "@/utils";
+import { convertNamesToAssets, getServiceByName } from "@/utils";
 
 import ServiceIcon from "../Service/ServiceIcon";
 import EnterButton from "./EnterButton";
@@ -35,7 +35,7 @@ const ServiceCard: FC<ServiceCardProps> = ({
   const tokenModal = useTokenModal();
   const { colorMode } = useColorMode();
   const tokens = getServiceByName(name).tokens;
-  const filteredAssets = filterAssetByName(tokens);
+  const filteredAssets = convertNamesToAssets(tokens);
   const handleEnterClick = () => tokenModal.openDialog(filteredAssets, name);
 
   return (
