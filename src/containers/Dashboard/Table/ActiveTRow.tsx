@@ -252,6 +252,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         isOpen={isOpen}
         onClose={onClose}
         data={{
+          type: "close",
           token: asset?.name || "",
           position: data.type,
           leverage: isAaveOrGmx

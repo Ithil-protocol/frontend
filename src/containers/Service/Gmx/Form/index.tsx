@@ -307,7 +307,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           amount: inputAmount,
           leverage,
           position: "gmx",
-          slippage,
+          slippage: (+slippage * 100).toString(),
           token: getSingleQueryParam(token),
           collateral: formatUnits(
             order.agreement.collaterals[0].amount,
