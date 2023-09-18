@@ -4,7 +4,6 @@ import { formatUnits } from "viem";
 
 import { useColorMode } from "@/hooks/useColorMode";
 import { useVaultDetails } from "@/hooks/useVaultDetails";
-import { VaultName } from "@/types";
 import { fixPrecision, getAssetByName, getSingleQueryParam } from "@/utils";
 
 const Content = () => {
@@ -15,9 +14,7 @@ const Content = () => {
 
   const normalizedToken = getSingleQueryParam(token);
 
-  const { data, isLoading } = useVaultDetails(
-    normalizedToken.toUpperCase() as VaultName
-  );
+  const { data, isLoading } = useVaultDetails(normalizedToken);
 
   const asset = getAssetByName(normalizedToken);
 
@@ -32,14 +29,14 @@ const Content = () => {
           value: `${fixPrecision(
             +formatUnits(data.freeLiquidity ?? 0n, asset?.decimals ?? 0),
             2
-          )} ${asset?.name}`,
+          )} ${asset?.label}`,
         },
         {
           title: "Loaned out",
           value: `${fixPrecision(
             +formatUnits(data.netLoans ?? 0n, asset?.decimals ?? 0),
             2
-          )}  ${asset?.name}`,
+          )}  ${asset?.label}`,
         },
         {
           title: "Current Profits",
@@ -47,14 +44,14 @@ const Content = () => {
             !!data.currentProfits && !!data.currentLosses
               ? data.currentProfits - data.currentLosses
               : 0n
-          } ${asset?.name}`,
+          } ${asset?.label}`,
         },
         {
           title: "Share price",
           value: `${fixPrecision(
             +formatUnits(data?.convertToShares ?? 0n, asset?.decimals ?? 0),
             2
-          )} ${asset?.name}`,
+          )} ${asset?.label}`,
         },
       ].map((item, index) => {
         return (

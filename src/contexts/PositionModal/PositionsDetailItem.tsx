@@ -8,26 +8,36 @@ interface Props extends PositionsDetailItemType {
   valueColor?: string;
 }
 
-const PositionsDetailItem: FC<Props> = ({ title, value, unit, valueColor }) => {
+const PositionsDetailItem: FC<Props> = ({
+  postfix,
+  postfixIcon,
+  postfixStyle = {},
+  prefix,
+  prefixStyle = {},
+  title,
+  value,
+  valueColor,
+}) => {
   const { mode } = useColorMode();
 
   return (
     <HStack justifyContent="space-between" width="full">
       <Text
         className="font-sans"
-        color={mode("primary.700.dark", "primary.700")}
+        color={mode("primary.100.dark", "primary.100")}
       >
         {title}
       </Text>
       <HStack>
-        {unit && (
+        {prefix && (
           <Text
+            style={prefixStyle}
             fontSize="16px"
             lineHeight="24px"
             color={mode("secondary.400.dark", "secondary.400")}
             className="font-semibold"
           >
-            {unit}
+            {prefix}
           </Text>
         )}
         <Text
@@ -40,6 +50,22 @@ const PositionsDetailItem: FC<Props> = ({ title, value, unit, valueColor }) => {
         >
           {value}
         </Text>
+        {postfix && (
+          <Text
+            style={postfixStyle}
+            display="flex"
+            alignItems="center"
+            fontSize="16px"
+            gap="5px"
+            lineHeight="24px"
+            color={mode("secondary.500.dark", "secondary.500")}
+            className="font-semibold"
+          >
+            {postfix}
+
+            {postfixIcon}
+          </Text>
+        )}
       </HStack>
     </HStack>
   );

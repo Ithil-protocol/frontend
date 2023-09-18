@@ -1,7 +1,7 @@
 import { useContractReads } from "wagmi";
 
 import { vaultContracts } from "@/contracts";
-import { VaultName } from "@/types";
+import { AssetName } from "@/types";
 
 import { useIsMounted } from "./useIsMounted";
 
@@ -14,7 +14,7 @@ type FunctionName =
 
 type Data = { [key in FunctionName]: bigint | undefined };
 
-export const useVaultDetails = (vault: VaultName) => {
+export const useVaultDetails = (vault: AssetName) => {
   const vaultContract = vaultContracts[vault.toUpperCase()];
 
   const contracts = [

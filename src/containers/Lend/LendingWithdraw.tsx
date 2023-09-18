@@ -5,7 +5,7 @@ import { erc4626ABI, useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useVault } from "@/hooks/use-vault.hook";
-import { LendingToken } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import {
   bigNumberPercentage,
   multiplyBigNumbers,
@@ -15,7 +15,7 @@ import {
 import WidgetComponent from "./WidgetComponent";
 
 interface LendingProps {
-  token: LendingToken;
+  token: Asset;
 }
 export const LendingWithdraw: FC<LendingProps> = ({ token }) => {
   // state

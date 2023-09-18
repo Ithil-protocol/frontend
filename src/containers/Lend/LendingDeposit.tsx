@@ -11,7 +11,7 @@ import {
 
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { useToken } from "@/hooks/use-token.hook";
-import { LendingToken } from "@/types/onchain.types";
+import { Asset } from "@/types";
 import {
   bigNumberPercentage,
   stringInputToBigNumber,
@@ -20,7 +20,7 @@ import {
 import WidgetComponent from "./WidgetComponent";
 
 interface LendingProps {
-  token: LendingToken;
+  token: Asset;
 }
 
 export const LendingDeposit: FC<LendingProps> = ({ token }) => {

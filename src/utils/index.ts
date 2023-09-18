@@ -24,7 +24,7 @@ import {
 import { icons } from "@/config/icons";
 import { assetsObjByAddress, assetsObjByName } from "@/data/assets";
 import { servicesByName } from "@/data/services";
-import { Asset, PageHeading, Service, ServiceName, VaultName } from "@/types";
+import { Asset, AssetName, PageHeading, Service, ServiceName } from "@/types";
 
 export const getTokenIcon = (key: string) => {
   const icon = icons[key.toUpperCase() as keyof typeof icons];
@@ -42,7 +42,7 @@ export const filterDatesWithinPastWeek = (data: any) => {
   return filteredData;
 };
 
-export const formatToken = (name: VaultName, value: bigint) => {
+export const formatToken = (name: AssetName, value: bigint) => {
   try {
     const token = getAssetByName(name);
     if (!token) throw Error("Token isn't defined");
@@ -52,7 +52,7 @@ export const formatToken = (name: VaultName, value: bigint) => {
     console.error(error);
   }
 };
-export const parseToken = (name: VaultName, value: number | string) => {
+export const parseToken = (name: AssetName, value: number | string) => {
   try {
     const token = getAssetByName(name);
     if (!token) throw Error("Token isn't defined");
@@ -214,7 +214,7 @@ export function convertArrayByKeyToOBJ<
   return obj;
 }
 
-export const getAssetByName = (name: string): Asset | undefined => {
+export const getAssetByName = (name: AssetName) => {
   const asset = assetsObjByName[name.toUpperCase()];
   return asset;
 };
@@ -226,13 +226,13 @@ export const getAssetByAddress = (address: Address): Asset | undefined => {
 
 export const getSingleQueryParam = (
   queryParam: string | string[] | undefined
-): string => {
+) => {
   if (typeof queryParam === "undefined") {
-    return ""; // return empty string when queryParam is undefined
+    return "" as AssetName; // return empty string when queryParam is undefined
   } else if (Array.isArray(queryParam)) {
-    return queryParam[0]; // ignore other query params
+    return queryParam[0].toUpperCase() as AssetName; // ignore other query params
   } else {
-    return queryParam;
+    return queryParam.toUpperCase() as AssetName;
   }
 };
 
@@ -296,4 +296,8 @@ export const isPositionActive = (
   const isActive = isFuture(time * 1000);
 
   return isActive;
+};
+
+export const convertNamesToAssets = (names: AssetName[]) => {
+  return names.map((name) => getAssetByName(name));
 };

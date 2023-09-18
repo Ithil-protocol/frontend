@@ -1,8 +1,9 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -11,6 +12,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
+import { PositionModal } from "@/contexts/PositionModal";
 import {
   aaveAddress,
   useAaveComputeBaseRateAndSpread,
@@ -20,10 +22,16 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { useMinMarginLimit } from "@/hooks/useMinMarginLimit";
 import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import { cutoffDecimals, getServiceByName, normalizeInputValue } from "@/utils";
+import {
+  cutoffDecimals,
+  getServiceByName,
+  getSingleQueryParam,
+  normalizeInputValue,
+} from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 import AdvanceSection from "../../AdvanceSection";
@@ -34,9 +42,11 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState("0");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
   const normalizeLeverage = normalizeInputValue(leverage);
@@ -57,6 +67,14 @@ const Form = ({ asset }: { asset: Asset }) => {
     spender: aaveAddress,
     token: asset,
   });
+
+  const { isLessThanMinimumMarginError, isMinMarginLoading } =
+    useMinMarginLimit({
+      abi: aaveABI,
+      asset,
+      inputAmount,
+      serviceAddress: aaveAddress,
+    });
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
 
@@ -128,7 +146,7 @@ const Form = ({ asset }: { asset: Asset }) => {
           hash,
         });
         notificationDialog.openSuccess(
-          isApproved ? "Positions opened successfully" : "Approved successfully"
+          isApproved ? "Position successfully opened" : "Approved successfully"
         );
         setInputAmount("");
       } catch (error) {
@@ -139,14 +157,21 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isInterestAndSpreadLoading;
+  const isButtonLoading = isInterestAndSpreadLoading || isMinMarginLoading;
   const isButtonDisabled =
-    +inputAmount === 0 || isInterestError || isFreeLiquidityError;
+    +inputAmount === 0 ||
+    isInterestError ||
+    isFreeLiquidityError ||
+    isLessThanMinimumMarginError;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
     setInputAmount(balance?.formatted ?? "");
   };
+
+  const {
+    query: { asset: token },
+  } = useRouter();
 
   const isMounted = useIsMounted();
 
@@ -181,7 +206,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const tokens = getServiceByName("aave").tokens;
+  const { tokens } = getServiceByName("aave");
 
   if (!isMounted) return null;
 
@@ -227,7 +252,6 @@ const Form = ({ asset }: { asset: Asset }) => {
           value={inputAmount}
           onChange={setInputAmount}
           switchableAsset
-          tokens={tokens}
         />
 
         <Box width="full" gap="30px">
@@ -247,9 +271,11 @@ const Form = ({ asset }: { asset: Asset }) => {
       <ServiceError
         isFreeLiquidityError={isFreeLiquidityError}
         isInterestError={isInterestError}
+        isLessThanMinimumMarginError={isLessThanMinimumMarginError}
       />
+
       <PrivateButton
-        onClick={() => (isApproved ? openPosition?.() : approve?.())}
+        onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -259,8 +285,29 @@ const Form = ({ asset }: { asset: Asset }) => {
           ? "Loading..."
           : isApproved
           ? "Invest"
-          : `Approve ${asset.name}`}
+          : `Approve ${asset.label}`}
       </PrivateButton>
+
+      <PositionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={openPosition}
+        submitText="Invest"
+        title="Open Position"
+        canShowSlippageSlider={false}
+        canShowPercentageSlider={false}
+        data={{
+          amount: inputAmount,
+          leverage,
+          position: "aave",
+          slippage: (+slippage * 100).toString(),
+          token: getSingleQueryParam(token),
+          collateral: formatUnits(
+            order.agreement.collaterals[0].amount,
+            asset.decimals
+          ),
+        }}
+      />
     </div>
   );
 };
