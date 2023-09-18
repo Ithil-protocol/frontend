@@ -1,4 +1,4 @@
-import { FormLabel, HStack, Text } from "@chakra-ui/react";
+import { FormLabel, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
@@ -14,7 +14,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { usePositionModal } from "@/contexts/PositionModal";
+import { PositionModal } from "@/contexts/PositionModal";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -39,6 +39,7 @@ const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const min = process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? 4 : 1;
 
@@ -160,32 +161,10 @@ const Form = ({ asset, setRedeem }: Props) => {
   const lockTimeText = `Lock time in ${
     process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? "months" : "minutes"
   }`;
-  const positionModal = usePositionModal({
-    isClosable: true,
-    isSubmitDisabled: isButtonDisabled,
-    isSubmitLoading: isButtonLoading,
-    onSubmit: () => openPosition?.(),
-    submitText: "Invest",
-    lockTimeText,
-    title: "Open Position",
-  });
 
   const {
     query: { asset: token },
   } = useRouter();
-
-  const handleOpenPositionModal = () => {
-    positionModal.open({
-      amount: inputAmount,
-      collateral: formatUnits(
-        order.agreement.collaterals[0].amount,
-        asset.decimals
-      ),
-      lockTime: month.toString(),
-      position: "call-option",
-      token: getSingleQueryParam(token),
-    });
-  };
 
   if (!isMounted) return null;
 
@@ -216,7 +195,6 @@ const Form = ({ asset, setRedeem }: Props) => {
           )}
         </div>
       </div>
-
       <div
         style={{
           display: "flex",
@@ -250,9 +228,8 @@ const Form = ({ asset, setRedeem }: Props) => {
           /> */}
         </Box>
       </div>
-
       <PrivateButton
-        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
+        onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -264,6 +241,28 @@ const Form = ({ asset, setRedeem }: Props) => {
           ? "Invest"
           : `Approve ${asset.label}`}
       </PrivateButton>
+
+      <PositionModal
+        isOpen={isOpen}
+        canShowSlippageSlider={false}
+        canShowPercentageSlider={false}
+        onClose={onClose}
+        data={{
+          type: "open",
+          amount: inputAmount,
+          collateral: formatUnits(
+            order.agreement.collaterals[0].amount,
+            asset.decimals
+          ),
+          lockTime: month.toString(),
+          position: "call-option",
+          token: getSingleQueryParam(token),
+        }}
+        lockTimeText={lockTimeText}
+        title="Open Position"
+        submitText="Invest"
+        onSubmit={openPosition}
+      />
     </div>
   );
 };

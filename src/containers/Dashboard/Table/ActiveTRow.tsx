@@ -1,4 +1,12 @@
-import { Box, Button, HStack, Td, Text, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Td,
+  Text,
+  Tr,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { FC, useState } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
@@ -8,7 +16,7 @@ import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { usePositionModal } from "@/contexts/PositionModal";
+import { PositionModal } from "@/contexts/PositionModal";
 import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress, useGmxWethReward } from "@/hooks/generated/gmx";
@@ -25,6 +33,7 @@ interface Props {
 
 const ActiveTRow: FC<Props> = ({ data }) => {
   const { colorMode, mode, pickColor } = useColorMode();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [percentage, setPercentage] = useState(100);
   const [slippage, setSlippage] = useState(1);
@@ -78,7 +87,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       try {
         await waitForTransaction(result);
         queryClient.resetQueries();
-        positionModal.close();
+        onClose();
         notificationDialog.openSuccess("Position closed");
       } catch (error) {
         notificationDialog.openError("Failed", error);
@@ -108,19 +117,6 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   };
   const isAaveOrGmx = data.type === "aave" || data.type === "gmx";
 
-  const positionModal = usePositionModal({
-    isClosable: true,
-    isSubmitDisabled: false,
-    isSubmitLoading: false,
-    onSubmit: handelConfirmBtn,
-    submitText: "Close Position",
-    onPurchasePriceChange: setPercentage,
-    onSlippageChange: setSlippage,
-    percentage,
-    slippage,
-    title: "Close Position",
-  });
-
   const isMounted = useIsMounted();
 
   const isPnlPositive = data.pnl ? +data.pnl >= 0 : true;
@@ -135,23 +131,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   ) => {
     e.stopPropagation();
     e.preventDefault();
-    positionModal.open({
-      token: asset?.name || "",
-      position: data.type,
-      leverage: isAaveOrGmx
-        ? (+data.amount / +data.margin + 1).toString()
-        : undefined,
-      slippage: isAaveOrGmx ? slippage.toString() : undefined,
-      amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
-        .toFixed(2)
-        .toString(),
-      wethReward: data.type === "gmx" ? reward?.toString() : undefined,
-      purchasePrice:
-        data.type === "call-option" ? redeem?.toFixed(2) : undefined,
-      pnlPercentage: data.pnlPercentage,
-      formattedPnl: data.formattedPnl,
-      pnlColor,
-    });
+    onOpen();
   };
 
   if (!isMounted) return null;
@@ -265,6 +245,36 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           </Button>
         </Td>
       </Tr>
+
+      <PositionModal
+        canShowPercentageSlider
+        canShowSlippageSlider
+        isOpen={isOpen}
+        onClose={onClose}
+        data={{
+          token: asset?.name || "",
+          position: data.type,
+          leverage: isAaveOrGmx
+            ? (+data.amount / +data.margin + 1).toString()
+            : undefined,
+          slippage: slippage.toString(),
+          amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
+            .toFixed(2)
+            .toString(),
+          wethReward: data.type === "gmx" ? reward?.toString() : undefined,
+          purchasePrice:
+            data.type === "call-option" ? redeem?.toFixed(2) : undefined,
+          pnlPercentage: data.pnlPercentage,
+          formattedPnl: data.formattedPnl,
+          pnlColor,
+          percentage,
+        }}
+        title="Close Position"
+        onPurchasePriceChange={setPercentage}
+        onSlippageChange={setSlippage}
+        submitText="Close Position"
+        onSubmit={handelConfirmBtn}
+      />
     </>
   );
 };

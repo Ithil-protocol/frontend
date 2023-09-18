@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
@@ -12,7 +12,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { usePositionModal } from "@/contexts/PositionModal";
+import { PositionModal } from "@/contexts/PositionModal";
 import {
   aaveAddress,
   useAaveComputeBaseRateAndSpread,
@@ -42,9 +42,11 @@ import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState("0");
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
   const normalizeLeverage = normalizeInputValue(leverage);
@@ -167,15 +169,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     setInputAmount(balance?.formatted ?? "");
   };
 
-  const positionModal = usePositionModal({
-    onSubmit: () => openPosition?.(),
-    isClosable: true,
-    submitText: "Invest",
-    isSubmitDisabled: isButtonDisabled,
-    isSubmitLoading: isButtonLoading,
-    title: "Open Position",
-  });
-
   const {
     query: { asset: token },
   } = useRouter();
@@ -214,20 +207,6 @@ const Form = ({ asset }: { asset: Asset }) => {
   ];
 
   const { tokens } = getServiceByName("aave");
-
-  const handleOpenPositionModal = () => {
-    positionModal.open({
-      amount: inputAmount,
-      leverage,
-      position: "aave",
-      slippage,
-      token: getSingleQueryParam(token),
-      collateral: formatUnits(
-        order.agreement.collaterals[0].amount,
-        asset.decimals
-      ),
-    });
-  };
 
   if (!isMounted) return null;
 
@@ -296,7 +275,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       />
 
       <PrivateButton
-        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
+        onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -308,6 +287,27 @@ const Form = ({ asset }: { asset: Asset }) => {
           ? "Invest"
           : `Approve ${asset.label}`}
       </PrivateButton>
+
+      <PositionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={openPosition}
+        submitText="Invest"
+        title="Open Position"
+        canShowSlippageSlider={false}
+        canShowPercentageSlider={false}
+        data={{
+          amount: inputAmount,
+          leverage,
+          position: "aave",
+          slippage,
+          token: getSingleQueryParam(token),
+          collateral: formatUnits(
+            order.agreement.collaterals[0].amount,
+            asset.decimals
+          ),
+        }}
+      />
     </div>
   );
 };

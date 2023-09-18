@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -10,7 +10,7 @@ import PrivateButton from "@/components/PrivateButton";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { usePositionModal } from "@/contexts/PositionModal";
+import { PositionModal } from "@/contexts/PositionModal";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -28,6 +28,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const notificationDialog = useNotificationDialog();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -88,30 +89,9 @@ const Form = ({ asset }: { asset: Asset }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const { tokens } = getServiceByName("fixed-yield");
 
-  const positionModal = usePositionModal({
-    onSubmit: () => openPosition?.(),
-    isClosable: true,
-    submitText: "Invest",
-    isSubmitDisabled: isButtonDisabled,
-    isSubmitLoading: isButtonLoading,
-    title: "Open Position",
-  });
-
   const {
     query: { asset: token },
   } = useRouter();
-
-  const handleOpenPositionModal = () => {
-    positionModal.open({
-      amount: inputAmount,
-      position: "fixed-yield",
-      token: getSingleQueryParam(token),
-      collateral: formatUnits(
-        order.agreement.collaterals[0].amount,
-        asset.decimals
-      ),
-    });
-  };
 
   if (!isMounted) return null;
 
@@ -161,7 +141,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       </div>
 
       <PrivateButton
-        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
+        onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -173,6 +153,25 @@ const Form = ({ asset }: { asset: Asset }) => {
           ? "Invest"
           : `Approve ${asset.label}`}
       </PrivateButton>
+
+      <PositionModal
+        canShowSlippageSlider={false}
+        canShowPercentageSlider={false}
+        data={{
+          amount: inputAmount,
+          position: "fixed-yield",
+          token: getSingleQueryParam(token),
+          collateral: formatUnits(
+            order.agreement.collaterals[0].amount,
+            asset.decimals
+          ),
+        }}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={openPosition}
+        submitText="Invest"
+        title="Open Position"
+      />
     </div>
   );
 };

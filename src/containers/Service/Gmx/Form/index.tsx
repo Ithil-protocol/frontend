@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
@@ -12,7 +12,7 @@ import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
 import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
-import { usePositionModal } from "@/contexts/PositionModal";
+import { PositionModal } from "@/contexts/PositionModal";
 import {
   gmxAddress,
   useGmxComputeBaseRateAndSpread,
@@ -46,6 +46,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [leverage, setLeverage] = useState("0");
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
@@ -215,29 +216,6 @@ const Form = ({ asset }: { asset: Asset }) => {
   ];
   const { tokens } = getServiceByName("gmx");
 
-  const positionModal = usePositionModal({
-    isClosable: true,
-    isSubmitDisabled: isButtonDisabled,
-    isSubmitLoading: isButtonLoading,
-    onSubmit: () => openPosition?.(),
-    submitText: "Invest",
-    title: "Open Position",
-  });
-
-  const handleOpenPositionModal = () => {
-    positionModal.open({
-      amount: inputAmount,
-      leverage,
-      position: "gmx",
-      slippage,
-      token: getSingleQueryParam(token),
-      collateral: formatUnits(
-        order.agreement.collaterals[0].amount,
-        asset.decimals
-      ),
-    });
-  };
-
   if (!isMounted) return null;
 
   return (
@@ -304,7 +282,7 @@ const Form = ({ asset }: { asset: Asset }) => {
         isLessThanMinimumMarginError={isLessThanMinimumMarginError}
       />
       <PrivateButton
-        onClick={() => (isApproved ? handleOpenPositionModal() : approve?.())}
+        onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
         mt="20px"
@@ -316,6 +294,27 @@ const Form = ({ asset }: { asset: Asset }) => {
           ? "Invest"
           : `Approve ${asset.label}`}
       </PrivateButton>
+
+      <PositionModal
+        canShowSlippageSlider={false}
+        canShowPercentageSlider={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={openPosition}
+        submitText="Invest"
+        title="Open Position"
+        data={{
+          amount: inputAmount,
+          leverage,
+          position: "gmx",
+          slippage,
+          token: getSingleQueryParam(token),
+          collateral: formatUnits(
+            order.agreement.collaterals[0].amount,
+            asset.decimals
+          ),
+        }}
+      />
     </div>
   );
 };

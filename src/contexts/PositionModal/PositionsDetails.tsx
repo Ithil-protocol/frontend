@@ -10,35 +10,38 @@ import { Data } from "./types";
 
 interface Props {
   data: Data;
-  lockTimeText: string;
+  lockTimeText?: string;
+  canShowSlippageSlider?: boolean;
+  canShowPercentageSlider?: boolean;
   onPurchasePriceChange?: SliderProps["onChange"];
   onSlippageChange?: SliderProps["onChange"];
-  percentage?: number;
-  slippage?: number;
 }
 
 const PositionsDetails: React.FC<Props> = ({
+  canShowPercentageSlider,
+  canShowSlippageSlider,
   data,
   lockTimeText,
   onPurchasePriceChange,
   onSlippageChange,
-  percentage,
-  slippage,
 }) => {
   const { pickColor } = useColorMode();
 
+  const isDebitService = data.position === "aave" || data.position === "gmx";
+
+  const { slippage = "0" } = data;
   return (
     <GridItem
       borderRadius={["12px"]}
       paddingX={{
         base: "20px",
-        md: "30px",
         lg: "40px",
+        md: "30px",
       }}
       paddingY={{
         base: "20px",
-        md: "30px",
         lg: "40px",
+        md: "30px",
       }}
       bg={pickColor(palette.colors.primary, "100")}
     >
@@ -73,20 +76,29 @@ const PositionsDetails: React.FC<Props> = ({
           {data.wethReward && (
             <PositionsDetailItem title="Weth Reward" value={data.wethReward} />
           )}
-          {data.purchasePrice && typeof percentage === "number" && (
+          {data.position === "call-option" && data.type === "close" && (
             <>
               <PositionsDetailItem
-                title="Purchase price"
+                title="Purchase Price"
                 prefix="$"
-                value={data.purchasePrice}
+                value={data.purchasePrice || "0"}
               />
-              <Slider
-                value={percentage}
-                max={100}
-                min={0}
-                onChange={onPurchasePriceChange}
-                extension="%"
-              />
+              <div
+                style={{
+                  padding: "10px 5px",
+                  width: "100%",
+                }}
+              >
+                {canShowPercentageSlider && (
+                  <Slider
+                    value={data.percentage || 0}
+                    max={100}
+                    min={0}
+                    onChange={onPurchasePriceChange}
+                    extension="%"
+                  />
+                )}
+              </div>
             </>
           )}
           {data.collateral && (
@@ -114,32 +126,34 @@ const PositionsDetails: React.FC<Props> = ({
               prefixStyle={{ color: data.pnlColor }}
             />
           )}
-          {data.leverage && (
+          {isDebitService && (
             <PositionsDetailItem
               title="Leverage"
               postfix="x"
-              value={data.leverage}
+              value={data.leverage || "0"}
             />
           )}
-          {data.slippage && typeof slippage === "number" && (
+          {isDebitService && (
             <>
               <PositionsDetailItem
                 title="Slippage"
                 postfix="%"
-                value={data.slippage}
+                value={data.slippage || "0"}
               />
-              <div style={{ padding: "10px 5px", width: "100%" }}>
-                <Slider
-                  value={slippage}
-                  max={10}
-                  min={1}
-                  onChange={onSlippageChange}
-                  extension="%"
-                />
-              </div>
+              {canShowSlippageSlider && (
+                <div style={{ padding: "10px 5px", width: "100%" }}>
+                  <Slider
+                    value={+slippage}
+                    max={10}
+                    min={1}
+                    onChange={onSlippageChange}
+                    extension="%"
+                  />
+                </div>
+              )}
             </>
           )}
-          {data.lockTime && (
+          {data.lockTime && lockTimeText && (
             <PositionsDetailItem title={lockTimeText} value={data.lockTime} />
           )}
         </VStack>
