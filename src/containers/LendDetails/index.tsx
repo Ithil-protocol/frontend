@@ -50,7 +50,7 @@ export default function LendDetails() {
             <TokenIcon name={token} width={38} height={38} />
           </span>
           <Text fontWeight="light" fontSize="3xl">
-            {assetToken?.label.toUpperCase()} Vault Details
+            {assetToken?.label} Vault Details
           </Text>
         </div>
         <span></span>
