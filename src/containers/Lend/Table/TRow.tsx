@@ -7,7 +7,7 @@ import { Dispatch, FC, SetStateAction } from "react";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { Vaults } from "@/types/onchain.types";
+import { Vaults } from "@/types";
 import { cutoffDecimals } from "@/utils";
 import { addTokenToWallet } from "@/utils/addTokenToWallet";
 

@@ -8,7 +8,7 @@ import {
 import { Fragment, useState } from "react";
 
 import { useVaults } from "@/hooks/use-vaults.hook";
-import { Vaults } from "@/types/onchain.types";
+import { Vaults } from "@/types";
 
 import Deposit from "../deposit";
 import TRow from "./TRow";

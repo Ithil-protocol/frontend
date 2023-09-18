@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 import { SafetyScoreValue, getServiceNames } from "@/utils";
 
 export type viewTypes = "Active" | "Closed";
@@ -12,21 +14,10 @@ export interface PositionsDetailItemType {
   unit?: string;
 }
 
-export type Address = `0x${string}`;
-
 export interface ChartDataPoint {
   date: Date;
   tvl: number;
   apy: number;
-}
-
-export interface VaultsTypes {
-  name: string;
-  coingeckoId: string;
-  iconName: string;
-  decimals: number;
-  tokenAddress: string;
-  vaultAddress: string;
 }
 
 export type AssetName = "USDC" | "USDT" | "WETH" | "WBTC" | "DAI";
@@ -80,6 +71,12 @@ export type Asset = {
   gmxCollateralTokenAddress: Address;
   iTokenAddress: Address;
 };
+
+export type AssetEssential = Pick<
+  Asset,
+  "name" | "label" | "decimals" | "tokenAddress" | "coingeckoId" | "iconName"
+>;
+
 export interface PositionType {
   token: Address;
   amount: string;
@@ -115,14 +112,6 @@ export type OpenTokenDialogFn = (
   assets: Asset[],
   serviceName: ServiceName
 ) => void;
-export type Ithil = {
-  name: string;
-  label: string;
-  coingeckoId: string;
-  iconName: string;
-  decimals: number;
-  tokenAddress: Address;
-};
 
 export interface Agreement {
   loans: readonly {
@@ -151,3 +140,13 @@ export interface OpenPosition {
   type: ServiceName;
   name: string;
 }
+
+export type Vault = {
+  token: Asset;
+  tvl?: bigint;
+  borrowed?: bigint;
+  deposited?: bigint;
+  apy?: string;
+};
+
+export type Vaults = Vault[];

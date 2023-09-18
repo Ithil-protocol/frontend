@@ -1,9 +1,9 @@
 import { Address } from "viem";
 
 import contracts from "@/deploy/contracts.json";
-import { Ithil } from "@/types";
+import { AssetEssential } from "@/types";
 
-export const ithil: Ithil = {
+export const ithil: AssetEssential = {
   name: "ITHIL",
   label: "ITHIL",
   coingeckoId: "ithil",
