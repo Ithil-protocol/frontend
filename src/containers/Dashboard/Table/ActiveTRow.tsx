@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import Decimal from "decimal.js";
 import { FC, useState } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite, useQueryClient } from "wagmi";
@@ -102,8 +103,18 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     if (data.isPnlLoading) return;
     const initialQuote = data?.quote || 0n;
     const quotes: Record<string, bigint> = {
-      aave: (initialQuote * (100n - BigInt(slippage))) / 100n,
-      gmx: (initialQuote * (100n - BigInt(slippage))) / 100n,
+      aave: BigInt(
+        new Decimal(initialQuote.toString())
+          .mul(new Decimal(1 - slippage / 100))
+          .floor()
+          .toNumber()
+      ),
+      gmx: BigInt(
+        new Decimal(initialQuote.toString())
+          .mul(new Decimal(1 - slippage / 100))
+          .floor()
+          .toNumber()
+      ),
       "call-option":
         (BigInt(10) ** BigInt(18) * BigInt(percentage)) / BigInt(100),
     };
@@ -115,7 +126,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       ],
     });
   };
-  const isAaveOrGmx = data.type === "aave" || data.type === "gmx";
+  const isDebitService = data.type === "aave" || data.type === "gmx";
 
   const isMounted = useIsMounted();
 
@@ -235,9 +246,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {isPositionActive(data.type, Number(data.createdAt))
-            ? "Active"
-            : "Expired"}
+          {isDebitService &&
+            (isPositionActive(data.type, Number(data.createdAt))
+              ? "Active"
+              : "Expired")}
         </Td>
         <Td textAlign="end" width={200} height="108px">
           <Button onClick={handleCloseClick} variant="outline" color="#f35959">
@@ -255,7 +267,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           type: "close",
           token: asset?.name || "",
           position: data.type,
-          leverage: isAaveOrGmx
+          leverage: isDebitService
             ? (+data.amount / +data.margin + 1).toString()
             : undefined,
           slippage: slippage.toString(),
