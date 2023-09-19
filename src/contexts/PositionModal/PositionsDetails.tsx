@@ -1,16 +1,18 @@
 import { GridItem, SliderProps, VStack } from "@chakra-ui/react";
 
+import IthilDark from "@/assets/ithil/logoSymbolDark.svg";
+import IthilLight from "@/assets/ithil/logoSymbolLight.svg";
 import Slider from "@/components/Slider";
 import TokenIcon from "@/components/TokenIcon";
+import ServiceIcon from "@/containers/Service/ServiceIcon";
 import { useColorMode } from "@/hooks/useColorMode";
 import { palette } from "@/styles/theme/palette";
+import { PositionData } from "@/types";
 
 import PositionsDetailItem from "./PositionsDetailItem";
-import { Data } from "./types";
 
 interface Props {
-  data: Data;
-  lockTimeText?: string;
+  data: PositionData;
   canShowSlippageSlider?: boolean;
   canShowPercentageSlider?: boolean;
   onPurchasePriceChange?: SliderProps["onChange"];
@@ -21,13 +23,14 @@ const PositionsDetails: React.FC<Props> = ({
   canShowPercentageSlider,
   canShowSlippageSlider,
   data,
-  lockTimeText,
   onPurchasePriceChange,
   onSlippageChange,
 }) => {
-  const { pickColor } = useColorMode();
+  const { pickColor, colorMode } = useColorMode();
 
   const isDebitService = data.position === "aave" || data.position === "gmx";
+
+  const ITHILObtainedIcon = colorMode === "dark" ? IthilDark : IthilLight;
 
   const { slippage = "0" } = data;
   return (
@@ -57,9 +60,24 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Amount"
               value={data.amount}
-              postfix={data.token.toUpperCase()}
+              postfix={data.assetLabel?.toUpperCase()}
               postfixIcon={
-                <TokenIcon name={data.token} width={20} height={20} />
+                data.assetName && (
+                  <TokenIcon name={data.assetName} width={20} height={20} />
+                )
+              }
+            />
+          )}
+
+          {data.margin && (
+            <PositionsDetailItem
+              title="Margin"
+              value={data.margin}
+              postfix={data.assetLabel?.toUpperCase()}
+              postfixIcon={
+                data.assetName && (
+                  <TokenIcon name={data.assetName} width={20} height={20} />
+                )
               }
             />
           )}
@@ -67,9 +85,11 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Amount Obtained"
               value={data.amountObtained}
-              postfix={data.token.toUpperCase()}
+              postfix={data.assetLabel?.toUpperCase()}
               postfixIcon={
-                <TokenIcon name={data.token} width={20} height={20} />
+                data.assetName && (
+                  <TokenIcon name={data.assetName} width={20} height={20} />
+                )
               }
             />
           )}
@@ -105,10 +125,53 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Collateral"
               value={data.collateral}
-              postfix={data.token.toUpperCase()}
+              postfix={data.assetLabel?.toUpperCase()}
               postfixIcon={
-                <TokenIcon name={data.token} width={20} height={20} />
+                data.assetName && (
+                  <TokenIcon name={data.assetName} width={20} height={20} />
+                )
               }
+            />
+          )}
+          {data.aCollateral && (
+            <PositionsDetailItem
+              title="Collateral"
+              value={data.aCollateral}
+              postfix={`a${data.assetLabel?.toUpperCase()}`}
+              postfixIcon={
+                <ServiceIcon name={data.position!} width={20} height={20} />
+              }
+            />
+          )}
+          {data.gmxCollateral && (
+            <PositionsDetailItem
+              title="Collateral"
+              value={data.gmxCollateral}
+              postfix="GLP"
+              postfixIcon={
+                <ServiceIcon name={data.position!} width={30} height={20} />
+              }
+            />
+          )}
+          {data.ithilObtained && (
+            <PositionsDetailItem
+              title="ITHIL obtained"
+              value={data.ithilObtained}
+              postfix="ITHIL"
+              postfixIcon={<ITHILObtainedIcon width={20} height={20} />}
+            />
+          )}
+          {data.redeemPrice && (
+            <PositionsDetailItem
+              title="Redeem price"
+              value={data.redeemPrice}
+              prefix="$"
+            />
+          )}
+          {data.maturityDate && (
+            <PositionsDetailItem
+              title="Maturity date"
+              value={data.maturityDate}
             />
           )}
           {data.pnlPercentage && data.formattedPnl && (
@@ -152,9 +215,6 @@ const PositionsDetails: React.FC<Props> = ({
                 </div>
               )}
             </>
-          )}
-          {data.lockTime && lockTimeText && (
-            <PositionsDetailItem title={lockTimeText} value={data.lockTime} />
           )}
         </VStack>
       </VStack>

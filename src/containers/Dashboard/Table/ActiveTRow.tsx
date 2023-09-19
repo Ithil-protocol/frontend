@@ -265,7 +265,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         onClose={onClose}
         data={{
           type: "close",
-          token: asset?.name || "",
+          assetName: asset?.name,
+          assetLabel: asset?.label,
           position: data.type,
           leverage: isDebitService
             ? (+data.amount / +data.margin + 1).toString()

@@ -24,7 +24,10 @@ export interface ChartDataPoint {
   apy: number;
 }
 
-export type AssetName = "USDC" | "USDT" | "WETH" | "WBTC" | "DAI";
+export type AssetName = "USDC" | "USDT" | "WETH" | "WBTC" | "DAI" | "ITHIL";
+
+export type ITokenName = `i${AssetName}`;
+
 export interface ChartPoint {
   timestamp: Date;
   tvlUsd: number;
@@ -61,7 +64,7 @@ export interface Service {
   type: "debit" | "credit";
 }
 export type Asset = {
-  name: string;
+  name: AssetName;
   label: string;
   description: string;
   coingeckoId: string;
@@ -154,3 +157,27 @@ export type Vault = {
 };
 
 export type Vaults = Vault[];
+
+export interface PositionData {
+  aCollateral?: string;
+  amount?: string;
+  amountObtained?: string;
+  collateral?: string;
+  formattedPnl?: string;
+  gmxCollateral?: string;
+  leverage?: string;
+  margin?: string;
+  percentage?: number;
+  pnlColor?: string;
+  pnlPercentage?: string;
+  position?: ServiceName;
+  purchasePrice?: string;
+  slippage?: string;
+  assetName?: AssetName;
+  assetLabel?: string;
+  type?: "open" | "close";
+  wethReward?: string;
+  ithilObtained?: string;
+  redeemPrice?: string;
+  maturityDate?: string;
+}
