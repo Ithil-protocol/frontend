@@ -281,7 +281,6 @@ const Form = ({ asset }: { asset: Asset }) => {
         onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
-        mt="20px"
         isLoading={isButtonLoading}
       >
         {!asset.name
