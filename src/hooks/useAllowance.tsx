@@ -1,4 +1,5 @@
 import { waitForTransaction } from "@wagmi/core";
+import { useState } from "react";
 import { Address, formatUnits } from "viem";
 import { parseUnits } from "viem";
 import { useAccount } from "wagmi";
@@ -22,6 +23,8 @@ export const useAllowance = ({
   spender,
   token,
 }: AllowanceProps) => {
+  const [isAllowanceRefetching, setIsAllowanceRefetching] = useState(false);
+
   const notificationDialog = useNotificationDialog();
   const { address } = useAccount();
   const { data: allowanceValue, refetch: refetchAllowance } = useTokenAllowance(
@@ -57,7 +60,9 @@ export const useAllowance = ({
           hash,
         });
         notificationDialog.openSuccess(`Approved ${token.name}`);
-        refetchAllowance();
+        setIsAllowanceRefetching(true);
+        await refetchAllowance();
+        setIsAllowanceRefetching(false);
       } catch (error) {
         notificationDialog.openError("Failed", error);
       }
@@ -68,5 +73,6 @@ export const useAllowance = ({
   return {
     ...mutation,
     isApproved: !needAllowance,
+    isAllowanceRefetching,
   };
 };
