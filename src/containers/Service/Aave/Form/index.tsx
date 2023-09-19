@@ -58,7 +58,11 @@ const Form = ({ asset }: { asset: Asset }) => {
     watch: true,
   });
 
-  const { isApproved, write: approve } = useAllowance({
+  const {
+    isApproved,
+    write: approve,
+    isAllowanceRefetching,
+  } = useAllowance({
     amount: inputAmount,
     spender: aaveAddress,
     token: asset,
