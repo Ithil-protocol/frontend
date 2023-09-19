@@ -126,7 +126,7 @@ const Form = ({ asset, setRedeem }: Props) => {
 
   // computed properties
   const isButtonLoading = isLoading || isAllowanceRefetching;
-  const isButtonDisabled = +inputAmount === 0;
+  const isButtonDisabled = +inputAmount === 0 || finalAmount.isNegative();
   const isMaxDisabled = inputAmount === balance?.value.toString();
 
   const onMaxClick = () => {
