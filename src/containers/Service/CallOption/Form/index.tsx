@@ -75,7 +75,7 @@ const Form = ({ asset, setRedeem }: Props) => {
 
   const {
     isApproved,
-    isLoading: isApproveLoading,
+    isAllowanceRefetching,
     write: approve,
   } = useAllowance({
     amount: inputAmount,
@@ -126,7 +126,7 @@ const Form = ({ asset, setRedeem }: Props) => {
   });
 
   // computed properties
-  const isButtonLoading = isLoading;
+  const isButtonLoading = isLoading || isAllowanceRefetching;
   const isButtonDisabled = +inputAmount === 0;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 

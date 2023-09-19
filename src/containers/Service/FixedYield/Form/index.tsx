@@ -37,7 +37,11 @@ const Form = ({ asset }: { asset: Asset }) => {
     watch: true,
   });
 
-  const { isApproved, write: approve } = useAllowance({
+  const {
+    isApproved,
+    write: approve,
+    isAllowanceRefetching,
+  } = useAllowance({
     amount: inputAmount,
     spender: fixedYieldAddress,
     token: asset,
@@ -76,7 +80,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isLoading;
+  const isButtonLoading = isLoading || isAllowanceRefetching;
   const isButtonDisabled = +inputAmount === 0;
   const isMaxDisabled = inputAmount === balance?.value.toString();
 

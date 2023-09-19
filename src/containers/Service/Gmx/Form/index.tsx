@@ -62,7 +62,7 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const {
     isApproved,
-    isLoading: isApproveLoading,
+    isAllowanceRefetching,
     write: approve,
   } = useAllowance({
     amount: inputAmount,
@@ -163,7 +163,8 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
 
   // computed properties
-  const isButtonLoading = isInterestAndSpreadLoading || isMinMarginLoading;
+  const isButtonLoading =
+    isInterestAndSpreadLoading || isMinMarginLoading || isAllowanceRefetching;
   const isButtonDisabled =
     +inputAmount === 0 ||
     isInterestError ||
