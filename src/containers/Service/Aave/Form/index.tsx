@@ -265,11 +265,13 @@ const Form = ({ asset }: { asset: Asset }) => {
         </Box>
       </div>
 
-      <ServiceError
-        isFreeLiquidityError={isFreeLiquidityError}
-        isInterestError={isInterestError}
-        isLessThanMinimumMarginError={isLessThanMinimumMarginError}
-      />
+      {inputAmount !== "" && (
+        <ServiceError
+          isFreeLiquidityError={isFreeLiquidityError}
+          isInterestError={isInterestError}
+          isLessThanMinimumMarginError={isLessThanMinimumMarginError}
+        />
+      )}
 
       <PrivateButton
         onClick={() => (isApproved ? onOpen() : approve?.())}

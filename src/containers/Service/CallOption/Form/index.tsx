@@ -223,7 +223,9 @@ const Form = ({ asset, setRedeem }: Props) => {
           />
         </Box>
       </div>
-      <ServiceError isFinalAmountIsNegative={finalAmount.isNegative()} />
+      {inputAmount !== "" && (
+        <ServiceError isFinalAmountIsNegative={finalAmount.isNegative()} />
+      )}
       <PrivateButton
         onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
