@@ -28,7 +28,7 @@ import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
 import {
   cutoffDecimals,
-  getServiceByName,
+  getAssetByName,
   getSingleQueryParam,
   normalizeInputValue,
 } from "@/utils";
@@ -62,8 +62,8 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const {
     isApproved,
-    isAllowanceRefetching,
     write: approve,
+    isAllowanceRefetching,
   } = useAllowance({
     amount: inputAmount,
     spender: gmxAddress,
@@ -131,11 +131,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     slippage,
   });
 
-  const {
-    data: openData,
-    isLoading: isOpenLoading,
-    write: openPosition,
-  } = useContractWrite({
+  const { write: openPosition } = useContractWrite({
     abi: gmxABI,
     address: gmxAddress,
     functionName: "open",
@@ -215,7 +211,6 @@ const Form = ({ asset }: { asset: Asset }) => {
       isLoading: isInterestAndSpreadLoading,
     },
   ];
-  const { tokens } = getServiceByName("gmx");
 
   if (!isMounted) return null;
 
@@ -277,16 +272,17 @@ const Form = ({ asset }: { asset: Asset }) => {
         </Box>
       </div>
 
-      <ServiceError
-        isFreeLiquidityError={isFreeLiquidityError}
-        isInterestError={isInterestError}
-        isLessThanMinimumMarginError={isLessThanMinimumMarginError}
-      />
+      {inputAmount !== "" && (
+        <ServiceError
+          isFreeLiquidityError={isFreeLiquidityError}
+          isInterestError={isInterestError}
+          isLessThanMinimumMarginError={isLessThanMinimumMarginError}
+        />
+      )}
       <PrivateButton
         onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
-        mt="20px"
         isLoading={isButtonLoading}
       >
         {!asset.name
@@ -305,15 +301,16 @@ const Form = ({ asset }: { asset: Asset }) => {
         submitText="Invest"
         title="Open Position"
         data={{
-          amount: inputAmount,
-          leverage,
-          position: "gmx",
-          slippage: (+slippage * 100).toString(),
-          token: getSingleQueryParam(token),
-          collateral: formatUnits(
+          gmxCollateral: formatUnits(
             order.agreement.collaterals[0].amount,
             asset.decimals
           ),
+          leverage,
+          margin: inputAmount,
+          position: "gmx",
+          slippage: (+slippage * 100).toString(),
+          assetName: getSingleQueryParam(token),
+          assetLabel: getAssetByName(getSingleQueryParam(token))?.label,
         }}
       />
     </div>

@@ -16,7 +16,7 @@ import { useAllowance } from "@/hooks/useAllowance";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareFixedYieldOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceByName, getSingleQueryParam } from "@/utils";
+import { getAssetByName, getSingleQueryParam } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
@@ -90,9 +90,6 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const isMounted = useIsMounted();
 
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
-  const { tokens } = getServiceByName("fixed-yield");
-
   const {
     query: { asset: token },
   } = useRouter();
@@ -164,7 +161,8 @@ const Form = ({ asset }: { asset: Asset }) => {
         data={{
           amount: inputAmount,
           position: "fixed-yield",
-          token: getSingleQueryParam(token),
+          assetName: getSingleQueryParam(token),
+          assetLabel: getAssetByName(getSingleQueryParam(token))?.label,
           collateral: formatUnits(
             order.agreement.collaterals[0].amount,
             asset.decimals
