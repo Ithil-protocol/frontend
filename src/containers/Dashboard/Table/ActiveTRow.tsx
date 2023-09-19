@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import Decimal from "decimal.js";
 import { FC, useState } from "react";
 import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
 import { useContractWrite, useQueryClient } from "wagmi";
@@ -102,8 +103,18 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     if (data.isPnlLoading) return;
     const initialQuote = data?.quote || 0n;
     const quotes: Record<string, bigint> = {
-      aave: (initialQuote * (100n - BigInt(slippage))) / 100n,
-      gmx: (initialQuote * (100n - BigInt(slippage))) / 100n,
+      aave: BigInt(
+        new Decimal(initialQuote.toString())
+          .mul(new Decimal(1 - slippage / 100))
+          .floor()
+          .toNumber()
+      ),
+      gmx: BigInt(
+        new Decimal(initialQuote.toString())
+          .mul(new Decimal(1 - slippage / 100))
+          .floor()
+          .toNumber()
+      ),
       "call-option":
         (BigInt(10) ** BigInt(18) * BigInt(percentage)) / BigInt(100),
     };
