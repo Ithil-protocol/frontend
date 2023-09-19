@@ -3,7 +3,7 @@ import { getWalletClient } from "wagmi/actions";
 
 import { iTokenIcons } from "@/assets/imgs";
 import contracts from "@/deploy/contracts.json";
-import { AssetEssential } from "@/types";
+import { AssetEssential, ITokenName } from "@/types";
 
 export const ITHILToken: AssetEssential = {
   name: "ITHIL",
@@ -17,7 +17,9 @@ export const ITHILToken: AssetEssential = {
 export const addTokenToWallet = async (token: AssetEssential) => {
   const walletClient = await getWalletClient();
   if (walletClient) {
-    const imageUrl = window.location.origin + iTokenIcons["i" + token.name].src;
+    const imageUrl =
+      window.location.origin +
+      iTokenIcons[("i" + token.name) as ITokenName].src;
     await walletClient.watchAsset({
       type: "ERC20",
       options: {

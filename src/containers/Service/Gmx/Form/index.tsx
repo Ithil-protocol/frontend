@@ -28,7 +28,7 @@ import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
 import {
   cutoffDecimals,
-  getServiceByName,
+  getAssetByName,
   getSingleQueryParam,
   normalizeInputValue,
 } from "@/utils";
@@ -60,11 +60,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     watch: true,
   });
 
-  const {
-    isApproved,
-    isLoading: isApproveLoading,
-    write: approve,
-  } = useAllowance({
+  const { isApproved, write: approve } = useAllowance({
     amount: inputAmount,
     spender: gmxAddress,
     token: asset,
@@ -131,11 +127,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     slippage,
   });
 
-  const {
-    data: openData,
-    isLoading: isOpenLoading,
-    write: openPosition,
-  } = useContractWrite({
+  const { write: openPosition } = useContractWrite({
     abi: gmxABI,
     address: gmxAddress,
     functionName: "open",
@@ -214,7 +206,6 @@ const Form = ({ asset }: { asset: Asset }) => {
       isLoading: isInterestAndSpreadLoading,
     },
   ];
-  const { tokens } = getServiceByName("gmx");
 
   if (!isMounted) return null;
 
@@ -304,15 +295,16 @@ const Form = ({ asset }: { asset: Asset }) => {
         submitText="Invest"
         title="Open Position"
         data={{
-          amount: inputAmount,
-          leverage,
-          position: "gmx",
-          slippage: (+slippage * 100).toString(),
-          token: getSingleQueryParam(token),
-          collateral: formatUnits(
+          gmxCollateral: formatUnits(
             order.agreement.collaterals[0].amount,
             asset.decimals
           ),
+          leverage,
+          margin: inputAmount,
+          position: "gmx",
+          slippage: (+slippage * 100).toString(),
+          assetName: getSingleQueryParam(token),
+          assetLabel: getAssetByName(getSingleQueryParam(token))?.label,
         }}
       />
     </div>

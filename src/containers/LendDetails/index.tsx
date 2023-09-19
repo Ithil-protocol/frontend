@@ -7,6 +7,7 @@ import { ArrowLeft } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { assetsObjByName } from "@/data/assets";
 import fakeChartData from "@/data/fakeData.json";
+import { AssetName } from "@/types";
 import { getSingleQueryParam } from "@/utils";
 import { formatDate } from "@/utils/date.utils";
 
@@ -30,7 +31,7 @@ export default function LendDetails() {
   const [graphSection] = useState<GraphSection>("APY");
   const router = useRouter();
   const token = getSingleQueryParam(router.query.token);
-  const assetToken = assetsObjByName[token.toUpperCase()];
+  const assetToken = assetsObjByName[token.toUpperCase() as AssetName];
 
   return (
     <Box width="full">

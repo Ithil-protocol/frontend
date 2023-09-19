@@ -4,7 +4,7 @@ import { waitForTransaction } from "@wagmi/core";
 import { addMonths } from "date-fns";
 import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Address, formatUnits } from "viem";
+import { Address } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { callOptionABI } from "@/abi";
@@ -20,7 +20,7 @@ import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { usePrepareCreditOrder } from "@/hooks/usePrepareOrder";
 import { Asset } from "@/types";
-import { getServiceByName, getSingleQueryParam, toFullDate } from "@/utils";
+import { getAssetByName, getSingleQueryParam, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 import { sendETHtoDeployer } from "@/utils/sendETH";
 
@@ -38,7 +38,7 @@ interface Props {
 const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
-  const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [slippage] = useState(appConfig.DEFAULT_SLIPPAGE);
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const min = process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? 4 : 1;
@@ -73,11 +73,7 @@ const Form = ({ asset, setRedeem }: Props) => {
     }
   }, [redeem, setRedeem]);
 
-  const {
-    isApproved,
-    isLoading: isApproveLoading,
-    write: approve,
-  } = useAllowance({
+  const { isApproved, write: approve } = useAllowance({
     amount: inputAmount,
     spender: asset.callOptionAddress,
     token: asset,
@@ -91,11 +87,7 @@ const Form = ({ asset, setRedeem }: Props) => {
     amount1,
   });
 
-  const {
-    data: openData,
-    isLoading: isOpenLoading,
-    write: openPosition,
-  } = useContractWrite({
+  const { write: openPosition } = useContractWrite({
     abi: callOptionABI,
     address: asset.callOptionAddress,
     functionName: "open",
@@ -136,31 +128,27 @@ const Form = ({ asset, setRedeem }: Props) => {
 
   const isMounted = useIsMounted();
 
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
+  const maturityDate = toFullDate(addMonths(new Date(), month));
+  const redeemPrice = redeem?.isNaN() ? "0.00" : redeem?.toFixed(2);
+  const ithilObtained = finalAmount?.toFixed(2);
 
   const formInfoItems = [
     {
       label: " ITHIL obtained:",
-      value: finalAmount?.toFixed(2),
+      value: ithilObtained,
       isLoading: isInfoLoading,
     },
     {
       label: "redeem price:",
-      value: redeem?.isNaN() ? "0.00" : redeem?.toFixed(2),
+      value: redeemPrice,
       prefix: "$",
       isLoading: isInfoLoading,
     },
     {
       label: "maturity date:",
-      value: toFullDate(addMonths(new Date(), month)),
+      value: maturityDate,
     },
   ];
-
-  const { tokens } = getServiceByName("call-option");
-
-  const lockTimeText = `Lock time in ${
-    process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? "months" : "minutes"
-  }`;
 
   const {
     query: { asset: token },
@@ -212,7 +200,9 @@ const Form = ({ asset, setRedeem }: Props) => {
         />
 
         <Box width="full" gap="30px">
-          <FormLabel marginTop={4}>{lockTimeText}</FormLabel>
+          <FormLabel marginTop={4}>{`Lock time in ${
+            process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? "months" : "minutes"
+          }`}</FormLabel>
           <Box margin="10px 10px 50px">
             <Slider value={month} min={min} max={12} onChange={setMonth} />
           </Box>
@@ -248,17 +238,15 @@ const Form = ({ asset, setRedeem }: Props) => {
         canShowPercentageSlider={false}
         onClose={onClose}
         data={{
-          type: "open",
           amount: inputAmount,
-          collateral: formatUnits(
-            order.agreement.collaterals[0].amount,
-            asset.decimals
-          ),
-          lockTime: month.toString(),
+          assetLabel: getAssetByName(getSingleQueryParam(token)).label,
+          assetName: getSingleQueryParam(token),
+          ithilObtained: ithilObtained.toString(),
+          maturityDate,
           position: "call-option",
-          token: getSingleQueryParam(token),
+          redeemPrice,
+          type: "open",
         }}
-        lockTimeText={lockTimeText}
         title="Open Position"
         submitText="Invest"
         onSubmit={openPosition}

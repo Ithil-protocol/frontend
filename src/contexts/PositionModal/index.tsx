@@ -13,17 +13,15 @@ import {
 
 import { CloseButton } from "@/assets/svgs";
 import PrivateButton from "@/components/PrivateButton";
-import { CloseDialogFn, VoidNoArgs } from "@/types";
+import { CloseDialogFn, PositionData, VoidNoArgs } from "@/types";
 
 import PositionsDetails from "./PositionsDetails";
-import { Data } from "./types";
 
 interface Props {
   canShowPercentageSlider?: boolean;
   canShowSlippageSlider?: boolean;
-  data: Data;
+  data: PositionData;
   isOpen: boolean;
-  lockTimeText?: string;
   onClose: CloseDialogFn;
   onPurchasePriceChange?: SliderProps["onChange"];
   onSlippageChange?: SliderProps["onChange"];
@@ -36,7 +34,6 @@ export const PositionModal: React.FC<Props> = ({
   canShowPercentageSlider,
   data,
   isOpen,
-  lockTimeText,
   onClose,
   onPurchasePriceChange,
   onSlippageChange,
@@ -95,7 +92,6 @@ export const PositionModal: React.FC<Props> = ({
                 data={data}
                 canShowPercentageSlider={canShowPercentageSlider}
                 canShowSlippageSlider={canShowSlippageSlider}
-                lockTimeText={lockTimeText}
                 onPurchasePriceChange={onPurchasePriceChange}
                 onSlippageChange={onSlippageChange}
               />
