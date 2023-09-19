@@ -10,10 +10,10 @@ import SlippageInput from "./inputs/SlippageInput";
 interface Props {
   isAdvancedOptionsOpen: boolean;
   setIsAdvancedOptionsOpen: Dispatch<SetStateAction<boolean>>;
-  leverage: string;
-  setLeverage: Dispatch<SetStateAction<string>>;
-  slippage: string;
-  setSlippage: Dispatch<SetStateAction<string>>;
+  leverage?: string;
+  setLeverage?: Dispatch<SetStateAction<string>>;
+  slippage?: string;
+  setSlippage?: Dispatch<SetStateAction<string>>;
 }
 
 const AdvanceSection: FC<Props> = ({
@@ -72,8 +72,12 @@ const AdvanceSection: FC<Props> = ({
 
       {isAdvancedOptionsOpen && (
         <>
-          <LeverageInput leverage={leverage} setLeverage={setLeverage} />
-          <SlippageInput setSlippage={setSlippage} slippage={slippage} />
+          {leverage && setLeverage && (
+            <LeverageInput leverage={leverage} setLeverage={setLeverage} />
+          )}
+          {slippage && setSlippage && (
+            <SlippageInput setSlippage={setSlippage} slippage={slippage} />
+          )}
         </>
       )}
     </Box>

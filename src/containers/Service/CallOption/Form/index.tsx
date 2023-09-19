@@ -12,7 +12,6 @@ import PrivateButton from "@/components/PrivateButton";
 import Slider from "@/components/Slider";
 import { EstimatedValue } from "@/components/estimated-value";
 import { Loading } from "@/components/loading";
-import { appConfig } from "@/config";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { PositionModal } from "@/contexts/PositionModal";
 import { useAllowance } from "@/hooks/useAllowance";
@@ -24,6 +23,7 @@ import { getAssetByName, getSingleQueryParam, toFullDate } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 import { sendETHtoDeployer } from "@/utils/sendETH";
 
+import AdvanceSection from "../../AdvanceSection";
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
@@ -39,7 +39,9 @@ interface Props {
 const Form = ({ asset, setRedeem }: Props) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
-  const [slippage] = useState(appConfig.DEFAULT_SLIPPAGE);
+  const [slippage, setSlippage] = useState("0.01");
+  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] =
+    useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const min = process.env.NEXT_PUBLIC_NETWORK === "mainnet" ? 4 : 1;
@@ -74,7 +76,11 @@ const Form = ({ asset, setRedeem }: Props) => {
     }
   }, [redeem, setRedeem]);
 
-  const { isApproved, write: approve } = useAllowance({
+  const {
+    isApproved,
+    write: approve,
+    isAllowanceRefetching,
+  } = useAllowance({
     amount: inputAmount,
     spender: asset.callOptionAddress,
     token: asset,
@@ -209,14 +215,12 @@ const Form = ({ asset, setRedeem }: Props) => {
           </Box>
           <FormInfo items={formInfoItems} />
 
-          {/* <AdvanceSection
+          <AdvanceSection
             isAdvancedOptionsOpen={isAdvancedOptionsOpen}
             setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
-            leverage={leverage}
-            setLeverage={setLeverage}
             setSlippage={setSlippage}
             slippage={slippage}
-          /> */}
+          />
         </Box>
       </div>
       <ServiceError isFinalAmountIsNegative={finalAmount.isNegative()} />
