@@ -126,7 +126,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       ],
     });
   };
-  const isAaveOrGmx = data.type === "aave" || data.type === "gmx";
+  const isDebitService = data.type === "aave" || data.type === "gmx";
 
   const isMounted = useIsMounted();
 
@@ -246,9 +246,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {isPositionActive(data.type, Number(data.createdAt))
-            ? "Active"
-            : "Expired"}
+          {isDebitService &&
+            (isPositionActive(data.type, Number(data.createdAt))
+              ? "Active"
+              : "Expired")}
         </Td>
         <Td textAlign="end" width={200} height="108px">
           <Button onClick={handleCloseClick} variant="outline" color="#f35959">
@@ -266,7 +267,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           type: "close",
           token: asset?.name || "",
           position: data.type,
-          leverage: isAaveOrGmx
+          leverage: isDebitService
             ? (+data.amount / +data.margin + 1).toString()
             : undefined,
           slippage: slippage.toString(),
