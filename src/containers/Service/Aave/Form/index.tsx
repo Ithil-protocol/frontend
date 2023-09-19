@@ -28,7 +28,7 @@ import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
 import {
   cutoffDecimals,
-  getServiceByName,
+  getAssetByName,
   getSingleQueryParam,
   normalizeInputValue,
 } from "@/utils";
@@ -60,8 +60,8 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const {
     isApproved,
-    isAllowanceRefetching,
     write: approve,
+    isAllowanceRefetching,
   } = useAllowance({
     amount: inputAmount,
     spender: aaveAddress,
@@ -125,11 +125,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     slippage,
   });
 
-  const {
-    data: openData,
-    isLoading: isOpenLoading,
-    write: openPosition,
-  } = useContractWrite({
+  const { write: openPosition } = useContractWrite({
     abi: aaveABI,
     address: aaveAddress,
     functionName: "open",
@@ -209,8 +205,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     },
   ];
 
-  const { tokens } = getServiceByName("aave");
-
   if (!isMounted) return null;
 
   return (
@@ -271,17 +265,18 @@ const Form = ({ asset }: { asset: Asset }) => {
         </Box>
       </div>
 
-      <ServiceError
-        isFreeLiquidityError={isFreeLiquidityError}
-        isInterestError={isInterestError}
-        isLessThanMinimumMarginError={isLessThanMinimumMarginError}
-      />
+      {inputAmount !== "" && (
+        <ServiceError
+          isFreeLiquidityError={isFreeLiquidityError}
+          isInterestError={isInterestError}
+          isLessThanMinimumMarginError={isLessThanMinimumMarginError}
+        />
+      )}
 
       <PrivateButton
         onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
-        mt="20px"
         isLoading={isButtonLoading}
       >
         {!asset.name
@@ -300,12 +295,13 @@ const Form = ({ asset }: { asset: Asset }) => {
         canShowSlippageSlider={false}
         canShowPercentageSlider={false}
         data={{
-          amount: inputAmount,
+          margin: inputAmount,
           leverage,
           position: "aave",
           slippage: (+slippage * 100).toString(),
-          token: getSingleQueryParam(token),
-          collateral: formatUnits(
+          assetName: getSingleQueryParam(token),
+          assetLabel: getAssetByName(getSingleQueryParam(token))?.label,
+          aCollateral: formatUnits(
             order.agreement.collaterals[0].amount,
             asset.decimals
           ),

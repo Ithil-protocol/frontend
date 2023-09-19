@@ -51,6 +51,7 @@
     "trivago",
     "usdg",
     "viem",
-    "wagmi"
+    "wagmi",
+    "frax"
   ]
 }

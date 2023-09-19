@@ -1,13 +1,8 @@
 import Decimal from "decimal.js";
-import {
-  encodeAbiParameters,
-  formatUnits,
-  parseAbiParameters,
-  parseUnits,
-} from "viem";
+import { encodeAbiParameters, parseAbiParameters, parseUnits } from "viem";
 import { type Address } from "wagmi";
 
-import { ithil } from "@/data/ithil-token";
+import { frax } from "@/data/other-asset";
 import { Asset } from "@/types";
 import { multiplyBigInt } from "@/utils";
 
@@ -99,14 +94,12 @@ interface PrepareCreditOrderProps {
   asset: Asset;
   amount: string;
   amount1: Decimal;
-  slippage: string;
   monthsLocked: number;
 }
 
 export const usePrepareCreditOrder = ({
   asset,
   amount,
-  slippage,
   amount1,
   monthsLocked,
 }: PrepareCreditOrderProps) => {
@@ -118,29 +111,11 @@ export const usePrepareCreditOrder = ({
     enabled: !!asset?.vaultAddress,
   });
 
-  const { data: currentPrice, isLoading: isCallOptionsLoading } =
-    useCallOptionCurrentPrice();
+  const { isLoading: isCallOptionsLoading } = useCallOptionCurrentPrice();
 
-  const currentPriceDecimal = new Decimal(formatUnits(currentPrice || 1n, 18));
   const sharesDecimal = new Decimal(shares?.toString() || "0");
-  const loanDecimal = new Decimal(loanAmount.toString() || "0");
-  const monthsLockedDecimal = new Decimal(monthsLocked);
-
-  const amount0 = shares ? multiplyBigInt(shares, 0.99) : 0n;
 
   const amount0d = sharesDecimal.mul(new Decimal("0.99"));
-
-  // const amount1 = currentPrice
-  //   ? multiplyBigInt(
-  //       multiplyBigInt(loanAmount, 2 ** (monthsLocked / 12)) / currentPrice,
-  //       1 - Number(slippage)
-  //     )
-  //   : 0n;
-
-  // const amount1d = loanDecimal
-  //   .mul(new Decimal(2).pow(monthsLockedDecimal.div(new Decimal(12))))
-  //   .div(currentPriceDecimal)
-  //   .mul(new Decimal(1 - 0.05));
 
   const amount1Num = amount1.floor().toNumber();
 
@@ -155,7 +130,7 @@ export const usePrepareCreditOrder = ({
   };
   const collateral1: ServiceCollateral = {
     itemType: 0,
-    token: ithil.tokenAddress,
+    token: frax.tokenAddress,
     identifier: 0n,
     amount: finalAmount1,
   };
@@ -178,6 +153,8 @@ export const usePrepareCreditOrder = ({
       BigInt(monthsLocked - 1),
     ]),
   };
+
+  console.log("test11x", order);
 
   const isLoading = isSharesLoading || isCallOptionsLoading;
 

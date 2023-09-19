@@ -13,6 +13,7 @@ interface Props {
   amount?: string;
   month: number;
   enabled?: boolean;
+  slippage?: string;
 }
 
 export const useCallOptionInfo = ({
@@ -20,6 +21,7 @@ export const useCallOptionInfo = ({
   amount,
   month,
   enabled = true,
+  slippage = "0",
 }: Props) => {
   const { data: currentPrice, isLoading: isCurrentPriceLoading } =
     useCallOptionCurrentPrice({
@@ -69,8 +71,8 @@ export const useCallOptionInfo = ({
     .div(finalPrice);
 
   amount1 = finalAmount
-    .mul(new Decimal("0.95"))
-    .mul(new Decimal(10).pow(new Decimal(asset.decimals)));
+    .mul(new Decimal(1 - +slippage))
+    .mul(new Decimal(10).pow(new Decimal(18)));
 
   redeem = inputDecimal.div(finalAmount);
 

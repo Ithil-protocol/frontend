@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-import { ithil } from "@/data/ithil-token";
+import { ithil } from "@/data/other-asset";
 import { useChart } from "@/hooks/defillama";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { getServiceByName } from "@/utils";

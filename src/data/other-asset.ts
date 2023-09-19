@@ -11,3 +11,12 @@ export const ithil: AssetEssential = {
   decimals: 18,
   tokenAddress: contracts.ithil as Address,
 };
+
+export const frax: AssetEssential = {
+  name: "FRAX",
+  label: "FRAX",
+  coingeckoId: "frax",
+  iconName: "frax",
+  decimals: 18,
+  tokenAddress: "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F" as Address,
+};
