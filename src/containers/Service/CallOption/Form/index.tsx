@@ -26,6 +26,7 @@ import { sendETHtoDeployer } from "@/utils/sendETH";
 
 // import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
+import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 
 // import DepositForm from "./DepositForm"
@@ -228,11 +229,11 @@ const Form = ({ asset, setRedeem }: Props) => {
           /> */}
         </Box>
       </div>
+      <ServiceError isFinalAmountIsNegative={finalAmount.isNegative()} />
       <PrivateButton
         onClick={() => (isApproved ? onOpen() : approve?.())}
         isDisabled={isButtonDisabled}
         loadingText="Waiting"
-        mt="20px"
         isLoading={isButtonLoading}
       >
         {!asset.name
