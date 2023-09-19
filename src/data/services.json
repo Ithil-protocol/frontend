@@ -10,7 +10,7 @@
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "DAI"],
     "tvl": 158.86,
-    "deadline": 86400,
+    "deadline": 2592000,
     "url": "/aave",
     "hasIndex": true,
     "safety_score": {
@@ -45,7 +45,7 @@
     "boostApy": 3,
     "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
     "tvl": 100,
-    "deadline": 86400,
+    "deadline": 604800,
     "url": "/gmx",
     "hasIndex": true,
     "safety_score": {
