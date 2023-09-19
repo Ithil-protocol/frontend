@@ -65,6 +65,7 @@ const Form = ({ asset, setRedeem }: Props) => {
     asset,
     amount: inputAmount,
     month,
+    slippage,
   });
 
   useEffect(() => {
@@ -90,7 +91,6 @@ const Form = ({ asset, setRedeem }: Props) => {
     asset,
     amount: inputAmount,
     monthsLocked: month,
-    slippage,
     amount1,
   });
 

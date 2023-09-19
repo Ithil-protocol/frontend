@@ -3,6 +3,7 @@ import { StaticImageData } from "next/image";
 import { ITokenName } from "@/types";
 
 import iITHIL from "./iTokens/ITHIL.png";
+import iFRAX from "./iTokens/ITHIL.png";
 import iDAI from "./iTokens/iDAI.png";
 import iUSDC from "./iTokens/iUSDC.png";
 import iUSDT from "./iTokens/iUSDT.png";
@@ -16,4 +17,5 @@ export const iTokenIcons: Record<ITokenName, StaticImageData> = {
   iWBTC,
   iWETH,
   iITHIL,
+  iFRAX,
 };

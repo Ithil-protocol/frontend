@@ -24,7 +24,14 @@ export interface ChartDataPoint {
   apy: number;
 }
 
-export type AssetName = "USDC" | "USDT" | "WETH" | "WBTC" | "DAI" | "ITHIL";
+export type AssetName =
+  | "USDC"
+  | "USDT"
+  | "WETH"
+  | "WBTC"
+  | "DAI"
+  | "ITHIL"
+  | "FRAX";
 
 export type ITokenName = `i${AssetName}`;
 
