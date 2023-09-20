@@ -67,7 +67,7 @@
     "description": "Be part of Ithil tokenomics by reserving your $ITHIL allocation with an innovative non dilutive purchase model based on call options.",
     "bestApy": 50,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
+    "tokens": ["USDC", "USDT", "DAI"],
     "tvl": 158.86,
     "deadline": 86400,
     "url": "/call-option",
