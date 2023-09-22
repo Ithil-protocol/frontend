@@ -169,22 +169,23 @@ export interface PositionData {
   aCollateral?: string;
   amount?: string;
   amountObtained?: string;
+  assetLabel?: string;
+  assetName?: AssetName;
   collateral?: string;
   formattedPnl?: string;
   gmxCollateral?: string;
+  ithilObtained?: string;
   leverage?: string;
   margin?: string;
+  maturityDate?: string;
   percentage?: number;
   pnlColor?: string;
   pnlPercentage?: string;
   position?: ServiceName;
   purchasePrice?: string;
+  redeemPrice?: string;
   slippage?: string;
-  assetName?: AssetName;
-  assetLabel?: string;
+  submitAlertText?: string | React.ReactElement;
   type?: "open" | "close";
   wethReward?: string;
-  ithilObtained?: string;
-  redeemPrice?: string;
-  maturityDate?: string;
 }

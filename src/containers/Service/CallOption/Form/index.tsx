@@ -163,6 +163,8 @@ const Form = ({ asset, setRedeem }: Props) => {
 
   if (!isMounted) return null;
 
+  const { label: assetLabel } = getAssetByName(getSingleQueryParam(token));
+
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
       <div className="flex flex-row justify-between w-full">
@@ -246,13 +248,27 @@ const Form = ({ asset, setRedeem }: Props) => {
         onClose={onClose}
         data={{
           amount: inputAmount,
-          assetLabel: getAssetByName(getSingleQueryParam(token)).label,
+          assetLabel,
           assetName: getSingleQueryParam(token),
           ithilObtained: ithilObtained.toString(),
           maturityDate,
           position: "call-option",
           redeemPrice,
           type: "open",
+          submitAlertText: (
+            <span>
+              <span style={{ fontWeight: "bold" }}>
+                {inputAmount} {assetLabel}
+              </span>{" "}
+              will be locked for{" "}
+              <span style={{ fontWeight: "bold" }}>
+                {month} {month < 2 ? "month" : "months"}
+              </span>
+              , you can close the position afterwards and choose to either buy{" "}
+              <span style={{ fontWeight: "bold" }}>ITHIL </span>
+              or just withdraw your tokens
+            </span>
+          ),
         }}
         title="Open Position"
         submitText="Invest"
