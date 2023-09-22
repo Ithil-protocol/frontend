@@ -155,7 +155,7 @@ const PositionsDetails: React.FC<Props> = ({
           )}
           {data.ithilObtained && (
             <PositionsDetailItem
-              title="ITHIL obtained"
+              title="Obtained"
               value={data.ithilObtained}
               postfix="ITHIL"
               postfixIcon={<ITHILObtainedIcon width={20} height={20} />}

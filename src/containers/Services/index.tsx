@@ -10,7 +10,7 @@ const ServicesPage = () => {
         .filter(
           (service) =>
             process.env.NEXT_PUBLIC_NETWORK !== "mainnet" ||
-            (service.url !== "/fixed-yield" && service.url !== "/call-option")
+            service.url !== "/fixed-yield"
         )
         .map((item, index) => (
           <ServiceCard

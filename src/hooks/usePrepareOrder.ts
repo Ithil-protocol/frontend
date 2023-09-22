@@ -2,7 +2,7 @@ import Decimal from "decimal.js";
 import { encodeAbiParameters, parseAbiParameters, parseUnits } from "viem";
 import { type Address } from "wagmi";
 
-import { frax } from "@/data/other-asset";
+import { ithil } from "@/data/other-asset";
 import { Asset } from "@/types";
 import { multiplyBigInt } from "@/utils";
 
@@ -130,7 +130,7 @@ export const usePrepareCreditOrder = ({
   };
   const collateral1: ServiceCollateral = {
     itemType: 0,
-    token: frax.tokenAddress,
+    token: ithil.tokenAddress,
     identifier: 0n,
     amount: finalAmount1,
   };
