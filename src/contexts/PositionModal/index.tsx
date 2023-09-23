@@ -1,5 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
   Modal as ChakraModal,
   Grid,
   GridItem,
@@ -81,8 +84,8 @@ export const PositionModal: React.FC<Props> = ({
             <Grid
               gap={{
                 base: "12px",
-                md: "20px",
-                lg: "24px",
+                md: "12px",
+                lg: "12px",
               }}
               height="full"
               width="full"
@@ -96,13 +99,26 @@ export const PositionModal: React.FC<Props> = ({
                 onSlippageChange={onSlippageChange}
               />
 
+              {data.submitAlertText && (
+                <Alert
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                  }}
+                  borderRadius={8}
+                  status="warning"
+                >
+                  <AlertIcon />
+                  <AlertDescription>{data.submitAlertText}</AlertDescription>
+                </Alert>
+              )}
+
               <PrivateButton
                 style={{
                   border: "none",
                 }}
                 onClick={handleSubmit}
                 loadingText="Waiting"
-                mt="20px"
               >
                 {submitText}
               </PrivateButton>
