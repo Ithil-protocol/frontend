@@ -12,9 +12,9 @@ import { PositionData } from "@/types";
 import PositionsDetailItem from "./PositionsDetailItem";
 
 interface Props {
-  data: PositionData;
-  canShowSlippageSlider?: boolean;
   canShowPercentageSlider?: boolean;
+  canShowSlippageSlider?: boolean;
+  data: PositionData;
   onPurchasePriceChange?: SliderProps["onChange"];
   onSlippageChange?: SliderProps["onChange"];
 }
