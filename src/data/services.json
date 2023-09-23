@@ -64,7 +64,7 @@
     "label": "Call Option",
     "type": "credit",
     "long_name": "Aave leveraged lending",
-    "description": "Be part of Ithil tokenomics by reserving your $ITHIL allocation with an innovative non dilutive purchase model based on call options.",
+    "description": "Tokens will be securely locked for a chosen period. Following this lock-up period, users have the option to close the position. Upon closure, they can choose to either purchase ITHIL tokens with the displayed discount, proportional to the locktime, or simply withdraw the original capital. This mechanism ensures a committed participation for the specified duration, after which users are free to make a decision based on their investment preferences.",
     "bestApy": 50,
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "DAI"],
