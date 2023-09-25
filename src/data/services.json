@@ -64,7 +64,7 @@
     "label": "Call Option",
     "type": "credit",
     "long_name": "Aave leveraged lending",
-    "description": "Tokens will be securely locked for a chosen period. Following this lock-up period, users have the option to close the position. Upon closure, they can choose to either purchase ITHIL tokens with the displayed discount, proportional to the locktime, or simply withdraw the original capital. This mechanism ensures a committed participation for the specified duration, after which users are free to make a decision based on their investment preferences.",
+    "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi.",
     "bestApy": 50,
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
@@ -88,7 +88,7 @@
           "extendedDescription": "Impermanent Loss is a potential loss of value experienced by liquidity providers when the price of an asset in a liquidity pool diverges from its price in external markets."
         }
       ],
-      "description": "By depositing your tokens on Aave, you contribute to a robust lending pool that serves borrowers across multiple chains, making it one of the most trusted and established DeFi protocols in the industry. Aave operates as a decentralized lending and borrowing platform, facilitating the lending of tokens by depositors and providing borrowers with access to these tokens. As a depositor, you earn a fee in return for lending your tokens to borrowers on the platform. This fee, which is derived from the interest paid by borrowers, serves as a source of income for you, boosting your overall APY. Aave's reputation for security and reliability is built on its extensive track record and adoption across various blockchain networks. With billions of dollars secured across more than five chains, Aave has consistently demonstrated its ability to safeguard user funds and maintain the integrity of its lending platform."
+      "description": "Tokens will be securely locked for a chosen period. Following this lock-up period, users have the option to close the position. Upon closure, they can choose to either purchase ITHIL tokens with the displayed discount, proportional to the locktime, or simply withdraw the original capital. This mechanism ensures a committed participation for the specified duration, after which users are free to make a decision based on their investment preferences."
     },
     "explanation": "This service simply deposits tokens in the Aave V3 protocol and earns a stable APY through the protocol itself."
   },
