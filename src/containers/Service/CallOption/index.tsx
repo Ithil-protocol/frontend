@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getAssetByName, getServiceByName, getSingleQueryParam } from "@/utils";
 
 import PriceChart from "../PriceChart";
+import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
 import Form from "./Form";
 
@@ -27,6 +28,11 @@ const CallOption = () => {
         <ServiceHeading service={service} />
         {/* <Graph data={chartData} tab="apy" /> */}
         <PriceChart price={redeem} />
+        <SafetyScore
+          score={service.safety_score.score}
+          features={service.safety_score.features}
+          description={service.safety_score.description}
+        />
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
         {asset && <Form asset={asset} setRedeem={setRedeem} />}
