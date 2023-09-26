@@ -25,7 +25,7 @@ const LeverageInput: React.FC<Props> = ({ leverage, setLeverage }) => {
 
   return (
     <>
-      <AdvancedFormLabel label="Leverage" tooltip="Leverage" />
+      <AdvancedFormLabel label="Leverage" />
       <InputGroup size="md">
         <NumberInput
           width="100%"
