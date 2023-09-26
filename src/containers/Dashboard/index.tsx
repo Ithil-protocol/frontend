@@ -9,6 +9,7 @@ export type ColumnsActive =
   | "Service"
   | "PNL"
   | "Margin"
+  | "Amount"
   | "Status"
   | "";
 export type ColumnsOther = "Tokens" | "Service" | "Date";
@@ -17,7 +18,7 @@ const columnsActive: ColumnsActive[] = [
   "Tokens",
   "Service",
   "PNL",
-  "Margin",
+  "Amount",
   "Status",
   "",
 ];

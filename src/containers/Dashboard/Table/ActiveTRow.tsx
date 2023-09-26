@@ -238,7 +238,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {data.type === "call-option" ? data.amount : data.margin}
+          <div className="w-full h-full flex gap-1 items-center">
+            {data.type === "call-option" ? data.amount : data.margin}
+            <Text fontSize={"medium"} className="mt-1.5">
+              {data.type !== "call-option" &&
+                data.type !== "fixed-yield" &&
+                `(x${data.leverage})`}
+            </Text>
+          </div>
         </Td>
         <Td
           color={mode("primary.700", "primary.700.dark")}
@@ -268,9 +275,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           assetName: asset?.name,
           assetLabel: asset?.label,
           position: data.type,
-          leverage: isDebitService
-            ? (+data.amount / +data.margin + 1).toString()
-            : undefined,
+          leverage: data.leverage,
           slippage: slippage.toString(),
           amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
             .toFixed(2)

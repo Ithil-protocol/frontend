@@ -104,6 +104,7 @@ export interface PositionType {
   quote?: bigint;
   formattedPnl?: string;
   name: string;
+  leverage: string | undefined;
 }
 
 export interface PageHeading {
