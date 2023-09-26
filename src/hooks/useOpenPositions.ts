@@ -1,10 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
+import { readContract } from "@wagmi/core";
 import { formatUnits } from "viem";
-import { useAccount, useContractRead, useContractReads } from "wagmi";
+import { useAccount, useContractReads } from "wagmi";
 
 import { aaveABI, callOptionABI, gmxABI } from "@/abi";
-import { assets } from "@/data/assets";
 import { OpenPosition } from "@/types";
-import { getAssetByAddress } from "@/utils";
+import {
+  convertNamesToAssets,
+  getAssetByAddress,
+  getServiceByName,
+} from "@/utils";
 
 import { aaveAddress } from "./generated/aave";
 import { gmxAddress } from "./generated/gmx";
@@ -181,48 +186,70 @@ export const useFixedYieldOpenPositions = () => {
 export const useCallOptionOpenPositions = () => {
   const { address } = useAccount();
 
-  const { data: userAgreements0, isLoading: isLoading0 } = useContractRead({
-    account: address,
-    abi: callOptionABI,
-    address: assets[0].callOptionAddress,
-    functionName: "getUserAgreements",
+  const callOptionService = getServiceByName("call-option");
+
+  const assets = convertNamesToAssets(callOptionService.tokens);
+
+  const { data: userAgreements, isLoading } = useQuery({
+    queryKey: ["open-position", "call-option"],
+    queryFn: async () => {
+      const promises = assets.map((asset) => {
+        return readContract({
+          account: address,
+          abi: callOptionABI,
+          address: asset.callOptionAddress,
+          functionName: "getUserAgreements",
+        });
+      });
+      const results = await Promise.all(promises);
+
+      return results;
+    },
     enabled: !!address,
   });
 
-  const { data: userAgreements1, isLoading: isLoading1 } = useContractRead({
-    account: address,
-    abi: callOptionABI,
-    address: assets[1].callOptionAddress,
-    functionName: "getUserAgreements",
-    enabled: !!address,
-  });
+  // const { data: userAgreements0, isLoading: isLoading0 } = useContractRead({
+  //   account: address,
+  //   abi: callOptionABI,
+  //   address: assets[0].callOptionAddress,
+  //   functionName: "getUserAgreements",
+  //   enabled: !!address,
+  // });
 
-  const { data: userAgreements2, isLoading: isLoading2 } = useContractRead({
-    account: address,
-    abi: callOptionABI,
-    address: assets[2].callOptionAddress,
-    functionName: "getUserAgreements",
-    enabled: !!address,
-  });
+  // const { data: userAgreements1, isLoading: isLoading1 } = useContractRead({
+  //   account: address,
+  //   abi: callOptionABI,
+  //   address: assets[1].callOptionAddress,
+  //   functionName: "getUserAgreements",
+  //   enabled: !!address,
+  // });
 
-  const { data: userAgreements3, isLoading: isLoading3 } = useContractRead({
-    account: address,
-    abi: callOptionABI,
-    address: assets[3].callOptionAddress,
-    functionName: "getUserAgreements",
-    enabled: !!address,
-  });
+  // const { data: userAgreements2, isLoading: isLoading2 } = useContractRead({
+  //   account: address,
+  //   abi: callOptionABI,
+  //   address: assets[2].callOptionAddress,
+  //   functionName: "getUserAgreements",
+  //   enabled: !!address,
+  // });
 
-  const userAgreements = [
-    userAgreements0,
-    userAgreements1,
-    userAgreements2,
-    userAgreements3,
-  ];
+  // const { data: userAgreements3, isLoading: isLoading3 } = useContractRead({
+  //   account: address,
+  //   abi: callOptionABI,
+  //   address: assets[3].callOptionAddress,
+  //   functionName: "getUserAgreements",
+  //   enabled: !!address,
+  // });
 
-  console.log("userAgreementsuserAgreements", userAgreements);
+  // const userAgreements = [
+  //   userAgreements0,
+  //   userAgreements1,
+  //   userAgreements2,
+  //   userAgreements3,
+  // ];
 
-  const isLoading = isLoading0 || isLoading1 || isLoading2 || isLoading3;
+  // console.log("userAgreementsuserAgreements", userAgreements);
+
+  // const isLoading = isLoading0 || isLoading1 || isLoading2 || isLoading3;
 
   const positions: OpenPosition[] = [];
 
