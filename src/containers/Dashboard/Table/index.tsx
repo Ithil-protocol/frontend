@@ -154,7 +154,10 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         margin: fixPrecision(Number(loanItem.margin), 2),
                         token: loanItem.token,
                         type: item.type,
-                        leverage: (loanAmount / loanMargin + 1n).toString(),
+                        leverage:
+                          loanMargin !== 0n
+                            ? (loanAmount / loanMargin + 1n).toString()
+                            : undefined,
                       }}
                     />
                   );
