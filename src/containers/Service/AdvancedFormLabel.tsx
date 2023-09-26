@@ -4,7 +4,7 @@ import { Tooltip as TooltipIcon } from "@/assets/svgs";
 
 interface Props {
   label: string;
-  tooltip: string;
+  tooltip?: string;
 }
 
 const AdvancedFormLabel: React.FC<Props> = ({ label, tooltip }) => {
@@ -16,19 +16,23 @@ const AdvancedFormLabel: React.FC<Props> = ({ label, tooltip }) => {
           alignItems: "center",
         }}
       >
-        <Tooltip label={tooltip} closeDelay={500}>
-          <Text>
-            {label}{" "}
-            <TooltipIcon
-              width={20}
-              height={20}
-              style={{
-                display: "inline",
-                cursor: "help",
-              }}
-            />
-          </Text>
-        </Tooltip>
+        {tooltip ? (
+          <Tooltip label={tooltip} closeDelay={500}>
+            <Text>
+              {label}{" "}
+              <TooltipIcon
+                width={20}
+                height={20}
+                style={{
+                  display: "inline",
+                  cursor: "help",
+                }}
+              />
+            </Text>
+          </Tooltip>
+        ) : (
+          <Text>{label}</Text>
+        )}
       </div>
     </>
   );

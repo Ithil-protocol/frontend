@@ -72,10 +72,10 @@ const AdvanceSection: FC<Props> = ({
 
       {isAdvancedOptionsOpen && (
         <>
-          {leverage && setLeverage && (
+          {leverage !== undefined && setLeverage !== undefined && (
             <LeverageInput leverage={leverage} setLeverage={setLeverage} />
           )}
-          {slippage && setSlippage && (
+          {slippage !== undefined && setSlippage !== undefined && (
             <SlippageInput setSlippage={setSlippage} slippage={slippage} />
           )}
         </>
