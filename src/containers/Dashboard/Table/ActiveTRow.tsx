@@ -243,7 +243,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
             <Text fontSize={"medium"} className="mt-1.5">
               {data.type !== "call-option" &&
                 data.type !== "fixed-yield" &&
-                `(${data.leverage}x)`}
+                `(x${data.leverage})`}
             </Text>
           </div>
         </Td>
