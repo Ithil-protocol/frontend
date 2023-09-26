@@ -70,7 +70,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   };
 
   const isLoadingPositions =
-    isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
+    isLoadingAave || isLoadingGmx || isLoadingFixedYield;
 
   if (!isMounted) return null;
   return (
