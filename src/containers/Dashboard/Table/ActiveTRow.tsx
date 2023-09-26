@@ -238,7 +238,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          {data.type === "call-option" ? data.amount : data.margin}
+          <div className="w-full h-full flex gap-1 items-center">
+            {data.type === "call-option" ? data.amount : data.margin}
+            <Text fontSize={"medium"} className="mt-1.5">
+              {data.type !== "call-option" &&
+                data.type !== "fixed-yield" &&
+                `(${data.leverage}x)`}
+            </Text>
+          </div>
         </Td>
         <Td
           color={mode("primary.700", "primary.700.dark")}
