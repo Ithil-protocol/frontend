@@ -268,9 +268,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           assetName: asset?.name,
           assetLabel: asset?.label,
           position: data.type,
-          leverage: isDebitService
-            ? (+data.amount / +data.margin + 1).toString()
-            : undefined,
+          leverage: data.leverage,
           slippage: slippage.toString(),
           amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
             .toFixed(2)
