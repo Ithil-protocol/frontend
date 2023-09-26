@@ -103,6 +103,8 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                 item.agreement?.loans.map((loanItem) => {
                   const asset = getAssetByAddress(loanItem.token);
                   if (!asset) return null;
+                  const isDebitService =
+                    item.type === "aave" || item.type === "gmx";
                   return (
                     <ActiveTRow
                       key={key}
@@ -113,6 +115,13 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         formattedPnl:
                           item?.pnl && fixPrecision(+item?.pnl, 2).toString(),
                         isPnlLoading: item?.isPnlLoading,
+                        leverage: isDebitService
+                          ? (
+                              +formatUnits(loanItem.amount, asset.decimals) /
+                                +formatUnits(loanItem.margin, asset.decimals) +
+                              1
+                            ).toString()
+                          : undefined,
                         pnl: item?.pnl,
                         pnlPercentage:
                           item?.pnlPercentage &&
@@ -131,6 +140,12 @@ const Table: FC<Props> = ({ columns, activeView }) => {
               activeView === "Closed" &&
               closedPositions.map((item, key) =>
                 item.agreement?.loans.map((loanItem) => {
+                  const loanAmount = item.agreement
+                    ? item.agreement?.loans[0].amount
+                    : 0n;
+                  const loanMargin = item.agreement
+                    ? item.agreement?.loans[0].margin
+                    : 0n;
                   return (
                     <CloseTRow
                       key={key}
@@ -139,6 +154,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                         margin: fixPrecision(Number(loanItem.margin), 2),
                         token: loanItem.token,
                         type: item.type,
+                        leverage: (loanAmount / loanMargin + 1n).toString(),
                       }}
                     />
                   );
