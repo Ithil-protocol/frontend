@@ -150,8 +150,8 @@ const getVaultData = async (address?: string) => {
     const apy = numerator
       .div(denominator)
       .minus(1)
-      .times(365 * 86400)
-      .times(100)
+      .mul(365 * 86400)
+      .mul(100)
       .div(timeDifference);
     // const apy = new Decimal(
     //   new Decimal(sharesToAsset.toString())
