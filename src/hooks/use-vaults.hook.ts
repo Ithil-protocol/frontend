@@ -4,6 +4,7 @@ import Decimal from "decimal.js";
 import { useAccount } from "wagmi";
 
 import { assets } from "@/data/assets";
+import contracts from "@/deploy/contracts.json";
 import { vaultABI } from "@/hooks/generated/vault";
 import { Vaults } from "@/types";
 import { ErrorCause } from "@/utils/error-cause";
@@ -51,6 +52,32 @@ const getVaultData = async (address?: string) => {
     functionName: "creationTime",
   }));
 
+  const callOptionBalances = assets.map((asset) => ({
+    address: asset.vaultAddress,
+    abi: VaultAbi,
+    functionName: "balanceOf",
+    args: [asset.callOptionAddress],
+  }));
+
+  const fixedYieldBalance = assets.map((asset) => ({
+    address: asset.vaultAddress,
+    abi: VaultAbi,
+    functionName: "balanceOf",
+    args: [contracts.fixedYieldService],
+  }));
+
+  const currentProfits = assets.map((asset) => ({
+    address: asset.vaultAddress,
+    abi: VaultAbi,
+    functionName: "currentProfits",
+  }));
+
+  const totalSupply = assets.map((asset) => ({
+    address: asset.vaultAddress,
+    abi: VaultAbi,
+    functionName: "totalSupply",
+  }));
+
   const multicallData = await multicall({
     contracts: [
       ...totalAssetsCalls,
@@ -59,6 +86,10 @@ const getVaultData = async (address?: string) => {
       ...convertToAssetCalls,
       ...netLoans,
       ...creationTime,
+      ...callOptionBalances,
+      ...fixedYieldBalance,
+      ...currentProfits,
+      ...totalSupply,
     ],
   });
 
@@ -93,19 +124,47 @@ const getVaultData = async (address?: string) => {
     );
 
     const borrowed = multicallData[length * 4 + idx].result as bigint;
+    const creationTime = multicallData[length * 5 + idx].result as bigint;
+    const callOptionBalances = multicallData[length * 6 + idx].result as bigint;
+    const fixedYieldBalance = multicallData[length * 7 + idx].result as bigint;
+    const currentProfits = multicallData[length * 8 + idx].result as bigint;
+    const totalSupply = multicallData[length * 9 + idx].result as bigint;
 
-    const apy = new Decimal(
-      new Decimal(sharesToAsset.toString())
-        .div(10 ** asset.decimals)
-        .minus(1)
-        .toString()
-    )
+    const vaultTotalAssetsDecimal = new Decimal(tvl.toString());
+    const vaultCurrentProfitsDecimal = new Decimal(currentProfits.toString());
+    const vaultTotalSupplyDecimal = new Decimal(totalSupply.toString());
+    const fixedYieldServiceBalance = new Decimal(fixedYieldBalance.toString());
+    const callOptionBalanceDecimal = new Decimal(callOptionBalances.toString());
+    const creationTimeDecimal = new Decimal(creationTime.toString());
+
+    const numerator = vaultTotalAssetsDecimal.plus(vaultCurrentProfitsDecimal);
+    const denominator = vaultTotalSupplyDecimal
+      .minus(fixedYieldServiceBalance)
+      .minus(callOptionBalanceDecimal);
+
+    const currentTimeInSeconds = new Decimal(
+      Math.floor(new Date().getTime() / 1000)
+    ); // Convert current time to seconds
+    const timeDifference = currentTimeInSeconds.minus(creationTimeDecimal);
+
+    const apy = numerator
+      .div(denominator)
+      .minus(1)
       .mul(365 * 86400)
       .mul(100)
-      .div(
-        new Date().getTime() / 1000 -
-          Number(multicallData[length * 5 + idx].result)
-      );
+      .div(timeDifference);
+    // const apy = new Decimal(
+    //   new Decimal(sharesToAsset.toString())
+    //     .div(10 ** asset.decimals)
+    //     .minus(1)
+    //     .toString()
+    // )
+    //   .mul(365 * 86400)
+    //   .mul(100)
+    //   .div(
+    //     new Date().getTime() / 1000 -
+    //       Number(multicallData[length * 5 + idx].result)
+    //   );
 
     return {
       token: asset,
