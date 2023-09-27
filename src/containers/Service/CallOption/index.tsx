@@ -1,11 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 import { getAssetByName, getServiceByName, getSingleQueryParam } from "@/utils";
 
 import PriceChart from "../PriceChart";
-import SafetyScore from "../SafetyScore";
 import ServiceHeading from "../ServiceHeading";
 import Form from "./Form";
 
@@ -28,11 +27,12 @@ const CallOption = () => {
         <ServiceHeading service={service} />
         {/* <Graph data={chartData} tab="apy" /> */}
         <PriceChart price={redeem} />
-        <SafetyScore
-          score={service.safety_score.score}
-          features={service.safety_score.features}
-          description={service.safety_score.description}
-        />
+        <div className="flex flex-col gap-2 p-5 rounded-xl bg-primary-100">
+          <Text textStyle="lg" fontWeight="bold">
+            Description
+          </Text>
+          <Text textStyle="sm">{service.safety_score.description}</Text>
+        </div>
       </Box>
       <Box className="flex-shrink-0 col-span-full lg:col-span-3">
         {asset && <Form asset={asset} setRedeem={setRedeem} />}
