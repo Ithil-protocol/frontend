@@ -9,7 +9,7 @@ interface Props extends PositionsDetailItemType {
 }
 
 const PositionsDetailItem: FC<Props> = ({
-  postfix,
+  postfix = "",
   postfixIcon,
   postfixStyle = {},
   prefix,
@@ -50,7 +50,7 @@ const PositionsDetailItem: FC<Props> = ({
         >
           {value}
         </Text>
-        {postfix && (
+        {(postfix || postfixIcon) && (
           <Text
             style={postfixStyle}
             display="flex"

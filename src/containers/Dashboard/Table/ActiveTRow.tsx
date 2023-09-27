@@ -10,7 +10,12 @@ import {
 import { waitForTransaction } from "@wagmi/core";
 import Decimal from "decimal.js";
 import { FC, useState } from "react";
-import { Address, encodeAbiParameters, parseAbiParameters } from "viem";
+import {
+  Address,
+  encodeAbiParameters,
+  formatUnits,
+  parseAbiParameters,
+} from "viem";
 import { useContractWrite, useQueryClient } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
@@ -280,7 +285,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
             .toFixed(2)
             .toString(),
-          wethReward: data.type === "gmx" ? reward?.toString() : undefined,
+          wethReward:
+            data.type === "gmx" && reward !== undefined && asset
+              ? formatUnits(reward, asset?.decimals)?.toString()
+              : undefined,
           purchasePrice:
             data.type === "call-option" ? redeem?.toFixed(2) : undefined,
           pnlPercentage: data.pnlPercentage,

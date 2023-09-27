@@ -94,7 +94,11 @@ const PositionsDetails: React.FC<Props> = ({
             />
           )}
           {data.wethReward && (
-            <PositionsDetailItem title="Weth Reward" value={data.wethReward} />
+            <PositionsDetailItem
+              postfixIcon={<TokenIcon name="WETH" width={20} height={20} />}
+              title="Weth Reward"
+              value={data.wethReward}
+            />
           )}
           {data.position === "call-option" && data.type === "close" && (
             <>
