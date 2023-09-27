@@ -31,7 +31,7 @@ import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { palette } from "@/styles/theme/palette";
 import { PositionType } from "@/types";
-import { getAssetByAddress, isPositionActive } from "@/utils";
+import { cutoffDecimals, getAssetByAddress, isPositionActive } from "@/utils";
 
 interface Props {
   data: PositionType;
@@ -287,7 +287,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
             .toString(),
           wethReward:
             data.type === "gmx" && reward !== undefined && asset
-              ? formatUnits(reward, asset?.decimals)?.toString()
+              ? cutoffDecimals(+formatUnits(reward, 18), 6).toString()
               : undefined,
           purchasePrice:
             data.type === "call-option" ? redeem?.toFixed(2) : undefined,
