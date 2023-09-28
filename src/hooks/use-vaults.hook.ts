@@ -164,7 +164,7 @@ const getVaultData = async (address?: string) => {
     ); // Convert current time to seconds
     const timeDifference = currentTimeInSeconds.minus(creationTimeDecimal);
 
-    if (idx === 0) {
+    if (idx === 2) {
       console.log(
         "currentTimeInSeconds",
         currentTimeInSeconds.toString(),
@@ -173,6 +173,7 @@ const getVaultData = async (address?: string) => {
       );
       console.log(
         "apyyy",
+        asset.name,
         "vaultTotalAssets.plus(vaultCurrentProfits):",
         numerator.toString(),
         "vaultTotalSupply.minus(fixedYieldServiceBalance).minus(callOptionBalance):",
@@ -181,12 +182,18 @@ const getVaultData = async (address?: string) => {
         timeDifference.toString()
       );
     }
-    const apy = numerator
+    const apy = vaultTotalSupplyDecimal
       .div(denominator)
-      .minus(1)
+      .mul(numerator.div(vaultTotalSupplyDecimal).minus(1))
       .mul(365 * 86400)
       .mul(100)
       .div(timeDifference);
+    // const apy = numerator
+    //   .div(denominator)
+    //   .minus(1)
+    //   .mul(365 * 86400)
+    //   .mul(100)
+    //   .div(timeDifference);
     // const apy = new Decimal(
     //   new Decimal(sharesToAsset.toString())
     //     .div(10 ** asset.decimals)
