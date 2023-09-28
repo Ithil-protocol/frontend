@@ -125,10 +125,28 @@ const getVaultData = async (address?: string) => {
 
     const borrowed = multicallData[length * 4 + idx].result as bigint;
     const creationTime = multicallData[length * 5 + idx].result as bigint;
-    const callOptionBalances = multicallData[length * 6 + idx].result as bigint;
+    const callOptionBalances =
+      multicallData[length * 6 + idx].result ?? (0n as bigint);
     const fixedYieldBalance = multicallData[length * 7 + idx].result as bigint;
     const currentProfits = multicallData[length * 8 + idx].result as bigint;
     const totalSupply = multicallData[length * 9 + idx].result as bigint;
+    console.log(
+      "ojjb",
+      idx,
+      asset.name,
+      "borrowed",
+      borrowed,
+      "creationTime",
+      creationTime,
+      "callOptionBalances",
+      callOptionBalances,
+      "fixedYieldBalance",
+      fixedYieldBalance,
+      "currentProfits",
+      currentProfits,
+      "totalSupply",
+      totalSupply
+    );
 
     const vaultTotalAssetsDecimal = new Decimal(tvl.toString());
     const vaultCurrentProfitsDecimal = new Decimal(currentProfits.toString());
@@ -136,7 +154,6 @@ const getVaultData = async (address?: string) => {
     const fixedYieldServiceBalance = new Decimal(fixedYieldBalance.toString());
     const callOptionBalanceDecimal = new Decimal(callOptionBalances.toString());
     const creationTimeDecimal = new Decimal(creationTime.toString());
-
     const numerator = vaultTotalAssetsDecimal.plus(vaultCurrentProfitsDecimal);
     const denominator = vaultTotalSupplyDecimal
       .minus(fixedYieldServiceBalance)
@@ -147,6 +164,23 @@ const getVaultData = async (address?: string) => {
     ); // Convert current time to seconds
     const timeDifference = currentTimeInSeconds.minus(creationTimeDecimal);
 
+    if (idx === 0) {
+      console.log(
+        "currentTimeInSeconds",
+        currentTimeInSeconds.toString(),
+        "creationTime",
+        creationTimeDecimal.toString()
+      );
+      console.log(
+        "apyyy",
+        "vaultTotalAssets.plus(vaultCurrentProfits):",
+        numerator.toString(),
+        "vaultTotalSupply.minus(fixedYieldServiceBalance).minus(callOptionBalance):",
+        denominator.toString(),
+        "timeDifference:",
+        timeDifference.toString()
+      );
+    }
     const apy = numerator
       .div(denominator)
       .minus(1)
