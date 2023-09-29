@@ -56,9 +56,11 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const services = {
     aave: {
       abi: aaveABI,
+      address: "0x" as Address,
     },
     gmx: {
       abi: gmxABI,
+      address: "0x" as Address,
     },
     "fixed-yield": {
       abi: fixedYieldABI,
@@ -80,7 +82,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const queryClient = useQueryClient();
 
   const { write: close } = useContractWrite({
-    address: data.contractAddress,
+    address:
+      data.type === "aave" || data.type === "gmx"
+        ? data.contractAddress
+        : service?.address,
     abi: service?.abi as any,
     functionName: "close",
     onMutate: () => {
