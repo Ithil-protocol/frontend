@@ -53,7 +53,8 @@ export const useAaveOpenPositions = () => {
   if (data) {
     for (let i = 0; i < length; i++) {
       const agreementWithContractAddress = data[i];
-      const { contractAddress, ...agreement } = agreementWithContractAddress;
+      const { contractAddress, id, ...agreement } =
+        agreementWithContractAddress;
       const amount = agreement?.loans[0].amount;
       const margin = agreement?.loans[0].margin;
       const quoteResult = quotes?.[i].result as unknown[] as bigint[];
@@ -76,6 +77,7 @@ export const useAaveOpenPositions = () => {
         contractAddress,
         agreement,
         quote,
+        id,
         pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
         // *10000 / 100 => percent with 2 decimal
         pnlPercentage:
