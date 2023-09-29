@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import { aaveABI, gmxABI } from "@/abi";
 import { publicClient } from "@/wagmiTest/config";
 
-export const useAaveClosePositions = () => {
+export const useAaveClosedPositions = () => {
   const { address: accountAddress } = useAccount();
   const result = useQuery({
     queryKey: ["aave-closed-positions", accountAddress],
@@ -31,7 +31,7 @@ export const useAaveClosePositions = () => {
   };
 };
 
-export const useGmxClosePositions = () => {
+export const useGmxClosedPositions = () => {
   const { address: accountAddress } = useAccount();
   const result = useQuery({
     queryKey: ["gmx-closed-positions", accountAddress],
@@ -58,9 +58,10 @@ export const useGmxClosePositions = () => {
   };
 };
 
-export const useClosePositions = () => {
-  const { data: aave = [], isLoading: isLoadingAave } = useAaveClosePositions();
-  const { data: gmx = [], isLoading: isLoadingGmx } = useGmxClosePositions();
+export const useClosedPositions = () => {
+  const { data: aave = [], isLoading: isLoadingAave } =
+    useAaveClosedPositions();
+  const { data: gmx = [], isLoading: isLoadingGmx } = useGmxClosedPositions();
 
   const aaveWithTypes = aave.map((item) => ({
     ...item,
