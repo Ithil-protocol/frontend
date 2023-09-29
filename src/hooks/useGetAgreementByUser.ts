@@ -62,9 +62,9 @@ export const useGetGmxAgreementsByUser = () => {
     const allAgreementsOfUser = await Promise.all(allGmxAgreementContractRead);
     const allAgreementsOfUserWithAddress = allAgreementsOfUser.flatMap(
       (contracts, i) => {
-        return contracts[0].map((item, index) => {
+        return contracts[0].map((agreement, index) => {
           return {
-            ...item,
+            agreement,
             id: contracts[1][index],
             contractAddress: gmxContractAddresses[i] as Address,
           };
