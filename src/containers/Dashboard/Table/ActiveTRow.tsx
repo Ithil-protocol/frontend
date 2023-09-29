@@ -271,7 +271,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       </Tr>
 
       <PositionModal
-        canShowPercentageSlider
+        canShowPercentageSlider={data.type === "call-option"}
         canShowSlippageSlider
         isOpen={isOpen}
         onClose={onClose}
@@ -294,7 +294,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           pnlPercentage: data.pnlPercentage,
           formattedPnl: data.formattedPnl,
           pnlColor,
-          percentage,
+          percentage: percentage.toString(),
+          notionalPercentage: (100 - percentage).toString(),
         }}
         title="Close Position"
         onPurchasePriceChange={setPercentage}
