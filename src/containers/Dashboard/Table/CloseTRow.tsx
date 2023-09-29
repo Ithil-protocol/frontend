@@ -11,7 +11,10 @@ import { getAssetByAddress } from "@/utils";
 import { formatFullDate } from "@/utils/date.utils";
 
 interface Props {
-  data: Omit<PositionType, "slippage" | "amount" | "name" | "id" | "expireAt">;
+  data: Omit<
+    PositionType,
+    "slippage" | "amount" | "name" | "id" | "expireAt" | "contractAddress"
+  >;
 }
 
 const CloseTRow: FC<Props> = ({ data }) => {

@@ -26,7 +26,7 @@ export default defineConfig([
         //       ? "0xD1d01555b5DC60ba330414be2266f4FAC195a32B"
         //       : "0xD1d01555b5DC60ba330414be2266f4FAC195a32B",
         // },
-        address: contracts.aaveService as Address,
+        address: contracts.aaveService[0] as Address,
         abi: aaveABI,
       },
     ],
@@ -59,7 +59,7 @@ export default defineConfig([
       {
         name: "Gmx",
         abi: gmxABI,
-        address: contracts.gmxService as Address,
+        address: contracts.gmxService[0] as Address,
       },
     ],
     plugins: [react()],

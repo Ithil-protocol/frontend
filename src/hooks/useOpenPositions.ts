@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { readContract } from "@wagmi/core";
-import { formatUnits } from "viem";
+import { Address, formatUnits } from "viem";
 import { useAccount, useContractReads } from "wagmi";
 
 import { aaveABI, callOptionABI, gmxABI } from "@/abi";
@@ -11,8 +11,6 @@ import {
   getServiceByName,
 } from "@/utils";
 
-import { aaveAddress } from "./generated/aave";
-import { gmxAddress } from "./generated/gmx";
 import {
   useGetAaveAgreementsByUser,
   useGetFixedYieldAgreementsByUser,
@@ -24,18 +22,18 @@ export const useAaveOpenPositions = () => {
 
   const positions: OpenPosition[] = [];
 
-  const quoteContracts = data?.[0]?.map((agreement) => ({
+  const quoteContracts = data?.map((position) => ({
     abi: aaveABI,
-    address: aaveAddress,
+    address: position.contractAddress,
     functionName: "quote",
-    args: [agreement],
+    args: [position.agreement],
   }));
 
-  const feeContracts = data?.[0]?.map((agreement) => ({
+  const feeContracts = data?.map((position) => ({
     abi: aaveABI,
-    address: aaveAddress,
+    address: position.contractAddress,
     functionName: "computeDueFees",
-    args: [agreement],
+    args: [position.agreement],
   }));
 
   const { data: quotes, isLoading: isQuotesLoading } = useContractReads({
@@ -48,42 +46,45 @@ export const useAaveOpenPositions = () => {
     enabled: !!data,
   });
 
-  const length = data?.[0].length || 0;
+  const length = data?.length || 0;
 
-  for (let i = 0; i < length; i++) {
-    const agreement = data?.[0][i];
-    const amount = agreement?.loans[0].amount;
-    const margin = agreement?.loans[0].margin;
-    const quoteResult = quotes?.[i].result as unknown[] as bigint[];
-    const quote = quoteResult?.[0] || 0n;
-    const feeResult = fees?.[i].result as unknown[] as bigint[];
-    const fee = feeResult?.[0] || 0n;
+  if (data) {
+    for (let i = 0; i < length; i++) {
+      const { contractAddress, id, agreement } = data[i];
+      const amount = agreement?.loans[0].amount;
+      const margin = agreement?.loans[0].margin;
+      const quoteResult = quotes?.[i].result as unknown[] as bigint[];
+      const quote = quoteResult?.[0] || 0n;
+      const feeResult = fees?.[i].result as unknown[] as bigint[];
+      const fee = feeResult?.[0] || 0n;
 
-    const isPnlLoading =
-      isQuotesLoading || isFeesLoading || isAgreementsLoading;
+      const isPnlLoading =
+        isQuotesLoading || isFeesLoading || isAgreementsLoading;
 
-    const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
+      const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
 
-    const tokenAddress = agreement?.loans[0].token;
+      const tokenAddress = agreement?.loans[0].token;
 
-    const asset = tokenAddress && getAssetByAddress(tokenAddress);
+      const asset = tokenAddress && getAssetByAddress(tokenAddress);
 
-    const decimals = asset ? asset.decimals : 1;
+      const decimals = asset ? asset.decimals : 1;
 
-    positions.push({
-      agreement,
-      id: data?.[1][i],
-      quote,
-      pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
-      // *10000 / 100 => percent with 2 decimal
-      pnlPercentage:
-        pnl !== undefined && margin !== undefined
-          ? (Number((pnl * 10000n) / margin) / 100).toString()
-          : undefined,
-      isPnlLoading,
-      type: "aave",
-      name: "AAVE",
-    });
+      positions.push({
+        contractAddress,
+        agreement,
+        id,
+        quote,
+        pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
+        // *10000 / 100 => percent with 2 decimal
+        pnlPercentage:
+          pnl !== undefined && margin !== undefined
+            ? (Number((pnl * 10000n) / margin) / 100).toString()
+            : undefined,
+        isPnlLoading,
+        type: "aave",
+        name: "AAVE",
+      });
+    }
   }
 
   return {
@@ -96,18 +97,18 @@ export const useGmxOpenPositions = () => {
 
   const positions: OpenPosition[] = [];
 
-  const quoteContracts = data?.[0]?.map((agreement) => ({
+  const quoteContracts = data?.map((position) => ({
     abi: gmxABI,
-    address: gmxAddress,
+    address: position.contractAddress,
     functionName: "quote",
-    args: [agreement],
+    args: [position.agreement],
   }));
 
-  const feeContracts = data?.[0]?.map((agreement) => ({
+  const feeContracts = data?.map((position) => ({
     abi: gmxABI,
-    address: gmxAddress,
+    address: position.contractAddress,
     functionName: "computeDueFees",
-    args: [agreement],
+    args: [position.agreement],
   }));
 
   const { data: quotes, isLoading: isQuotesLoading } = useContractReads({
@@ -122,36 +123,38 @@ export const useGmxOpenPositions = () => {
 
   const isPnlLoading = isQuotesLoading || isFeesLoading || isAgreementsLoading;
 
-  const length = data?.[0].length || 0;
+  const length = data?.length || 0;
+  if (data) {
+    for (let i = 0; i < length; i++) {
+      const { contractAddress, id, agreement } = data[i];
+      const amount = agreement?.loans[0].amount;
+      const margin = agreement?.loans[0].margin;
+      const quoteResult = quotes?.[i].result as unknown[] as bigint[];
+      const quote = quoteResult?.[0] || 0n;
+      const feeResult = fees?.[i].result as unknown[] as bigint[];
+      const fee = feeResult?.[0] || 0n;
 
-  for (let i = 0; i < length; i++) {
-    const agreement = data?.[0][i];
-    const amount = agreement?.loans[0].amount;
-    const margin = agreement?.loans[0].margin;
-    const quoteResult = quotes?.[i].result as unknown[] as bigint[];
-    const quote = quoteResult?.[0] || 0n;
-    const feeResult = fees?.[i].result as unknown[] as bigint[];
-    const fee = feeResult?.[0] || 0n;
+      const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
 
-    const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
+      const tokenAddress = agreement?.loans[0].token;
+      const asset = tokenAddress && getAssetByAddress(tokenAddress);
 
-    const tokenAddress = agreement?.loans[0].token;
-    const asset = tokenAddress && getAssetByAddress(tokenAddress);
+      const decimals = asset ? asset.decimals : 1;
 
-    const decimals = asset ? asset.decimals : 1;
-
-    positions.push({
-      agreement,
-      id: data?.[1][i],
-      quote,
-      pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
-      pnlPercentage:
-        pnl !== undefined && margin !== undefined
-          ? (Number((pnl * 10000n) / margin) / 100).toString()
-          : undefined,
-      type: "gmx",
-      name: "GMX",
-    });
+      positions.push({
+        contractAddress,
+        agreement,
+        id,
+        quote,
+        pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
+        pnlPercentage:
+          pnl !== undefined && margin !== undefined
+            ? (Number((pnl * 10000n) / margin) / 100).toString()
+            : undefined,
+        type: "gmx",
+        name: "GMX",
+      });
+    }
   }
 
   return {
@@ -170,6 +173,8 @@ export const useFixedYieldOpenPositions = () => {
   for (let i = 0; i < length; i++) {
     const agreement = data?.[0][i];
     positions.push({
+      contractAddress: "0x" as Address,
+
       agreement,
       id: data?.[1][i],
       type: "fixed-yield",
@@ -258,6 +263,8 @@ export const useCallOptionOpenPositions = () => {
     const [agreements, ids] = service;
     agreements?.forEach((agreement, index) => {
       positions.push({
+        contractAddress: "0x" as Address,
+
         agreement,
         id: ids?.[index],
         type: "call-option",
