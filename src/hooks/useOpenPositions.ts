@@ -75,7 +75,7 @@ export const useAaveOpenPositions = () => {
 
       positions.push({
         contractAddress,
-        agreement,
+        agreement: agreementWithContractAddress,
         quote,
         id,
         pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
@@ -90,6 +90,7 @@ export const useAaveOpenPositions = () => {
       });
     }
   }
+  console.log("opopop", positions);
 
   return {
     positions,
@@ -101,14 +102,14 @@ export const useGmxOpenPositions = () => {
 
   const positions: OpenPosition[] = [];
 
-  const quoteContracts = data?.[0]?.map((agreement) => ({
+  const quoteContracts = data?.map((agreement) => ({
     abi: gmxABI,
     address: gmxAddress,
     functionName: "quote",
     args: [agreement],
   }));
 
-  const feeContracts = data?.[0]?.map((agreement) => ({
+  const feeContracts = data?.map((agreement) => ({
     abi: gmxABI,
     address: gmxAddress,
     functionName: "computeDueFees",
@@ -127,37 +128,40 @@ export const useGmxOpenPositions = () => {
 
   const isPnlLoading = isQuotesLoading || isFeesLoading || isAgreementsLoading;
 
-  const length = data?.[0].length || 0;
+  const length = data?.length || 0;
+  if (data) {
+    for (let i = 0; i < length; i++) {
+      const agreementWithContractAddress = data[i];
+      const { contractAddress, id, ...agreement } =
+        agreementWithContractAddress;
+      const amount = agreement?.loans[0].amount;
+      const margin = agreement?.loans[0].margin;
+      const quoteResult = quotes?.[i].result as unknown[] as bigint[];
+      const quote = quoteResult?.[0] || 0n;
+      const feeResult = fees?.[i].result as unknown[] as bigint[];
+      const fee = feeResult?.[0] || 0n;
 
-  for (let i = 0; i < length; i++) {
-    const agreement = data?.[0][i];
-    const amount = agreement?.loans[0].amount;
-    const margin = agreement?.loans[0].margin;
-    const quoteResult = quotes?.[i].result as unknown[] as bigint[];
-    const quote = quoteResult?.[0] || 0n;
-    const feeResult = fees?.[i].result as unknown[] as bigint[];
-    const fee = feeResult?.[0] || 0n;
+      const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
 
-    const pnl = !isPnlLoading ? quote - fee - amount! - margin! : undefined;
+      const tokenAddress = agreement?.loans[0].token;
+      const asset = tokenAddress && getAssetByAddress(tokenAddress);
 
-    const tokenAddress = agreement?.loans[0].token;
-    const asset = tokenAddress && getAssetByAddress(tokenAddress);
+      const decimals = asset ? asset.decimals : 1;
 
-    const decimals = asset ? asset.decimals : 1;
-
-    positions.push({
-      contractAddress: "0x" as Address,
-      agreement,
-      id: data?.[1][i],
-      quote,
-      pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
-      pnlPercentage:
-        pnl !== undefined && margin !== undefined
-          ? (Number((pnl * 10000n) / margin) / 100).toString()
-          : undefined,
-      type: "gmx",
-      name: "GMX",
-    });
+      positions.push({
+        contractAddress,
+        agreement,
+        id,
+        quote,
+        pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
+        pnlPercentage:
+          pnl !== undefined && margin !== undefined
+            ? (Number((pnl * 10000n) / margin) / 100).toString()
+            : undefined,
+        type: "gmx",
+        name: "GMX",
+      });
+    }
   }
 
   return {

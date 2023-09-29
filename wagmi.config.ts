@@ -59,7 +59,7 @@ export default defineConfig([
       {
         name: "Gmx",
         abi: gmxABI,
-        address: contracts.gmxService as Address,
+        address: contracts.gmxService[0] as Address,
       },
     ],
     plugins: [react()],
