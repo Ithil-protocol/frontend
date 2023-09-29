@@ -9,7 +9,7 @@ import {
 import { FC } from "react";
 import { formatUnits } from "viem";
 
-import { useClosePositions } from "@/hooks/useClosePositions";
+import { useClosedPositions } from "@/hooks/useClosePositions";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import {
@@ -57,7 +57,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
-    useClosePositions();
+    useClosedPositions();
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
   const hasItems = {
