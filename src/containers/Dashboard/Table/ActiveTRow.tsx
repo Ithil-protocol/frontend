@@ -253,7 +253,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
             <Text fontSize={"medium"} className="mt-1.5">
               {data.type !== "call-option" &&
                 data.type !== "fixed-yield" &&
-                `(x${data.leverage})`}
+                `(x${cutoffDecimals(Number(data.leverage), 1)})`}
             </Text>
           </div>
         </Td>
