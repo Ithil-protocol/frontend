@@ -11,7 +11,6 @@ import {
   getServiceByName,
 } from "@/utils";
 
-import { aaveAddress } from "./generated/aave";
 import { gmxAddress } from "./generated/gmx";
 import {
   useGetAaveAgreementsByUser,
@@ -24,18 +23,18 @@ export const useAaveOpenPositions = () => {
 
   const positions: OpenPosition[] = [];
 
-  const quoteContracts = data?.map((agreement) => ({
+  const quoteContracts = data?.map((position) => ({
     abi: aaveABI,
-    address: aaveAddress,
+    address: position.contractAddress,
     functionName: "quote",
-    args: [agreement],
+    args: [position.agreement],
   }));
 
-  const feeContracts = data?.map((agreement) => ({
+  const feeContracts = data?.map((position) => ({
     abi: aaveABI,
-    address: aaveAddress,
+    address: position.contractAddress,
     functionName: "computeDueFees",
-    args: [agreement],
+    args: [position.agreement],
   }));
 
   const { data: quotes, isLoading: isQuotesLoading } = useContractReads({
@@ -52,9 +51,7 @@ export const useAaveOpenPositions = () => {
 
   if (data) {
     for (let i = 0; i < length; i++) {
-      const agreementWithContractAddress = data[i];
-      const { contractAddress, id, ...agreement } =
-        agreementWithContractAddress;
+      const { contractAddress, id, agreement } = data[i];
       const amount = agreement?.loans[0].amount;
       const margin = agreement?.loans[0].margin;
       const quoteResult = quotes?.[i].result as unknown[] as bigint[];
@@ -75,9 +72,9 @@ export const useAaveOpenPositions = () => {
 
       positions.push({
         contractAddress,
-        agreement: agreementWithContractAddress,
-        quote,
+        agreement,
         id,
+        quote,
         pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
         // *10000 / 100 => percent with 2 decimal
         pnlPercentage:
@@ -90,7 +87,6 @@ export const useAaveOpenPositions = () => {
       });
     }
   }
-  console.log("opopop", positions);
 
   return {
     positions,

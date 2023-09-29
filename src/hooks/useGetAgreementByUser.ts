@@ -26,9 +26,9 @@ export const useGetAaveAgreementsByUser = () => {
     const allAgreementsOfUser = await Promise.all(allAaveAgreementContractRead);
     const allAgreementsOfUserWithAddress = allAgreementsOfUser.flatMap(
       (contracts, i) => {
-        return contracts[0].map((item, index) => {
+        return contracts[0].map((agreement, index) => {
           return {
-            ...item,
+            agreement,
             id: contracts[1][index],
             contractAddress: aaveContractAddresses[i] as Address,
           };
