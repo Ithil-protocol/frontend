@@ -26,13 +26,25 @@ export const useGetAaveAgreementsByUser = () => {
       }
     );
     const allAgreementsOfUser = await Promise.all(allAaveAgreementContractRead);
-    return allAgreementsOfUser;
+    const allAgreementsOfUserWithAddress = allAgreementsOfUser.map(
+      (contracts, i) => {
+        return contracts[0].map((item, index) => {
+          return {
+            ...item,
+            id: contracts[1][index],
+            address: aaveContractAddresses[i],
+          };
+        });
+      }
+    );
+    return allAgreementsOfUserWithAddress.flat();
   };
 
   const { data } = useQuery({
     queryFn: getAaveAgreementOfUser,
     queryKey: [accountAddress, "getUserAgreements", "aave"],
   });
+
   console.log("opop", data);
 
   return useAaveGetUserAgreements({
