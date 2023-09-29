@@ -5,7 +5,6 @@ import { readContract } from "wagmi/actions";
 import { aaveABI } from "@/abi";
 import contracts from "@/deploy/contracts.json";
 
-import { useAaveGetUserAgreements } from "./generated/aave";
 import { useFixedYieldGetUserAgreements } from "./generated/fixedYield";
 import { useGmxGetUserAgreements } from "./generated/gmx";
 
@@ -40,15 +39,9 @@ export const useGetAaveAgreementsByUser = () => {
     return allAgreementsOfUserWithAddress;
   };
 
-  const { data } = useQuery({
+  return useQuery({
     queryFn: getAaveAgreementOfUser,
     queryKey: [accountAddress, "getUserAgreements", "aave"],
-  });
-
-  console.log("opop", data);
-
-  return useAaveGetUserAgreements({
-    account: accountAddress,
     enabled: !!accountAddress,
   });
 };

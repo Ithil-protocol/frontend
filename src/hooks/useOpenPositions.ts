@@ -24,14 +24,14 @@ export const useAaveOpenPositions = () => {
 
   const positions: OpenPosition[] = [];
 
-  const quoteContracts = data?.[0]?.map((agreement) => ({
+  const quoteContracts = data?.map((agreement) => ({
     abi: aaveABI,
     address: aaveAddress,
     functionName: "quote",
     args: [agreement],
   }));
 
-  const feeContracts = data?.[0]?.map((agreement) => ({
+  const feeContracts = data?.map((agreement) => ({
     abi: aaveABI,
     address: aaveAddress,
     functionName: "computeDueFees",
@@ -48,10 +48,10 @@ export const useAaveOpenPositions = () => {
     enabled: !!data,
   });
 
-  const length = data?.[0].length || 0;
+  const length = data?.length || 0;
 
   for (let i = 0; i < length; i++) {
-    const agreement = data?.[0][i];
+    const agreement = data?.[i];
     const amount = agreement?.loans[0].amount;
     const margin = agreement?.loans[0].margin;
     const quoteResult = quotes?.[i].result as unknown[] as bigint[];
@@ -72,7 +72,6 @@ export const useAaveOpenPositions = () => {
 
     positions.push({
       agreement,
-      id: data?.[1][i],
       quote,
       pnl: pnl !== undefined ? formatUnits(pnl, decimals) : undefined,
       // *10000 / 100 => percent with 2 decimal
