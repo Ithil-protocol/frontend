@@ -9,7 +9,7 @@ import {
 import { FC } from "react";
 import { formatUnits } from "viem";
 
-import { useClosedPositions } from "@/hooks/useClosePositions";
+import { useClosedPositions } from "@/hooks/useClosedPositions";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import {
