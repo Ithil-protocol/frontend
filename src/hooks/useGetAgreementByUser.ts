@@ -15,7 +15,7 @@ export const useGetAaveAgreementsByUser = () => {
   const getAaveAgreementOfUser = async () => {
     const aaveContractAddresses = contracts.aaveService;
 
-    const allAaveAgreementContracts = aaveContractAddresses.map(
+    const allAaveAgreementContractRead = aaveContractAddresses.map(
       async (address) => {
         return readContract({
           address: address as Address,
@@ -25,7 +25,8 @@ export const useGetAaveAgreementsByUser = () => {
         });
       }
     );
-    const allAgreementOfUser = await Promise.all(allAaveAgreementContracts);
+    const allAgreementsOfUser = await Promise.all(allAaveAgreementContractRead);
+    return allAgreementsOfUser;
   };
 
   const { data } = useQuery({
