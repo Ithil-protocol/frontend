@@ -10,7 +10,7 @@ export type PromiseVoidNoArgs = () => Promise<void>;
 
 export interface PositionsDetailItemType {
   title: string;
-  value: string;
+  value: string | number;
   prefix?: string;
   postfix?: string;
   postfixIcon?: React.ReactElement;
@@ -179,7 +179,8 @@ export interface PositionData {
   leverage?: string;
   margin?: string;
   maturityDate?: string;
-  percentage?: number;
+  notionalPercentage?: string;
+  percentage?: string;
   pnlColor?: string;
   pnlPercentage?: string;
   position?: ServiceName;

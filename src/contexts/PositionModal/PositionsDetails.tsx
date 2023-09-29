@@ -56,6 +56,7 @@ const PositionsDetails: React.FC<Props> = ({
               value={data.position.toUpperCase()}
             />
           )}
+
           {data.amount && (
             <PositionsDetailItem
               title="Amount"
@@ -67,6 +68,64 @@ const PositionsDetails: React.FC<Props> = ({
                 )
               }
             />
+          )}
+
+          {data.amountObtained && (
+            <PositionsDetailItem
+              title="Amount Obtained"
+              value={data.amountObtained}
+              postfix={data.assetLabel?.toUpperCase()}
+              postfixIcon={
+                data.assetName && (
+                  <TokenIcon name={data.assetName} width={20} height={20} />
+                )
+              }
+            />
+          )}
+
+          {data.percentage && (
+            <PositionsDetailItem
+              // postfixIcon={<TokenIcon name="WETH" width={20} height={20} />}
+              postfix="%"
+              title="ITHIL Percentage"
+              value={data.percentage}
+            />
+          )}
+
+          {data.notionalPercentage && (
+            <PositionsDetailItem
+              // postfixIcon={<TokenIcon name="WETH" width={20} height={20} />}
+              postfix="%"
+              title="Notional Percentage"
+              value={data.notionalPercentage}
+            />
+          )}
+
+          {data.position === "call-option" && data.type === "close" && (
+            <>
+              <PositionsDetailItem
+                title="Purchase Price"
+                prefix="$"
+                value={data.purchasePrice || "0"}
+              />
+            </>
+          )}
+
+          {canShowPercentageSlider && (
+            <div
+              style={{
+                padding: "10px 5px 15px",
+                width: "100%",
+              }}
+            >
+              <Slider
+                value={Number(data.percentage) || 0}
+                max={100}
+                min={0}
+                onChange={onPurchasePriceChange}
+                extension="%"
+              />
+            </div>
           )}
 
           {data.margin && (
@@ -81,18 +140,7 @@ const PositionsDetails: React.FC<Props> = ({
               }
             />
           )}
-          {data.amountObtained && (
-            <PositionsDetailItem
-              title="Amount Obtained"
-              value={data.amountObtained}
-              postfix={data.assetLabel?.toUpperCase()}
-              postfixIcon={
-                data.assetName && (
-                  <TokenIcon name={data.assetName} width={20} height={20} />
-                )
-              }
-            />
-          )}
+
           {data.wethReward && (
             <PositionsDetailItem
               postfixIcon={<TokenIcon name="WETH" width={20} height={20} />}
@@ -100,31 +148,7 @@ const PositionsDetails: React.FC<Props> = ({
               value={data.wethReward}
             />
           )}
-          {data.position === "call-option" && data.type === "close" && (
-            <>
-              <PositionsDetailItem
-                title="Purchase Price"
-                prefix="$"
-                value={data.purchasePrice || "0"}
-              />
-              <div
-                style={{
-                  padding: "10px 5px",
-                  width: "100%",
-                }}
-              >
-                {canShowPercentageSlider && (
-                  <Slider
-                    value={data.percentage || 0}
-                    max={100}
-                    min={0}
-                    onChange={onPurchasePriceChange}
-                    extension="%"
-                  />
-                )}
-              </div>
-            </>
-          )}
+
           {data.collateral && (
             <PositionsDetailItem
               title="Collateral"
@@ -137,6 +161,7 @@ const PositionsDetails: React.FC<Props> = ({
               }
             />
           )}
+
           {data.aCollateral && (
             <PositionsDetailItem
               title="Collateral"
@@ -147,6 +172,7 @@ const PositionsDetails: React.FC<Props> = ({
               }
             />
           )}
+
           {data.gmxCollateral && (
             <PositionsDetailItem
               title="Collateral"
@@ -157,6 +183,7 @@ const PositionsDetails: React.FC<Props> = ({
               }
             />
           )}
+
           {data.ithilObtained && (
             <PositionsDetailItem
               title="Obtained"
@@ -165,6 +192,7 @@ const PositionsDetails: React.FC<Props> = ({
               postfixIcon={<ITHILObtainedIcon width={20} height={20} />}
             />
           )}
+
           {data.redeemPrice && (
             <PositionsDetailItem
               title="Redeem price"
@@ -172,12 +200,14 @@ const PositionsDetails: React.FC<Props> = ({
               prefix="$"
             />
           )}
+
           {data.maturityDate && (
             <PositionsDetailItem
               title="Maturity date"
               value={data.maturityDate}
             />
           )}
+
           {data.pnlPercentage && data.formattedPnl && (
             <PositionsDetailItem
               title="PNL"
@@ -193,6 +223,7 @@ const PositionsDetails: React.FC<Props> = ({
               prefixStyle={{ color: data.pnlColor }}
             />
           )}
+
           {isDebitService && (
             <PositionsDetailItem
               title="Leverage"
@@ -200,6 +231,7 @@ const PositionsDetails: React.FC<Props> = ({
               value={data.leverage || "0"}
             />
           )}
+
           {isDebitService && (
             <>
               <PositionsDetailItem
