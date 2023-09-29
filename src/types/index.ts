@@ -92,6 +92,7 @@ export type AssetEssential = Pick<
 >;
 
 export interface PositionType {
+  contractAddress: Address;
   token: Address;
   amount: string;
   margin: string | number;

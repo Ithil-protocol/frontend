@@ -89,7 +89,6 @@ export const useAaveOpenPositions = () => {
         name: "AAVE",
       });
     }
-    console.log("opop", positions);
   }
 
   return {
