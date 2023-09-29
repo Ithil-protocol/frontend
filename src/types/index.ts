@@ -146,6 +146,7 @@ export interface Agreement {
 }
 
 export interface OpenPosition {
+  contractAddress: Address;
   agreement?: Agreement;
   pnlPercentage?: string;
   pnl?: string;

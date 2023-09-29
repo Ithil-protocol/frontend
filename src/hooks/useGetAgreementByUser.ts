@@ -31,7 +31,7 @@ export const useGetAaveAgreementsByUser = () => {
           return {
             ...item,
             id: contracts[1][index],
-            address: aaveContractAddresses[i],
+            contractAddress: aaveContractAddresses[i] as Address,
           };
         });
       }
