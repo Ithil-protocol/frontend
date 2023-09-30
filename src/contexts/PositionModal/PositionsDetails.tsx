@@ -39,12 +39,17 @@ const PositionsDetails: React.FC<Props> = ({
   const ASSET_LABEL = data.assetLabel?.toUpperCase();
 
   const amountObtainedValues = [];
-  if (data.amountObtained) amountObtainedValues.push(data.amountObtained);
-  const amountObtainedPostfix = [`${ASSET_LABEL} %` || ""];
-  const amountObtainedPostfixIcon = [
-    // eslint-disable-next-line react/jsx-key
-    <TokenIcon name={data.assetName} width={20} height={20} />,
-  ];
+  const amountObtainedPostfix = [];
+  const amountObtainedPostfixIcon = [];
+
+  if (data.serviceName !== "call-option" && data.amountObtained) {
+    amountObtainedValues.push(data.amountObtained);
+    amountObtainedPostfix.push(ASSET_LABEL || "");
+    amountObtainedPostfixIcon.push(
+      <TokenIcon name={data.assetName} width={20} height={20} />
+    );
+  }
+
   if (data.percentage) {
     amountObtainedValues.push(data.percentage);
     amountObtainedPostfix.push("ITHIL");
@@ -54,7 +59,7 @@ const PositionsDetails: React.FC<Props> = ({
   }
   if (data.notionalPercentage) {
     amountObtainedValues.push(data.notionalPercentage);
-    amountObtainedPostfix.push(`${ASSET_LABEL} %` || "");
+    amountObtainedPostfix.push(ASSET_LABEL || "");
     amountObtainedPostfixIcon.push(
       <TokenIcon name={data.assetName} width={20} height={20} />
     );

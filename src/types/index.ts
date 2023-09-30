@@ -186,6 +186,7 @@ export interface PositionData {
   position?: ServiceName;
   purchasePrice?: string;
   redeemPrice?: string;
+  serviceName?: ServiceName;
   slippage?: string;
   submitAlertText?: string | React.ReactElement;
   type?: "open" | "close";

@@ -152,6 +152,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
 
   if (!isMounted) return null;
 
+  const amountObtained = Number(data.margin) + Number(data.pnl ?? 0);
+
   return (
     <>
       <Tr
@@ -282,9 +284,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           position: data.type,
           leverage: data.leverage,
           slippage: slippage.toString(),
-          amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
-            .toFixed(2)
-            .toString(),
+          amountObtained: amountObtained.toFixed(2),
           wethReward:
             data.type === "gmx" && reward !== undefined && asset
               ? cutoffDecimals(+formatUnits(reward, 18), 6).toString()
@@ -295,11 +295,14 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           formattedPnl: data.formattedPnl,
           pnlColor,
           percentage:
-            data.type === "call-option" ? percentage.toString() : undefined,
+            data.type === "call-option"
+              ? (amountObtained * percentage).toString()
+              : undefined,
           notionalPercentage:
             data.type === "call-option"
-              ? (100 - percentage).toString()
+              ? (amountObtained * (100 - percentage)).toString()
               : undefined,
+          serviceName: data.type,
         }}
         title="Close Position"
         onPurchasePriceChange={setPercentage}
