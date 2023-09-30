@@ -10,10 +10,10 @@ export type PromiseVoidNoArgs = () => Promise<void>;
 
 export interface PositionsDetailItemType {
   title: string;
-  value: string | number;
+  value: string | number | string[] | number[];
   prefix?: string;
-  postfix?: string;
-  postfixIcon?: React.ReactElement;
+  postfix?: string | string[];
+  postfixIcon?: React.ReactElement | React.ReactElement[];
   postfixStyle?: React.CSSProperties;
   prefixStyle?: React.CSSProperties;
 }

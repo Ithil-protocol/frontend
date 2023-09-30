@@ -28,11 +28,38 @@ const PositionsDetails: React.FC<Props> = ({
 }) => {
   const { pickColor, colorMode } = useColorMode();
 
+  if (!data.assetName) return null;
+
   const isDebitService = data.position === "aave" || data.position === "gmx";
 
   const ITHILObtainedIcon = colorMode === "dark" ? IthilDark : IthilLight;
 
   const { slippage = "0" } = data;
+
+  const ASSET_LABEL = data.assetLabel?.toUpperCase();
+
+  const amountObtainedValues = [];
+  if (data.amountObtained) amountObtainedValues.push(data.amountObtained);
+  const amountObtainedPostfix = [`${ASSET_LABEL} %` || ""];
+  const amountObtainedPostfixIcon = [
+    // eslint-disable-next-line react/jsx-key
+    <TokenIcon name={data.assetName} width={20} height={20} />,
+  ];
+  if (data.percentage) {
+    amountObtainedValues.push(data.percentage);
+    amountObtainedPostfix.push("ITHIL");
+    amountObtainedPostfixIcon.push(
+      <ITHILObtainedIcon width={20} height={20} />
+    );
+  }
+  if (data.notionalPercentage) {
+    amountObtainedValues.push(data.notionalPercentage);
+    amountObtainedPostfix.push(`${ASSET_LABEL} %` || "");
+    amountObtainedPostfixIcon.push(
+      <TokenIcon name={data.assetName} width={20} height={20} />
+    );
+  }
+
   return (
     <GridItem
       borderRadius={["12px"]}
@@ -61,7 +88,7 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Amount"
               value={data.amount}
-              postfix={data.assetLabel?.toUpperCase()}
+              postfix={ASSET_LABEL}
               postfixIcon={
                 data.assetName && (
                   <TokenIcon name={data.assetName} width={20} height={20} />
@@ -73,31 +100,9 @@ const PositionsDetails: React.FC<Props> = ({
           {data.amountObtained && (
             <PositionsDetailItem
               title="Amount Obtained"
-              value={data.amountObtained}
-              postfix={data.assetLabel?.toUpperCase()}
-              postfixIcon={
-                data.assetName && (
-                  <TokenIcon name={data.assetName} width={20} height={20} />
-                )
-              }
-            />
-          )}
-
-          {data.percentage && (
-            <PositionsDetailItem
-              // postfixIcon={<TokenIcon name="WETH" width={20} height={20} />}
-              postfix="%"
-              title="ITHIL Percentage"
-              value={data.percentage}
-            />
-          )}
-
-          {data.notionalPercentage && (
-            <PositionsDetailItem
-              // postfixIcon={<TokenIcon name="WETH" width={20} height={20} />}
-              postfix="%"
-              title="Notional Percentage"
-              value={data.notionalPercentage}
+              value={amountObtainedValues}
+              postfix={data.assetLabel && amountObtainedPostfix}
+              postfixIcon={data.assetName && amountObtainedPostfixIcon}
             />
           )}
 
@@ -132,7 +137,7 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Margin"
               value={data.margin}
-              postfix={data.assetLabel?.toUpperCase()}
+              postfix={ASSET_LABEL}
               postfixIcon={
                 data.assetName && (
                   <TokenIcon name={data.assetName} width={20} height={20} />
@@ -153,7 +158,7 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Collateral"
               value={data.collateral}
-              postfix={data.assetLabel?.toUpperCase()}
+              postfix={ASSET_LABEL}
               postfixIcon={
                 data.assetName && (
                   <TokenIcon name={data.assetName} width={20} height={20} />
@@ -166,7 +171,7 @@ const PositionsDetails: React.FC<Props> = ({
             <PositionsDetailItem
               title="Collateral"
               value={data.aCollateral}
-              postfix={`a${data.assetLabel?.toUpperCase()}`}
+              postfix={`a${ASSET_LABEL}`}
               postfixIcon={
                 <ServiceIcon name={data.position!} width={20} height={20} />
               }
@@ -216,11 +221,13 @@ const PositionsDetails: React.FC<Props> = ({
               prefix={data.formattedPnl}
               postfixStyle={{
                 backgroundColor: data.pnlColor,
+                borderRadius: "8px",
                 color: pickColor(palette.colors.primary, "100"),
                 padding: "4px 8px",
-                borderRadius: "8px",
               }}
-              prefixStyle={{ color: data.pnlColor }}
+              prefixStyle={{
+                color: data.pnlColor,
+              }}
             />
           )}
 
@@ -237,10 +244,15 @@ const PositionsDetails: React.FC<Props> = ({
               <PositionsDetailItem
                 title="Slippage"
                 postfix="%"
-                value={data.slippage || "0"}
+                value={slippage}
               />
               {canShowSlippageSlider && (
-                <div style={{ padding: "10px 5px", width: "100%" }}>
+                <div
+                  style={{
+                    padding: "10px 5px",
+                    width: "100%",
+                  }}
+                >
                   <Slider
                     value={+slippage}
                     max={10}
