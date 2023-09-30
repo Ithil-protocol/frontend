@@ -294,8 +294,12 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           pnlPercentage: data.pnlPercentage,
           formattedPnl: data.formattedPnl,
           pnlColor,
-          percentage: percentage.toString(),
-          notionalPercentage: (100 - percentage).toString(),
+          percentage:
+            data.type === "call-option" ? percentage.toString() : undefined,
+          notionalPercentage:
+            data.type === "call-option"
+              ? (100 - percentage).toString()
+              : undefined,
         }}
         title="Close Position"
         onPurchasePriceChange={setPercentage}
