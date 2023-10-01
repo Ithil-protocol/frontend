@@ -50,8 +50,8 @@ const PositionsDetails: React.FC<Props> = ({
     );
   }
 
-  if (data.percentage) {
-    amountObtainedValues.push(data.percentage);
+  if (data.ithilPercentage) {
+    amountObtainedValues.push(data.ithilPercentage);
     amountObtainedPostfix.push("ITHIL");
     amountObtainedPostfixIcon.push(
       <ITHILObtainedIcon width={20} height={20} />
@@ -129,7 +129,7 @@ const PositionsDetails: React.FC<Props> = ({
               }}
             >
               <Slider
-                value={Number(data.percentage) || 0}
+                value={Number(data.sliderPercentage) || 0}
                 max={100}
                 min={0}
                 onChange={onPurchasePriceChange}

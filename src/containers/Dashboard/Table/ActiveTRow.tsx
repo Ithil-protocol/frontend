@@ -294,10 +294,11 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           pnlPercentage: data.pnlPercentage,
           formattedPnl: data.formattedPnl,
           pnlColor,
-          percentage:
+          ithilPercentage:
             data.type === "call-option"
               ? (amountObtained * percentage).toString()
               : undefined,
+          sliderPercentage: percentage,
           notionalPercentage:
             data.type === "call-option"
               ? (amountObtained * (100 - percentage)).toString()
