@@ -56,16 +56,16 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     enabled: data.type === "call-option",
   });
 
-  const { data: callOptionCurrentPrice } = useCallOptionCurrentPrice({
+  const { data: callOptionCurrentPrice = 1 } = useCallOptionCurrentPrice({
     address: asset?.callOptionAddress,
     enabled: data.type === "call-option",
   });
-  const ithilAmount =
+  const callOptionIthilAmount =
     (Number(parseUnits(data.amount, asset?.decimals || 0).toString()) *
       percentage) /
     100 /
-    Number(callOptionCurrentPrice?.toString());
-  callOptionCurrentPrice && console.log("callOptionCurrentPrice", ithilAmount);
+    Number(callOptionCurrentPrice.toString());
+  // callOptionCurrentPrice && console.log("callOptionCurrentPrice", ithilAmount);
 
   const services = {
     aave: {
@@ -308,11 +308,13 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           formattedPnl: data.formattedPnl,
           pnlColor,
           ithilPercentage:
-            data.type === "call-option" ? ithilAmount.toString() : undefined,
+            data.type === "call-option"
+              ? callOptionIthilAmount.toString()
+              : undefined,
           sliderPercentage: percentage,
           notionalPercentage:
             data.type === "call-option"
-              ? (amountObtained * (100 - percentage)).toString()
+              ? ((Number(data.amount) * (100 - percentage)) / 100).toString()
               : undefined,
           serviceName: data.type,
         }}
