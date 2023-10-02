@@ -159,6 +159,8 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   );
   if (!isMounted) return null;
 
+  const amountObtained = Number(data.margin) + Number(data.pnl ?? 0);
+
   return (
     <>
       <Tr
@@ -303,7 +305,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       </Tr>
 
       <PositionModal
-        canShowPercentageSlider
+        canShowPercentageSlider={data.type === "call-option"}
         canShowSlippageSlider
         isOpen={isOpen}
         onClose={onClose}
@@ -314,9 +316,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           position: data.type,
           leverage: data.leverage,
           slippage: slippage.toString(),
-          amountObtained: (Number(data.margin) + Number(data.pnl ?? 0))
-            .toFixed(2)
-            .toString(),
+          amountObtained: amountObtained.toFixed(2),
           wethReward:
             data.type === "gmx" && reward !== undefined && asset
               ? cutoffDecimals(+formatUnits(reward, 18), 6).toString()
@@ -326,7 +326,19 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           pnlPercentage: data.pnlPercentage,
           formattedPnl: data.formattedPnl,
           pnlColor,
-          percentage,
+          ithilPercentage:
+            data.type === "call-option"
+              ? (
+                  (Number(data.callOptionCollateralAmount) * percentage) /
+                  100
+                ).toFixed(4)
+              : undefined,
+          sliderPercentage: percentage,
+          notionalPercentage:
+            data.type === "call-option"
+              ? ((Number(data.amount) * (100 - percentage)) / 100).toString()
+              : undefined,
+          serviceName: data.type,
         }}
         title="Close Position"
         onPurchasePriceChange={setPercentage}

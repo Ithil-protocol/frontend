@@ -10,10 +10,10 @@ export type PromiseVoidNoArgs = () => Promise<void>;
 
 export interface PositionsDetailItemType {
   title: string;
-  value: string;
+  value: string | number | string[] | number[];
   prefix?: string;
-  postfix?: string;
-  postfixIcon?: React.ReactElement;
+  postfix?: string | string[];
+  postfixIcon?: React.ReactElement | React.ReactElement[];
   postfixStyle?: React.CSSProperties;
   prefixStyle?: React.CSSProperties;
 }
@@ -106,6 +106,7 @@ export interface PositionType {
   formattedPnl?: string;
   name: string;
   leverage: string | undefined;
+  callOptionCollateralAmount: string;
 }
 
 export interface PageHeading {
@@ -178,15 +179,18 @@ export interface PositionData {
   formattedPnl?: string;
   gmxCollateral?: string;
   ithilObtained?: string;
+  ithilPercentage?: string;
   leverage?: string;
   margin?: string;
   maturityDate?: string;
-  percentage?: number;
+  notionalPercentage?: string;
   pnlColor?: string;
   pnlPercentage?: string;
   position?: ServiceName;
   purchasePrice?: string;
   redeemPrice?: string;
+  serviceName?: ServiceName;
+  sliderPercentage?: number;
   slippage?: string;
   submitAlertText?: string | React.ReactElement;
   type?: "open" | "close";
