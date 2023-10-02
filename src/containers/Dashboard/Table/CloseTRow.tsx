@@ -13,7 +13,13 @@ import { formatFullDate } from "@/utils/date.utils";
 interface Props {
   data: Omit<
     PositionType,
-    "slippage" | "amount" | "name" | "id" | "expireAt" | "contractAddress"
+    | "slippage"
+    | "amount"
+    | "name"
+    | "id"
+    | "expireAt"
+    | "callOptionCollateralAmount"
+    | "contractAddress"
   >;
 }
 
