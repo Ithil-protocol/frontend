@@ -65,7 +65,6 @@ const ActiveTRow: FC<Props> = ({ data }) => {
       percentage) /
     100 /
     Number(callOptionCurrentPrice.toString());
-  // callOptionCurrentPrice && console.log("callOptionCurrentPrice", ithilAmount);
 
   const services = {
     aave: {
