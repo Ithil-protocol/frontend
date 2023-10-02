@@ -10,7 +10,7 @@ import { FC } from "react";
 import { formatUnits } from "viem";
 
 import { ithil } from "@/data/other-asset";
-import { useClosePositions } from "@/hooks/useClosePositions";
+import { useClosedPositions } from "@/hooks/useClosedPositions";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import {
@@ -58,7 +58,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const isMounted = useIsMounted();
 
   const { positions: closedPositions, isLoading: isLoadingClosed } =
-    useClosePositions();
+    useClosedPositions();
   const isPositionsExist = positions.length === 0 && positions;
   const isClosedExist = closedPositions.length === 0 && closedPositions;
   const hasItems = {
@@ -138,6 +138,7 @@ const Table: FC<Props> = ({ columns, activeView }) => {
                       type: item.type,
                       name: item.name,
                       createdAt: item.agreement?.createdAt,
+                      contractAddress: item.contractAddress,
                     }}
                   />
                 );

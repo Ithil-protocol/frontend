@@ -92,6 +92,7 @@ export type AssetEssential = Pick<
 >;
 
 export interface PositionType {
+  contractAddress: Address;
   token: Address;
   amount: string;
   margin: string | number;
@@ -147,6 +148,7 @@ export interface Agreement {
 }
 
 export interface OpenPosition {
+  contractAddress: Address;
   agreement?: Agreement;
   pnlPercentage?: string;
   pnl?: string;

@@ -19,6 +19,7 @@ interface Props {
     | "id"
     | "expireAt"
     | "callOptionCollateralAmount"
+    | "contractAddress"
   >;
 }
 

@@ -4,6 +4,7 @@ import {
   HStack,
   Td,
   Text,
+  Tooltip,
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -19,13 +20,13 @@ import {
 import { useContractWrite, useQueryClient } from "wagmi";
 
 import { aaveABI, callOptionABI, fixedYieldABI, gmxABI } from "@/abi";
+import { Tooltip as TooltipIcon } from "@/assets/svgs";
 import TokenIcon from "@/components/TokenIcon";
 import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { PositionModal } from "@/contexts/PositionModal";
-import { aaveAddress } from "@/hooks/generated/aave";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
-import { gmxAddress, useGmxWethReward } from "@/hooks/generated/gmx";
+import { useGmxWethReward } from "@/hooks/generated/gmx";
 import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -57,11 +58,11 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const services = {
     aave: {
       abi: aaveABI,
-      address: aaveAddress,
+      address: "0x" as Address,
     },
     gmx: {
       abi: gmxABI,
-      address: gmxAddress,
+      address: "0x" as Address,
     },
     "fixed-yield": {
       abi: fixedYieldABI,
@@ -83,7 +84,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
   const queryClient = useQueryClient();
 
   const { write: close } = useContractWrite({
-    address: service?.address,
+    address:
+      data.type === "aave" || data.type === "gmx"
+        ? data.contractAddress
+        : service?.address,
     abi: service?.abi as any,
     functionName: "close",
     onMutate: () => {
@@ -149,7 +153,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     e.preventDefault();
     onOpen();
   };
-
+  const isDebitServiceExpired = isPositionActive(
+    data.type,
+    Number(data.createdAt)
+  );
   if (!isMounted) return null;
 
   const amountObtained = Number(data.margin) + Number(data.pnl ?? 0);
@@ -245,25 +252,50 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           fontSize="22px"
           lineHeight="22px"
         >
-          <div className="w-full h-full flex gap-1 items-center">
+          <div className="flex items-center w-full h-full gap-1">
             {data.type === "call-option" ? data.amount : data.margin}
             <Text fontSize={"medium"} className="mt-1.5">
               {data.type !== "call-option" &&
                 data.type !== "fixed-yield" &&
-                `(x${data.leverage})`}
+                `(x${cutoffDecimals(Number(data.leverage), 1)})`}
             </Text>
           </div>
         </Td>
         <Td
-          color={mode("primary.700", "primary.700.dark")}
+          color={
+            isDebitServiceExpired
+              ? mode("#B7791F", "yellow")
+              : mode("primary.700", "primary.700.dark")
+          }
           fontWeight="medium"
           fontSize="22px"
           lineHeight="22px"
         >
           {isDebitService &&
-            (isPositionActive(data.type, Number(data.createdAt))
-              ? "Active"
-              : "Expired")}
+            (isDebitServiceExpired ? (
+              <>
+                <Tooltip
+                  label={
+                    "Your position should be closed as it has surpassed the service threshold"
+                  }
+                  closeDelay={500}
+                >
+                  <Text>
+                    Expired{" "}
+                    <TooltipIcon
+                      width={20}
+                      height={20}
+                      style={{
+                        display: "inline",
+                        cursor: "help",
+                      }}
+                    />
+                  </Text>
+                </Tooltip>
+              </>
+            ) : (
+              "Active"
+            ))}
         </Td>
         <Td textAlign="end" width={200} height="108px">
           <Button onClick={handleCloseClick} variant="outline" color="#f35959">
