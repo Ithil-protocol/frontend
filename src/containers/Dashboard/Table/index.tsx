@@ -9,6 +9,7 @@ import {
 import { FC } from "react";
 import { formatUnits } from "viem";
 
+import { ithil } from "@/data/other-asset";
 import { useClosePositions } from "@/hooks/useClosePositions";
 import { useColorMode } from "@/hooks/useColorMode";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -71,7 +72,6 @@ const Table: FC<Props> = ({ columns, activeView }) => {
 
   const isLoadingPositions =
     isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
-
   if (!isMounted) return null;
   return (
     <TableContainer width="full">
@@ -99,43 +99,49 @@ const Table: FC<Props> = ({ columns, activeView }) => {
         </Thead>
         <Tbody>
           {!isLoadingPositions && activeView === "Active"
-            ? positions.map((item, key) =>
-                item.agreement?.loans.map((loanItem) => {
-                  const asset = getAssetByAddress(loanItem.token);
-                  if (!asset) return null;
-                  const isDebitService =
-                    item.type === "aave" || item.type === "gmx";
-                  return (
-                    <ActiveTRow
-                      key={key}
-                      data={{
-                        amount: formatUnits(loanItem.amount, asset.decimals),
-                        margin: formatUnits(loanItem.margin, asset.decimals),
-                        token: loanItem.token,
-                        formattedPnl:
-                          item?.pnl && fixPrecision(+item?.pnl, 2).toString(),
-                        isPnlLoading: item?.isPnlLoading,
-                        leverage: isDebitService
-                          ? (
-                              +formatUnits(loanItem.amount, asset.decimals) /
-                                +formatUnits(loanItem.margin, asset.decimals) +
-                              1
-                            ).toString()
-                          : undefined,
-                        pnl: item?.pnl,
-                        pnlPercentage:
-                          item?.pnlPercentage &&
-                          fixPrecision(+item?.pnlPercentage, 2).toString(),
-                        id: item.id,
-                        quote: item.quote,
-                        type: item.type,
-                        name: item.name,
-                        createdAt: item.agreement?.createdAt,
-                      }}
-                    />
-                  );
-                })
-              )
+            ? positions.map((item, key) => {
+                const loanItem = item.agreement?.loans[0];
+                const collateral1 = item.agreement?.collaterals[1];
+                if (!loanItem) return;
+                const asset = getAssetByAddress(loanItem.token);
+                if (!asset) return null;
+                const isDebitService =
+                  item.type === "aave" || item.type === "gmx";
+                !isDebitService && console.log("positions", item);
+                return (
+                  <ActiveTRow
+                    key={key}
+                    data={{
+                      amount: formatUnits(loanItem.amount, asset.decimals),
+                      callOptionCollateralAmount: formatUnits(
+                        collateral1?.amount || 0n,
+                        ithil.decimals
+                      ),
+                      margin: formatUnits(loanItem.margin, asset.decimals),
+                      token: loanItem.token,
+                      formattedPnl:
+                        item?.pnl && fixPrecision(+item?.pnl, 2).toString(),
+                      isPnlLoading: item?.isPnlLoading,
+                      leverage: isDebitService
+                        ? (
+                            +formatUnits(loanItem.amount, asset.decimals) /
+                              +formatUnits(loanItem.margin, asset.decimals) +
+                            1
+                          ).toString()
+                        : undefined,
+                      pnl: item?.pnl,
+                      pnlPercentage:
+                        item?.pnlPercentage &&
+                        fixPrecision(+item?.pnlPercentage, 2).toString(),
+                      id: item.id,
+                      quote: item.quote,
+                      type: item.type,
+                      name: item.name,
+                      createdAt: item.agreement?.createdAt,
+                    }}
+                  />
+                );
+              })
             : !isLoadingClosed &&
               activeView === "Closed" &&
               closedPositions.map((item, key) =>

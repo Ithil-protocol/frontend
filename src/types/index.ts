@@ -105,6 +105,7 @@ export interface PositionType {
   formattedPnl?: string;
   name: string;
   leverage: string | undefined;
+  callOptionCollateralAmount: string;
 }
 
 export interface PageHeading {
