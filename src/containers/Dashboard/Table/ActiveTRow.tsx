@@ -15,6 +15,7 @@ import {
   encodeAbiParameters,
   formatUnits,
   parseAbiParameters,
+  parseUnits,
 } from "viem";
 import { useContractWrite, useQueryClient } from "wagmi";
 
@@ -24,6 +25,7 @@ import { Loading } from "@/components/loading";
 import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { PositionModal } from "@/contexts/PositionModal";
 import { aaveAddress } from "@/hooks/generated/aave";
+import { useCallOptionCurrentPrice } from "@/hooks/generated/callOption";
 import { fixedYieldAddress } from "@/hooks/generated/fixedYield";
 import { gmxAddress, useGmxWethReward } from "@/hooks/generated/gmx";
 import { useCallOptionInfo } from "@/hooks/useCallOptionInfo";
@@ -53,6 +55,17 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     month: 1,
     enabled: data.type === "call-option",
   });
+
+  const { data: callOptionCurrentPrice } = useCallOptionCurrentPrice({
+    address: asset?.callOptionAddress,
+    enabled: data.type === "call-option",
+  });
+  const ithilAmount =
+    (Number(parseUnits(data.amount, asset?.decimals || 0).toString()) *
+      percentage) /
+    100 /
+    Number(callOptionCurrentPrice?.toString());
+  callOptionCurrentPrice && console.log("callOptionCurrentPrice", ithilAmount);
 
   const services = {
     aave: {
@@ -295,9 +308,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           formattedPnl: data.formattedPnl,
           pnlColor,
           ithilPercentage:
-            data.type === "call-option"
-              ? (amountObtained * percentage).toString()
-              : undefined,
+            data.type === "call-option" ? ithilAmount.toString() : undefined,
           sliderPercentage: percentage,
           notionalPercentage:
             data.type === "call-option"
