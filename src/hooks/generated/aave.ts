@@ -974,7 +974,7 @@ export const aaveABI = [
 ] as const;
 
 export const aaveAddress =
-  "0xb18865C919ADd78862D412AD253536d4C1C178Db" as const;
+  "0x30bBC5147bE1083FD52334aB471EB37d6F01D8ED" as const;
 
 export const aaveConfig = { address: aaveAddress, abi: aaveABI } as const;
 
