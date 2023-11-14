@@ -256,7 +256,7 @@ export const managerABI = [
 ] as const;
 
 export const managerAddress =
-  "0x9136D8C2d303D47e927e269134eC3fB39576dB3E" as const;
+  "0x138dA884E321B29888e683FDbaF5693c0f018d9f" as const;
 
 export const managerConfig = {
   address: managerAddress,
