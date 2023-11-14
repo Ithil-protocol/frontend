@@ -47,6 +47,7 @@ export const wagmiClient = createConfig({
   publicClient,
   webSocketPublicClient,
   queryClient,
+  persister:null
 });
 
 export {

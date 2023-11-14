@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { multicall } from "@wagmi/core";
 import Decimal from "decimal.js";
+import { Address, zeroAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import { assets } from "@/data/assets";
@@ -12,7 +13,7 @@ import { multiplyBigNumbers, oneUnitWithDecimals } from "@/utils/input.utils";
 
 const VaultAbi = [...vaultABI];
 
-const getVaultData = async (address?: string) => {
+const getVaultData = async (address: Address = zeroAddress) => {
   const totalAssetsCalls = assets.map((token) => ({
     address: token.vaultAddress,
     abi: VaultAbi,
@@ -221,19 +222,13 @@ const getVaultData = async (address?: string) => {
 export const useVaults = () => {
   const { address } = useAccount();
 
-  return useQuery({
+  const result = useQuery({
     queryKey: ["vaults", address],
     queryFn: async () => await getVaultData(address),
-    keepPreviousData: true,
-    placeholderData: assets.map((asset) => ({ token: asset })),
-
-    retry: (failureCount, error: Error): boolean => {
-      // avoid retrying if the error is handled
-      if (ErrorCause.isErrorCause(error.cause)) return false;
-      return true;
-    },
-
-    // FIXME: handle errors with chakra-ui/toast
-    // onError: (error: Error) => {}
   });
+
+  return {
+    ...result,
+    data: result.data ?? assets.map((asset) => ({ token: asset })),
+  };
 };

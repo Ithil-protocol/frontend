@@ -63,12 +63,18 @@ const Table: FC<Props> = ({ columns, activeView }) => {
   const isClosedExist = closedPositions.length === 0 && closedPositions;
   const hasItems = {
     Active:
-      positions.length > 0 ||
-      isLoadingAave ||
-      isLoadingGmx ||
-      isLoadingFixedYield,
+      // positions.length > 0 ||
+      isLoadingAave || isLoadingGmx || isLoadingFixedYield,
     Closed: closedPositions.length > 0 || isLoadingClosed,
   };
+
+  console.log(
+    "isLoadingPositions",
+    isLoadingAave,
+    isLoadingGmx,
+    isLoadingFixedYield,
+    isLoadingCallOption
+  );
 
   const isLoadingPositions =
     isLoadingAave || isLoadingGmx || isLoadingFixedYield || isLoadingCallOption;
