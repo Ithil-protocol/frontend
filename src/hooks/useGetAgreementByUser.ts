@@ -38,11 +38,16 @@ export const useGetAaveAgreementsByUser = () => {
     return allAgreementsOfUserWithAddress;
   };
 
-  return useQuery({
+  const result = useQuery({
     queryFn: getAaveAgreementOfUser,
     queryKey: [accountAddress, "getUserAgreements", "aave"],
     enabled: !!accountAddress,
   });
+
+  return {
+    ...result,
+    isLoading: result.isLoading && result.fetchStatus !== "idle",
+  };
 };
 export const useGetGmxAgreementsByUser = () => {
   const { address: accountAddress } = useAccount();
@@ -74,11 +79,16 @@ export const useGetGmxAgreementsByUser = () => {
     return allAgreementsOfUserWithAddress;
   };
 
-  return useQuery({
+  const result = useQuery({
     queryFn: getGmxAgreementOfUser,
     queryKey: [accountAddress, "getUserAgreements", "gmx"],
     enabled: !!accountAddress,
   });
+
+  return {
+    ...result,
+    isLoading: result.isLoading && result.fetchStatus !== "idle",
+  };
 };
 export const useGetFixedYieldAgreementsByUser = () => {
   const { address } = useAccount();
