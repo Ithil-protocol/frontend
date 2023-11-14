@@ -50,7 +50,7 @@ const columns: Array<{
 ];
 const Table = () => {
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
-  const { data, isError, isPlaceholderData } = useVaults();
+  const { data, isError, isLoading } = useVaults();
 
   return (
     <TableContainer className="w-full rounded-xl bg-primary-100 lg:p-6">
@@ -61,7 +61,7 @@ const Table = () => {
             <Fragment key={idx}>
               <TRow
                 isVaultsError={isError}
-                isLoading={isPlaceholderData}
+                isLoading={isLoading}
                 vaultData={data}
                 setSelectedRow={setSelectedRow}
                 selectedRow={selectedRow}

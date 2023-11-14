@@ -195,8 +195,12 @@ export const useCallOptionOpenPositions = () => {
 
   const assets = convertNamesToAssets(callOptionService.tokens);
 
-  const { data: userAgreements, isLoading } = useQuery({
-    queryKey: ["open-position", "call-option"],
+  const {
+    data: userAgreements,
+    isLoading,
+    fetchStatus,
+  } = useQuery({
+    queryKey: [address, "open-position", "call-option"],
     queryFn: async () => {
       const promises = assets.map((asset) => {
         return readContract({
@@ -275,6 +279,6 @@ export const useCallOptionOpenPositions = () => {
 
   return {
     positions,
-    isLoading,
+    isLoading: isLoading && fetchStatus !== "idle",
   };
 };
