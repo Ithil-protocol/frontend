@@ -28,5 +28,5 @@ export const useMinMarginLimit = ({
     ? bigintAmount < minMargin
     : false;
 
-  return { isLessThanMinimumMarginError, isMinMarginLoading };
+  return { isLessThanMinimumMarginError, isMinMarginLoading, bigintAmount };
 };

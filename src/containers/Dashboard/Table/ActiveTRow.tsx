@@ -153,7 +153,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     e.preventDefault();
     onOpen();
   };
-  const isDebitServiceExpired = isPositionActive(
+  const isDebitServiceActive = isPositionActive(
     data.type,
     Number(data.createdAt)
   );
@@ -263,7 +263,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
         </Td>
         <Td
           color={
-            isDebitServiceExpired
+            !isDebitServiceActive
               ? mode("#B7791F", "yellow")
               : mode("primary.700", "primary.700.dark")
           }
@@ -272,7 +272,7 @@ const ActiveTRow: FC<Props> = ({ data }) => {
           lineHeight="22px"
         >
           {isDebitService &&
-            (isDebitServiceExpired ? (
+            (!isDebitServiceActive ? (
               <>
                 <Tooltip
                   label={
