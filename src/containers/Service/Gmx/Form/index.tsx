@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
+import { Address, encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI, gmxABI } from "@/abi";
@@ -15,10 +15,12 @@ import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { PositionModal } from "@/contexts/PositionModal";
 import {
   gmxAddress,
-  useGmxComputeBaseRateAndSpread,
+  useGmxHalvingTime,
+  useGmxLatestAndBase,
   useGmxRiskSpreads,
 } from "@/hooks/generated/gmx";
 import { useAllowance } from "@/hooks/useAllowance";
+import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -70,7 +72,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     token: asset,
   });
 
-  const { isLessThanMinimumMarginError, isMinMarginLoading } =
+  const { isLessThanMinimumMarginError, isMinMarginLoading, bigintAmount } =
     useMinMarginLimit({
       abi: aaveABI,
       asset,
@@ -80,18 +82,30 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { baseApy, isLoading: apyLoading } = useBaseApy("GMX");
 
-  const { data: latestAndBase } = useGmxComputeBaseRateAndSpread({
-    args: [asset.tokenAddress, 0n, 0n, 1n],
+  const { data: latestAndBase } = useGmxLatestAndBase({
+    args: [asset.tokenAddress],
   });
 
   const { data: riskSpreads } = useGmxRiskSpreads({
     args: [asset.tokenAddress],
   });
 
+  const { data: halvingTime } = useGmxHalvingTime({
+    args: [asset.tokenAddress],
+  });
+
+  const { data : freeLiquidity } = useVaultFreeLiquidity({
+    address: asset?.vaultAddress as Address,
+    enabled: !!asset,
+  })
+
   const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
     baseApy,
     latestAndBase,
     riskSpreads,
+    halvingTime,
+    freeLiquidity,
+    bigintAmount
   });
 
   useEffect(() => {

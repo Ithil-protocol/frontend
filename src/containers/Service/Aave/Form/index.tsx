@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
+import { Address, encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -15,9 +15,11 @@ import { useNotificationDialog } from "@/contexts/NotificationDialog";
 import { PositionModal } from "@/contexts/PositionModal";
 import {
   aaveAddress,
-  useAaveComputeBaseRateAndSpread,
+  useAaveHalvingTime,
+  useAaveLatestAndBase,
   useAaveRiskSpreads,
 } from "@/hooks/generated/aave";
+import {useVaultFreeLiquidity} from "@/hooks/generated/vault";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
@@ -68,7 +70,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     token: asset,
   });
 
-  const { isLessThanMinimumMarginError, isMinMarginLoading } =
+  const { isLessThanMinimumMarginError, isMinMarginLoading, bigintAmount } =
     useMinMarginLimit({
       abi: aaveABI,
       asset,
@@ -78,18 +80,30 @@ const Form = ({ asset }: { asset: Asset }) => {
 
   const { baseApy, isLoading: apyLoading } = useBaseApy(asset.name);
 
-  const { data: latestAndBase } = useAaveComputeBaseRateAndSpread({
-    args: [asset.tokenAddress, 0n, 0n, 1n],
+  const { data: latestAndBase } = useAaveLatestAndBase({
+    args: [asset.tokenAddress],
   });
 
   const { data: riskSpreads } = useAaveRiskSpreads({
     args: [asset.tokenAddress],
   });
 
+  const { data: halvingTime } = useAaveHalvingTime({
+    args: [asset.tokenAddress],
+  });
+
+  const { data : freeLiquidity } = useVaultFreeLiquidity({
+    address: asset?.vaultAddress as Address,
+    enabled: !!asset,
+  })
+
   const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
     baseApy,
     latestAndBase,
     riskSpreads,
+    halvingTime,
+    freeLiquidity,
+    bigintAmount
   });
 
   useEffect(() => {
