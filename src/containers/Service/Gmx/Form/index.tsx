@@ -20,7 +20,8 @@ import {
   useGmxRiskSpreads,
 } from "@/hooks/generated/gmx";
 import { useAllowance } from "@/hooks/useAllowance";
-import { useVaultFreeLiquidity } from "@/hooks/generated/vault";
+import { useVaultFreeLiquidity, useVaultNetLoans } from "@/hooks/generated/vault";
+import { useManagerCaps } from "@/hooks/generated/manager";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -99,13 +100,24 @@ const Form = ({ asset }: { asset: Asset }) => {
     enabled: !!asset,
   })
 
+  const { data : netLoans } = useVaultNetLoans({
+    address: asset?.vaultAddress as Address,
+    enabled: !!asset,
+  })
+
+  const { data : caps } = useManagerCaps({
+    args: [gmxAddress, asset.tokenAddress]
+  })
+
   const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
     baseApy,
     latestAndBase,
     riskSpreads,
     halvingTime,
     freeLiquidity,
-    bigintAmount
+    bigintAmount,
+    netLoans,
+    caps
   });
 
   useEffect(() => {

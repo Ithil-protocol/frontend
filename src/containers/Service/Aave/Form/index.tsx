@@ -19,7 +19,8 @@ import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
 } from "@/hooks/generated/aave";
-import {useVaultFreeLiquidity} from "@/hooks/generated/vault";
+import { useVaultFreeLiquidity, useVaultNetLoans } from "@/hooks/generated/vault";
+import { useManagerCaps } from "@/hooks/generated/manager";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
@@ -97,13 +98,24 @@ const Form = ({ asset }: { asset: Asset }) => {
     enabled: !!asset,
   })
 
+  const { data : netLoans } = useVaultNetLoans({
+    address: asset?.vaultAddress as Address,
+    enabled: !!asset,
+  })
+
+  const { data : caps } = useManagerCaps({
+    args: [aaveAddress, asset.tokenAddress]
+  })
+
   const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
     baseApy,
     latestAndBase,
     riskSpreads,
     halvingTime,
     freeLiquidity,
-    bigintAmount
+    bigintAmount,
+    netLoans,
+    caps
   });
 
   useEffect(() => {
