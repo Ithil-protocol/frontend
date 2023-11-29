@@ -8,6 +8,8 @@ interface IBestLeverage {
   halvingTime?: bigint;
   freeLiquidity? : bigint;
   bigintAmount? : bigint;
+  netLoans? : bigint;
+  caps? : readonly [bigint, bigint, bigint];
 }
 
 export const useBestLeverage = ({
@@ -16,9 +18,11 @@ export const useBestLeverage = ({
   riskSpreads,
   halvingTime,
   freeLiquidity,
-  bigintAmount
+  bigintAmount,
+  netLoans,
+  caps
 }: IBestLeverage) => {
-  const isLoading = !baseApy || !latestAndBase || !riskSpreads || !halvingTime || !freeLiquidity;
+  const isLoading = !baseApy || !latestAndBase || !riskSpreads || !halvingTime || !freeLiquidity || !netLoans || !caps;
   const currentTime = Math.floor(Date.now() / 1000)
   if (isLoading)
     return {
@@ -36,10 +40,16 @@ export const useBestLeverage = ({
     BigInt(4) * halvingTime * (freeLiquidity + margin) * riskSpreads
     + BigInt(2) * base * margin * timeFactor
 
-  const ratio = Number(numerator) / Number(denominator)
+  const bestLeverageFree = Number(numerator) / Number(denominator)
+
+  const bestLeverageAbsCap = Number(caps[1] - caps[2]) / Number(margin)
+
+  const bestLeveragePercentageCap = Number(caps[0] * (freeLiquidity + netLoans) / BigInt(10 ** 18) - caps[2]) / Number(margin)
+
+  const bestLeverage = Math.min(bestLeverageFree, bestLeverageAbsCap, bestLeveragePercentageCap)
 
   return {
-    bestLeverage: ratio.toFixed(1),
+    bestLeverage: bestLeverage.toFixed(1),
     isLoading: false,
   };
 };
