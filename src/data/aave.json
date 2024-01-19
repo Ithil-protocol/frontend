@@ -41,6 +41,14 @@
       "decimals": 8,
       "tokenAddress": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
       "collateralTokenAddress": "0x078f358208685046a11C85e8ad32895DED33A249"
+    },
+    {
+      "name": "FRAX",
+      "coingeckoId": "frax",
+      "iconName": "frax",
+      "decimals": 18,
+      "tokenAddress": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F",
+      "collateralTokenAddress": "0x38d693cE1dF5AaDF7bC62595A37D667aD57922e5"
     }
   ]
 }

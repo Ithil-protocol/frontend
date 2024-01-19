@@ -1,14 +1,14 @@
 [
   {
     "name": "aave",
-    "label": "AAVE",
+    "label": "Aave",
     "type": "debit",
     "long_name": "Aave leveraged lending",
-    "description": "Optimize your capital allocation for max returns in one of the biggest and most secure over collateralized lending markets in DeFi",
+    "description": "Optimize your capital allocation in the most famous lending market of DeFi",
     "apyRange": "5-10x",
     "bestApy": 26.7,
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "WETH", "DAI"],
+    "tokens": ["USDC", "USDT", "WETH", "DAI", "FRAX"],
     "tvl": 158.86,
     "deadline": 2592000,
     "url": "/aave",
@@ -41,9 +41,9 @@
     "type": "debit",
     "description": "Earn a part of the protocol trading fees and get exposure to ETH",
     "apyRange": "2-5x",
-    "bestApy": 27.8,
-    "boostApy": 3,
-    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI"],
+    "bestApy": 62.8,
+    "boostApy": 1,
+    "tokens": ["USDC", "USDT", "WETH", "WBTC", "DAI", "FRAX"],
     "tvl": 100,
     "deadline": 604800,
     "url": "/gmx",
@@ -60,12 +60,47 @@
     }
   },
   {
+    "name": "fraxlend",
+    "label": "Fraxlend",
+    "type": "debit",
+    "long_name": "Fraxlend leveraged staking",
+    "description": "Maximise value extraction by contributing to one of the biggest algostables",
+    "apyRange": "5-10x",
+    "bestApy": 30.2,
+    "boostApy": 1,
+    "tokens": ["FRAX"],
+    "tvl": 158.86,
+    "deadline": 2592000,
+    "url": "/fraxlend",
+    "hasIndex": true,
+    "safety_score": {
+      "score": 8.0,
+      "features": [
+        { "value": "positive", "text": "Battle-tested strategy" },
+        { "value": "positive", "text": "Low volatility assets" },
+        {
+          "value": "positive",
+          "text": "DeFi blue chip",
+          "extendedDescription": "Assets with Market Cap between 1M and 10M fall in this category"
+        },
+        {
+          "value": "neutral",
+          "text": "Average returns",
+          "extendedDescription": "Impermanent Loss is a potential loss of value experienced by liquidity providers when the price of an asset in a liquidity pool diverges from its price in external markets."
+        }
+      ],
+      "description": "By depositing your tokens on Frax, you contribute to a robust lending pool that serves borrowers across multiple chains, making it one of the most trusted and established DeFi protocols in the industry. Frax operates as a decentralized lending and borrowing platform, facilitating the lending of tokens by depositors and providing borrowers with access to these tokens. As a depositor, you earn a fee in return for lending your tokens to borrowers on the platform. This fee, which is derived from the interest paid by borrowers, serves as a source of income for you, boosting your overall APY. Aave's reputation for security and reliability is built on its extensive track record and adoption across various blockchain networks. With billions of dollars secured across more than five chains, Aave has consistently demonstrated its ability to safeguard user funds and maintain the integrity of its lending platform."
+    },
+
+    "explanation": "This service simply deposits tokens in the Fraxlend protocol and earns a stable APY through the protocol itself."
+  },
+  {
     "name": "call-option",
     "label": "Call Option",
     "type": "credit",
-    "long_name": "Aave leveraged lending",
-    "description": "Be part of Ithil tokenomics by reserving your $ITHIL allocation with an innovative non dilutive purchase model based on call options.",
-    "bestApy": 50,
+    "long_name": "Ithil call option",
+    "description": "Be part of Ithil tokenomics getting $ITHIL with a non-dilutive purchase model based on call options",
+    "bestApy": "🧙‍♀️",
     "boostApy": 1,
     "tokens": ["USDC", "USDT", "DAI"],
     "tvl": 158.86,
@@ -73,7 +108,7 @@
     "url": "/call-option",
     "hasIndex": true,
     "safety_score": {
-      "score": 9.3,
+      "score": 7.0,
       "features": [
         { "value": "positive", "text": "Battle-tested strategy" },
         { "value": "positive", "text": "Low volatility assets" },

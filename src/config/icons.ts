@@ -1,10 +1,11 @@
+import BTC from "cryptocurrency-icons/svg/color/btc.svg";
 import DAI from "cryptocurrency-icons/svg/color/dai.svg";
 import ETH from "cryptocurrency-icons/svg/color/eth.svg";
 import USDC from "cryptocurrency-icons/svg/color/usdc.svg";
 import USDT from "cryptocurrency-icons/svg/color/usdt.svg";
-import WBTC from "cryptocurrency-icons/svg/color/wbtc.svg";
 
 import ITHIL from "@/assets/ithil/logoSymbolLight.svg";
+import FRAX from "@/assets/svgs/frax.svg";
 
 // for those icons that they are absent in the cryptocurrency-icons, just put them inside this path: "src/assets/svgs/icons/" and then import like this:
 // import ARB from "@/assets/svgs/icons/Arbitrum.svg";
@@ -17,8 +18,9 @@ export const icons = {
   USDC,
   // ARB,
   USDT,
-  WBTC,
+  WBTC: BTC,
   WETH: ETH,
   DAI,
+  FRAX,
   ITHIL,
 };

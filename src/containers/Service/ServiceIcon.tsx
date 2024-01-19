@@ -3,7 +3,7 @@ import { FC } from "react";
 
 import IthilDark from "@/assets/ithil/logoSymbolDark.svg";
 import IthilLight from "@/assets/ithil/logoSymbolLight.svg";
-import { Aave, Gmx } from "@/assets/svgs";
+import { Aave, AgEur, Frax, Gmx } from "@/assets/svgs";
 import { ServiceName } from "@/types";
 
 interface Props {
@@ -17,6 +17,8 @@ const ServiceIcon: FC<Props> = ({ name, width = 28, height = 28 }) => {
   const icons: Partial<{ [key in ServiceName]: any }> = {
     aave: Aave,
     gmx: Gmx,
+    fraxlend: Frax,
+    angle: AgEur,
   };
   const Ithil = colorMode === "dark" ? IthilDark : IthilLight;
   const Icon = icons[name] || Ithil;

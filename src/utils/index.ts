@@ -241,7 +241,15 @@ export const getServiceByName = (name: ServiceName): Service => {
 };
 
 export const getServiceNames = () =>
-  ["aave", "call-option", "fixed-yield", "gmx", "ithil-staking"] as const;
+  [
+    "aave",
+    "call-option",
+    "fixed-yield",
+    "gmx",
+    "ithil-staking",
+    "fraxlend",
+    "angle",
+  ] as const;
 
 export const getMetaError = (error: any) =>
   (error as { shortMessage: string }).shortMessage;
@@ -258,7 +266,7 @@ export const normalizeInputValue = (inputValue: string) => {
 export const handleProtocolAlert = () => {
   const isMainNet = process.env.NEXT_PUBLIC_NETWORK === "mainnet";
   const message =
-    "the protocol has been deeply tested but is unaudited, use it at your own risk";
+    "the protocol has been deeply tested and audited, use it at your own risk";
 
   const dataKey = "protocolAlert";
 
