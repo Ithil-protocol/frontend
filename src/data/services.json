@@ -71,7 +71,7 @@
     "tokens": ["FRAX"],
     "tvl": 158.86,
     "deadline": 2592000,
-    "url": "/fraxlend",
+    "url": "/",
     "hasIndex": true,
     "safety_score": {
       "score": 8.0,
