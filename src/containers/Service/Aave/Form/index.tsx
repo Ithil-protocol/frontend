@@ -1,9 +1,15 @@
 import { HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
+import { ErrorDecoder } from "ethers-decode-error";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Address, encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
+import {
+  Address,
+  encodeAbiParameters,
+  formatUnits,
+  parseAbiParameters,
+} from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -19,8 +25,11 @@ import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
 } from "@/hooks/generated/aave";
-import { useVaultFreeLiquidity, useVaultNetLoans } from "@/hooks/generated/vault";
 import { useManagerCaps } from "@/hooks/generated/manager";
+import {
+  useVaultFreeLiquidity,
+  useVaultNetLoans,
+} from "@/hooks/generated/vault";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
@@ -44,6 +53,8 @@ import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 
 const Form = ({ asset }: { asset: Asset }) => {
+  const errorDecoder = ErrorDecoder.create(aaveABI as any);
+
   const { address: accountAddress } = useAccount();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [inputAmount, setInputAmount] = useState("");
@@ -93,19 +104,19 @@ const Form = ({ asset }: { asset: Asset }) => {
     args: [asset.tokenAddress],
   });
 
-  const { data : freeLiquidity } = useVaultFreeLiquidity({
+  const { data: freeLiquidity } = useVaultFreeLiquidity({
     address: asset?.vaultAddress as Address,
     enabled: !!asset,
-  })
+  });
 
-  const { data : netLoans } = useVaultNetLoans({
+  const { data: netLoans } = useVaultNetLoans({
     address: asset?.vaultAddress as Address,
     enabled: !!asset,
-  })
+  });
 
-  const { data : caps } = useManagerCaps({
-    args: [aaveAddress, asset.tokenAddress]
-  })
+  const { data: caps } = useManagerCaps({
+    args: [aaveAddress, asset.tokenAddress],
+  });
 
   const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
     baseApy,
@@ -115,7 +126,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     freeLiquidity,
     bigintAmount,
     netLoans,
-    caps
+    caps,
   });
 
   useEffect(() => {
@@ -175,7 +186,10 @@ const Form = ({ asset }: { asset: Asset }) => {
         notificationDialog.openError("Failed", error);
       }
     },
-    onError: (error) => notificationDialog.openError("Failed", error),
+    onError: (error) => {
+      const decodedError = errorDecoder.decode(error);
+      notificationDialog.openError("Failed", decodedError);
+    },
   });
 
   console.log("isAllowanceRefetching", isAllowanceRefetching);

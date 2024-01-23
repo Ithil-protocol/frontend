@@ -35,6 +35,7 @@
     "decimal.js": "^10.4.3",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.8",
+    "ethers-decode-error": "^2.0.0",
     "framer-motion": "^10.12.18",
     "next": "13.4.8",
     "numerable": "^0.3.15",
