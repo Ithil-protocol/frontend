@@ -35,7 +35,7 @@ interface IServiceOrder {
   data: Address;
 }
 
-interface PrepareDebitOrderProps {
+interface PrepareAaveOrderProps {
   token: Asset;
   collateralToken: Address;
   amount: string;
@@ -45,7 +45,17 @@ interface PrepareDebitOrderProps {
   slippage: string;
 }
 
-export const usePrepareDebitOrder = ({
+interface PrepareGmxOrderProps {
+  token: Asset;
+  collateralTokens: [Address, Address];
+  amount: string;
+  leverage: string;
+  interestAndSpread: bigint;
+  extraData: Address;
+  slippage: string;
+}
+
+export const usePrepareAaveOrder = ({
   token,
   collateralToken,
   amount,
@@ -53,7 +63,7 @@ export const usePrepareDebitOrder = ({
   interestAndSpread,
   extraData,
   slippage,
-}: PrepareDebitOrderProps) => {
+}: PrepareAaveOrderProps) => {
   const bigintAmount = parseUnits(amount, token.decimals);
 
   const amountInLeverage = multiplyBigInt(bigintAmount, +leverage);
@@ -76,6 +86,60 @@ export const usePrepareDebitOrder = ({
   const agreement: ServiceAgreement = {
     loans: [loan],
     collaterals: [collateral],
+    createdAt: BigInt(0),
+    status: 0,
+  };
+
+  const order: IServiceOrder = {
+    agreement,
+    data: extraData,
+  };
+
+  return {
+    order,
+  };
+};
+
+export const usePrepareGmxOrder = ({
+  token,
+  collateralTokens,
+  amount,
+  leverage,
+  interestAndSpread,
+  extraData,
+  slippage,
+}: PrepareGmxOrderProps) => {
+  const bigintAmount = parseUnits(amount, token.decimals);
+
+  const amountInLeverage = multiplyBigInt(bigintAmount, +leverage);
+
+  const collateralGlp: ServiceCollateral = {
+    itemType: 0,
+    token: collateralTokens[0],
+    identifier: BigInt(0),
+    amount:
+      ((bigintAmount + amountInLeverage) *
+        BigInt(1000 - Number(slippage) * 1000)) /
+      1000n,
+  };
+
+  // TODO: implement USDG slippage
+  const collateralUSDG: ServiceCollateral = {
+    itemType: 0,
+    token: collateralTokens[1],
+    identifier: BigInt(0),
+    amount: BigInt(1),
+  };
+
+  const loan: ServiceLoan = {
+    token: token.tokenAddress,
+    amount: amountInLeverage,
+    margin: bigintAmount,
+    interestAndSpread,
+  };
+  const agreement: ServiceAgreement = {
+    loans: [loan],
+    collaterals: [collateralGlp, collateralUSDG],
     createdAt: BigInt(0),
     status: 0,
   };

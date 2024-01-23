@@ -3,7 +3,12 @@ import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Address, encodeAbiParameters, formatUnits, parseAbiParameters } from "viem";
+import {
+  Address,
+  encodeAbiParameters,
+  formatUnits,
+  parseAbiParameters,
+} from "viem";
 import { useAccount, useBalance, useContractWrite } from "wagmi";
 
 import { aaveABI } from "@/abi";
@@ -19,14 +24,17 @@ import {
   useAaveLatestAndBase,
   useAaveRiskSpreads,
 } from "@/hooks/generated/aave";
-import { useVaultFreeLiquidity, useVaultNetLoans } from "@/hooks/generated/vault";
 import { useManagerCaps } from "@/hooks/generated/manager";
+import {
+  useVaultFreeLiquidity,
+  useVaultNetLoans,
+} from "@/hooks/generated/vault";
 import { useAllowance } from "@/hooks/useAllowance";
 import { useBaseApy } from "@/hooks/useBaseApy";
 import { useBestLeverage } from "@/hooks/useBestLeverage";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useMinMarginLimit } from "@/hooks/useMinMarginLimit";
-import { usePrepareDebitOrder } from "@/hooks/usePrepareOrder";
+import { usePrepareAaveOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
 import {
@@ -93,19 +101,19 @@ const Form = ({ asset }: { asset: Asset }) => {
     args: [asset.tokenAddress],
   });
 
-  const { data : freeLiquidity } = useVaultFreeLiquidity({
+  const { data: freeLiquidity } = useVaultFreeLiquidity({
     address: asset?.vaultAddress as Address,
     enabled: !!asset,
-  })
+  });
 
-  const { data : netLoans } = useVaultNetLoans({
+  const { data: netLoans } = useVaultNetLoans({
     address: asset?.vaultAddress as Address,
     enabled: !!asset,
-  })
+  });
 
-  const { data : caps } = useManagerCaps({
-    args: [aaveAddress, asset.tokenAddress]
-  })
+  const { data: caps } = useManagerCaps({
+    args: [aaveAddress, asset.tokenAddress],
+  });
 
   const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
     baseApy,
@@ -115,7 +123,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     freeLiquidity,
     bigintAmount,
     netLoans,
-    caps
+    caps,
   });
 
   useEffect(() => {
@@ -141,7 +149,7 @@ const Form = ({ asset }: { asset: Asset }) => {
   });
   const extraData = encodeAbiParameters(parseAbiParameters("uint256"), [0n]);
 
-  const { order } = usePrepareDebitOrder({
+  const { order } = usePrepareAaveOrder({
     token: asset,
     collateralToken: asset.aaveCollateralTokenAddress,
     leverage: finalLeverage,
