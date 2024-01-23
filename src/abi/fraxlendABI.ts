@@ -1,4 +1,4 @@
-export const fraxABI = [
+export const fraxlendABI = [
   {
     inputs: [
       {

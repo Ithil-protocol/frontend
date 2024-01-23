@@ -1,100 +1,29 @@
 export const aaveABI = [
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "_manager",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_aave",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_deadline",
-        type: "uint256",
-      },
+      { internalType: "address", name: "_manager", type: "address" },
+      { internalType: "address", name: "_aave", type: "address" },
+      { internalType: "uint256", name: "_deadline", type: "uint256" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
-  {
-    inputs: [],
-    name: "AboveRiskThreshold",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ImpossibleToQuote",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "IncorrectObtainedToken",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "InsufficientAmountOut",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "InterestRateOverflow",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "InvalidInitParams",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "InvalidStatus",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "Locked",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "LossByArbitraryAddress",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "MarginTooLow",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "RestrictedAccess",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "RestrictedToOwner",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "UserIsNotWhitelisted",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ZeroCollateral",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ZeroMarginLoan",
-    type: "error",
-  },
+  { inputs: [], name: "AboveRiskThreshold", type: "error" },
+  { inputs: [], name: "ImpossibleToQuote", type: "error" },
+  { inputs: [], name: "IncorrectObtainedToken", type: "error" },
+  { inputs: [], name: "InsufficientAmountOut", type: "error" },
+  { inputs: [], name: "InterestRateOverflow", type: "error" },
+  { inputs: [], name: "InvalidInitParams", type: "error" },
+  { inputs: [], name: "InvalidParams", type: "error" },
+  { inputs: [], name: "InvalidStatus", type: "error" },
+  { inputs: [], name: "Locked", type: "error" },
+  { inputs: [], name: "LossByArbitraryAddress", type: "error" },
+  { inputs: [], name: "MarginTooLow", type: "error" },
+  { inputs: [], name: "OnlyLiquidator", type: "error" },
+  { inputs: [], name: "RestrictedAccess", type: "error" },
+  { inputs: [], name: "RestrictedToOwner", type: "error" },
+  { inputs: [], name: "ZeroCollateral", type: "error" },
+  { inputs: [], name: "ZeroMarginLoan", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -135,12 +64,7 @@ export const aaveABI = [
         name: "operator",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "approved",
-        type: "bool",
-      },
+      { indexed: false, internalType: "bool", name: "approved", type: "bool" },
     ],
     name: "ApprovalForAll",
     type: "event",
@@ -154,12 +78,7 @@ export const aaveABI = [
         name: "asset",
         type: "address",
       },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
+      { indexed: true, internalType: "uint256", name: "id", type: "uint256" },
       {
         indexed: false,
         internalType: "uint256",
@@ -186,12 +105,7 @@ export const aaveABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
+      { indexed: true, internalType: "uint256", name: "id", type: "uint256" },
       {
         indexed: false,
         internalType: "address",
@@ -218,13 +132,40 @@ export const aaveABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "bool",
-        name: "status",
-        type: "bool",
+        indexed: true,
+        internalType: "address",
+        name: "liquidator",
+        type: "address",
       },
     ],
+    name: "LiquidatorUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: "bool", name: "status", type: "bool" },
+    ],
     name: "LockWasToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "margin",
+        type: "uint256",
+      },
+    ],
+    name: "MinMarginUpdated",
     type: "event",
   },
   {
@@ -249,37 +190,15 @@ export const aaveABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
+      { indexed: true, internalType: "uint256", name: "id", type: "uint256" },
+      { indexed: true, internalType: "address", name: "user", type: "address" },
       {
         components: [
           {
             components: [
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "margin",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
+              { internalType: "uint256", name: "margin", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "interestAndSpread",
@@ -297,31 +216,15 @@ export const aaveABI = [
                 name: "itemType",
                 type: "uint8",
               },
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "identifier",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "identifier", type: "uint256" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
             ],
             internalType: "struct IService.Collateral[]",
             name: "collaterals",
             type: "tuple[]",
           },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "createdAt", type: "uint256" },
           {
             internalType: "enum IService.Status",
             name: "status",
@@ -340,37 +243,15 @@ export const aaveABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
+      { indexed: true, internalType: "uint256", name: "id", type: "uint256" },
+      { indexed: true, internalType: "address", name: "user", type: "address" },
       {
         components: [
           {
             components: [
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "margin",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
+              { internalType: "uint256", name: "margin", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "interestAndSpread",
@@ -388,31 +269,15 @@ export const aaveABI = [
                 name: "itemType",
                 type: "uint8",
               },
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "identifier",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "identifier", type: "uint256" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
             ],
             internalType: "struct IService.Collateral[]",
             name: "collaterals",
             type: "tuple[]",
           },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "createdAt", type: "uint256" },
           {
             internalType: "enum IService.Status",
             name: "status",
@@ -434,15 +299,36 @@ export const aaveABI = [
       {
         indexed: true,
         internalType: "address",
-        name: "from",
+        name: "token",
         type: "address",
       },
       {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
+        indexed: false,
+        internalType: "uint256",
+        name: "riskSpread",
+        type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "baseRate",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "halfTime",
+        type: "uint256",
+      },
+    ],
+    name: "RiskParamsUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "from", type: "address" },
+      { indexed: true, internalType: "address", name: "to", type: "address" },
       {
         indexed: true,
         internalType: "uint256",
@@ -454,92 +340,26 @@ export const aaveABI = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: "WhitelistAccessFlagWasToggled",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "status",
-        type: "bool",
-      },
-    ],
-    name: "WhitelistedStatusWasChanged",
-    type: "event",
-  },
-  {
     inputs: [],
     name: "aave",
-    outputs: [
-      {
-        internalType: "contract IPool",
-        name: "",
-        type: "address",
-      },
-    ],
+    outputs: [{ internalType: "contract IPool", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "users",
-        type: "address[]",
-      },
-    ],
-    name: "addToWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     name: "agreements",
     outputs: [
-      {
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
-      {
-        internalType: "enum IService.Status",
-        name: "status",
-        type: "uint8",
-      },
+      { internalType: "uint256", name: "createdAt", type: "uint256" },
+      { internalType: "enum IService.Status", name: "status", type: "uint8" },
     ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
     name: "approve",
     outputs: [],
@@ -547,83 +367,35 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "owner", type: "address" }],
     name: "balanceOf",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenID",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
-      },
+      { internalType: "uint256", name: "tokenID", type: "uint256" },
+      { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "close",
     outputs: [
-      {
-        internalType: "uint256[]",
-        name: "amountsOut",
-        type: "uint256[]",
-      },
+      { internalType: "uint256[]", name: "amountsOut", type: "uint256[]" },
     ],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "loan",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "margin",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "freeLiquidity",
-        type: "uint256",
-      },
+      { internalType: "address", name: "token", type: "address" },
+      { internalType: "uint256", name: "loan", type: "uint256" },
+      { internalType: "uint256", name: "margin", type: "uint256" },
+      { internalType: "uint256", name: "freeLiquidity", type: "uint256" },
     ],
     name: "computeBaseRateAndSpread",
     outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "uint256", name: "", type: "uint256" },
     ],
     stateMutability: "view",
     type: "function",
@@ -634,21 +406,9 @@ export const aaveABI = [
         components: [
           {
             components: [
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "margin",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
+              { internalType: "uint256", name: "margin", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "interestAndSpread",
@@ -666,31 +426,15 @@ export const aaveABI = [
                 name: "itemType",
                 type: "uint8",
               },
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "identifier",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "identifier", type: "uint256" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
             ],
             internalType: "struct IService.Collateral[]",
             name: "collaterals",
             type: "tuple[]",
           },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "createdAt", type: "uint256" },
           {
             internalType: "enum IService.Status",
             name: "status",
@@ -703,55 +447,27 @@ export const aaveABI = [
       },
     ],
     name: "computeDueFees",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
+    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "deadline",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenID",
-        type: "uint256",
-      },
+      { internalType: "uint256", name: "tokenID", type: "uint256" },
       {
         components: [
           {
             components: [
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "margin",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
+              { internalType: "uint256", name: "margin", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "interestAndSpread",
@@ -769,31 +485,15 @@ export const aaveABI = [
                 name: "itemType",
                 type: "uint8",
               },
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "identifier",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "identifier", type: "uint256" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
             ],
             internalType: "struct IService.Collateral[]",
             name: "collaterals",
             type: "tuple[]",
           },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "createdAt", type: "uint256" },
           {
             internalType: "enum IService.Status",
             name: "status",
@@ -804,11 +504,7 @@ export const aaveABI = [
         name: "agreement",
         type: "tuple",
       },
-      {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
-      },
+      { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "edit",
     outputs: [],
@@ -816,45 +512,14 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "enabled",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenID",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "tokenID", type: "uint256" }],
     name: "getAgreement",
     outputs: [
       {
         components: [
-          {
-            internalType: "address",
-            name: "token",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "margin",
-            type: "uint256",
-          },
+          { internalType: "address", name: "token", type: "address" },
+          { internalType: "uint256", name: "amount", type: "uint256" },
+          { internalType: "uint256", name: "margin", type: "uint256" },
           {
             internalType: "uint256",
             name: "interestAndSpread",
@@ -872,56 +537,24 @@ export const aaveABI = [
             name: "itemType",
             type: "uint8",
           },
-          {
-            internalType: "address",
-            name: "token",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "identifier",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
+          { internalType: "address", name: "token", type: "address" },
+          { internalType: "uint256", name: "identifier", type: "uint256" },
+          { internalType: "uint256", name: "amount", type: "uint256" },
         ],
         internalType: "struct IService.Collateral[]",
         name: "",
         type: "tuple[]",
       },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "enum IService.Status",
-        name: "",
-        type: "uint8",
-      },
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "enum IService.Status", name: "", type: "uint8" },
     ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "getApproved",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
@@ -933,21 +566,9 @@ export const aaveABI = [
         components: [
           {
             components: [
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "margin",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
+              { internalType: "uint256", name: "margin", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "interestAndSpread",
@@ -965,31 +586,15 @@ export const aaveABI = [
                 name: "itemType",
                 type: "uint8",
               },
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "identifier",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "identifier", type: "uint256" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
             ],
             internalType: "struct IService.Collateral[]",
             name: "collaterals",
             type: "tuple[]",
           },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "createdAt", type: "uint256" },
           {
             internalType: "enum IService.Status",
             name: "status",
@@ -1000,11 +605,7 @@ export const aaveABI = [
         name: "",
         type: "tuple[]",
       },
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
+      { internalType: "uint256[]", name: "", type: "uint256[]" },
     ],
     stateMutability: "view",
     type: "function",
@@ -1012,165 +613,80 @@ export const aaveABI = [
   {
     inputs: [],
     name: "guardian",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "halvingTime",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "id",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "operator",
-        type: "address",
-      },
+      { internalType: "address", name: "owner", type: "address" },
+      { internalType: "address", name: "operator", type: "address" },
     ],
     name: "isApprovedForAll",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "latestAndBase",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "id", type: "uint256" }],
     name: "liquidationScore",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "liquidator",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "locked",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "manager",
-    outputs: [
-      {
-        internalType: "contract IManager",
-        name: "",
-        type: "address",
-      },
-    ],
+    outputs: [{ internalType: "contract IManager", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "minMargin",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "name",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
@@ -1182,21 +698,9 @@ export const aaveABI = [
             components: [
               {
                 components: [
-                  {
-                    internalType: "address",
-                    name: "token",
-                    type: "address",
-                  },
-                  {
-                    internalType: "uint256",
-                    name: "amount",
-                    type: "uint256",
-                  },
-                  {
-                    internalType: "uint256",
-                    name: "margin",
-                    type: "uint256",
-                  },
+                  { internalType: "address", name: "token", type: "address" },
+                  { internalType: "uint256", name: "amount", type: "uint256" },
+                  { internalType: "uint256", name: "margin", type: "uint256" },
                   {
                     internalType: "uint256",
                     name: "interestAndSpread",
@@ -1214,31 +718,19 @@ export const aaveABI = [
                     name: "itemType",
                     type: "uint8",
                   },
-                  {
-                    internalType: "address",
-                    name: "token",
-                    type: "address",
-                  },
+                  { internalType: "address", name: "token", type: "address" },
                   {
                     internalType: "uint256",
                     name: "identifier",
                     type: "uint256",
                   },
-                  {
-                    internalType: "uint256",
-                    name: "amount",
-                    type: "uint256",
-                  },
+                  { internalType: "uint256", name: "amount", type: "uint256" },
                 ],
                 internalType: "struct IService.Collateral[]",
                 name: "collaterals",
                 type: "tuple[]",
               },
-              {
-                internalType: "uint256",
-                name: "createdAt",
-                type: "uint256",
-              },
+              { internalType: "uint256", name: "createdAt", type: "uint256" },
               {
                 internalType: "enum IService.Status",
                 name: "status",
@@ -1249,11 +741,7 @@ export const aaveABI = [
             name: "agreement",
             type: "tuple",
           },
-          {
-            internalType: "bytes",
-            name: "data",
-            type: "bytes",
-          },
+          { internalType: "bytes", name: "data", type: "bytes" },
         ],
         internalType: "struct IService.Order",
         name: "order",
@@ -1268,32 +756,14 @@ export const aaveABI = [
   {
     inputs: [],
     name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "ownerOf",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
@@ -1303,21 +773,9 @@ export const aaveABI = [
         components: [
           {
             components: [
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "margin",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
+              { internalType: "uint256", name: "margin", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "interestAndSpread",
@@ -1335,31 +793,15 @@ export const aaveABI = [
                 name: "itemType",
                 type: "uint8",
               },
-              {
-                internalType: "address",
-                name: "token",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "identifier",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "address", name: "token", type: "address" },
+              { internalType: "uint256", name: "identifier", type: "uint256" },
+              { internalType: "uint256", name: "amount", type: "uint256" },
             ],
             internalType: "struct IService.Collateral[]",
             name: "collaterals",
             type: "tuple[]",
           },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "createdAt", type: "uint256" },
           {
             internalType: "enum IService.Status",
             name: "status",
@@ -1372,27 +814,8 @@ export const aaveABI = [
       },
     ],
     name: "quote",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
+    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "users",
-        type: "address[]",
-      },
-    ],
-    name: "removeFromWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1403,41 +826,17 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "riskSpreads",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
+      { internalType: "address", name: "from", type: "address" },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
     name: "safeTransferFrom",
     outputs: [],
@@ -1446,26 +845,10 @@ export const aaveABI = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
-      },
+      { internalType: "address", name: "from", type: "address" },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "uint256", name: "tokenId", type: "uint256" },
+      { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "safeTransferFrom",
     outputs: [],
@@ -1474,16 +857,8 @@ export const aaveABI = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "operator",
-        type: "address",
-      },
-      {
-        internalType: "bool",
-        name: "approved",
-        type: "bool",
-      },
+      { internalType: "address", name: "operator", type: "address" },
+      { internalType: "bool", name: "approved", type: "bool" },
     ],
     name: "setApprovalForAll",
     outputs: [],
@@ -1491,30 +866,30 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_guardian",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "_guardian", type: "address" }],
     name: "setGuardian",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "_liquidator", type: "address" }],
+    name: "setLiquidator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bool", name: "_locked", type: "bool" }],
+    name: "setLock",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "margin",
-        type: "uint256",
-      },
+      { internalType: "address", name: "token", type: "address" },
+      { internalType: "uint256", name: "margin", type: "uint256" },
     ],
     name: "setMinMargin",
     outputs: [],
@@ -1523,26 +898,10 @@ export const aaveABI = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "riskSpread",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "baseRate",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "halfTime",
-        type: "uint256",
-      },
+      { internalType: "address", name: "token", type: "address" },
+      { internalType: "uint256", name: "riskSpread", type: "uint256" },
+      { internalType: "uint256", name: "baseRate", type: "uint256" },
+      { internalType: "uint256", name: "halfTime", type: "uint256" },
     ],
     name: "setRiskParams",
     outputs: [],
@@ -1550,168 +909,62 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "bytes4",
-        name: "interfaceId",
-        type: "bytes4",
-      },
-    ],
+    inputs: [{ internalType: "bytes4", name: "interfaceId", type: "bytes4" }],
     name: "supportsInterface",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "symbol",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "_locked",
-        type: "bool",
-      },
-    ],
-    name: "toggleLock",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "toggleWhitelistFlag",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "index",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "index", type: "uint256" }],
     name: "tokenByIndex",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "index",
-        type: "uint256",
-      },
+      { internalType: "address", name: "owner", type: "address" },
+      { internalType: "uint256", name: "index", type: "uint256" },
     ],
     name: "tokenOfOwnerByIndex",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
+    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "tokenURI",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "totalAllowance",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "totalSupply",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
+      { internalType: "address", name: "from", type: "address" },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
     name: "transferFrom",
     outputs: [],
@@ -1719,35 +972,10 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
+    inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "whitelisted",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
 ] as const;

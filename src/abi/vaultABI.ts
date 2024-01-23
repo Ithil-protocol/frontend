@@ -88,19 +88,6 @@ export const vaultABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint256",
-        name: "degradationCoefficient",
-        type: "uint256",
-      },
-    ],
-    name: "DegradationCoefficientWasUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "address",
         name: "sender",
@@ -126,6 +113,19 @@ export const vaultABI = [
       },
     ],
     name: "Deposit",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "feeUnlockTime",
+        type: "uint256",
+      },
+    ],
+    name: "FeeUnlockTimeWasUpdated",
     type: "event",
   },
   {
@@ -164,6 +164,31 @@ export const vaultABI = [
       },
     ],
     name: "Repaid",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "TokenSwept",
     type: "event",
   },
   {
@@ -676,7 +701,7 @@ export const vaultABI = [
     inputs: [
       {
         internalType: "address",
-        name: "",
+        name: "addr",
         type: "address",
       },
     ],
