@@ -246,7 +246,7 @@ export const usePrepareFixedYieldOrder = ({
   });
 
   const collateral: ServiceCollateral = {
-    itemType: 0,
+    itemType: 1,
     token: asset?.vaultAddress as Address,
     identifier: 0n,
     amount: multiplyBigInt(shares || 0n, 0.99),
@@ -260,7 +260,7 @@ export const usePrepareFixedYieldOrder = ({
   };
   const agreement: ServiceAgreement = {
     loans: [loan],
-    collaterals: [collateral],
+    collaterals: [collateral, collateral],
     createdAt: BigInt(0),
     status: 0,
   };
