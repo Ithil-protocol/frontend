@@ -52,6 +52,11 @@ export const aaveABI = [
   },
   {
     inputs: [],
+    name: "InvalidParams",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidStatus",
     type: "error",
   },
@@ -72,17 +77,17 @@ export const aaveABI = [
   },
   {
     inputs: [],
+    name: "OnlyLiquidator",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "RestrictedAccess",
     type: "error",
   },
   {
     inputs: [],
     name: "RestrictedToOwner",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "UserIsNotWhitelisted",
     type: "error",
   },
   {
@@ -218,6 +223,19 @@ export const aaveABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "liquidator",
+        type: "address",
+      },
+    ],
+    name: "LiquidatorUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "bool",
         name: "status",
@@ -225,6 +243,25 @@ export const aaveABI = [
       },
     ],
     name: "LockWasToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "margin",
+        type: "uint256",
+      },
+    ],
+    name: "MinMarginUpdated",
     type: "event",
   },
   {
@@ -434,6 +471,37 @@ export const aaveABI = [
       {
         indexed: true,
         internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "riskSpread",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "baseRate",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "halfTime",
+        type: "uint256",
+      },
+    ],
+    name: "RiskParamsUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "from",
         type: "address",
       },
@@ -454,31 +522,6 @@ export const aaveABI = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: "WhitelistAccessFlagWasToggled",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "status",
-        type: "bool",
-      },
-    ],
-    name: "WhitelistedStatusWasChanged",
-    type: "event",
-  },
-  {
     inputs: [],
     name: "aave",
     outputs: [
@@ -489,19 +532,6 @@ export const aaveABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "users",
-        type: "address[]",
-      },
-    ],
-    name: "addToWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -816,19 +846,6 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "enabled",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -1118,6 +1135,19 @@ export const aaveABI = [
   },
   {
     inputs: [],
+    name: "liquidator",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "locked",
     outputs: [
       {
@@ -1383,19 +1413,6 @@ export const aaveABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "users",
-        type: "address[]",
-      },
-    ],
-    name: "removeFromWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "renounceOwnership",
     outputs: [],
@@ -1507,6 +1524,32 @@ export const aaveABI = [
     inputs: [
       {
         internalType: "address",
+        name: "_liquidator",
+        type: "address",
+      },
+    ],
+    name: "setLiquidator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bool",
+        name: "_locked",
+        type: "bool",
+      },
+    ],
+    name: "setLock",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "token",
         type: "address",
       },
@@ -1579,26 +1622,6 @@ export const aaveABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "_locked",
-        type: "bool",
-      },
-    ],
-    name: "toggleLock",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "toggleWhitelistFlag",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1729,25 +1752,6 @@ export const aaveABI = [
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "whitelisted",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
 ] as const;

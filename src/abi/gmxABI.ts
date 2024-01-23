@@ -42,6 +42,11 @@ export const gmxABI = [
   },
   {
     inputs: [],
+    name: "InvalidParams",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidStatus",
     type: "error",
   },
@@ -78,11 +83,6 @@ export const gmxABI = [
   {
     inputs: [],
     name: "RestrictedToOwner",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "UserIsNotWhitelisted",
     type: "error",
   },
   {
@@ -218,6 +218,19 @@ export const gmxABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "liquidator",
+        type: "address",
+      },
+    ],
+    name: "LiquidatorUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "bool",
         name: "status",
@@ -225,6 +238,25 @@ export const gmxABI = [
       },
     ],
     name: "LockWasToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "margin",
+        type: "uint256",
+      },
+    ],
+    name: "MinMarginUpdated",
     type: "event",
   },
   {
@@ -434,6 +466,37 @@ export const gmxABI = [
       {
         indexed: true,
         internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "riskSpread",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "baseRate",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "halfTime",
+        type: "uint256",
+      },
+    ],
+    name: "RiskParamsUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "from",
         type: "address",
       },
@@ -452,44 +515,6 @@ export const gmxABI = [
     ],
     name: "Transfer",
     type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [],
-    name: "WhitelistAccessFlagWasToggled",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "status",
-        type: "bool",
-      },
-    ],
-    name: "WhitelistedStatusWasChanged",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "users",
-        type: "address[]",
-      },
-    ],
-    name: "addToWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     inputs: [
@@ -800,19 +825,6 @@ export const gmxABI = [
     name: "edit",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "enabled",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -1409,19 +1421,6 @@ export const gmxABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "users",
-        type: "address[]",
-      },
-    ],
-    name: "removeFromWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "renounceOwnership",
     outputs: [],
@@ -1584,6 +1583,19 @@ export const gmxABI = [
   {
     inputs: [
       {
+        internalType: "bool",
+        name: "_locked",
+        type: "bool",
+      },
+    ],
+    name: "setLock",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "token",
         type: "address",
@@ -1657,26 +1669,6 @@ export const gmxABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "_locked",
-        type: "bool",
-      },
-    ],
-    name: "toggleLock",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "toggleWhitelistFlag",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1888,25 +1880,6 @@ export const gmxABI = [
         internalType: "uint256",
         name: "",
         type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "whitelisted",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
       },
     ],
     stateMutability: "view",

@@ -11,6 +11,11 @@ export const managerABI = [
     type: "error",
   },
   {
+    inputs: [],
+    name: "InvalidParams",
+    type: "error",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -34,6 +39,11 @@ export const managerABI = [
   {
     inputs: [],
     name: "RestrictedToWhitelisted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "VaultAlreadyExists",
     type: "error",
   },
   {
@@ -133,6 +143,25 @@ export const managerABI = [
       },
     ],
     name: "TokenWasRemovedFromService",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "vault",
+        type: "address",
+      },
+    ],
+    name: "VaultCreated",
     type: "event",
   },
   {

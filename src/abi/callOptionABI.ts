@@ -18,6 +18,11 @@ export const callOptionABI = [
       },
       {
         internalType: "uint256",
+        name: "_minLoan",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
         name: "_halvingTime",
         type: "uint256",
       },
@@ -57,12 +62,22 @@ export const callOptionABI = [
   },
   {
     inputs: [],
+    name: "InvalidParams",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidStatus",
     type: "error",
   },
   {
     inputs: [],
     name: "InvalidUnderlyingToken",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "LoanBelowMinimum",
     type: "error",
   },
   {
@@ -87,6 +102,11 @@ export const callOptionABI = [
   },
   {
     inputs: [],
+    name: "RedeemedTooLow",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "RestrictedAccess",
     type: "error",
   },
@@ -103,11 +123,6 @@ export const callOptionABI = [
   {
     inputs: [],
     name: "StillVested",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ZeroAmount",
     type: "error",
   },
   {
@@ -203,12 +218,57 @@ export const callOptionABI = [
     inputs: [
       {
         indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "IthilTokenAllocated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "IthilTokenSwept",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "bool",
         name: "status",
         type: "bool",
       },
     ],
     name: "LockWasToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "MinLoanWasUpdated",
     type: "event",
   },
   {
@@ -1063,6 +1123,25 @@ export const callOptionABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "minLoan",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "name",
     outputs: [
@@ -1290,6 +1369,37 @@ export const callOptionABI = [
   {
     inputs: [
       {
+        internalType: "bool",
+        name: "_locked",
+        type: "bool",
+      },
+    ],
+    name: "setLock",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "setMinLoan",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -1337,19 +1447,6 @@ export const callOptionABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "_locked",
-        type: "bool",
-      },
-    ],
-    name: "toggleLock",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

@@ -27,7 +27,17 @@ export const fixedYieldABI = [
   },
   {
     inputs: [],
+    name: "InvalidParams",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidStatus",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "LoanBelowMinimum",
     type: "error",
   },
   {
@@ -149,6 +159,25 @@ export const fixedYieldABI = [
       },
     ],
     name: "LockWasToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "MinLoanWasUpdated",
     type: "event",
   },
   {
@@ -912,6 +941,25 @@ export const fixedYieldABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "minLoan",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "name",
     outputs: [
@@ -1139,6 +1187,37 @@ export const fixedYieldABI = [
   {
     inputs: [
       {
+        internalType: "bool",
+        name: "_locked",
+        type: "bool",
+      },
+    ],
+    name: "setLock",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "setMinLoan",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -1166,19 +1245,6 @@ export const fixedYieldABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "_locked",
-        type: "bool",
-      },
-    ],
-    name: "toggleLock",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
