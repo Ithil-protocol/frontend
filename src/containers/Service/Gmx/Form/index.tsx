@@ -116,7 +116,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     args: [gmxAddress, asset.tokenAddress],
   });
 
-  const { maxLeverage = "5" } = useBestLeverage({
+  const { maxLeverage } = useBestLeverage({
     baseApy,
     latestAndBase,
     riskSpreads,
@@ -229,7 +229,9 @@ const Form = ({ asset }: { asset: Asset }) => {
   const maxLeverageToDisplay = useCallback(
     (minLeverage: number) => {
       const max =
-        maxLeverage !== "Infinity" ? (parseFloat(maxLeverage) * 4) / 5 : 5;
+        maxLeverage !== "Infinity"
+          ? (parseFloat(maxLeverage || "5") * 4) / 5
+          : 5;
       return max < minLeverage ? minLeverage : max > 5 ? 5 : max;
     },
     [maxLeverage]
