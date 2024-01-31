@@ -68,7 +68,8 @@ export const useRateAndSpread = ({
     enabled: !!vaultFreeLiquidity,
   });
 
-  const isLoading = isBaseRateLoading || isFreeLiquidityLoading;
+  const isLoading =
+    isBaseRateLoading || isFreeLiquidityLoading || +margin === 0;
 
   const result = {
     interestAndSpread: 0n,

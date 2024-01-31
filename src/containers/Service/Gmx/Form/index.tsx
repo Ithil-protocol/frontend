@@ -1,8 +1,18 @@
-import { HStack, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Flex,
+  HStack,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { waitForTransaction } from "@wagmi/core";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Address,
   encodeAbiParameters,
@@ -37,32 +47,21 @@ import { useMinMarginLimit } from "@/hooks/useMinMarginLimit";
 import { usePrepareGmxOrder } from "@/hooks/usePrepareOrder";
 import { useRateAndSpread } from "@/hooks/useRateAndSpread";
 import { Asset } from "@/types";
-import {
-  cutoffDecimals,
-  getAssetByName,
-  getSingleQueryParam,
-  normalizeInputValue,
-} from "@/utils";
+import { getAssetByName, getSingleQueryParam } from "@/utils";
 import { abbreviateBigNumber } from "@/utils/input.utils";
 
-import AdvanceSection from "../../AdvanceSection";
-// import AdvancedFormLabel from "./AdvancedFormLabel";
 import FormInfo from "../../FormInfo";
 import ServiceError from "../../ServiceError";
 import SingleAssetAmount from "../../SingleAssetAmount";
 
-// import DepositForm from "./DepositForm"
-
 const Form = ({ asset }: { asset: Asset }) => {
   const { address: accountAddress } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
-  const [leverage, setLeverage] = useState("0");
+  const [leverage, setLeverage] = useState("1.1");
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [slippage, setSlippage] = useState(appConfig.DEFAULT_SLIPPAGE);
-  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] = useState(false);
   const notificationDialog = useNotificationDialog();
-  const normalizeLeverage = normalizeInputValue(leverage);
 
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: accountAddress,
@@ -117,7 +116,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     args: [gmxAddress, asset.tokenAddress],
   });
 
-  const { bestLeverage, isLoading: isBestLeverageLoading } = useBestLeverage({
+  const { maxLeverage } = useBestLeverage({
     baseApy,
     latestAndBase,
     riskSpreads,
@@ -128,14 +127,6 @@ const Form = ({ asset }: { asset: Asset }) => {
     caps,
   });
 
-  useEffect(() => {
-    if (bestLeverage) setLeverage(bestLeverage.toString());
-  }, [bestLeverage]);
-
-  const finalLeverage = (
-    isAdvancedOptionsOpen ? +normalizeLeverage - 1 : +bestLeverage - 1
-  ).toString();
-
   const {
     interestAndSpread,
     displayInterestAndSpreadInPercent,
@@ -144,7 +135,7 @@ const Form = ({ asset }: { asset: Asset }) => {
     isFreeLiquidityError,
   } = useRateAndSpread({
     token: asset,
-    leverage: finalLeverage,
+    leverage,
     margin: inputAmount,
     slippage,
     serviceAddress: gmxAddress,
@@ -162,7 +153,7 @@ const Form = ({ asset }: { asset: Asset }) => {
       asset.gmxCollateralTokenAddress,
       asset.gmxCollateralTokenAddress,
     ],
-    leverage: finalLeverage,
+    leverage,
     amount: inputAmount,
     interestAndSpread,
     extraData,
@@ -215,26 +206,17 @@ const Form = ({ asset }: { asset: Asset }) => {
   console.log(
     "gmxLeverage",
     "leverageInPrepare:",
-    finalLeverage,
+    leverage,
     "leverageInApy:",
     leverage
   );
-  const finalApy = baseApy
-    ? +baseApy * +leverage - (+leverage - 1) * displayInterestAndSpreadInPercent
-    : 0;
 
   const formInfoItems = [
     {
-      label: "Base APY:",
+      label: "ETH Rewards APY:",
       value: baseApy?.toFixed(2),
       extension: "%",
       isLoading: apyLoading,
-    },
-    {
-      label: "Best Leverage:",
-      value: bestLeverage,
-      extension: "x",
-      isLoading: isBestLeverageLoading,
     },
     {
       label: "Borrow Interest:",
@@ -242,15 +224,44 @@ const Form = ({ asset }: { asset: Asset }) => {
       extension: "%",
       isLoading: isInterestAndSpreadLoading,
     },
-    {
-      label: "Final APY:",
-      value: cutoffDecimals(finalApy, 2),
-      extension: "%",
-      isLoading: isInterestAndSpreadLoading,
-    },
   ];
 
+  const maxLeverageToDisplay = useCallback(
+    (minLeverage: number) => {
+      const max =
+        maxLeverage !== "Infinity"
+          ? (parseFloat(maxLeverage || "5") * 4) / 5
+          : 5;
+      return max < minLeverage ? minLeverage : max > 5 ? 5 : max;
+    },
+    [maxLeverage]
+  );
+
+  useEffect(() => {
+    const max = maxLeverageToDisplay(1.1);
+    if (parseFloat(leverage) > max) {
+      setLeverage(max.toString());
+    }
+  }, [maxLeverageToDisplay, leverage, setLeverage]);
+
   if (!isMounted) return null;
+
+  const renderLeverageSlider = (isDisabled: boolean) => (
+    <Slider
+      aria-label="slider-ex-1"
+      min={1.1}
+      max={maxLeverageToDisplay(1.1)}
+      step={0.1}
+      value={parseFloat(leverage)}
+      onChange={(val) => setLeverage(val.toString())}
+      isDisabled={isDisabled}
+    >
+      <SliderTrack>
+        <SliderFilledTrack />
+      </SliderTrack>
+      <SliderThumb boxSize={4} />
+    </Slider>
+  );
 
   return (
     <div className="flex flex-col gap-2 p-3 bg-primary-100 rounded-xl">
@@ -298,15 +309,35 @@ const Form = ({ asset }: { asset: Asset }) => {
 
         <Box width="full" gap="30px">
           <FormInfo items={formInfoItems} />
+          <Flex justify="space-between" align="center" mb="8px" mt="12px">
+            <Text>Leverage: </Text>
+            <Text>{leverage}</Text>
+          </Flex>
+          {+inputAmount === 0 ? (
+            <Tooltip label="Insert a nonzero margin first" placement="top">
+              <Box>{renderLeverageSlider(true)}</Box>
+            </Tooltip>
+          ) : (
+            renderLeverageSlider(false)
+          )}
+          <Flex justify="space-between" align="center" mb="8px" mt="12px">
+            <Text>Slippage: </Text>
+            <Text>{(parseFloat(slippage) * 100).toFixed(1)}%</Text>
+          </Flex>
 
-          <AdvanceSection
-            isAdvancedOptionsOpen={isAdvancedOptionsOpen}
-            setIsAdvancedOptionsOpen={setIsAdvancedOptionsOpen}
-            leverage={leverage}
-            setLeverage={setLeverage}
-            setSlippage={setSlippage}
-            slippage={slippage}
-          />
+          <Slider
+            aria-label="slider-ex-1"
+            min={0.001}
+            max={0.1}
+            step={0.009}
+            value={parseFloat(slippage)}
+            onChange={(val) => setSlippage(val.toString())}
+          >
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb boxSize={4}></SliderThumb>
+          </Slider>
         </Box>
       </div>
 
@@ -317,11 +348,12 @@ const Form = ({ asset }: { asset: Asset }) => {
           isLessThanMinimumMarginError={isLessThanMinimumMarginError}
         />
       )}
+
       <PrivateButton
         onClick={() => (isApproved ? onOpen() : approve?.())}
-        isDisabled={isButtonDisabled}
+        isDisabled={isButtonDisabled || +inputAmount === 0}
         loadingText="Waiting"
-        isLoading={isButtonLoading}
+        isLoading={isButtonLoading && +inputAmount != 0}
       >
         {!asset.name
           ? "Loading..."
