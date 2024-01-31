@@ -55,14 +55,12 @@ export const useBestLeverage = ({
     Number((caps[0] * (freeLiquidity + loans)) / BigInt(10 ** 18) - caps[2]) /
     Number(margin);
 
-  const bestLeverage = Math.min(
-    bestLeverageFree,
-    bestLeverageAbsCap,
-    bestLeveragePercentageCap
-  );
+  const maxLeverage = Math.min(bestLeverageAbsCap, bestLeveragePercentageCap);
+  const bestLeverage = Math.min(bestLeverageFree, maxLeverage);
 
   return {
     bestLeverage: bestLeverage.toFixed(1),
+    maxLeverage: maxLeverage.toFixed(1),
     isLoading: false,
   };
 };
