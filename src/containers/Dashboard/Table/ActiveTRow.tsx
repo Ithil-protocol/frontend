@@ -131,7 +131,10 @@ const ActiveTRow: FC<Props> = ({ data }) => {
     close({
       args: [
         data.id,
-        encodeAbiParameters(parseAbiParameters("uint256"), [quote]),
+        encodeAbiParameters(parseAbiParameters("uint256, uint256"), [
+          quote,
+          0n,
+        ]),
       ],
     });
   };
