@@ -187,13 +187,13 @@ export const usePrepareCreditOrder = ({
     amount1.isNaN() || !amount1.isFinite() ? 0n : BigInt(amount1Num);
 
   const collateral0: ServiceCollateral = {
-    itemType: 0,
+    itemType: 1,
     token: asset?.vaultAddress as Address,
     identifier: 0n,
     amount: BigInt(amount0d.floor().toString() || 0),
   };
   const collateral1: ServiceCollateral = {
-    itemType: 0,
+    itemType: 1,
     token: ithil.tokenAddress,
     identifier: 0n,
     amount: finalAmount1,
