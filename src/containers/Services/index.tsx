@@ -12,6 +12,11 @@ const ServicesPage = () => {
             process.env.NEXT_PUBLIC_NETWORK !== "mainnet" ||
             service.url !== "/fixed-yield"
         )
+        .filter(
+          (service) =>
+            process.env.NEXT_PUBLIC_NETWORK !== "mainnet" ||
+            service.name !== "fraxlend"
+        )
         .map((item, index) => (
           <ServiceCard
             key={item.name + index}
