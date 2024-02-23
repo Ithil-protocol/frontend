@@ -9,7 +9,7 @@
     "tokenAddress": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
     "oracleAddress": "0x50834f3163758fcc1df9973b6e91f0f0f0434ad3",
     "vaultAddress": "0x2ca95BF88068c7570D020B726CABd3952f647133",
-    "callOptionAddress": "0xe95a906f281434C52E1A5Fee82d2e690aFA0e6e8",
+    "callOptionAddress": "0x900Ef1171010411252ae6a54B47477d2fe0cC0b2",
     "aaveCollateralTokenAddress": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
     "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
     "iTokenAddress": "0x2ca95BF88068c7570D020B726CABd3952f647133"
@@ -24,7 +24,7 @@
     "tokenAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
     "oracleAddress": "0x3f3f5df88dc9f13eac63df89ec16ef6e7e25dde7",
     "vaultAddress": "0xc8d237311E9D7178b9DcadCE2F154053536B25C1",
-    "callOptionAddress": "0x5CC4AcD5cd4C2116066ec8f6c207B21F536060aA",
+    "callOptionAddress": "0x",
     "aaveCollateralTokenAddress": "0x6ab707Aca953eDAeFBc4fD23bA73294241490620",
     "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
     "iTokenAddress": "0xc8d237311E9D7178b9DcadCE2F154053536B25C1"
@@ -39,7 +39,7 @@
     "tokenAddress": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
     "oracleAddress": "0xc5c8e77b397e531b8ec06bfb0048328b30e9ecfb",
     "vaultAddress": "0xFa475C8ff8909200b9cBC739Ff92A8cA8Dd34275",
-    "callOptionAddress": "0x26F767EDbdEac94430f93b1c9aE4934d8dc8De74",
+    "callOptionAddress": "0xc0A8033b293a6aa1d02461b913dd5487c6dB4fDe",
     "aaveCollateralTokenAddress": "0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE",
     "gmxCollateralTokenAddress": "0x1aDDD80E6039594eE970E5872D247bf0414C8903",
     "iTokenAddress": "0xFa475C8ff8909200b9cBC739Ff92A8cA8Dd34275"
