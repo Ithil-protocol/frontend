@@ -107,7 +107,7 @@ export const usePrepareGmxOrder = ({
   leverage,
   interestAndSpread,
   extraData,
-  slippage,
+  slippage, // TODO: add quote for slippage
 }: PrepareGmxOrderProps) => {
   const bigintAmount = parseUnits(amount, token.decimals);
 
@@ -117,10 +117,7 @@ export const usePrepareGmxOrder = ({
     itemType: 0,
     token: collateralTokens[0],
     identifier: BigInt(0),
-    amount:
-      ((bigintAmount + amountInLeverage) *
-        BigInt(1000 - Number(slippage) * 1000)) /
-      1000n,
+    amount: BigInt(1),
   };
 
   // TODO: implement USDG slippage

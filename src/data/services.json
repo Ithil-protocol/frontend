@@ -102,7 +102,7 @@
     "description": "Be part of Ithil tokenomics getting $ITHIL with a non-dilutive purchase model based on call options",
     "bestApy": "🧙‍♀️",
     "boostApy": 1,
-    "tokens": ["USDC", "USDT", "DAI"],
+    "tokens": ["USDC", "DAI"],
     "tvl": 158.86,
     "deadline": 86400,
     "url": "/call-option",
