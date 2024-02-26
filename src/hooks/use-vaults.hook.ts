@@ -155,7 +155,7 @@ const getVaultData = async (address: Address = zeroAddress) => {
     const fixedYieldServiceBalance = new Decimal(fixedYieldBalance.toString());
     const callOptionBalanceDecimal = new Decimal(callOptionBalances.toString());
     // const creationTimeDecimal = new Decimal(creationTime.toString());
-    const creationTimeDecimal = new Decimal("1708905600000"); // 26-02-2024 00:00:00 GMT
+    const creationTimeDecimal = new Decimal("1708905600"); // 26-02-2024 00:00:00 GMT
     const numerator = vaultTotalAssetsDecimal.plus(vaultCurrentProfitsDecimal);
     const denominator = vaultTotalSupplyDecimal
       .minus(fixedYieldServiceBalance)
